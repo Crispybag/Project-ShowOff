@@ -13,7 +13,7 @@ public class ServiceLocator : MonoBehaviour
     //=========================================================================================
 
     //------------------------ public ------------------------
-    public static ServiceLocator serviceLocator = null;
+    public static ServiceLocator sl = null;
 
 
     //----------------------- private ------------------------
@@ -27,9 +27,9 @@ public class ServiceLocator : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        if (null == serviceLocator)
+        if (null == sl)
         {
-            serviceLocator = this;
+            sl = this;
             return;
         }
 
