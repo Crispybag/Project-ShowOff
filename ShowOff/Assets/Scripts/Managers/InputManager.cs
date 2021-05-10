@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using static ServiceLocator;
 public class InputManager : MonoBehaviour
 {
     //AUTHOR: Leo Jansen
@@ -57,9 +58,9 @@ public class InputManager : MonoBehaviour
             _im = this;
 
             //add input manager to the service locator list
-            if (null != ServiceLocator.sl)
+            if (null != serviceLocator)
             {
-                ServiceLocator.sl.AddToList("InputManager", gameObject);
+                serviceLocator.AddToList("InputManager", gameObject);
             }
 
             //fill the key list

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ServiceLocator : MonoBehaviour
 {
     //AUTHOR: Leo Jansen
@@ -13,7 +14,7 @@ public class ServiceLocator : MonoBehaviour
     //=========================================================================================
 
     //------------------------ public ------------------------
-    public static ServiceLocator sl = null;
+    public static ServiceLocator serviceLocator = null;
 
 
     //----------------------- private ------------------------
@@ -27,9 +28,9 @@ public class ServiceLocator : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        if (null == sl)
+        if (null == serviceLocator)
         {
-            sl = this;
+            serviceLocator = this;
             return;
         }
 
