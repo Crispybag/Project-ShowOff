@@ -14,11 +14,12 @@ public class AirChannel : MonoBehaviour
     //------------------------ public ------------------------
 
     public bool isAirEnabled = false;
+    public List<GameObject> currentObjects = new List<GameObject>();
 
     //----------------------- private ------------------------
 
     [SerializeField] private GameObject activator;
-    public List<GameObject> currentObjects = new List<GameObject>();
+    [SerializeField] private float _airSpeed = 5;
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -30,7 +31,10 @@ public class AirChannel : MonoBehaviour
 
     private void Update()
     {
-
+        if (isAirEnabled)
+        {
+            MoveObjects();
+        }
     }
 
     //=========================================================================================
@@ -40,5 +44,13 @@ public class AirChannel : MonoBehaviour
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
+
+    private void MoveObjects()
+    {
+        foreach(GameObject obj in currentObjects)
+        {
+            obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward * _airSpeed);
+        }
+    }
 
 }

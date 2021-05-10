@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AirChannelTrigger : MonoBehaviour
 {
-    //AUTHOR:
+    //AUTHOR: Ezra
     //SHORT DISCRIPTION:
 
     //=========================================================================================
@@ -15,6 +15,8 @@ public class AirChannelTrigger : MonoBehaviour
 
 
     //----------------------- private ------------------------
+
+    [SerializeField] private float _airSpeed;
 
 
     //=========================================================================================
@@ -38,22 +40,20 @@ public class AirChannelTrigger : MonoBehaviour
     //                             > Private Tool Functions <
     //=========================================================================================
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("Box enters : " + collision.transform.tag +  " !");
-        if(collision.transform.tag == "AirChannel")
+        if(collision.tag == "AirChannel")
         {
-            Debug.Log("Box has entered air channel!");
-            collision.transform.GetComponent<AirChannel>().currentObjects.Add(this.gameObject);
+            collision.GetComponent<AirChannel>().currentObjects.Add(this.gameObject);
         }
     }
 
-/*    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider collision)
     {
-        if (collision.transform.tag == "AirChannel")
+        if (collision.tag == "AirChannel")
         {
-            collision.transform.GetComponent<AirChannel>().currentObjects.Remove(this.gameObject);
+            collision.GetComponent<AirChannel>().currentObjects.Remove(this.gameObject);
         }
-    }*/
+    }
 
 }
