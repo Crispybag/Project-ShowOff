@@ -41,10 +41,10 @@ public class ProgressManager : MonoBehaviour
         {
             _pm = this;
 
-            //add input manager to the service locator list
+            //add progress manager to the service locator list
             if (null != serviceLocator)
             {
-                serviceLocator.AddToList("InputManager", gameObject);
+                serviceLocator.AddToList("ProgressManager", gameObject);
             }
             return;
         }
