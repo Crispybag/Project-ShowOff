@@ -18,6 +18,7 @@ public class CameraTrigger : MonoBehaviour
     [SerializeField] private CameraManager _cameraManager;
     [SerializeField] private GameObject _cameraPosition;
     [SerializeField] private float _transitionSpeed;
+    [SerializeField] private bool _isFollowingPlayer;
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -35,7 +36,7 @@ public class CameraTrigger : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            _cameraManager.SetPosition(_cameraPosition, _transitionSpeed);
+            _cameraManager.SetPosition(_cameraPosition, _transitionSpeed, _isFollowingPlayer);
         }
     }
 

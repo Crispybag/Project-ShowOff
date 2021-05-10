@@ -28,6 +28,7 @@ public class CameraManager : MonoBehaviour
     private GameObject _endCameraData;
 
     private bool isLerping = false;
+    private bool isFollowingPlayer = false;
 
     private GameObject _newCameraPosition;
 
@@ -64,13 +65,14 @@ public class CameraManager : MonoBehaviour
     //                              > Public Tool Functions <
     //=========================================================================================
 
-    public void SetPosition(GameObject pCameraData, float pSpeed)
+    public void SetPosition(GameObject pCameraData, float pSpeed, bool pisFollowingPlayer)
     {
         _speed = pSpeed;
         startTime = Time.time;
         _newCameraPosition = pCameraData;
         cameraState = CameraState.LOCKED;
         isLerping = true;
+        isFollowingPlayer = pisFollowingPlayer;
     }
 
     public void SetFollow(float pSpeed)
@@ -93,7 +95,7 @@ public class CameraManager : MonoBehaviour
         {
             _cameraGameObject.transform.position = Vector3.Slerp(_startCameraData.transform.position, _endCameraData.transform.position, _speed * (Time.time - startTime));
             _cameraGameObject.transform.rotation = Quaternion.Slerp(_startCameraData.transform.rotation, _endCameraData.transform.rotation, _speed * (Time.time - startTime));
-            if (cameraState != CameraState.FOLLOW && _cameraGameObject.transform.position == _endCameraData.transform.position && _cameraGameObject.transform.rotation == _endCameraData.transform.rotation)
+            if (cameraState != CameraState.FOLLOW && !isFollowingPlayer && _cameraGameObject.transform.position == _endCameraData.transform.position && _cameraGameObject.transform.rotation == _endCameraData.transform.rotation)
             {
                 isLerping = false;
             }
