@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ServiceLocator;
 
 public class CameraTrigger : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class CameraTrigger : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    [SerializeField] private CameraManager _cameraManager;
+    private CameraManager _cameraManager;
     [SerializeField] private GameObject _cameraPosition;
     [SerializeField] private float _transitionSpeed;
     [SerializeField] private bool _isFollowingPlayer;
@@ -23,6 +24,11 @@ public class CameraTrigger : MonoBehaviour
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+
+    private void Start()
+    {
+        _cameraManager = serviceLocator.GetFromList("CameraManager").GetComponent<CameraManager>();
+    }
 
     //=========================================================================================
     //                              > Public Tool Functions <

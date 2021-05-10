@@ -14,7 +14,7 @@ public class AirChannel : MonoBehaviour
     //------------------------ public ------------------------
 
     public bool isAirEnabled = false;
-    public List<GameObject> currentObjects = new List<GameObject>();
+    [HideInInspector] public List<GameObject> currentObjects = new List<GameObject>();
 
     //----------------------- private ------------------------
 

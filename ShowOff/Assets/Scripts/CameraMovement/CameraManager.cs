@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ServiceLocator;
 
 public class CameraManager : MonoBehaviour
 {
@@ -38,6 +39,10 @@ public class CameraManager : MonoBehaviour
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+    private void Awake()
+    {
+        serviceLocator.AddToList("CameraManager", gameObject);
+    }
 
     private void Start()
     {

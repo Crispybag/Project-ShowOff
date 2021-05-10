@@ -127,6 +127,10 @@ public class InputManager : MonoBehaviour
                 if (Input.GetKey(leftKey) || Input.GetKey(rightKey))
                     return true;
                 return false;
+            case (Action.VERTICAL):
+                if (Input.GetKey(upKey) || Input.GetKey(downKey))
+                    return true;
+                return false;
 
             default:
                 return false;
@@ -183,6 +187,12 @@ public class InputManager : MonoBehaviour
                 if (Input.GetKeyUp(leftKey) || Input.GetKeyUp(rightKey))
                     return true;
                 return false;
+
+            case (Action.VERTICAL):
+                if (Input.GetKeyUp(upKey) || Input.GetKeyUp(downKey))
+                    return true;
+                return false;
+
             default:
                 return false;
         }
@@ -238,6 +248,12 @@ public class InputManager : MonoBehaviour
                 if (Input.GetKeyDown(leftKey) || Input.GetKeyDown(rightKey))
                     return true;
                 return false;
+
+            case (Action.VERTICAL):
+                if (Input.GetKeyDown(upKey) || Input.GetKeyDown(downKey))
+                    return true;
+                return false;
+
             default:
                 return false;
         }
@@ -302,6 +318,15 @@ public class InputManager : MonoBehaviour
         if (GetAction(Action.RIGHT)) { _horizontalInput++; }
             
         return _horizontalInput;
+    }
+    public int getVerticalInput()
+    {
+        int _verticalInput = 0;
+
+        if (GetAction(Action.DOWN)) { _verticalInput--; }
+        if (GetAction(Action.UP)) { _verticalInput++; }
+
+        return _verticalInput;
     }
     //=========================================================================================
     //                             > Private Tool Functions <

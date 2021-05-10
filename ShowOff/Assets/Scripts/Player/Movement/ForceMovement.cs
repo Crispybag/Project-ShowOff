@@ -44,7 +44,9 @@ public class ForceMovement : MonoBehaviour
         else
         {
             _rb.AddForce(new Vector3(_inputManager.getHorizontalInput() * _force, 0, 0) * Time.deltaTime);
-            if (_inputManager.GetActionDown(InputManager.Action.UP))
+            _rb.AddForce(new Vector3(0,0, _inputManager.getVerticalInput() * _force) * Time.deltaTime);
+            Debug.Log(_inputManager.getVerticalInput());
+            if (_inputManager.GetActionDown(InputManager.Action.ACT0))
             {
                 _rb.AddForce(new Vector3(0, _jumpForce, 0));
             }
