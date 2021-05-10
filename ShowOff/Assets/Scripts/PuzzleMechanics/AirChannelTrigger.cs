@@ -5,7 +5,7 @@ using UnityEngine;
 public class AirChannelTrigger : MonoBehaviour
 {
     //AUTHOR: Ezra
-    //SHORT DISCRIPTION:
+    //SHORT DISCRIPTION: Put on any object to make sure they interact with Air channels, this will put them in the list to make sure they move.
 
     //=========================================================================================
     //                                     > Variables <
@@ -16,21 +16,12 @@ public class AirChannelTrigger : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    [SerializeField] private float _airSpeed;
+
 
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
-    private void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-
-    }
 
     //=========================================================================================
     //                              > Public Tool Functions <

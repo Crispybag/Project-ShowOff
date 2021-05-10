@@ -18,23 +18,15 @@ public class AirChannel : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    [SerializeField] private GameObject activator;
     [SerializeField] private float _airSpeed = 5;
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
-    private void Start()
-    {
-        isAirEnabled = activator.GetComponent<PuzzleManager>().isCompleted;
-    }
 
     private void Update()
     {
-        if (isAirEnabled)
-        {
-            MoveObjects();
-        }
+        MoveObjects();
     }
 
     //=========================================================================================
@@ -47,9 +39,12 @@ public class AirChannel : MonoBehaviour
 
     private void MoveObjects()
     {
-        foreach(GameObject obj in currentObjects)
+        if (isAirEnabled)
         {
-            obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward * _airSpeed);
+            foreach (GameObject obj in currentObjects)
+            {
+                obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward * _airSpeed);
+            }
         }
     }
 
