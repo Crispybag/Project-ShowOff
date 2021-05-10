@@ -26,7 +26,9 @@ public class InputManager : MonoBehaviour
         DOWN = 3,
         BACK = 4,
         ACT0 = 5,
-        ACT1 = 6
+        ACT1 = 6,
+        HORIZONTAL = 7,
+        VERTICAL = 8
     }
 
     //----------------------- private ------------------------
@@ -39,7 +41,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private KeyCode action1Key = KeyCode.C;
 
     //list of all taken keys
-    private List<KeyCode> _occupiedKeys;
+    private List<KeyCode> _occupiedKeys = new List<KeyCode>();
 
     //singleton reference
     private static InputManager _im;
@@ -121,12 +123,17 @@ public class InputManager : MonoBehaviour
                     return true;
                 return false;
 
+            case (Action.HORIZONTAL):
+                if (Input.GetKey(leftKey) || Input.GetKey(rightKey))
+                    return true;
+                return false;
+
             default:
                 return false;
         }
 
     }
-
+    
     /// <summary>
     /// Check if the button is released at the moment
     /// </summary>
@@ -172,6 +179,10 @@ public class InputManager : MonoBehaviour
                     return true;
                 return false;
 
+            case (Action.HORIZONTAL):
+                if (Input.GetKeyUp(leftKey) || Input.GetKeyUp(rightKey))
+                    return true;
+                return false;
             default:
                 return false;
         }
@@ -223,6 +234,10 @@ public class InputManager : MonoBehaviour
                     return true;
                 return false;
 
+            case (Action.HORIZONTAL):
+                if (Input.GetKeyDown(leftKey) || Input.GetKeyDown(rightKey))
+                    return true;
+                return false;
             default:
                 return false;
         }
@@ -273,6 +288,20 @@ public class InputManager : MonoBehaviour
                     return;
             }
         }
+    }
+
+    /// <summary>
+    /// Returns the horizontal input
+    /// </summary>
+    /// <returns></returns>
+    public int getHorizontalInput()
+    {
+        int _horizontalInput = 0;
+        
+        if (GetAction(Action.LEFT)) { _horizontalInput--; }
+        if (GetAction(Action.RIGHT)) { _horizontalInput++; }
+            
+        return _horizontalInput;
     }
     //=========================================================================================
     //                             > Private Tool Functions <
