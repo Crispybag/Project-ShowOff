@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PressurePlate : ActuatorFactoy
+public class PressurePlate : PuzzleFactory
 {
     //AUTHOR:
     //SHORT DISCRIPTION:
@@ -73,13 +73,18 @@ public class PressurePlate : ActuatorFactoy
         {
             GetComponent<MeshRenderer>().material = mat2;
             isActuated = true;
+            ToggleMechanics();
         }
         else 
         {
             GetComponent<MeshRenderer>().material = mat1;
-            isActuated = false; 
+            isActuated = false;
+            ToggleMechanics();
         }
     }
 
+    public override void FinishMechanic()
+    {
 
+    }
 }

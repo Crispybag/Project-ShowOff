@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PuzzleManager : MonoBehaviour
+public class AirChannelToggle : MonoBehaviour
 {
     //AUTHOR: Ezra
-    //SHORT DISCRIPTION: Puzzle Factory
+    //SHORT DISCRIPTION:
 
     //=========================================================================================
     //                                     > Variables <
@@ -13,22 +13,32 @@ public abstract class PuzzleManager : MonoBehaviour
 
     //------------------------ public ------------------------
 
-    public bool isCompleted;
 
     //----------------------- private ------------------------
 
+    [SerializeField] private AirChannel _airChannel;
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+    private void Start()
+    {
 
+    }
 
+    private void Update()
+    {
+
+    }
 
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
-    abstract public void FinishMechanic();
+    public void ToggleAirChannel()
+    {
+        _airChannel.isAirEnabled = !_airChannel.isAirEnabled;
+    }
 
     //=========================================================================================
     //                             > Private Tool Functions <

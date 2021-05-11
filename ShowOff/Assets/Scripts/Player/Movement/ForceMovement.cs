@@ -27,6 +27,12 @@ public class ForceMovement : MonoBehaviour
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+
+    private void Awake()
+    {
+        serviceLocator.AddToList("Player1", this.gameObject);
+    }
+
     private void Start()
     {
         _inputManager = serviceLocator.GetFromList("InputManager").GetComponent<InputManager>();

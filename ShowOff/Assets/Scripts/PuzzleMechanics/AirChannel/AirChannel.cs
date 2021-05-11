@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorManager : MonoBehaviour
+public class AirChannel : MonoBehaviour
 {
-    //AUTHOR: Ezra 
-    //SHORT DISCRIPTION: Doors handle conditions, when all of these return true, the door opens.
+    //AUTHOR: Ezra
+    //SHORT DISCRIPTION:
 
     //=========================================================================================
     //                                     > Variables <
@@ -13,23 +13,20 @@ public class DoorManager : MonoBehaviour
 
     //------------------------ public ------------------------
 
+    public bool isAirEnabled = false;
+    public List<GameObject> currentObjects = new List<GameObject>();
 
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleFactory> conditions = new List<PuzzleFactory>();
+    [SerializeField] private float _airSpeed = 5;
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
-    private void Start()
-    {
-
-    }
 
     private void Update()
     {
-        //checks whether all the conditions return true
-        CheckConditions();
+        MoveObjects();
     }
 
     //=========================================================================================
@@ -40,22 +37,13 @@ public class DoorManager : MonoBehaviour
     //                             > Private Tool Functions <
     //=========================================================================================
 
-
-    private void CheckConditions()
+    private void MoveObjects()
     {
-        int i = 0;
-        foreach (PuzzleFactory obj in conditions)
+        if (isAirEnabled)
         {
-            i++;
-            //if all conditions return true it destroys the door (later animation). If a single one is false, it breaks out.
-            if (!obj.isActuated)
+            foreach (GameObject obj in currentObjects)
             {
-                break;
-            }
-            else if (i == conditions.Count)
-            {
-                i = 0;
-                Destroy(this.gameObject);
+                obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward * _airSpeed);
             }
         }
     }
