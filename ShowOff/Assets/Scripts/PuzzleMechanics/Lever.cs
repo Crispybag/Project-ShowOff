@@ -38,6 +38,10 @@ public class Lever : PuzzleFactory
         {
             if (_inputManager.GetActionDown(InputManager.Action.ACT1))
             {
+                if(this.GetComponentInChildren<InteractableTutorial>() != null)
+                {
+                    this.GetComponentInChildren<InteractableTutorial>().SetForcedDisabled();
+                }
                 ToggleMechanics();
                 isActuated = !isActuated;
                 if (isActuated)

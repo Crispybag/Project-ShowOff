@@ -21,6 +21,9 @@ public class InteractableTutorial : MonoBehaviour
     [SerializeField] private float _visibleRadius;
     private Camera _cam;
 
+    private bool isForcedEnabled;
+    private bool isForcedDisabled;
+
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
@@ -43,19 +46,40 @@ public class InteractableTutorial : MonoBehaviour
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    public void SetForcedDisabled()
+    {
+        isForcedDisabled = true;
+        _object.GetComponent<MeshRenderer>().enabled = false;
+    }
+
+    public void SetForcedEnabled()
+    {
+        isForcedEnabled = true;
+        _object.GetComponent<MeshRenderer>().enabled = true;
+    }
+
+    public void DisableForced()
+    {
+        isForcedDisabled = false;
+        isForcedEnabled = false;
+    }
+
     //=========================================================================================
     //                             > Private Tool Functions <
-    //=========================================================================================
+    //=========================================================================================1
 
     private void VisiblityRange()
     {
-        if(Vector3.Distance(this.transform.position, serviceLocator.GetFromList("Player1").transform.position) < _visibleRadius)
+        if (!isForcedDisabled && !isForcedEnabled)
         {
-            _object.GetComponent<MeshRenderer>().enabled = true;
-        }
-        else
-        {
-            _object.GetComponent<MeshRenderer>().enabled = false;
+            if (Vector3.Distance(this.transform.position, serviceLocator.GetFromList("Player1").transform.position) < _visibleRadius)
+            {
+                _object.GetComponent<MeshRenderer>().enabled = true;
+            }
+            else
+            {
+                _object.GetComponent<MeshRenderer>().enabled = false;
+            }
         }
     }
 
