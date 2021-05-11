@@ -19,10 +19,18 @@ public class AirChannel : MonoBehaviour
     //----------------------- private ------------------------
 
     [SerializeField] private float _airSpeed = 5;
+    [SerializeField] private float _timer = 50;
+    private float _currentTimer = 0;
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+
+    private void Start()
+    {
+        _currentTimer = _timer;
+        Debug.Log(this.gameObject.transform.forward);
+    }
 
     private void Update()
     {
@@ -41,10 +49,16 @@ public class AirChannel : MonoBehaviour
     {
         if (isAirEnabled)
         {
-            foreach (GameObject obj in currentObjects)
+            if (_currentTimer <= 0)
             {
-                obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward * _airSpeed);
+                foreach (GameObject obj in currentObjects)
+                {
+                    //obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward);
+                    obj.transform.position += this.gameObject.transform.forward;
+                }
+                _currentTimer = _timer;
             }
+            _currentTimer--;
         }
     }
 
