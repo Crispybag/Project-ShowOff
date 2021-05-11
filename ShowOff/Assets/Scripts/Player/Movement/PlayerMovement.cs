@@ -6,6 +6,15 @@ public class PlayerMovement : Movement
 {
     [SerializeField] private float _moveSpeed;
     private InputManager _inputManager;
+    public int playerPushWeight;
+
+
+    private void Awake()
+    {
+        serviceLocator.AddToList("Player1", this.gameObject);
+    }
+
+
     protected override void Start()
     {
         base.Start();

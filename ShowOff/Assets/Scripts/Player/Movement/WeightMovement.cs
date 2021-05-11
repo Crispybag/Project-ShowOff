@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PuzzleFactory : MonoBehaviour
+public class WeightMovement : Movement
 {
-    //AUTHOR: Ezra
-    //SHORT DISCRIPTION: Puzzle Factory
+    //AUTHOR: Ezra 
+    //SHORT DISCRIPTION:
 
     //=========================================================================================
     //                                     > Variables <
@@ -13,31 +13,46 @@ public abstract class PuzzleFactory : MonoBehaviour
 
     //------------------------ public ------------------------
 
-    public bool isActuated;
 
     //----------------------- private ------------------------
 
+
+    private Vector3 _direction;
+    private bool wallCheckCalled;
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
 
-
-
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
-    abstract public void FinishMechanic();
-
-    //will toggle all things that are linked with the actuator.
-    public void ToggleMechanics()
+    override public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition, int calls = 0)
     {
-        if (gameObject.GetComponent<AirChannelToggle>() != null)
+        bool isWall = base.wallCheck(pTargetPosition, pCurrentPosition, calls);
+        if (calls > ServiceLocator.serviceLocator.GetFromList("Player1").GetComponent<PlayerMovement>().playerPushWeight)//weight)
         {
-            gameObject.GetComponent<AirChannelToggle>().ToggleAirChannel();
+            return true;
         }
+        if (!isWall)
+        {
+            wallCheckCalled = true;
+            _direction = pTargetPosition - pCurrentPosition;
+        }
+        return isWall;
     }
+
+    protected override void Update()
+    {
+        if (wallCheckCalled)
+        {
+            moveToTile(_direction);
+        }
+        base.Update();
+        wallCheckCalled = false;
+    }
+
 
     //=========================================================================================
     //                             > Private Tool Functions <

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ServiceLocator;
 
 public abstract class Movement : MonoBehaviour
 {
@@ -15,14 +16,16 @@ public abstract class Movement : MonoBehaviour
 
 
     //----------------------- private ------------------------
-    protected float _travelTime = 1f;
+    protected float _travelTime = 0.1f;
+
+    [SerializeField, Tooltip("Higher numbers mean lower weight")] public int weight = 2;
 
     //determines whether an object can fall
-    protected bool canFall;
+    protected bool canFall = true;
     protected bool canMove;
     protected Vector3 _currentPosition;
     private Vector3 _targetPosition;
-    
+
     //int layers of terrain and movable
     private int terrainLayer = 6;
     private int movableLayer = 7;
@@ -72,7 +75,7 @@ public abstract class Movement : MonoBehaviour
     /// Checks if the object can move to a certain direction and then sets the direction to that 
     /// </summary>
     /// <param name="pDirection"> the place the player wants to move to</param>
-    protected void moveToTile(Vector3 pDirection)
+    public void moveToTile(Vector3 pDirection)
     {
         if (!wallCheck(_currentPosition + pDirection, _currentPosition) && canMove)
         {
@@ -101,21 +104,25 @@ public abstract class Movement : MonoBehaviour
     /// <param name="pTargetPosition"> the position the player is headed for </param>
     /// <param name="pCurrentPosition"> the current position of the player</param>
     /// <returns></returns>
-    protected bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
+    virtual public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition, int calls = 0)
     {
+        
         RaycastHit hit;
         Vector3 moveDirection = pTargetPosition - pCurrentPosition;
 
-
+   
         if (Physics.Raycast(pCurrentPosition, pTargetPosition - pCurrentPosition, out hit, 1) )
         {
+            
             //if it finds terrain
             if (hit.collider.gameObject.layer == terrainLayer) { return true; }
             
             //recursion check if object is movable (pushable box)
             else if (hit.collider.gameObject.layer == movableLayer)
             {
-               return hit.collider.gameObject.GetComponent<Movement>().wallCheck(pTargetPosition + moveDirection, pTargetPosition);
+                calls += hit.collider.gameObject.GetComponent<Movement>().weight;
+                if (calls > 100) { Debug.LogError("You are likely causing an infinity loop"); return false; }
+                return hit.collider.gameObject.GetComponent<Movement>().wallCheck(pTargetPosition + moveDirection, pTargetPosition, calls);
             }
 
             //if it found something random
