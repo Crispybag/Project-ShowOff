@@ -13,7 +13,7 @@ public class ActuatorFactoy : MonoBehaviour
 
     //------------------------ public ------------------------
 
-    public bool isAcuated = false;
+    public bool isActuated = false;
 
     //----------------------- private ------------------------
 
@@ -22,15 +22,6 @@ public class ActuatorFactoy : MonoBehaviour
     //                                   > Start/Update <
     //=========================================================================================
     
-    private void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-
-    }
 
     //=========================================================================================
     //                              > Public Tool Functions <
