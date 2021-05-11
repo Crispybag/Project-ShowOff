@@ -29,7 +29,6 @@ public class AirChannel : MonoBehaviour
     private void Start()
     {
         _currentTimer = _timer;
-        Debug.Log(this.gameObject.transform.forward);
     }
 
     private void Update()
@@ -54,7 +53,8 @@ public class AirChannel : MonoBehaviour
                 foreach (GameObject obj in currentObjects)
                 {
                     //obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward);
-                    obj.transform.position += this.gameObject.transform.forward;
+                    //obj.transform.position += this.gameObject.transform.forward;
+                    obj.GetComponent<Movement>().moveToTile(this.gameObject.transform.forward);
                 }
                 _currentTimer = _timer;
             }
