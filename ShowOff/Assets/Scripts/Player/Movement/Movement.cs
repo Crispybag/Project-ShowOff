@@ -15,7 +15,7 @@ public abstract class Movement : MonoBehaviour
 
 
     //----------------------- private ------------------------
-    protected float _travelTime;
+    protected float _travelTime = 1f;
 
     //determines whether an object can fall
     protected bool canFall;
@@ -24,8 +24,8 @@ public abstract class Movement : MonoBehaviour
     private Vector3 _targetPosition;
     
     //int layers of terrain and movable
-    private int terrainLayer;
-    private int movableLayer;
+    private int terrainLayer = 6;
+    private int movableLayer = 7;
 
 
     private float timer;
@@ -43,8 +43,27 @@ public abstract class Movement : MonoBehaviour
         timer += Time.deltaTime;
         float ratio = timer / _travelTime;
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
+        checkForFalling();
         checkForMovement();
     }
+
+
+    //=========================================================================================
+    //                              > Private Tool Functions <
+    //=========================================================================================
+    /// <summary>
+    /// determines if the object should fall or not
+    /// </summary>
+    private void checkForFalling()
+    {
+        if (canFall && canMove)
+        {
+            RaycastHit hit;
+            bool isHitting = Physics.Raycast(_currentPosition, -Vector3.up, out hit, 1);
+            if (isHitting == false) moveToTile(-Vector3.up); 
+        }
+    }
+
 
     //=========================================================================================
     //                              > Public Tool Functions <
@@ -96,16 +115,7 @@ public abstract class Movement : MonoBehaviour
             //recursion check if object is movable (pushable box)
             else if (hit.collider.gameObject.layer == movableLayer)
             {
-                try
-                {
-                    return hit.collider.gameObject.GetComponent<Movement>().wallCheck(pTargetPosition, moveDirection);
-                }
-
-                catch
-                {
-                    Debug.LogError("Movable Layer does not have a movement component");
-                    return true;
-                }
+               return hit.collider.gameObject.GetComponent<Movement>().wallCheck(pTargetPosition + moveDirection, pTargetPosition);
             }
 
             //if it found something random
@@ -114,5 +124,14 @@ public abstract class Movement : MonoBehaviour
 
         //when it doesnt find anything
         else { return false; }
+    }
+
+    /// <summary>
+    /// Can turn on and off falling
+    /// </summary>
+    /// <param name="pCanFall"></param>
+    public void setFalling(bool pCanFall)
+    {
+        canFall = pCanFall;
     }
 }
