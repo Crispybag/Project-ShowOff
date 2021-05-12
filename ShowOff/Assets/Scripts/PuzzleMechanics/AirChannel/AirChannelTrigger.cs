@@ -35,7 +35,7 @@ public class AirChannelTrigger : MonoBehaviour
     {
         if(collision.tag == "AirChannel")
         {
-            collision.GetComponent<AirChannel>().currentObjects.Add(this.gameObject);
+            collision.GetComponent<AirChannel>().AddObject(this.gameObject);
         }
     }
 
@@ -43,7 +43,7 @@ public class AirChannelTrigger : MonoBehaviour
     {
         if (collision.tag == "AirChannel")
         {
-            collision.GetComponent<AirChannel>().currentObjects.Remove(this.gameObject);
+            collision.GetComponent<AirChannel>().RemoveObject(this.gameObject);
         }
     }
 

@@ -14,13 +14,10 @@ public class AirChannel : MonoBehaviour
     //------------------------ public ------------------------
 
     public bool isAirEnabled = false;
-    public List<GameObject> currentObjects = new List<GameObject>();
+    private List<GameObject> currentObjects = new List<GameObject>();
 
     //----------------------- private ------------------------
 
-    [SerializeField] private float _airSpeed = 5;
-    [SerializeField] private float _timer = 50;
-    private float _currentTimer = 0;
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -28,7 +25,6 @@ public class AirChannel : MonoBehaviour
 
     private void Start()
     {
-        _currentTimer = _timer;
     }
 
     private void Update()
@@ -40,6 +36,26 @@ public class AirChannel : MonoBehaviour
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    public void AddObject(GameObject pObject)
+    {
+        currentObjects.Add(pObject);
+        if (pObject.GetComponent<Movement>())
+        {
+            //sets state to airing which means its being influences by airchannels
+            //pObject.GetComponent<Movement>().currentState = Movement.State.AIRING;
+        }
+    }
+
+    public void RemoveObject(GameObject pObject)
+    {
+        currentObjects.Remove(pObject);
+        if (pObject.GetComponent<Movement>())
+        {
+            //makes sure the state switches to something else besides airing
+                //pObject.GetComponent<Movement>().currentState = Movement.State.GROUNDED;
+        }
+    }
+
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
@@ -48,18 +64,24 @@ public class AirChannel : MonoBehaviour
     {
         if (isAirEnabled)
         {
-            if (_currentTimer <= 0)
+            foreach (GameObject obj in currentObjects)
             {
-                foreach (GameObject obj in currentObjects)
+                if(obj.GetComponent<Movement>() != null)
                 {
-                    //obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward);
-                    //obj.transform.position += this.gameObject.transform.forward;
-                    obj.GetComponent<Movement>().moveToTile(this.gameObject.transform.forward);
+                        obj.GetComponent<Movement>().moveToTile(this.gameObject.transform.forward);
                 }
-                _currentTimer = _timer;
             }
-            _currentTimer--;
         }
     }
 
+
+
 }
+
+
+
+
+
+
+//obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward);
+//obj.transform.position += this.gameObject.transform.forward;

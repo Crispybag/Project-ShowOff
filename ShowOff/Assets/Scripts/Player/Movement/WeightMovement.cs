@@ -28,13 +28,20 @@ public class WeightMovement : Movement
     //                              > Public Tool Functions <
     //=========================================================================================
 
-    override public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition, int calls = 0)
+    override public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {
-        bool isWall = base.wallCheck(pTargetPosition, pCurrentPosition, calls);
-        if (calls > ServiceLocator.serviceLocator.GetFromList("Player1").GetComponent<PlayerMovement>().playerPushWeight)//weight)
+        bool isWall = base.wallCheck(pTargetPosition, pCurrentPosition);
+/*        if (ServiceLocator.serviceLocator.IsInList("Player1"))
         {
-            return true;
+            if (calls > ServiceLocator.serviceLocator.GetFromList("Player1").GetComponent<PlayerMovement>().playerPushWeight)//weight)
+            {
+                return true;
+            }
         }
+        else
+        {
+            Debug.LogError("There is no player in current scene");
+        }*/
         if (!isWall)
         {
             wallCheckCalled = true;

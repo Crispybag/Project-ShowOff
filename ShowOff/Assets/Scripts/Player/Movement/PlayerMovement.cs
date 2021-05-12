@@ -18,8 +18,8 @@ public class PlayerMovement : Movement
     protected override void Start()
     {
         base.Start();
-        canFall = true;
-        _travelTime = _moveSpeed;
+/*        canFall = true;
+        _travelTime = _moveSpeed;*/
         _inputManager = serviceLocator.GetFromList("InputManager").GetComponent<InputManager>();
     }
     // Update is called once per frame
