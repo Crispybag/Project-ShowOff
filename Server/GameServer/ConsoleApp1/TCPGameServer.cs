@@ -3,15 +3,17 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using Shared;
+using System.Collections.Generic;
 
 namespace Server
 {
     class TCPGameServer
     {
+        public Dictionary<TcpClient, PlayerInfo> _allConnectedUsers;
+
         static void Main(string[] args)
         {
             TCPGameServer tcpGameServer = new TCPGameServer();
-            Console.WriteLine("Hello World!");
             tcpGameServer.run();
         }
 
@@ -43,6 +45,11 @@ namespace Server
 
                 Thread.Sleep(100);
             }
+        }
+
+        public void RemovePlayerInfo(TcpClient pClient)
+        {
+            _allConnectedUsers.Remove(pClient);
         }
     }
 
