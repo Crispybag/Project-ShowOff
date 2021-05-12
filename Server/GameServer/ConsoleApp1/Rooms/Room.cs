@@ -28,6 +28,7 @@ namespace Server
         //add a member to this room to start receiving packages
         protected void addMember(TCPMessageChannel pListener)
         {
+            Console.WriteLine("User added to the room list");
             _users.Add(pListener);
         }
 
@@ -40,6 +41,7 @@ namespace Server
         //delet player
         protected void removeAndCloseMember(TCPMessageChannel pMember)
         {
+            Console.WriteLine("Found a shitty client, goodbye");
             removeMember(pMember);
             _server.RemovePlayerInfo(pMember);
             pMember.Close();
@@ -74,6 +76,7 @@ namespace Server
         {
             while (pMember.HasMessage())
             {
+                Console.WriteLine("Trying to handle a message");
                 handleNetworkMessage(pMember.ReceiveMessage(), pMember);
             }
         }

@@ -28,6 +28,8 @@ namespace Shared
 		 */
 		public static void Write(NetworkStream pStream, byte[] pMessage)
 		{
+			Console.WriteLine("Doing our best to write something to the stream");
+
 			//convert message length to 4 bytes and write those bytes into the stream
 			pStream.Write(BitConverter.GetBytes(pMessage.Length), 0, HEADER_SIZE);
 			//now send the bytes of the message themselves
@@ -39,6 +41,8 @@ namespace Shared
 		 */
 		public static byte[] Read(NetworkStream pStream)
 		{
+			Console.WriteLine("Doing our best to read something from the stream");
+
 			//get the message size first
 			int byteCountToRead = BitConverter.ToInt32(Read(pStream, HEADER_SIZE), 0);
 			//then read that amount of bytes

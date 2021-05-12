@@ -13,11 +13,13 @@ namespace Server
         {
             if (pMessage is ReqAddCount)
             {
+                Console.WriteLine("Received a Request Add Count");
                 handleReqAddCount();
             }
         }
         public void AddMember(TCPMessageChannel pChannel)
         {
+            Console.WriteLine("User Joined test room");
             addMember(pChannel);
         }
 
