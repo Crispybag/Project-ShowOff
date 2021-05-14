@@ -56,6 +56,7 @@ namespace Shared
             Type type = Type.GetType(ReadString());
 
             //I actually have no idea what this row does, maybe ask later to teachers
+            //Trying to create an object of the same type and then deserialize the values of this packet into the new object :)
             ASerializable obj = (ASerializable)Activator.CreateInstance(type);
 
             //deserialize object
@@ -67,6 +68,15 @@ namespace Shared
         {
             //in case we need the byte stream
             return ((MemoryStream)_writer.BaseStream).ToArray();
+        }
+
+        public bool isReaderEmpty()
+        {
+            if (_reader.BaseStream.Position == _reader.BaseStream.Length)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

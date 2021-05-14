@@ -50,7 +50,8 @@ namespace Server
         //check if player needs to delet
         protected void checkFaultyMember(TCPMessageChannel pClient)
         {
-            if (pClient.Connected)
+            if (!pClient.Connected)
+
             removeAndCloseMember(pClient);
         }
 

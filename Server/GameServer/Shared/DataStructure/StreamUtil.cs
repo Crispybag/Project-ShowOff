@@ -28,7 +28,7 @@ namespace Shared
 		 */
 		public static void Write(NetworkStream pStream, byte[] pMessage)
 		{
-			Console.WriteLine("Doing our best to write something to the stream");
+			//Console.WriteLine("Doing our best to write something to the stream");
 
 			//convert message length to 4 bytes and write those bytes into the stream
 			pStream.Write(BitConverter.GetBytes(pMessage.Length), 0, HEADER_SIZE);
