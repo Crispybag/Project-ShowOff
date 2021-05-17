@@ -8,19 +8,26 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Lylithrea\\.nuget\\packages\\": {}
+    "C:\\Users\\Ezra\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\Shared.csproj",
+      "projectUniqueName": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\Shared.csproj",
       "projectName": "Shared",
-      "projectPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\Shared.csproj",
-      "packagesPath": "C:\\Users\\Lylithrea\\.nuget\\packages\\",
-      "outputPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\obj\\",
+      "projectPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\Shared.csproj",
+      "packagesPath": "C:\\Users\\Ezra\\.nuget\\packages\\",
+      "outputPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Lylithrea\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ezra\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +67,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
