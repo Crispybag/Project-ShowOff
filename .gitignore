@@ -86,4 +86,4 @@ Project Innovation/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset
 
 
 #dont ignore server setup
-!**/Server/*
+!Server/**/*
