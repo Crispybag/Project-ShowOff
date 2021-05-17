@@ -20,6 +20,10 @@ namespace Server
             {
                 handleReqMove(pMessage as ReqMove);
             }
+            if (pMessage is ReqJoinServer)
+            {
+                handleReqJoinServer(pMessage as ReqJoinServer, pSender);
+            }
         }
         public void AddMember(TCPMessageChannel pChannel)
         {
@@ -43,6 +47,28 @@ namespace Server
             confMove.dirZ = pMove.dirZ;
             sendToAll(confMove);
 
+        }
+
+        private void handleReqJoinServer(ReqJoinServer reqJoinServer, TCPMessageChannel pSender)
+        {
+
+            ConfJoinServer joinMessage = new ConfJoinServer();
+            foreach (PlayerInfo pInfo in _server._allConnectedUsers.Values)
+            {
+
+                if (reqJoinServer.requestedName == pInfo.GetPlayerName())
+                {
+                    joinMessage.acceptStatus = false;
+                    pSender.SendMessage(joinMessage);
+                    removeAndCloseMember(pSender);
+                    return;
+                }
+                
+            }
+            joinMessage.acceptStatus = true;
+            pSender.SendMessage(joinMessage);
+            _server.AddPlayerInfo(pSender, reqJoinServer.requestedName);
+            
         }
     }
 }

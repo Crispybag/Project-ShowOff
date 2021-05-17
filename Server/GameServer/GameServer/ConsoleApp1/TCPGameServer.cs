@@ -40,7 +40,7 @@ namespace Server
                 if (listener.Pending())
                 {
                     //get the waiting client
-                    Console.WriteLine("Accepting new client...");
+                    Console.WriteLine("Found new client...");
                     TcpClient client = listener.AcceptTcpClient();
 
                     //=================================================
@@ -49,7 +49,7 @@ namespace Server
                     TCPMessageChannel channel = new TCPMessageChannel(client);
                     //and add it to the login room for further 'processing'
                     _testRoom.AddMember(channel);
-                    AddPlayerInfo(channel);
+                    //AddPlayerInfo(channel);
                 }
 
                 //=================================================
@@ -59,9 +59,9 @@ namespace Server
             }
         }
 
-        public void AddPlayerInfo(TCPMessageChannel pClient)
+        public void AddPlayerInfo(TCPMessageChannel pClient, string pName)
         {
-            _allConnectedUsers.Add(pClient, new PlayerInfo("John lol"));
+            _allConnectedUsers.Add(pClient, new PlayerInfo(pName));
         }
 
         public void RemovePlayerInfo(TCPMessageChannel pClient)

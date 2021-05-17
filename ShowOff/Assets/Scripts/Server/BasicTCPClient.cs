@@ -9,6 +9,7 @@ public class BasicTCPClient : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private string _hostname = "localhost";
+    [SerializeField] private string _username = "Poggywoggy";
     [SerializeField] private int _port = 42069;
     private TcpClient _client;
     [HideInInspector] public int count;
@@ -45,6 +46,10 @@ public class BasicTCPClient : MonoBehaviour
             _client = new TcpClient();
             //connect to the ip
             _client.Connect(_hostname, _port);
+            ReqJoinServer joinRequest = new ReqJoinServer();
+            joinRequest.requestedName = _username;
+            sendPackage(joinRequest);
+
         }
         catch
         {
@@ -69,8 +74,9 @@ public class BasicTCPClient : MonoBehaviour
 
     private void handlePackage(ASerializable pInMessage)
     {
-        if (pInMessage is ConfAddCount) { handleConfAddCount(pInMessage as ConfAddCount); }
-        if (pInMessage is ConfMove) { Debug.Log("AGAGAGAGA"); }
+        if (pInMessage is ConfAddCount)     { handleConfAddCount(pInMessage as ConfAddCount); }
+        if (pInMessage is ConfMove)         { Debug.Log("AGAGAGAGA"); }
+        if (pInMessage is ConfJoinServer)   { handleConfJoin(pInMessage as ConfJoinServer); }
     }
 
     private Packet receivePacket()
@@ -89,6 +95,18 @@ public class BasicTCPClient : MonoBehaviour
         {
             _client.Close();
             return null;
+        }
+    }
+
+    private void handleConfJoin(ConfJoinServer pJoinConfirm)
+    {
+        if (pJoinConfirm.acceptStatus)
+        {
+            Debug.Log("YAY :D, You connected");
+        }
+        else
+        {
+            Debug.Log("Not Accepted, same name probably");
         }
     }
     private void receiveText()

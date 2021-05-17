@@ -97,6 +97,11 @@ namespace Server
             }
         }
 
+        protected void sendToUser(ASerializable pMessage, TCPMessageChannel pReceiver)
+        {
+            pReceiver.SendMessage(pMessage);
+        }
+
         private void sendPulse()
         {
             Heartbeat pulse = new Heartbeat();
