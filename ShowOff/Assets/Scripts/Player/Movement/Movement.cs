@@ -42,15 +42,18 @@ public abstract class Movement : MonoBehaviour
         _targetPosition = transform.position;
     }
 
-    protected virtual void LateUpdate()
+    protected virtual void Update()
     {
+        //lerp position
         timer += Time.deltaTime;
         float ratio = timer / _travelTime;
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
 
-
-        checkForMovement();
+        //gravity
         checkForFalling();
+        //inputs
+        checkForMovement();
+
     }
 
 
@@ -60,11 +63,13 @@ public abstract class Movement : MonoBehaviour
         {
             if (Physics.Raycast(_currentPosition, -Vector3.up, out RaycastHit hit, 1f))
             {
+                //if we hit something that isnt a airchannel nor a terrain, it will move down.
                 if (hit.collider.gameObject.tag != "AirChannel" && hit.collider.gameObject.layer != terrainLayer)
                 {
                     moveToTile(-Vector3.up);
                 }
             }
+            //didnt detect anything, thus we need to fall
             else
             {
                 moveToTile(-Vector3.up);
@@ -80,16 +85,13 @@ public abstract class Movement : MonoBehaviour
     {
         if (canMove)
         {
+            //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
             pDirection = getNormalizedDirection(pDirection);
+            //if there isnt a wall update our target position to where we want to go.
             if (!wallCheck(_currentPosition + pDirection, _currentPosition))
             {
                 _targetPosition = pDirection + _currentPosition;
                 toBePosition = _targetPosition;
-                if (wallCheck(_targetPosition, _targetPosition - pDirection))
-                {
-                    _targetPosition =  _currentPosition;
-                    toBePosition = _targetPosition;
-                }
                 timer = 0f;
             }
         }
@@ -97,6 +99,8 @@ public abstract class Movement : MonoBehaviour
 
     protected void checkForMovement()
     {
+        //makes sure we dont move multiple tiles within the same amount of time
+        //because when holding the button id would stack if we wouldnt do this.
         if ((_targetPosition - transform.position).magnitude < 0.001f)
         {
             canMove = true;
@@ -115,36 +119,51 @@ public abstract class Movement : MonoBehaviour
 
     virtual public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {
+        //get the direction and make sure they are either 0 or 1 again.
         Vector3 moveDirection = (pTargetPosition - pCurrentPosition).normalized;
         moveDirection = getNormalizedDirection(moveDirection);
 
+        //calculate the left and right tile of the forward tile.
          leftDirection = getLeftFromDirection(moveDirection);
          rightDirection = getRightFromDirection(moveDirection);
 
+        //debug rays to visualize the raycasts.
         Debug.DrawRay(pCurrentPosition - moveDirection * 0.1f, moveDirection * 1.4f, Color.green , 5);
         Debug.DrawRay(pCurrentPosition - moveDirection * 0.1f, leftDirection * 1.4f, Color.green , 5);
         Debug.DrawRay(pCurrentPosition - moveDirection * 0.1f, rightDirection * 1.4f, Color.green, 5);
 
-        if (Physics.Raycast(pCurrentPosition, moveDirection, out RaycastHit frontHit, 1.35f))
+        
+        //============================== Collision Checks ===================================
+
+
+        //first we check right in front of us.
+        if (Physics.Raycast(pCurrentPosition, moveDirection, out RaycastHit frontHit, 1.4f))
         {
-            if (frontHit.collider.gameObject.layer == terrainLayer) 
+            //if we hit terrain we return true because it means we hit a wall
+            if (frontHit.collider.gameObject.layer == terrainLayer)
             {
-                return true; 
+                return true;
             }
-            else if (frontHit.collider.gameObject.layer == movableLayer)
+            //if we hit a something on a movable layer, we will start a recursive loop to check if there is a empty spot to move into.
+            if (frontHit.collider.gameObject.layer == movableLayer)
             {
                 return frontHit.collider.gameObject.GetComponent<Movement>().wallCheck(pTargetPosition + moveDirection, pTargetPosition);
             }
             else { return false; }
         }
 
-        else if (Physics.Raycast(pCurrentPosition, leftDirection, out RaycastHit leftHit, 1.35f))
+
+        //now we check on the left side (for the corner collision)
+        if (Physics.Raycast(pCurrentPosition, leftDirection, out RaycastHit leftHit, 1.45f))
         {
-             if (leftHit.collider.gameObject.layer == movableLayer)
+            if (leftHit.collider.gameObject.layer == movableLayer)
             {
+                //if we hit a movable layer and its also moving into the same position as we are, then move us back 1 tile.
+                //even though i return true, and the code should stop and not move anymore, this would still happen, thus needed to move 1 back
+                //a fix for this would be appreciated.
                 if (pTargetPosition == leftHit.collider.gameObject.GetComponent<Movement>().toBePosition)
                 {
-                    //moveToTile(moveDirection *= -1f);
+                    moveToTile(moveDirection *= -1f);
                     return true;
                 }
                 else { return false; }
@@ -152,13 +171,16 @@ public abstract class Movement : MonoBehaviour
             else { return false; }
         }
 
-        else if (Physics.Raycast(pCurrentPosition, rightDirection, out RaycastHit rightHit, 1.35f))
+
+
+        //We do the same for the right side as we did with the left side.
+        if (Physics.Raycast(pCurrentPosition, rightDirection, out RaycastHit rightHit, 1.45f))
         {
             if (rightHit.collider.gameObject.layer == movableLayer)
             {
                 if (pTargetPosition == rightHit.collider.gameObject.GetComponent<Movement>().toBePosition)
                 {
-                    //moveToTile(moveDirection *= -1f);
+                    moveToTile(moveDirection *= -1f);
                     return true;
                 }
                 else { return false; }
@@ -171,6 +193,7 @@ public abstract class Movement : MonoBehaviour
 
     protected Vector3 getNormalizedDirection(Vector3 oldDirection)
     {
+        //makes sure everything is either 0 or 1.
         Vector3 newDirection = oldDirection;
         if (newDirection.x > 0.1f)
         {
@@ -202,6 +225,7 @@ public abstract class Movement : MonoBehaviour
 
     private Vector3 getLeftFromDirection(Vector3 pDirection)
     {
+        //calulcates the tile on the left side from given direction
         Vector3 left = pDirection;
         if(left.x == 0)
         {
@@ -216,6 +240,7 @@ public abstract class Movement : MonoBehaviour
 
     private Vector3 getRightFromDirection(Vector3 pDirection)
     {
+        //calculates the tile on the right side from the given direction.
         Vector3 left = pDirection;
         if (left.x == 0)
         {

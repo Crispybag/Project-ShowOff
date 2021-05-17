@@ -31,6 +31,35 @@ public class WeightMovement : Movement
     override public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {
         bool isWall = base.wallCheck(pTargetPosition, pCurrentPosition);
+
+        if (!isWall)
+        {
+            wallCheckCalled = true;
+            _direction = pTargetPosition - pCurrentPosition;
+        }
+        return isWall;
+    }
+
+    protected override void Update()
+    {
+        if (wallCheckCalled)
+        {
+            moveToTile(_direction);
+        }
+        base.Update();
+        wallCheckCalled = false;
+    }
+
+
+    //=========================================================================================
+    //                             > Private Tool Functions <
+    //=========================================================================================
+
+}
+
+
+
+
 /*        if (ServiceLocator.serviceLocator.IsInList("Player1"))
         {
             if (calls > ServiceLocator.serviceLocator.GetFromList("Player1").GetComponent<PlayerMovement>().playerPushWeight)//weight)
@@ -42,27 +71,3 @@ public class WeightMovement : Movement
         {
             Debug.LogError("There is no player in current scene");
         }*/
-        if (!isWall)
-        {
-            wallCheckCalled = true;
-            _direction = getNormalizedDirection( pTargetPosition - pCurrentPosition);
-        }
-        return isWall;
-    }
-
-    protected override void LateUpdate()
-    {
-        if (wallCheckCalled)
-        {
-            moveToTile(_direction);
-        }
-        base.LateUpdate();
-        wallCheckCalled = false;
-    }
-
-
-    //=========================================================================================
-    //                             > Private Tool Functions <
-    //=========================================================================================
-
-}

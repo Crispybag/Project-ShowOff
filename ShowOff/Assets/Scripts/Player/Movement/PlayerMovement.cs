@@ -24,9 +24,9 @@ public class PlayerMovement : Movement
     }
     // Update is called once per frame
 
-    protected override void LateUpdate()
+    protected override void Update()
     {
-        base.LateUpdate();
+        base.Update();
         if (_inputManager.GetAction(InputManager.Action.HORIZONTAL))
         {
             moveToTile(new Vector3(_inputManager.getHorizontalInput(),0,0));
