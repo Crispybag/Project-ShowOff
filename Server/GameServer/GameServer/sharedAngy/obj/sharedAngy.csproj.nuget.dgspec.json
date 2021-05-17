@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\sharedAngy\\sharedAngy.csproj": {}
+    "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj": {}
   },
   "projects": {
-    "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\sharedAngy\\sharedAngy.csproj": {
+    "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\sharedAngy\\sharedAngy.csproj",
+        "projectUniqueName": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj",
         "projectName": "sharedAngy",
-        "projectPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\sharedAngy\\sharedAngy.csproj",
+        "projectPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj",
         "packagesPath": "C:\\Users\\Lylithrea\\.nuget\\packages\\",
-        "outputPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\sharedAngy\\obj\\",
+        "outputPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lylithrea\\AppData\\Roaming\\NuGet\\NuGet.Config",

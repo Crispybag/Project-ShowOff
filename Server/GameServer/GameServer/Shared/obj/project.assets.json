@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\Shared\\Shared.csproj",
+      "projectUniqueName": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\Shared.csproj",
       "projectName": "Shared",
-      "projectPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\Shared\\Shared.csproj",
+      "projectPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\Shared.csproj",
       "packagesPath": "C:\\Users\\Lylithrea\\.nuget\\packages\\",
-      "outputPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\Shared\\obj\\",
+      "outputPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lylithrea\\AppData\\Roaming\\NuGet\\NuGet.Config",

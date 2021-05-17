@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetPath)..\..\$(TargetFileName)&quot;&#xD;&#xA;echo &quot;wow this worked! but the next one does not! WHY!?&quot;&#xD;&#xA;copy &quot;$(TargetPath)..\..\..\$(TargetFileName)&quot;" />
+    <Exec Command="copy &quot;$(TargetPath)..\..\$(TargetFileName)&quot;" />
   </Target>
 
 </Project>
