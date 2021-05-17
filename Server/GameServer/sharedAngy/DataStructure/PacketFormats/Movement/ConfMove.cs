@@ -9,7 +9,7 @@ namespace sharedAngy
         public int oldX;
         public int oldY;
         public int oldZ;
-        public bool oh;
+        public bool meh;
         public override void Serialize(Packet pPacket)
         {
             pPacket.Write(oldX);
