@@ -45,18 +45,18 @@ public class WeightMovement : Movement
         if (!isWall)
         {
             wallCheckCalled = true;
-            _direction = pTargetPosition - pCurrentPosition;
+            _direction = getNormalizedDirection( pTargetPosition - pCurrentPosition);
         }
         return isWall;
     }
 
-    protected override void Update()
+    protected override void LateUpdate()
     {
         if (wallCheckCalled)
         {
             moveToTile(_direction);
         }
-        base.Update();
+        base.LateUpdate();
         wallCheckCalled = false;
     }
 

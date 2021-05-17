@@ -26,9 +26,6 @@ public abstract class Movement : MonoBehaviour
 
     protected Vector3 _currentPosition;
     private Vector3 _targetPosition;
-    
-    protected Vector3 _currentRotation;
-    private Vector3 _targetRotation;
 
     protected float _travelTime = 0.1f;
     private float timer;
@@ -43,16 +40,13 @@ public abstract class Movement : MonoBehaviour
         toBePosition = transform.position;
         _currentPosition = transform.position;
         _targetPosition = transform.position;
-        _currentRotation = transform.position;
-        _targetRotation = transform.position;
     }
 
-    protected virtual void Update()
+    protected virtual void LateUpdate()
     {
         timer += Time.deltaTime;
         float ratio = timer / _travelTime;
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
-        transform.transform.LookAt(Vector3.Lerp(_currentRotation, _targetRotation, ratio));
 
 
         checkForMovement();
@@ -64,7 +58,7 @@ public abstract class Movement : MonoBehaviour
     {
         if (canMove)
         {
-            if (Physics.Raycast(_currentPosition, -Vector3.up, out RaycastHit hit, 1))
+            if (Physics.Raycast(_currentPosition, -Vector3.up, out RaycastHit hit, 1f))
             {
                 if (hit.collider.gameObject.tag != "AirChannel" && hit.collider.gameObject.layer != terrainLayer)
                 {
@@ -86,28 +80,19 @@ public abstract class Movement : MonoBehaviour
     {
         if (canMove)
         {
+            pDirection = getNormalizedDirection(pDirection);
             if (!wallCheck(_currentPosition + pDirection, _currentPosition))
             {
-                if (!WallFarCheck(_currentPosition + pDirection, _currentPosition))
+                _targetPosition = pDirection + _currentPosition;
+                toBePosition = _targetPosition;
+                if (wallCheck(_targetPosition, _targetPosition - pDirection))
                 {
-                    Debug.Log(this.gameObject.ToString() + "moving!");
-                    rotateToTile(pDirection);
-                    _targetPosition = pDirection + _currentPosition;
+                    _targetPosition =  _currentPosition;
                     toBePosition = _targetPosition;
-                    timer = 0f;
                 }
+                timer = 0f;
             }
         }
-    }
-
-    public void rotateToTile(Vector3 pDirection)
-    {
-        _targetRotation = this.transform.position - pDirection;
-        _targetRotation.x = 0;
-        _targetRotation.z = 0;
-/*        this.gameObject.transform.LookAt(this.transform.position + pDirection);
-        Vector3 lookpos = this.transform.position + pDirection;
-        float boop = Mathf.Atan2(lookpos.z - this.transform.position.z, lookpos.x - this.transform.position.x) * 180 / Mathf.PI;*/
     }
 
     protected void checkForMovement()
@@ -127,13 +112,20 @@ public abstract class Movement : MonoBehaviour
     //                             > Private Tool Functions <
     //=========================================================================================
 
+
     virtual public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {
-        Vector3 moveDirection = pTargetPosition - pCurrentPosition;
+        Vector3 moveDirection = (pTargetPosition - pCurrentPosition).normalized;
+        moveDirection = getNormalizedDirection(moveDirection);
+
          leftDirection = getLeftFromDirection(moveDirection);
          rightDirection = getRightFromDirection(moveDirection);
 
-        if (Physics.Raycast(pCurrentPosition, moveDirection, out RaycastHit frontHit, 1))
+        Debug.DrawRay(pCurrentPosition - moveDirection * 0.1f, moveDirection * 1.4f, Color.green , 5);
+        Debug.DrawRay(pCurrentPosition - moveDirection * 0.1f, leftDirection * 1.4f, Color.green , 5);
+        Debug.DrawRay(pCurrentPosition - moveDirection * 0.1f, rightDirection * 1.4f, Color.green, 5);
+
+        if (Physics.Raycast(pCurrentPosition, moveDirection, out RaycastHit frontHit, 1.35f))
         {
             if (frontHit.collider.gameObject.layer == terrainLayer) 
             {
@@ -146,19 +138,13 @@ public abstract class Movement : MonoBehaviour
             else { return false; }
         }
 
-        else if (Physics.Raycast(pCurrentPosition, leftDirection, out RaycastHit leftHit, 1))
+        else if (Physics.Raycast(pCurrentPosition, leftDirection, out RaycastHit leftHit, 1.35f))
         {
              if (leftHit.collider.gameObject.layer == movableLayer)
             {
-                Debug.Log(this.gameObject.ToString() + "left moveable hit!");
                 if (pTargetPosition == leftHit.collider.gameObject.GetComponent<Movement>().toBePosition)
                 {
-                    Debug.Log(this.gameObject.ToString() + "left doom hit!");
-                    return true;
-                }
-                else if (pTargetPosition == leftHit.collider.gameObject.transform.position)
-                {
-                    Debug.Log(this.gameObject.ToString() + "left second doom hit!");
+                    //moveToTile(moveDirection *= -1f);
                     return true;
                 }
                 else { return false; }
@@ -166,19 +152,13 @@ public abstract class Movement : MonoBehaviour
             else { return false; }
         }
 
-        else if (Physics.Raycast(pCurrentPosition, rightDirection, out RaycastHit rightHit, 1))
+        else if (Physics.Raycast(pCurrentPosition, rightDirection, out RaycastHit rightHit, 1.35f))
         {
             if (rightHit.collider.gameObject.layer == movableLayer)
             {
-                Debug.Log(this.gameObject.ToString() + "right moveable hit!");
                 if (pTargetPosition == rightHit.collider.gameObject.GetComponent<Movement>().toBePosition)
                 {
-                    Debug.Log(this.gameObject.ToString() + "right doom hit!");
-                    return true;
-                }
-                else if (pTargetPosition == rightHit.collider.gameObject.transform.position)
-                {
-                    Debug.Log(this.gameObject.ToString() + "right second doom hit!");
+                    //moveToTile(moveDirection *= -1f);
                     return true;
                 }
                 else { return false; }
@@ -187,6 +167,37 @@ public abstract class Movement : MonoBehaviour
         }
 
         else { return false; }
+    }
+
+    protected Vector3 getNormalizedDirection(Vector3 oldDirection)
+    {
+        Vector3 newDirection = oldDirection;
+        if (newDirection.x > 0.1f)
+        {
+            newDirection.x = 1;
+        }
+        else if (newDirection.x < -0.1f)
+        {
+            newDirection.x = -1;
+        }
+        else
+        {
+            newDirection.x = 0;
+        }
+
+        if (newDirection.z > 0.1f)
+        {
+            newDirection.z = 1;
+        }
+        else if (newDirection.z < -0.1f)
+        {
+            newDirection.z = -1;
+        }
+        else
+        {
+            newDirection.z = 0;
+        }
+        return newDirection;
     }
 
     private Vector3 getLeftFromDirection(Vector3 pDirection)
@@ -217,9 +228,11 @@ public abstract class Movement : MonoBehaviour
         return left;
     }
 
+    /*
     public bool WallFarCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {
         Vector3 moveDirection = pTargetPosition - pCurrentPosition;
+        moveDirection = getNormalizedDirection(moveDirection);
         if (Physics.Raycast(pCurrentPosition, moveDirection, out RaycastHit hit, 2))
         {
             if (hit.collider.gameObject.layer == movableLayer)
@@ -237,7 +250,8 @@ public abstract class Movement : MonoBehaviour
         //no collisions found so clear to advance
         return false;
     }
-    
+
+    */
     
     /*    public void WallFarCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {

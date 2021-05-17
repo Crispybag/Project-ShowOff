@@ -24,9 +24,9 @@ public class PlayerMovement : Movement
     }
     // Update is called once per frame
 
-    protected override void Update()
+    protected override void LateUpdate()
     {
-        base.Update();
+        base.LateUpdate();
         if (_inputManager.GetAction(InputManager.Action.HORIZONTAL))
         {
             moveToTile(new Vector3(_inputManager.getHorizontalInput(),0,0));
@@ -36,5 +36,27 @@ public class PlayerMovement : Movement
         {
             moveToTile(new Vector3(0, 0, _inputManager.getVerticalInput()));
         }
+        //this allows other objects to move this object. (Boxes now can move the player, useful for airchannels)
+        if (wallCheckCalled)
+        {
+            moveToTile(_direction);
+        }
+        wallCheckCalled = false;
+
     }
+
+    private Vector3 _direction;
+    private bool wallCheckCalled;
+
+    override public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
+    {
+        bool isWall = base.wallCheck(pTargetPosition, pCurrentPosition);
+        if (!isWall)
+        {
+            wallCheckCalled = true;
+            _direction = pTargetPosition - pCurrentPosition;
+        }
+        return isWall;
+    }
+
 }
