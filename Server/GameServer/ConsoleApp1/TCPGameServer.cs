@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
-using Shared;
+using sharedAngy;
 using System.Collections.Generic;
 
 namespace Server
@@ -16,6 +16,7 @@ namespace Server
         {
             _allConnectedUsers = new Dictionary<TCPMessageChannel, PlayerInfo>();
             _testRoom = new TestRoom(this);
+            
         }
 
         static void Main(string[] args)

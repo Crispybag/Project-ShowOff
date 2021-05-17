@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Sockets;
-using Shared;
+using sharedAngy;
 using System.Text;
 
 public class BasicTCPClient : MonoBehaviour
@@ -11,7 +11,7 @@ public class BasicTCPClient : MonoBehaviour
     [SerializeField] private string _hostname = "localhost";
     [SerializeField] private int _port = 42069;
     private TcpClient _client;
-
+    [HideInInspector] public int count;
     void Start()
     {
         connectToServer();
@@ -21,7 +21,7 @@ public class BasicTCPClient : MonoBehaviour
     void Update()
     {
 
-        //receiveText();
+        receiveText();
 
 
         if(Input.GetKeyDown(KeyCode.O))
@@ -57,7 +57,8 @@ public class BasicTCPClient : MonoBehaviour
 
     private void handleConfAddCount(ConfAddCount pAddCount)
     {
-        int count = pAddCount.totalCount;
+        count = pAddCount.totalCount;
+        Debug.Log(count);
     }
 
     private void handlePackage(ASerializable pInMessage)
