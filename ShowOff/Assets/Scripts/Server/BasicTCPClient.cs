@@ -26,7 +26,14 @@ public class BasicTCPClient : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.O))
         {
-            sendPackage();
+            ReqAddCount addCount = new ReqAddCount();
+            sendPackage(addCount);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ReqMove reMove = new ReqMove();
+            sendPackage(reMove);
         }
         
     }
@@ -45,12 +52,11 @@ public class BasicTCPClient : MonoBehaviour
         }
     }
 
-    private void sendPackage()
+    private void sendPackage(ASerializable pSerializable)
     {
         //create the packet
-        ReqAddCount reqAddCount = new ReqAddCount();
         Packet _outPacket = new Packet();
-        _outPacket.Write(reqAddCount);
+        _outPacket.Write(pSerializable);
         //send package to the stream
         StreamUtil.Write(_client.GetStream(), _outPacket.GetBytes());
     }
@@ -64,6 +70,7 @@ public class BasicTCPClient : MonoBehaviour
     private void handlePackage(ASerializable pInMessage)
     {
         if (pInMessage is ConfAddCount) { handleConfAddCount(pInMessage as ConfAddCount); }
+        if (pInMessage is ConfMove) { Debug.Log("AGAGAGAGA"); }
     }
 
     private Packet receivePacket()

@@ -16,6 +16,10 @@ namespace Server
                 Console.WriteLine("Received a Request Add Count");
                 handleReqAddCount();
             }
+            if (pMessage is ReqMove)
+            {
+                handleReqMove(pMessage as ReqMove);
+            }
         }
         public void AddMember(TCPMessageChannel pChannel)
         {
@@ -29,6 +33,16 @@ namespace Server
             ConfAddCount addCount = new ConfAddCount();
             addCount.totalCount = _counter;
             sendToAll(addCount);
+        }
+
+        private void handleReqMove(ReqMove pMove)
+        {
+            ConfMove confMove = new ConfMove();
+            confMove.oldX = pMove.oldX;
+            confMove.oldY = pMove.oldY;
+            confMove.oldZ = pMove.oldZ;
+            sendToAll(confMove);
+
         }
     }
 }
