@@ -15,6 +15,6 @@ public class showClickAmount : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = fuck.count.ToString();
+
     }
 }

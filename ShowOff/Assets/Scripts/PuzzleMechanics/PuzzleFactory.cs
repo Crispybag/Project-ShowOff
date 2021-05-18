@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirChannelTrigger : MonoBehaviour
+public abstract class PuzzleFactory : MonoBehaviour
 {
     //AUTHOR: Ezra
-    //SHORT DISCRIPTION: Put on any object to make sure they interact with Air channels, this will put them in the list to make sure they move.
+    //SHORT DISCRIPTION: Puzzle Factory
 
     //=========================================================================================
     //                                     > Variables <
@@ -13,38 +13,34 @@ public class AirChannelTrigger : MonoBehaviour
 
     //------------------------ public ------------------------
 
+    public bool isActuated;
 
     //----------------------- private ------------------------
-
-
 
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
 
+
+
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    abstract public void FinishMechanic();
+
+    //will toggle all things that are linked with the actuator.
+    public void ToggleMechanics()
+    {
+        if (gameObject.GetComponent<AirChannelToggle>() != null)
+        {
+            gameObject.GetComponent<AirChannelToggle>().ToggleAirChannel();
+        }
+    }
+
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
-
-    private void OnTriggerEnter(Collider collision)
-    {
-        if(collision.tag == "AirChannel")
-        {
-            collision.GetComponent<AirChannel>().currentObjects.Add(this.gameObject);
-        }
-    }
-
-    private void OnTriggerExit(Collider collision)
-    {
-        if (collision.tag == "AirChannel")
-        {
-            collision.GetComponent<AirChannel>().currentObjects.Remove(this.gameObject);
-        }
-    }
 
 }

@@ -16,7 +16,7 @@ public class DoorManager : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleManager> conditions = new List<PuzzleManager>();
+    [SerializeField] private List<PuzzleFactory> conditions = new List<PuzzleFactory>();
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -44,11 +44,11 @@ public class DoorManager : MonoBehaviour
     private void CheckConditions()
     {
         int i = 0;
-        foreach (PuzzleManager obj in conditions)
+        foreach (PuzzleFactory obj in conditions)
         {
             i++;
             //if all conditions return true it destroys the door (later animation). If a single one is false, it breaks out.
-            if (!obj.isCompleted)
+            if (!obj.isActuated)
             {
                 break;
             }

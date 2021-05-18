@@ -7,6 +7,6 @@ public class BasicMovement : Movement
     public virtual void Start()
     {
         base.Start();
-        canFall = true;
+        //canFall = true;
     }
 }

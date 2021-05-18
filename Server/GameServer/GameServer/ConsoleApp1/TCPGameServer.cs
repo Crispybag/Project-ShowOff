@@ -11,11 +11,12 @@ namespace Server
     {
         public Dictionary<TCPMessageChannel, PlayerInfo> _allConnectedUsers;
 
-        private TestRoom _testRoom;
+        private Prototype0 _testRoom;
+        //private TestRoom _testRoom;
         private TCPGameServer()
         {
             _allConnectedUsers = new Dictionary<TCPMessageChannel, PlayerInfo>();
-            _testRoom = new TestRoom(this);
+            _testRoom = new Prototype0(this);
             
         }
 
