@@ -15,6 +15,7 @@ namespace sharedAngy
         }
 
         private static debugState debugger = debugState.DETAILED;
+
         private static bool debugLevel(debugState pState)
         {
             return ((int)debugger >= (int)pState);

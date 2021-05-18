@@ -19,7 +19,7 @@ namespace Server
         public void AddMember(TCPMessageChannel pChannel)
         {
             Console.WriteLine("User joined login room");
-            addMember(pChannel);
+            base.AddMember(pChannel);
         }
 
         private void handleReqJoinServer(ReqJoinServer reqJoinServer, TCPMessageChannel pSender)

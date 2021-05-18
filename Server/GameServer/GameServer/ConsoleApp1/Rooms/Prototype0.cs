@@ -16,7 +16,7 @@ namespace Server
         public void AddMember(TCPMessageChannel pChannel)
         {
             Console.WriteLine("User Joined test room");
-            addMember(pChannel);
+            AddMember(pChannel);
         }
 
         private void handleReqJoinServer(ReqJoinServer reqJoinServer, TCPMessageChannel pSender)
