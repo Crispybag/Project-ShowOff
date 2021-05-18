@@ -28,7 +28,7 @@ namespace Server
         private void run()
         {
             //Start Server
-            Console.WriteLine("Start Server On Port 42069");
+            Logging.LogInfo("Starting a server on port 42069", Logging.debugState.USER);
             TcpListener listener = new TcpListener(IPAddress.Any, 42069);
             
             //Look for max 10 clients
@@ -40,16 +40,20 @@ namespace Server
                 if (listener.Pending())
                 {
                     //get the waiting client
-                    Console.WriteLine("Found new client...");
+                    Logging.LogInfo("Accepting new client...");
                     TcpClient client = listener.AcceptTcpClient();
-
+                    Logging.LogInfo("Client Accepted", Logging.debugState.DETAILED);
+                    
                     //=================================================
                     //Client Join Handling
                     //and wrap the client in an easier to use communication channel
+                    Logging.LogInfo("Trying to wrap client in channel", Logging.debugState.DETAILED);
                     TCPMessageChannel channel = new TCPMessageChannel(client);
-                    //and add it to the login room for further 'processing'
+                    Logging.LogInfo("client wrapped in channel", Logging.debugState.DETAILED);
+
+                    //and add it to room for processing
                     _testRoom.AddMember(channel);
-                    //AddPlayerInfo(channel);
+                    Logging.LogInfo("Client Done with processing \n\n", Logging.debugState.DETAILED);
                 }
 
                 //=================================================
