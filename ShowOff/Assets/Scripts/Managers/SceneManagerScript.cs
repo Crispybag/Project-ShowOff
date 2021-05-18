@@ -58,6 +58,22 @@ public class SceneManagerScript : MonoBehaviour
         SceneManager.UnloadSceneAsync(sceneName);
     }
 
+    public void EnableGameobject(GameObject pObject)
+    {
+        pObject.SetActive(true);
+    }
+    
+    public void DisableGameobject(GameObject pObject)
+    {
+        pObject.SetActive(false);
+    }
+
+    public void ToggleGameobject(GameObject pObject)
+    {
+        pObject.SetActive(!pObject.activeSelf);
+    }
+
+    
 
     //=========================================================================================
     //                             > Private Tool Functions <

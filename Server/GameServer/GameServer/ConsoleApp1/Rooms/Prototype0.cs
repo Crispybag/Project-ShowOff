@@ -9,6 +9,7 @@ namespace Server
     {
         public Prototype0(TCPGameServer pServer) : base(pServer) 
         {
+
         }
 
         #region Server startup

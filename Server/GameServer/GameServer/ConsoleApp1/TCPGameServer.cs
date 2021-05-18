@@ -11,15 +11,20 @@ namespace Server
     {
         public Dictionary<TCPMessageChannel, PlayerInfo> allConnectedUsers;
         public Dictionary<string, Room> availableRooms;
-        private Prototype0 _testRoom;
         private LoginRoom _loginRoom;
+        private LobbyRoom _lobbyRoom;
         private TCPGameServer()
         {
             allConnectedUsers = new Dictionary<TCPMessageChannel, PlayerInfo>();
             availableRooms = new Dictionary<string, Room>();
+            _loginRoom = new LoginRoom(this);
+            _lobbyRoom = new LobbyRoom(this);
+            
+            availableRooms.Add("Lobby", _lobbyRoom);
             availableRooms.Add("Login", _loginRoom);
             
-            _testRoom = new Prototype0(this);
+            //_testRoom = new Prototype0(this);
+
             
         }
 
@@ -56,16 +61,22 @@ namespace Server
                     Logging.LogInfo("client wrapped in channel", Logging.debugState.DETAILED);
 
                     //and add it to room for processing
-                    _testRoom.AddMember(channel);
+                    //_testRoom.AddMember(channel);
+                    _loginRoom.AddMember(channel);
                     Logging.LogInfo("Client Done with processing \n\n", Logging.debugState.DETAILED);
                 }
 
                 //=================================================
                 //Update Checks
-                _testRoom.Update();
+                foreach(KeyValuePair<string, Room> pair in availableRooms)
+                {
+                    pair.Value.Update();
+                }
+                //_testRoom.Update();
                 Thread.Sleep(100);
             }
         }
+
 
 
         //=================================================================
