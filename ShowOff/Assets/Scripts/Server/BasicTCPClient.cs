@@ -13,7 +13,7 @@ public class BasicTCPClient : MonoBehaviour
     [SerializeField] private string _username = "Poggywoggy";
     [SerializeField] private int _port = 42069;
     public TcpClient _client;
-
+    
     void Start()
     {
         connectToServer();
@@ -26,18 +26,38 @@ public class BasicTCPClient : MonoBehaviour
         receiveText();
 
 
-        if(Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            ReqAddCount addCount = new ReqAddCount();
-            sendPackage(addCount);
+            Debug.Log("trying to send a package");
+            ReqKeyDown keyDown = new ReqKeyDown();
+            keyDown.keyInput = ReqKeyDown.KeyType.UP;
+            sendPackage(keyDown);
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            ReqMove reMove = new ReqMove();
-            sendPackage(reMove);
+            Debug.Log("trying to send a package");
+
+            ReqKeyDown keyDown = new ReqKeyDown();
+            keyDown.keyInput = ReqKeyDown.KeyType.DOWN;
+            sendPackage(keyDown);
         }
-        
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Debug.Log("trying to send a package");
+
+            ReqKeyDown keyDown = new ReqKeyDown();
+            keyDown.keyInput = ReqKeyDown.KeyType.LEFT;
+            sendPackage(keyDown);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Debug.Log("trying to send a package");
+
+            ReqKeyDown keyDown = new ReqKeyDown();
+            keyDown.keyInput = ReqKeyDown.KeyType.RIGHT;
+            sendPackage(keyDown);
+        }
     }
 
     private void connectToServer()
@@ -61,10 +81,12 @@ public class BasicTCPClient : MonoBehaviour
     private void sendPackage(ASerializable pSerializable)
     {
         //create the packet
+        Debug.Log("We are going to send a package");
         Packet _outPacket = new Packet();
         _outPacket.Write(pSerializable);
         //send package to the stream
         StreamUtil.Write(_client.GetStream(), _outPacket.GetBytes());
+        Debug.Log("Sent the package to the stream");
     }
 
 

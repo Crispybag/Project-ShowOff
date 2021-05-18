@@ -7,19 +7,26 @@ namespace Server
     class Player : GameObject
     {
         private GameRoom _room;
-        public Player(GameRoom pRoom) : base(CollInteractType.SOLID)
+        private TCPMessageChannel _client;
+
+        public TCPMessageChannel getClient()
+        {
+            return _client;
+        }
+        public Player(GameRoom pRoom, TCPMessageChannel pClient) : base(CollInteractType.SOLID)
         {
             position = new int[2];
             _room = pRoom;
+            _client = pClient;
         }
 
-        public void checkInput(int lastInput)
+        public void checkInput(ReqKeyDown.KeyType lastInput)
         {
             
             switch (lastInput)
             {
                 //up
-                case (0):
+                case (ReqKeyDown.KeyType.UP):
                     if (position[1] == 0)
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
@@ -32,7 +39,7 @@ namespace Server
                     break;
 
                 //down
-                case (1):
+                case (ReqKeyDown.KeyType.DOWN):
                     if (position[1] == _room.roomArray.GetLength(1) - 1)
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
@@ -45,7 +52,7 @@ namespace Server
                     break;
                 
                 //left
-                case (2):
+                case (ReqKeyDown.KeyType.LEFT):
                     if (position[0] == 0)
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
@@ -59,7 +66,7 @@ namespace Server
                 
 
                 //right
-                case (3):
+                case (ReqKeyDown.KeyType.RIGHT):
                     if (position[0] == _room.roomArray.GetLength(0) - 1)
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
@@ -72,6 +79,7 @@ namespace Server
                     break;
 
             }
+            Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
         }
     }
 }
