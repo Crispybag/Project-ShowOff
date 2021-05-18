@@ -47,6 +47,7 @@ namespace sharedAngy
             }
             catch (Exception e)
             {
+                Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
 
@@ -81,7 +82,8 @@ namespace sharedAngy
             }
             catch (Exception e)
             {
-                return null;
+                Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
+                return null;   
             }
         }
 

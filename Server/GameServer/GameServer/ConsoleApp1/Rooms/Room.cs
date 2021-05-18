@@ -25,6 +25,11 @@ namespace Server
             _users = new List<TCPMessageChannel>();
         }
 
+
+        //=================================================================
+        // Handle Adding and Removing Members
+        //=================================================================
+
         //add a member to this room to start receiving packages
         protected void addMember(TCPMessageChannel pListener)
         {
@@ -32,7 +37,7 @@ namespace Server
             _users.Add(pListener);
         }
 
-        //remove a member from this room to stop receiving packages
+        //remove a member from this room 
         protected void removeMember(TCPMessageChannel pListener)
         {
             _users.Remove(pListener);
@@ -55,6 +60,83 @@ namespace Server
             removeAndCloseMember(pClient);
         }
 
+        //go through all clients to see which ones should be removed
+        private void snitchFaultyClients()
+        {
+            safeForEach(checkFaultyMember);
+        }
+
+        //Send a pulse to a client to get an update from the connection
+        private void sendPulse()
+        {
+            Heartbeat pulse = new Heartbeat();
+            sendToAll(pulse);
+        }
+
+        
+        //=================================================================
+        // Packet Management
+        //=================================================================
+        
+        //Check if a client has a message and process it
+        private void receiveAndProcessNetworkMessagesFromMember(TCPMessageChannel pMember)
+        {
+            while (pMember.HasMessage())
+            {
+                Logging.LogInfo("Trying to handle message", Logging.debugState.SPAM);
+                handleNetworkMessage(pMember.ReceiveMessage(), pMember);
+            }
+        }
+
+        //Super function to handle network messages from all clients that have a message
+        protected void receiveAndProcessNetworkMessages()
+        {
+            safeForEach(receiveAndProcessNetworkMessagesFromMember);
+        }
+
+        //Class to override in rooms to handle all the type of messages they can expect to receive in that room
+        abstract protected void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender);
+
+        //Send Message to all clients
+        protected void sendToAll(ASerializable pMessage)
+        {
+            foreach (TCPMessageChannel user in _users)
+            {
+                user.SendMessage(pMessage);
+            }
+        }
+
+
+        //=================================================================
+        // Sending Messages
+        //=================================================================
+
+        //Send message to single client in room
+        protected void sendToUser(ASerializable pMessage, TCPMessageChannel pReceiver)
+        {
+            pReceiver.SendMessage(pMessage);
+        }
+
+
+        //=================================================================
+        // Update
+        //=================================================================
+        public virtual void Update()
+        {
+            //add to timer
+            _ticks++;
+
+            //send a heartbeat packet to each client
+            if (_ticks == 5) { sendPulse(); _ticks = 0; }
+
+            snitchFaultyClients();
+            receiveAndProcessNetworkMessages();
+        }
+
+        //=================================================================
+        // Tools
+        //=================================================================
+
         //backward looping so it doesnt cry when a client gets removed from list :)
         protected void safeForEach(Action<TCPMessageChannel> pMethod)
         {
@@ -67,57 +149,5 @@ namespace Server
             }
         }
 
-        //go through all clients to see which ones should be removed
-        private void snitchFaultyClients()
-        {
-            safeForEach(checkFaultyMember);
-        }
-
-        private void receiveAndProcessNetworkMessagesFromMember(TCPMessageChannel pMember)
-        {
-            while (pMember.HasMessage())
-            {
-                Logging.LogInfo("Trying to handle message", Logging.debugState.SPAM);
-                handleNetworkMessage(pMember.ReceiveMessage(), pMember);
-            }
-        }
-
-        protected void receiveAndProcessNetworkMessages()
-        {
-            safeForEach(receiveAndProcessNetworkMessagesFromMember);
-        }
-
-        abstract protected void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender);
-
-        protected void sendToAll(ASerializable pMessage)
-        {
-            foreach (TCPMessageChannel user in _users)
-            {
-                user.SendMessage(pMessage);
-            }
-        }
-
-        protected void sendToUser(ASerializable pMessage, TCPMessageChannel pReceiver)
-        {
-            pReceiver.SendMessage(pMessage);
-        }
-
-        private void sendPulse()
-        {
-            Heartbeat pulse = new Heartbeat();
-            sendToAll(pulse);
-        }
-
-        public virtual void Update()
-        {
-            //add to timer
-            _ticks++;
-
-            //send a heartbeat packet to each client
-            if (_ticks == 5) { sendPulse(); _ticks = 0; }
-
-            snitchFaultyClients();
-            receiveAndProcessNetworkMessages();
-        }
     }
 }
