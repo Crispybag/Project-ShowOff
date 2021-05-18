@@ -8,7 +8,13 @@ namespace Server
     abstract class GameRoom : Room
     {
         public int[,] roomArray;
+        //quick cheat sheet
+        //0 is empty
+        //1 is player
+        //2 is wall
+
         public List<Player> players;
+ 
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight) : base(pServer)
         {
             roomArray = new int[roomWidth, roomHeight];
@@ -27,7 +33,6 @@ namespace Server
             if (pMessage is ReqKeyUp)
             {
                 handleReqKeyUp(pMessage as ReqKeyUp, pSender);
-
             }
         }
 

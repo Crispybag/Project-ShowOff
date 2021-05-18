@@ -38,7 +38,7 @@ namespace Server
         }
 
         //remove a member from this room 
-        virtual protected void removeMember(TCPMessageChannel pListener)
+        virtual public void removeMember(TCPMessageChannel pListener)
         {
             _users.Remove(pListener);
         }

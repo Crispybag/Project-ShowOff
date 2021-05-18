@@ -31,9 +31,16 @@ namespace Server
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
                     }
+                    else if (_room.roomArray[position[0],position[1] - 1] != 0)
+                    {
+                        Logging.LogInfo("played bumped into something!", Logging.debugState.SPAM);
+                        
+                        
+                    }
                     else
                     {
                         //move player 1 up
+                        _room.roomArray[position[0], position[1]] = 0;
                         position[1]--;
                     }
                     break;
@@ -44,9 +51,17 @@ namespace Server
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
                     }
+                    else if (_room.roomArray[position[0], position[1] + 1] != 0)
+                    {
+                        Logging.LogInfo("played bumped into something!", Logging.debugState.SPAM);
+
+
+                    }
+
                     else
                     {
                         //move player 1 Left
+                        _room.roomArray[position[0], position[1]] = 0;
                         position[1]++;
                     }
                     break;
@@ -57,9 +72,18 @@ namespace Server
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
                     }
+
+                    else if (_room.roomArray[position[0]-1, position[1]] != 0)
+                    {
+                        Logging.LogInfo("played bumped into something!", Logging.debugState.SPAM);
+
+
+                    }
+
                     else
                     {
                         //move player 1 Left
+                        _room.roomArray[position[0], position[1]] = 0;
                         position[0]--;
                     }
                     break;
@@ -71,14 +95,23 @@ namespace Server
                     {
                         Logging.LogInfo("movement ignored, player at edge", Logging.debugState.SPAM);
                     }
+                    else if (_room.roomArray[position[0]+1, position[1]] != 0)
+                    {
+                        Logging.LogInfo("played bumped into something!", Logging.debugState.SPAM);
+
+
+                    }
                     else
                     {
                         //move player 1 Left
+                        _room.roomArray[position[0], position[1]] = 0;
                         position[0]++;
                     }
                     break;
 
             }
+
+            _room.roomArray[position[0], position[1]] = 1;
             Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
         }
     }

@@ -14,7 +14,7 @@ namespace sharedAngy
             SPAM = 3
         }
 
-        private static debugState debugger = debugState.DETAILED;
+        private static debugState debugger = debugState.SPAM;
         private static bool debugLevel(debugState pState)
         {
             return ((int)debugger >= (int)pState);
