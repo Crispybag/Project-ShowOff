@@ -8,57 +8,31 @@ namespace Server
     class LoginRoom : Room
     {
         public LoginRoom(TCPGameServer pServer) : base(pServer) { }
-        private int _counter;
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
         {
-            if (pMessage is ReqAddCount)
-            {
-                Console.WriteLine("Received a Request Add Count");
-                handleReqAddCount();
-            }
-            if (pMessage is ReqMove)
-            {
-                handleReqMove(pMessage as ReqMove);
-            }
             if (pMessage is ReqJoinServer)
             {
                 handleReqJoinServer(pMessage as ReqJoinServer, pSender);
             }
         }
+
         public void AddMember(TCPMessageChannel pChannel)
         {
             Console.WriteLine("User Joined test room");
             addMember(pChannel);
         }
 
-        private void handleReqAddCount()
-        {
-            _counter++;
-            ConfAddCount addCount = new ConfAddCount();
-            addCount.totalCount = _counter;
-            sendToAll(addCount);
-        }
-
-        private void handleReqMove(ReqMove pMove)
-        {
-            ConfMove confMove = new ConfMove();
-            confMove.dirX = pMove.dirX;
-            confMove.dirY = pMove.dirY;
-            confMove.dirZ = pMove.dirZ;
-            sendToAll(confMove);
-
-        }
-
         private void handleReqJoinServer(ReqJoinServer reqJoinServer, TCPMessageChannel pSender)
         {
 
             ConfJoinServer joinMessage = new ConfJoinServer();
-            foreach (PlayerInfo pInfo in _server._allConnectedUsers.Values)
+            foreach (PlayerInfo pInfo in _server.allConnectedUsers.Values)
             {
 
                 if (reqJoinServer.requestedName == pInfo.GetPlayerName())
                 {
                     joinMessage.acceptStatus = false;
+                    joinMessage.message = "A user with the same name already joined the server, please choose a different name.";
                     pSender.SendMessage(joinMessage);
                     removeAndCloseMember(pSender);
                     return;
@@ -66,6 +40,7 @@ namespace Server
                 
             }
             joinMessage.acceptStatus = true;
+            joinMessage.message = "Client accepted"; 
             pSender.SendMessage(joinMessage);
             _server.AddPlayerInfo(pSender, reqJoinServer.requestedName);
             

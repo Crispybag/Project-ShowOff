@@ -22,7 +22,7 @@ namespace Server
         {
 
             ConfJoinServer joinMessage = new ConfJoinServer();
-            foreach (PlayerInfo pInfo in _server._allConnectedUsers.Values)
+            foreach (PlayerInfo pInfo in _server.allConnectedUsers.Values)
             {
 
                 if (reqJoinServer.requestedName == pInfo.GetPlayerName())

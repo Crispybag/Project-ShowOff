@@ -9,13 +9,16 @@ namespace Server
 {
     class TCPGameServer
     {
-        public Dictionary<TCPMessageChannel, PlayerInfo> _allConnectedUsers;
-
+        public Dictionary<TCPMessageChannel, PlayerInfo> allConnectedUsers;
+        public Dictionary<string, Room> availableRooms;
         private Prototype0 _testRoom;
-        //private TestRoom _testRoom;
+        private LoginRoom _loginRoom;
         private TCPGameServer()
         {
-            _allConnectedUsers = new Dictionary<TCPMessageChannel, PlayerInfo>();
+            allConnectedUsers = new Dictionary<TCPMessageChannel, PlayerInfo>();
+            availableRooms = new Dictionary<string, Room>();
+            availableRooms.Add("Login", _loginRoom);
+            
             _testRoom = new Prototype0(this);
             
         }
@@ -64,14 +67,19 @@ namespace Server
             }
         }
 
+
+        //=================================================================
+        // Player Info Tools
+        //=================================================================
+
         public void AddPlayerInfo(TCPMessageChannel pClient, string pName)
         {
-            _allConnectedUsers.Add(pClient, new PlayerInfo(pName));
+            allConnectedUsers.Add(pClient, new PlayerInfo(pName));
         }
 
         public void RemovePlayerInfo(TCPMessageChannel pClient)
         {
-            _allConnectedUsers.Remove(pClient);
+            allConnectedUsers.Remove(pClient);
         }
     }
 
