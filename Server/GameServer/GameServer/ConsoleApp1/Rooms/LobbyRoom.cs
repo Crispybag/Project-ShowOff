@@ -20,10 +20,10 @@ namespace Server
             sendToAll(newMessage);
         }
 
-        public void AddMember(TCPMessageChannel pChannel)
+        public override void AddMember(TCPMessageChannel pChannel)
         {
             Logging.LogInfo("User joined lobby room", Logging.debugState.DETAILED);
-            addMember(pChannel);
+            base.AddMember(pChannel);
             ChatMessage newMessage = new ChatMessage();
             newMessage.textMessage = _server.allConnectedUsers[pChannel].GetPlayerName() + " has just joined the lobby!";
             sendToAll(newMessage);

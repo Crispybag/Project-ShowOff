@@ -52,8 +52,8 @@ namespace Server
             Logging.LogInfo("Client got accepted with the name:  " + reqJoinServer.requestedName + "\n", Logging.debugState.DETAILED);
             pSender.SendMessage(joinMessage);
             _server.AddPlayerInfo(pSender, reqJoinServer.requestedName);
-            _server.availableRooms["Lobby"].addMember(pSender);
-            removeMember(pSender);
+            _server.availableRooms["Lobby"].AddMember(pSender);
+            RemoveMember(pSender);
         }
     }
 }
