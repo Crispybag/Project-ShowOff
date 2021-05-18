@@ -77,7 +77,7 @@ namespace Server
         {
             while (pMember.HasMessage())
             {
-                Console.WriteLine("Trying to handle a message");
+                Logging.LogInfo("Trying to handle message", Logging.debugState.SPAM);
                 handleNetworkMessage(pMember.ReceiveMessage(), pMember);
             }
         }

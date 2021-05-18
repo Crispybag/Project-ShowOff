@@ -41,7 +41,7 @@ namespace sharedAngy
 		 */
 		public static byte[] Read(NetworkStream pStream)
 		{
-			Console.WriteLine("Doing our best to read something from the stream");
+			//Logging.LogInfo("Doing our best to read something from the stream", Logging.debugState.SPAM);
 
 			//get the message size first
 			int byteCountToRead = BitConverter.ToInt32(Read(pStream, HEADER_SIZE), 0);
