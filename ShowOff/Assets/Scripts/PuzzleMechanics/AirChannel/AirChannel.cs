@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorManager : MonoBehaviour
+public class AirChannel : MonoBehaviour
 {
-    //AUTHOR: Ezra 
-    //SHORT DISCRIPTION: Doors handle conditions, when all of these return true, the door opens.
+    //AUTHOR: Ezra
+    //SHORT DISCRIPTION:
 
     //=========================================================================================
     //                                     > Variables <
@@ -13,51 +13,75 @@ public class DoorManager : MonoBehaviour
 
     //------------------------ public ------------------------
 
+    public bool isAirEnabled = false;
+    private List<GameObject> currentObjects = new List<GameObject>();
 
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleFactory> conditions = new List<PuzzleFactory>();
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+
     private void Start()
     {
-
     }
 
     private void Update()
     {
-        //checks whether all the conditions return true
-        CheckConditions();
+        MoveObjects();
     }
 
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    public void AddObject(GameObject pObject)
+    {
+        currentObjects.Add(pObject);
+        if (pObject.GetComponent<Movement>())
+        {
+            //sets state to airing which means its being influences by airchannels
+            //pObject.GetComponent<Movement>().currentState = Movement.State.AIRING;
+        }
+    }
+
+    public void RemoveObject(GameObject pObject)
+    {
+        currentObjects.Remove(pObject);
+        if (pObject.GetComponent<Movement>())
+        {
+            //makes sure the state switches to something else besides airing
+                //pObject.GetComponent<Movement>().currentState = Movement.State.GROUNDED;
+        }
+    }
+
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
 
-
-    private void CheckConditions()
+    private void MoveObjects()
     {
-        int i = 0;
-        foreach (PuzzleFactory obj in conditions)
+        if (isAirEnabled)
         {
-            i++;
-            //if all conditions return true it destroys the door (later animation). If a single one is false, it breaks out.
-            if (!obj.isActuated)
+            foreach (GameObject obj in currentObjects)
             {
-                break;
-            }
-            else if (i == conditions.Count)
-            {
-                i = 0;
-                Destroy(this.gameObject);
+                if(obj.GetComponent<Movement>() != null)
+                {
+                        obj.GetComponent<Movement>().moveToTile(this.gameObject.transform.forward);
+                }
             }
         }
     }
 
+
+
 }
+
+
+
+
+
+
+//obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward);
+//obj.transform.position += this.gameObject.transform.forward;

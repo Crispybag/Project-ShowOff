@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Net.Sockets;
 using sharedAngy;
 using System.Text;
+using static ServiceLocator;
 
 public class BasicTCPClient : MonoBehaviour
 {
@@ -11,8 +12,8 @@ public class BasicTCPClient : MonoBehaviour
     [SerializeField] private string _hostname = "localhost";
     [SerializeField] private string _username = "Poggywoggy";
     [SerializeField] private int _port = 42069;
-    private TcpClient _client;
-    [HideInInspector] public int count;
+    public TcpClient _client;
+
     void Start()
     {
         connectToServer();
@@ -66,17 +67,17 @@ public class BasicTCPClient : MonoBehaviour
         StreamUtil.Write(_client.GetStream(), _outPacket.GetBytes());
     }
 
-    private void handleConfAddCount(ConfAddCount pAddCount)
-    {
-        count = pAddCount.totalCount;
-        Debug.Log(count);
-    }
 
     private void handlePackage(ASerializable pInMessage)
     {
-        if (pInMessage is ConfAddCount)     { handleConfAddCount(pInMessage as ConfAddCount); }
-        if (pInMessage is ConfMove)         { Debug.Log("AGAGAGAGA"); }
+        if (pInMessage is ConfMove)         { handleConfMove(pInMessage as ConfMove); }
         if (pInMessage is ConfJoinServer)   { handleConfJoin(pInMessage as ConfJoinServer); }
+    }
+
+    private void handleConfMove(ConfMove pMoveConfirm)
+    {
+        GameObject player = serviceLocator.GetFromList(pMoveConfirm.name);
+        player.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ));
     }
 
     private Packet receivePacket()

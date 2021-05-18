@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorManager : MonoBehaviour
+public class PressurePlate : PuzzleFactory
 {
-    //AUTHOR: Ezra 
-    //SHORT DISCRIPTION: Doors handle conditions, when all of these return true, the door opens.
+    //AUTHOR:
+    //SHORT DISCRIPTION:
 
     //=========================================================================================
     //                                     > Variables <
@@ -13,10 +13,12 @@ public class DoorManager : MonoBehaviour
 
     //------------------------ public ------------------------
 
-
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleFactory> conditions = new List<PuzzleFactory>();
+    private List<GameObject> _currentObjects = new List<GameObject>();
+    [SerializeField] private string[] _collisionTags;
+    [SerializeField] private Material mat1;
+    [SerializeField] private Material mat2;
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -28,8 +30,7 @@ public class DoorManager : MonoBehaviour
 
     private void Update()
     {
-        //checks whether all the conditions return true
-        CheckConditions();
+
     }
 
     //=========================================================================================
@@ -40,24 +41,50 @@ public class DoorManager : MonoBehaviour
     //                             > Private Tool Functions <
     //=========================================================================================
 
-
-    private void CheckConditions()
+    private void OnTriggerEnter(Collider other)
     {
-        int i = 0;
-        foreach (PuzzleFactory obj in conditions)
+        foreach(string tag in _collisionTags)
         {
-            i++;
-            //if all conditions return true it destroys the door (later animation). If a single one is false, it breaks out.
-            if (!obj.isActuated)
+            if(other.tag == tag)
             {
+                _currentObjects.Add(other.gameObject);
+                UpdateActuator();
                 break;
-            }
-            else if (i == conditions.Count)
-            {
-                i = 0;
-                Destroy(this.gameObject);
             }
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        foreach (string tag in _collisionTags)
+        {
+            if (other.tag == tag)
+            {
+                _currentObjects.Remove(other.gameObject);
+                UpdateActuator();
+                break;
+            }
+        }
+    }
+
+    private void UpdateActuator()
+    {
+        if(_currentObjects.Count > 0)
+        {
+            GetComponent<MeshRenderer>().material = mat2;
+            isActuated = true;
+            ToggleMechanics();
+        }
+        else 
+        {
+            GetComponent<MeshRenderer>().material = mat1;
+            isActuated = false;
+            ToggleMechanics();
+        }
+    }
+
+    public override void FinishMechanic()
+    {
+
+    }
 }

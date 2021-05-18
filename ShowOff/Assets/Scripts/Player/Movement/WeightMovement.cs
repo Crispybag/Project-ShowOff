@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirChannel : MonoBehaviour
+public class WeightMovement : Movement
 {
-    //AUTHOR: Ezra
+    //AUTHOR: Ezra 
     //SHORT DISCRIPTION:
 
     //=========================================================================================
@@ -13,39 +13,61 @@ public class AirChannel : MonoBehaviour
 
     //------------------------ public ------------------------
 
-    public bool isAirEnabled = false;
-    [HideInInspector] public List<GameObject> currentObjects = new List<GameObject>();
 
     //----------------------- private ------------------------
 
-    [SerializeField] private float _airSpeed = 5;
+
+    private Vector3 _direction;
+    private bool wallCheckCalled;
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
 
-    private void Update()
-    {
-        MoveObjects();
-    }
-
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
+
+    override public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
+    {
+        bool isWall = base.wallCheck(pTargetPosition, pCurrentPosition);
+
+        if (!isWall)
+        {
+            wallCheckCalled = true;
+            _direction = pTargetPosition - pCurrentPosition;
+        }
+        return isWall;
+    }
+
+    protected override void Update()
+    {
+        if (wallCheckCalled)
+        {
+            moveToTile(_direction);
+        }
+        base.Update();
+        wallCheckCalled = false;
+    }
+
 
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
 
-    private void MoveObjects()
-    {
-        if (isAirEnabled)
+}
+
+
+
+
+/*        if (ServiceLocator.serviceLocator.IsInList("Player1"))
         {
-            foreach (GameObject obj in currentObjects)
+            if (calls > ServiceLocator.serviceLocator.GetFromList("Player1").GetComponent<PlayerMovement>().playerPushWeight)//weight)
             {
-                obj.GetComponent<Rigidbody>().AddForce(this.gameObject.transform.forward * _airSpeed);
+                return true;
             }
         }
-    }
-
-}
+        else
+        {
+            Debug.LogError("There is no player in current scene");
+        }*/

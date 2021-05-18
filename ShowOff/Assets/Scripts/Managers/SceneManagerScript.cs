@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using static ServiceLocator;
 
-public class DoorManager : MonoBehaviour
+public class SceneManagerScript : MonoBehaviour
 {
-    //AUTHOR: Ezra 
-    //SHORT DISCRIPTION: Doors handle conditions, when all of these return true, the door opens.
+    //AUTHOR: Ezra
+    //SHORT DISCRIPTION: Handles all scenes, make sure they can switch etc.
 
     //=========================================================================================
     //                                     > Variables <
@@ -16,11 +18,17 @@ public class DoorManager : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleFactory> conditions = new List<PuzzleFactory>();
+
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+
+    private void Awake()
+    {
+        serviceLocator.AddToList("SceneManager", this.gameObject);
+    }
+
     private void Start()
     {
 
@@ -28,36 +36,33 @@ public class DoorManager : MonoBehaviour
 
     private void Update()
     {
-        //checks whether all the conditions return true
-        CheckConditions();
+
     }
 
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    public void LoadSceneSingle(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    public void LoadSceneAdditive(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+    }
+
+    public void UnLoadSceneAdditive(string sceneName)
+    {
+        SceneManager.UnloadSceneAsync(sceneName);
+    }
+
+
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
 
 
-    private void CheckConditions()
-    {
-        int i = 0;
-        foreach (PuzzleFactory obj in conditions)
-        {
-            i++;
-            //if all conditions return true it destroys the door (later animation). If a single one is false, it breaks out.
-            if (!obj.isActuated)
-            {
-                break;
-            }
-            else if (i == conditions.Count)
-            {
-                i = 0;
-                Destroy(this.gameObject);
-            }
-        }
-    }
 
 }

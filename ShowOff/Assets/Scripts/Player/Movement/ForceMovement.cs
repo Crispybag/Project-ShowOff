@@ -27,6 +27,12 @@ public class ForceMovement : MonoBehaviour
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+
+    private void Awake()
+    {
+        serviceLocator.AddToList("Player1", this.gameObject);
+    }
+
     private void Start()
     {
         _inputManager = serviceLocator.GetFromList("InputManager").GetComponent<InputManager>();
@@ -40,12 +46,12 @@ public class ForceMovement : MonoBehaviour
         if (_isFalling)
         {
             _rb.AddForce(new Vector3(_inputManager.getHorizontalInput() * _force, -_gravity, 0) * Time.deltaTime);
+            _rb.AddForce(new Vector3(0, 0, _inputManager.getVerticalInput() * _force) * Time.deltaTime);
         }
         else
         {
             _rb.AddForce(new Vector3(_inputManager.getHorizontalInput() * _force, 0, 0) * Time.deltaTime);
             _rb.AddForce(new Vector3(0,0, _inputManager.getVerticalInput() * _force) * Time.deltaTime);
-            Debug.Log(_inputManager.getVerticalInput());
             if (_inputManager.GetActionDown(InputManager.Action.ACT0))
             {
                 _rb.AddForce(new Vector3(0, _jumpForce, 0));

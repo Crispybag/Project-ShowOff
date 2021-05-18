@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PuzzleManager : MonoBehaviour
+public class AirChannelTrigger : MonoBehaviour
 {
     //AUTHOR: Ezra
-    //SHORT DISCRIPTION: Puzzle Factory
+    //SHORT DISCRIPTION: Put on any object to make sure they interact with Air channels, this will put them in the list to make sure they move.
 
     //=========================================================================================
     //                                     > Variables <
@@ -13,25 +13,38 @@ public abstract class PuzzleManager : MonoBehaviour
 
     //------------------------ public ------------------------
 
-    public bool isCompleted;
 
     //----------------------- private ------------------------
+
+
 
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
 
-
-
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
-    abstract public void FinishMechanic();
-
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if(collision.tag == "AirChannel")
+        {
+            collision.GetComponent<AirChannel>().AddObject(this.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.tag == "AirChannel")
+        {
+            collision.GetComponent<AirChannel>().RemoveObject(this.gameObject);
+        }
+    }
 
 }
