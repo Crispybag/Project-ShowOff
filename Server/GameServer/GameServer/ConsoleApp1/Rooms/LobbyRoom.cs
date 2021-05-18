@@ -22,8 +22,11 @@ namespace Server
 
         public void AddMember(TCPMessageChannel pChannel)
         {
-            Console.WriteLine("User joined lobby room");
+            Logging.LogInfo("User joined lobby room", Logging.debugState.DETAILED);
             addMember(pChannel);
+            ChatMessage newMessage = new ChatMessage();
+            newMessage.textMessage = _server.allConnectedUsers[pChannel].GetPlayerName() + " has just joined the lobby!";
+            sendToAll(newMessage);
         }
 
     }

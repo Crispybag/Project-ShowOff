@@ -25,6 +25,15 @@ namespace Server
         private void handleReqJoinServer(ReqJoinServer reqJoinServer, TCPMessageChannel pSender)
         {
             ConfJoinServer joinMessage = new ConfJoinServer();
+            if(reqJoinServer.requestedName.Length < 3)
+            {
+                joinMessage.acceptStatus = false;
+                joinMessage.message = "Please use a longer name";
+                Logging.LogInfo("Client got rejected with a too short name:  " + reqJoinServer.requestedName, Logging.debugState.DETAILED);
+                pSender.SendMessage(joinMessage);
+                removeAndCloseMember(pSender);
+                return;
+            }
             foreach (PlayerInfo pInfo in _server.allConnectedUsers.Values)
             {
                 if (reqJoinServer.requestedName == pInfo.GetPlayerName())

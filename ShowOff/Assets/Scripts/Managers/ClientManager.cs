@@ -24,8 +24,9 @@ public class ClientManager : MonoBehaviour
     [SerializeField] private string _hostname = "localhost";
     [SerializeField] private string _username = "Guest";
     [SerializeField] private int _port = 42069;
-    [SerializeField] private Text _ipAdressInput;
-    [SerializeField] private Text _userNameInput;
+    [SerializeField] private InputField _ipAdressInput;
+    [SerializeField] private InputField _userNameInput;
+    [SerializeField] private Text _feedbackText;
 
     private ClientManager _clientManager;
 
@@ -47,6 +48,7 @@ public class ClientManager : MonoBehaviour
 
     void Start()
     {
+        _feedbackText.text = "";
         _ipAdressInput.text = "localhost";
         _userNameInput.text = "Guest1";
         //connectToServer();
@@ -96,6 +98,7 @@ public class ClientManager : MonoBehaviour
         }
         else
         {
+            _feedbackText.text = pJoinConfirm.message;
             Debug.Log("Not Accepted, same name probably");
         }
     }

@@ -8,12 +8,19 @@ public class ChatHandler : MonoBehaviour
 {
 
     public Text chatText;
-    public Text inputChat;
+    public InputField inputChat;
 
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            SendMessageToServer();
+        }
+    }
 
     public void SendMessageToServer()
     {
-        if (null != inputChat.text)
+        if (null != inputChat.text && inputChat.text.Length != 0)
         {
             ChatMessage newChat = new ChatMessage();
             newChat.textMessage = inputChat.text;
