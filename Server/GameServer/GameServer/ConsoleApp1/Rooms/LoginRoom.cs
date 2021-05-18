@@ -5,9 +5,9 @@ using sharedAngy;
 
 namespace Server
 {
-    class TestRoom : Room
+    class LoginRoom : Room
     {
-        public TestRoom(TCPGameServer pServer) : base(pServer) { }
+        public LoginRoom(TCPGameServer pServer) : base(pServer) { }
         private int _counter;
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
         {
