@@ -8,7 +8,7 @@ namespace Server
 {
     public abstract class GameObject
     {
-        protected int[] position;
+        public int[] position;
         public enum CollInteractType
         {
             SOLID = 0,

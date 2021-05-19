@@ -53,7 +53,7 @@ namespace Server
                 }
                 if (pMessage is ReqMove)
                 {
-                    handleReqMove(pMessage as ReqMove);
+                    //handleReqMove(pMessage as ReqMove);
                 }
             }
             catch
@@ -63,16 +63,17 @@ namespace Server
 
         }
 
+        /*
         private void handleReqMove(ReqMove pMove)
         {
             ConfMove confMove = new ConfMove();
-            confMove.name = pMove.name;
+            confMove.player = ;
             confMove.dirX = pMove.dirX;
             confMove.dirY = pMove.dirY;
             confMove.dirZ = pMove.dirZ;
             sendToAll(confMove);
         }
-
+        */
 
     }
 }

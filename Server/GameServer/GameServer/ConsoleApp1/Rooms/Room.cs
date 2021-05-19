@@ -25,7 +25,7 @@ namespace Server
             _users = new List<TCPMessageChannel>();
         }
 
-
+        #region adding and removing members
         //=================================================================
         // Handle Adding and Removing Members
         //=================================================================
@@ -74,12 +74,13 @@ namespace Server
             Heartbeat pulse = new Heartbeat();
             sendToAll(pulse);
         }
+        #endregion
 
-        
+        #region packet management
         //=================================================================
         // Packet Management
         //=================================================================
-        
+
         //Check if a client has a message and process it
         private void receiveAndProcessNetworkMessagesFromMember(TCPMessageChannel pMember)
         {
@@ -98,28 +99,31 @@ namespace Server
 
         //Class to override in rooms to handle all the type of messages they can expect to receive in that room
         abstract protected void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender);
+        #endregion
 
+        #region sending messages
+        //=================================================================
+        // Sending Messages
+        //=================================================================
         //Send Message to all clients
-        protected void sendToAll(ASerializable pMessage)
+        public void sendToAll(ASerializable pMessage)
         {
             foreach (TCPMessageChannel user in _users)
             {
                 user.SendMessage(pMessage);
             }
         }
-
-
-        //=================================================================
-        // Sending Messages
-        //=================================================================
+        
+        
 
         //Send message to single client in room
-        protected void sendToUser(ASerializable pMessage, TCPMessageChannel pReceiver)
+        public void sendToUser(ASerializable pMessage, TCPMessageChannel pReceiver)
         {
             pReceiver.SendMessage(pMessage);
         }
+        #endregion
 
-
+        #region update & tools
         //=================================================================
         // Update
         //=================================================================
@@ -150,6 +154,6 @@ namespace Server
                 pMethod(_users[i]);
             }
         }
-
+        #endregion
     }
 }

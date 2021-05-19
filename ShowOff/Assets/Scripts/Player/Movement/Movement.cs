@@ -50,7 +50,7 @@ public abstract class Movement : MonoBehaviour
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
 
         //gravity
-        checkForFalling();
+        //checkForFalling();
         //inputs
         checkForMovement();
 
@@ -88,12 +88,10 @@ public abstract class Movement : MonoBehaviour
             //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
             pDirection = getNormalizedDirection(pDirection);
             //if there isnt a wall update our target position to where we want to go.
-            if (!wallCheck(_currentPosition + pDirection, _currentPosition))
-            {
-                _targetPosition = pDirection + _currentPosition;
-                toBePosition = _targetPosition;
-                timer = 0f;
-            }
+            _targetPosition = pDirection + _currentPosition;
+            //toBePosition = _targetPosition;
+            timer = 0f;
+            
         }
     }
 

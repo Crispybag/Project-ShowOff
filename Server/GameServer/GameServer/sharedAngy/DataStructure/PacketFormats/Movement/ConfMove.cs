@@ -6,13 +6,13 @@ namespace sharedAngy
 {
     public class ConfMove : ASerializable
     {
-        public string name;
+        public int player;
         public int dirX;
         public int dirY;
         public int dirZ;
         public override void Serialize(Packet pPacket)
         {
-            pPacket.Write(name);
+            pPacket.Write(player);
             pPacket.Write(dirX);
             pPacket.Write(dirY);
             pPacket.Write(dirZ);
@@ -20,7 +20,7 @@ namespace sharedAngy
 
         public override void Deserialize(Packet pPacket)
         {
-            name = pPacket.ReadString();
+            player = pPacket.ReadInt();
             dirX = pPacket.ReadInt();
             dirY = pPacket.ReadInt();
             dirZ = pPacket.ReadInt();
