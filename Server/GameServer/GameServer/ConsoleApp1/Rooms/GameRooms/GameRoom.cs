@@ -136,11 +136,17 @@ namespace Server
             //get index 
             for (int i = 0; i < _users.Count; i++)
             {
-                if (_users[i] == pListener)
+                if (_users[i] != pListener)
                 {
-                    players.Remove(players[i]);
+                    ConfJoinRoom newLoginRoom = new ConfJoinRoom();
+                    newLoginRoom.room = ConfJoinRoom.Rooms.LOGIN;
+                    _users[i].SendMessage(newLoginRoom);
+                    _server.availableRooms["Login"].AddMember(_users[i]);
+                    removeAndCloseMember(_users[i]);
                 }
             }
+            players.Clear();
+            ResetRoom();
             base.RemoveMember(pListener);
             
         }

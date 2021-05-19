@@ -15,7 +15,7 @@ namespace Server
         }
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0) : base(CollInteractType.SOLID)
         {
-            position = new int[2];
+            position = new int[2] { pX, pY };
             _room = pRoom;
             _client = pClient;
         }
@@ -33,7 +33,6 @@ namespace Server
 
                 //down
                 case (ReqKeyDown.KeyType.DOWN):
-                    //tryPositionChange(0, -1);
                     tryPositionChange(0, -1);
                     break;
                 

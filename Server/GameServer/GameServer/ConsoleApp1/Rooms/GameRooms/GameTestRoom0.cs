@@ -33,7 +33,7 @@ namespace Server
 
             else
             {
-                SetPlayerCoord(pListener, 0, 1);
+                SetPlayerCoord(pListener, 1, 0);
             }
         }
     }

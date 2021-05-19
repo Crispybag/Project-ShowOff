@@ -67,6 +67,12 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfJoinServer) { handleConfJoin(pInMessage as ConfJoinServer); }
         if (pInMessage is ChatMessage) { handleChatMessage(pInMessage as ChatMessage); }
         if (pInMessage is ConfJoinRoom) { handleConfJoinRoom(pInMessage as ConfJoinRoom); }
+        if (pInMessage is ConfMove) { handleConfMove(pInMessage as ConfMove); }
+    }
+
+    private void handleConfMove(ConfMove pMessage)
+    {
+        FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);
     }
 
     private void handleConfJoinRoom(ConfJoinRoom pMessage)

@@ -23,7 +23,7 @@ public class BasicTCPClient : MonoBehaviour
     void Update()
     {
 
-        receiveText();
+        //receiveText();
 
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -99,20 +99,21 @@ public class BasicTCPClient : MonoBehaviour
 
     [SerializeField] private GameObject player0;
     [SerializeField] private GameObject player1;
-    private void handleConfMove(ConfMove pMoveConfirm)
+    public void handleConfMove(ConfMove pMoveConfirm)
     {
         Debug.Log("We got a confirmed movement for the player : " + pMoveConfirm.player);
         Debug.Log("With the following data: x: " + pMoveConfirm.dirX + " y: " + pMoveConfirm.dirY );
         if (pMoveConfirm.player == 0)
         {
-            //player0.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player0.transform.position);
+            player0.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player0.transform.position);
             player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
             Debug.Log("Moved player 0!");
         }
         else
         {
-            //player1.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player1.transform.position);
-            player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            player1.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player1.transform.position);
+            //player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            //player1.transform.position = new Vector3(-10, -10, pMoveConfirm.dirZ);
             Debug.Log("Moved player 1!");
         }
     }
