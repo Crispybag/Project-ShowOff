@@ -16,7 +16,7 @@ public class BasicTCPClient : MonoBehaviour
     
     void Start()
     {
-        connectToServer();
+        //connectToServer();
     }
 
     // Update is called once per frame

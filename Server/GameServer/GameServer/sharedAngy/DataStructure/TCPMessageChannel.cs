@@ -73,7 +73,6 @@ namespace sharedAngy
 
             try
             {
-
                 byte[] inBytes = StreamUtil.Read(_stream);
                 Packet inPacket = new Packet(inBytes);
                 ASerializable inObject = inPacket.ReadObject();
@@ -91,7 +90,10 @@ namespace sharedAngy
         {
             try
             {
-                _client.Close();
+                if (null != _client)
+                {
+                    _client.Close();
+                }
             }
             catch
             {

@@ -206,8 +206,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092409357}
-        m_TargetAssemblyTypeName: ClientManager, Assembly-CSharp
+      - m_Target: {fileID: 1219956987}
+        m_TargetAssemblyTypeName: LoginHandler, Assembly-CSharp
         m_MethodName: ConnectToServer
         m_Mode: 1
         m_Arguments:
@@ -1486,6 +1486,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078653395}
   m_CullTransparentMesh: 1
+--- !u!1 &1219956986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1219956988}
+  - component: {fileID: 1219956987}
+  m_Layer: 0
+  m_Name: LoginManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1219956987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219956986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ab612c5290c69429666afbebf63f56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _port: 42069
+  _hostname: localhost
+  _username: Guest
+  _ipAdressInput: {fileID: 1404529049}
+  _userNameInput: {fileID: 157447321}
+  _feedbackText: {fileID: 949288467}
+--- !u!4 &1219956988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219956986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 816.6234, y: 606.98413, z: -74.60451}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1295822584
 GameObject:
   m_ObjectHideFlags: 0
@@ -2554,7 +2603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2028564780
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2819,12 +2868,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a58def63b84ba041b464bac3ff3684e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hostname: localhost
-  _username: Guest
-  _port: 42069
-  _ipAdressInput: {fileID: 1404529049}
-  _userNameInput: {fileID: 157447321}
-  _feedbackText: {fileID: 949288467}
 --- !u!4 &2092409358
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,54 @@ namespace Server
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
         {
             if(pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
+            if(pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
+        }
+
+        private void handleRoomRequest(ReqJoinRoom pRoomRequest, TCPMessageChannel pSender)
+        {
+            Logging.LogInfo("\nGot a room request with number : " + (int)pRoomRequest.room, Logging.debugState.DETAILED);
+            try
+            {
+                if ((int)pRoomRequest.room == 0)
+                {
+                    Logging.LogInfo("Moving client to login room", Logging.debugState.DETAILED);
+                    ConfJoinRoom confirmLoginRoom = new ConfJoinRoom();
+                    confirmLoginRoom.room = 0;
+                    pSender.SendMessage(confirmLoginRoom);
+                    _server.availableRooms["Login"].AddMember(pSender);
+                    //RemoveMember(pSender);
+                    safeForEach(removeAndCloseMember);
+                    Console.WriteLine("count: " + _users.Count);
+                }
+                else if ((int)pRoomRequest.room == 2)
+                {
+                    if (_users.Count == 2)
+                    {
+                        Logging.LogInfo("Trying to move to game room", Logging.debugState.DETAILED);
+                        ConfJoinRoom confirmGameRoom = new ConfJoinRoom();
+                        confirmGameRoom.room = ConfJoinRoom.Rooms.GAME;
+
+                        foreach (TCPMessageChannel client in _users)
+                        {
+                            client.SendMessage(confirmGameRoom);
+                            _server.availableRooms["Test0"].AddMember(client);
+                            RemoveMember(client);
+                        }
+                    }
+                    else
+                    {
+                        Logging.LogInfo("Not enough players are in lobby room to go to game room", Logging.debugState.DETAILED);
+                    }
+                }
+                else
+                {
+                    Logging.LogInfo("Trying to get to a room that cant be handle in room request within lobby room", Logging.debugState.DETAILED);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("Something went wrong in handle room request within lobby room, probably a null room", Logging.debugState.DETAILED);
+            }
         }
 
         private void handleChatMessage(ChatMessage pMessage, TCPMessageChannel pSender)
@@ -34,7 +82,7 @@ namespace Server
             Logging.LogInfo("User left lobby room", Logging.debugState.DETAILED);
             base.RemoveMember(pChannel);
             ChatMessage newMessage = new ChatMessage();
-            newMessage.textMessage = _server.allConnectedUsers[pChannel].GetPlayerName() + " has just left the lobby!";
+            newMessage.textMessage = _server.allConnectedUsers[pChannel].GetPlayerName() + " left the lobby!";
             sendToAll(newMessage);
         }
 

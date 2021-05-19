@@ -24,7 +24,7 @@ public class ChatHandler : MonoBehaviour
         {
             ChatMessage newChat = new ChatMessage();
             newChat.textMessage = inputChat.text;
-            FindObjectOfType<ClientManager>().sendPackage(newChat);
+            FindObjectOfType<ClientManager>().SendPackage(newChat);
             inputChat.text = "";
         }
     }

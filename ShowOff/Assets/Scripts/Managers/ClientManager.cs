@@ -21,14 +21,7 @@ public class ClientManager : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    [SerializeField] private string _hostname = "localhost";
-    [SerializeField] private string _username = "Guest";
-    [SerializeField] private int _port = 42069;
-    [SerializeField] private InputField _ipAdressInput;
-    [SerializeField] private InputField _userNameInput;
-    [SerializeField] private Text _feedbackText;
-
-    private ClientManager _clientManager;
+    private static ClientManager _clientManager;
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -42,15 +35,13 @@ public class ClientManager : MonoBehaviour
             _clientManager = this;
             return;
         }
-
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 
     void Start()
     {
-        _feedbackText.text = "";
-        _ipAdressInput.text = "localhost";
-        _userNameInput.text = "Guest1";
+
+        serviceLocator.AddToList("ClientManager", this.gameObject);
         //connectToServer();
     }
 
@@ -68,54 +59,61 @@ public class ClientManager : MonoBehaviour
     //                             > Private Tool Functions <
     //=========================================================================================
 
-    #region ConnectToServer
-    public void ConnectToServer()
-    {
-        _hostname = _ipAdressInput.text;
-        _username = _userNameInput.text;
 
-        try
-        {
-            client = new TcpClient();
-            //connect to the ip
-            client.Connect(_hostname, _port);
-            ReqJoinServer joinRequest = new ReqJoinServer();
-            joinRequest.requestedName = _username;
-            sendPackage(joinRequest);
-        }
-        catch
-        {
-            Debug.LogError("could not connect client to server");
-        }
-    }
-
-    private void handleConfJoin(ConfJoinServer pJoinConfirm)
-    {
-        if (pJoinConfirm.acceptStatus)
-        {
-            Debug.Log("YAY :D, You connected");
-            serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
-        }
-        else
-        {
-            _feedbackText.text = pJoinConfirm.message;
-            Debug.Log("Not Accepted, same name probably");
-        }
-    }
-
-    #endregion
 
 
     private void handlePackage(ASerializable pInMessage)
     {
         if (pInMessage is ConfJoinServer) { handleConfJoin(pInMessage as ConfJoinServer); }
         if (pInMessage is ChatMessage) { handleChatMessage(pInMessage as ChatMessage); }
+        if (pInMessage is ConfJoinRoom) { handleConfJoinRoom(pInMessage as ConfJoinRoom); }
+    }
+
+    private void handleConfJoinRoom(ConfJoinRoom pMessage)
+    {
+        switch ((int)pMessage.room)
+        {
+            case 0: //login
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("MainMenu");
+                break;
+            case 1: //lobby
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
+                break;
+            case 2: //game
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("ClientTest");
+                break;
+            default:
+                Debug.LogError("Given number is not able to be handled in client manager.");
+                break;
+        }
+
     }
 
     private void handleChatMessage(ChatMessage pMessage)
     {
-        FindObjectOfType<ChatHandler>().AppendChatMessage(pMessage.textMessage);
+        try
+        {
+            FindObjectOfType<ChatHandler>().AppendChatMessage(pMessage.textMessage);
+        }
+        catch
+        {
+            Debug.LogError("Could not find a chat handler in scene.");
+        }
     }
+
+    private void handleConfJoin(ConfJoinServer pJoinConfirm)
+    {
+        try
+        {
+            FindObjectOfType<LoginHandler>().handleConfJoin(pJoinConfirm);
+        }
+        catch
+        {
+            Debug.LogError("Could not find a login handler in scene.");
+        }
+    }
+
+
 
     #region ReadIncommingData
 
@@ -166,7 +164,7 @@ public class ClientManager : MonoBehaviour
 
     #endregion
 
-    public void sendPackage(ASerializable pSerializable)
+    public void SendPackage(ASerializable pSerializable)
     {
         //create the packet
         Packet _outPacket = new Packet();

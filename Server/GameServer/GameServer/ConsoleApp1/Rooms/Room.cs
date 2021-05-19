@@ -41,6 +41,7 @@ namespace Server
         virtual public void RemoveMember(TCPMessageChannel pListener)
         {
             _users.Remove(pListener);
+
         }
 
         //delet player
@@ -50,6 +51,7 @@ namespace Server
             RemoveMember(pMember);
             _server.RemovePlayerInfo(pMember);
             pMember.Close();
+
         }
 
         //check if player needs to delet
