@@ -26,8 +26,7 @@ namespace Server
                     confirmLoginRoom.room = 0;
                     pSender.SendMessage(confirmLoginRoom);
                     _server.availableRooms["Login"].AddMember(pSender);
-                    //RemoveMember(pSender);
-                    safeForEach(removeAndCloseMember);
+                    removeAndCloseMember(pSender);
                     Console.WriteLine("count: " + _users.Count);
                 }
                 else if ((int)pRoomRequest.room == 2)
@@ -37,8 +36,14 @@ namespace Server
                         Logging.LogInfo("Trying to move to game room", Logging.debugState.DETAILED);
                         ConfJoinRoom confirmGameRoom = new ConfJoinRoom();
                         confirmGameRoom.room = ConfJoinRoom.Rooms.GAME;
-
+                        List<TCPMessageChannel> clientsToBeMoved = new List<TCPMessageChannel>();
+                        //double foreach loop, because we cant adjust the list while looping through it, so we create new list with all that needs to be moved
+                        //then we move them and remove them from the lobby, and thus the list.
                         foreach (TCPMessageChannel client in _users)
+                        {
+                            clientsToBeMoved.Add(client);
+                        }
+                        foreach(TCPMessageChannel client in clientsToBeMoved)
                         {
                             client.SendMessage(confirmGameRoom);
                             _server.availableRooms["Test0"].AddMember(client);

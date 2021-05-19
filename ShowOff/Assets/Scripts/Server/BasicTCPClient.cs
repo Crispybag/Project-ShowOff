@@ -31,7 +31,7 @@ public class BasicTCPClient : MonoBehaviour
             Debug.Log("trying to send a package");
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.UP;
-            sendPackage(keyDown);
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
         }
 
         else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -40,7 +40,7 @@ public class BasicTCPClient : MonoBehaviour
 
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.DOWN;
-            sendPackage(keyDown);
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -48,7 +48,7 @@ public class BasicTCPClient : MonoBehaviour
 
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.LEFT;
-            sendPackage(keyDown);
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -56,7 +56,7 @@ public class BasicTCPClient : MonoBehaviour
 
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.RIGHT;
-            sendPackage(keyDown);
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
         }
     }
 
@@ -134,7 +134,7 @@ public class BasicTCPClient : MonoBehaviour
     }
     private void receiveText()
     {
-        if (_client.Available > 0)
+        if (serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().client.Available > 0)
         {
             //receive the packet
             Packet packet = receivePacket();
