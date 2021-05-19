@@ -96,10 +96,20 @@ public class BasicTCPClient : MonoBehaviour
         if (pInMessage is ConfJoinServer)   { handleConfJoin(pInMessage as ConfJoinServer); }
     }
 
+    [SerializeField] private GameObject player0;
+    [SerializeField] private GameObject player1;
     private void handleConfMove(ConfMove pMoveConfirm)
     {
-        GameObject player = serviceLocator.GetFromList(pMoveConfirm.name);
-        player.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ));
+        if (pMoveConfirm.player == 0)
+        {
+            //player0.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ));
+            player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+        }
+        else
+        {
+            //player1.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ));
+            player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+        }
     }
 
     private Packet receivePacket()
