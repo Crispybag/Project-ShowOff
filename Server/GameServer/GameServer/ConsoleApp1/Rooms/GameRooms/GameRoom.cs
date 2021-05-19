@@ -129,5 +129,21 @@ namespace Server
                 Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
+
+        
+        public override void RemoveMember(TCPMessageChannel pListener)
+        {
+            //get index 
+            for (int i = 0; i < _users.Count; i++)
+            {
+                if (_users[i] == pListener)
+                {
+                    players.Remove(players[i]);
+                }
+            }
+            base.RemoveMember(pListener);
+            
+        }
+        
     }
 }
