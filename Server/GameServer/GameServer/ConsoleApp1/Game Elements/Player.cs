@@ -34,7 +34,7 @@ namespace Server
                 //down
                 case (ReqKeyDown.KeyType.DOWN):
                     //tryPositionChange(0, -1);
-                    _room.ResetRoom();
+                    tryPositionChange(0, -1);
                     break;
                 
                 //left
@@ -55,7 +55,6 @@ namespace Server
             _room.roomArray[position[0], position[1]] = 1;
             sendConfMove();
             Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
-            
         }
 
         private void tryPositionChange(int pX, int pY)
