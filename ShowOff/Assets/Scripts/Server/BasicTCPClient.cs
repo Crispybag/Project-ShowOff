@@ -92,6 +92,7 @@ public class BasicTCPClient : MonoBehaviour
 
     private void handlePackage(ASerializable pInMessage)
     {
+        Debug.Log("Handling :)");
         if (pInMessage is ConfMove)         { handleConfMove(pInMessage as ConfMove); }
         if (pInMessage is ConfJoinServer)   { handleConfJoin(pInMessage as ConfJoinServer); }
     }
@@ -100,15 +101,19 @@ public class BasicTCPClient : MonoBehaviour
     [SerializeField] private GameObject player1;
     private void handleConfMove(ConfMove pMoveConfirm)
     {
+        Debug.Log("We got a confirmed movement for the player : " + pMoveConfirm.player);
+        Debug.Log("With the following data: x: " + pMoveConfirm.dirX + " y: " + pMoveConfirm.dirY );
         if (pMoveConfirm.player == 0)
         {
-            player0.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player0.transform.position);
-            //player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            //player0.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player0.transform.position);
+            player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            Debug.Log("Moved player 0!");
         }
         else
         {
-            player1.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player1.transform.position);
-            //player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            //player1.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player1.transform.position);
+            player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            Debug.Log("Moved player 1!");
         }
     }
 
@@ -116,7 +121,7 @@ public class BasicTCPClient : MonoBehaviour
     {
         try
         {
-            byte[] inBytes = StreamUtil.Read(_client.GetStream());
+            byte[] inBytes = StreamUtil.Read(serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().client.GetStream());
             Packet packet = null;
             if (inBytes.Length != 0)
             {

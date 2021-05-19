@@ -63,8 +63,8 @@ namespace Server
                     Logging.LogInfo("client wrapped in channel", Logging.debugState.DETAILED);
 
                     //and add it to room for processing
-                    //_loginRoom.AddMember(channel);
-                    _gameTestRoom0.AddMember(channel);
+                    _loginRoom.AddMember(channel);
+                   // _gameTestRoom0.AddMember(channel);
 
                     Logging.LogInfo("Client Done with processing \n\n", Logging.debugState.DETAILED);
                 }
