@@ -29,5 +29,14 @@ namespace Server
             sendToAll(newMessage);
         }
 
+        public override void RemoveMember(TCPMessageChannel pChannel)
+        {
+            Logging.LogInfo("User left lobby room", Logging.debugState.DETAILED);
+            base.RemoveMember(pChannel);
+            ChatMessage newMessage = new ChatMessage();
+            newMessage.textMessage = _server.allConnectedUsers[pChannel].GetPlayerName() + " has just left the lobby!";
+            sendToAll(newMessage);
+        }
+
     }
 }
