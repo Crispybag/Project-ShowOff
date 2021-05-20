@@ -31,22 +31,26 @@ namespace Server
                 //up
                 case (ReqKeyDown.KeyType.UP):
                     changeWalkDirection(0, 1);
+                    tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
 
                 //down
                 case (ReqKeyDown.KeyType.DOWN):
                     changeWalkDirection(0, -1);
+                    tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
                 
                 //left
                 case (ReqKeyDown.KeyType.LEFT):
                     changeWalkDirection(-1, 0);
+                    tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
                 
 
                 //right
                 case (ReqKeyDown.KeyType.RIGHT):
                     changeWalkDirection(1, 0);
+                    tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
 
                     
@@ -95,17 +99,21 @@ namespace Server
             int[] direction = { pX, pY };
             try
             {
-                if (_room.roomArray[position[0] + direction[0], position[1] + direction[1]] != 0)
+                foreach(int obj in _room.roomArray[position[0] + direction[0], position[1] + direction[1]])
+                    if (obj != 0)
                 {
                     Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
                 }
                 else
                 {
-                    _room.roomArray[position[0], position[1]] = 0;
+                        for (int i = 0; i < _room.roomArray[position[0], position[1]].Count; i++)
+                        {
+                            if (_room.roomArray[position[0], position[1]][i] == 1) _room.roomArray[position[0], position[1]].Remove(i);
+                        }
                     position[0] += direction[0];
                     position[1] += direction[1];
                 }
-                _room.roomArray[position[0], position[1]] = 1;
+                _room.roomArray[position[0], position[1]].Add(1);
                 sendConfMove();
             }
 
@@ -165,14 +173,8 @@ namespace Server
                 if (timer >= 2)
                 {
                     timer = 0;
-                }
-
-                if (timer == 0)
-                {
                     tryPositionChange(walkDirection[0], walkDirection[1]);
                 }
-               
-
                 timer++;
                 
             }

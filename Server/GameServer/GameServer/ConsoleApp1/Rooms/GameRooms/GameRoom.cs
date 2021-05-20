@@ -7,8 +7,8 @@ namespace Server
 {
     public abstract class GameRoom : Room
     {
-        public int[,] roomArray;
-        public int[,] roomStatic;
+        public List<int>[,] roomArray;
+        public List<int>[,] roomStatic;
         //quick cheat sheet
         //0 is empty
         //1 is player
@@ -21,13 +21,36 @@ namespace Server
  
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight) : base(pServer)
         {
-            roomArray = new int[roomWidth, roomHeight];
-            roomStatic = new int[roomWidth, roomHeight];
+            roomArray = new List<int>[roomWidth, roomHeight];
+            
+
+
+            roomStatic = new List<int>[roomWidth, roomHeight];
+            initializeAllLists();
             players = new List<Player>();
             spawnPoints = new List<SpawnPoint>();
             gameObjects = new List<GameObject>();
         }
+        private void initializeAllLists()
+        {
+            for (int y = 0; y < roomArray.GetLength(0); y++)
+            {
+                for (int x = 0; x < roomArray.GetLength(1); x++)
+                {
+                    roomArray[x, y] = new List<int>();
+                }
+                
+            }
 
+            for (int y = 0; y < roomStatic.GetLength(0); y++)
+            {
+                for (int x = 0; x < roomStatic.GetLength(1); x++)
+                {
+                    roomStatic[x, y] = new List<int>();
+                }
+                
+            }
+        }
 
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
         {
@@ -78,7 +101,7 @@ namespace Server
             players.Add(new Player(this, pListener, pX, pY));
         }
 
-        public void printGrid(int[,] pGrid)
+        public void printGrid(List<int>[,] pGrid)
         {
             for (int y = 0; y < pGrid.GetLength(0); y++)
             {
@@ -102,7 +125,7 @@ namespace Server
             RespawnPlayer();
         }
 
-        public void CopyGrid(int[,] pGrid0, int[,] pGrid1)
+        public void CopyGrid(List<int>[,] pGrid0, List<int>[,] pGrid1)
         {
             try
             {
