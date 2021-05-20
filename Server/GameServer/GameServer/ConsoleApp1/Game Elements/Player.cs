@@ -47,7 +47,17 @@ namespace Server
                     tryPositionChange(1, 0);
                     break;
 
-                    
+                //interaction
+                case (ReqKeyDown.KeyType.INTERACTION):
+                    Logging.LogInfo("Received an interaction key request", Logging.debugState.DETAILED);
+                    handleInteraction();
+                    //do something
+                    break;
+
+                //if we dont handle incomming keytype
+                default:
+                    Logging.LogInfo("Received an incomming keypacket which could not be handled within player", Logging.debugState.SIMPLE);
+                    break;
 
             }
 
@@ -55,6 +65,34 @@ namespace Server
             sendConfMove();
             Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
         }
+
+        private void handleInteraction()
+        {
+            int[] left = new int[position[0] - 1, position[1]];
+            int[] up = new int[position[0], position[1] + 1];
+            int[] right = new int[position[0] + 1, position[1]];
+            int[] down = new int[position[0], position[1] - 1];
+
+            Logging.LogInfo("Checking the following positions for a lever: left: " + left + " up: " + up + " right: " + right + " down: " + down , Logging.debugState.DETAILED);
+
+            if (_room.roomArray[left] == 4)
+            {
+                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
+            }
+            if (_room.roomArray[up] == 4)
+            {
+                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
+            }
+            if (_room.roomArray[right] == 4)
+            {
+                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
+            }
+            if (_room.roomArray[down] == 4)
+            {
+                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
+            }
+        }
+
 
         private void tryPositionChange(int pX, int pY)
         {

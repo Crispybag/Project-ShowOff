@@ -27,26 +27,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ezra\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\ezrad\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
+      "projectUniqueName": "C:\\Git repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
-      "packagesPath": "C:\\Users\\Ezra\\.nuget\\packages\\",
-      "outputPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\obj\\",
+      "projectPath": "C:\\Git repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
+      "packagesPath": "C:\\Users\\ezrad\\.nuget\\packages\\",
+      "outputPath": "C:\\Git repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Ezra\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\ezrad\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -58,10 +51,9 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj": {
-              "projectPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj"
+            "C:\\Git repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj": {
+              "projectPath": "C:\\Git repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj"
             }
           }
         }
@@ -74,7 +66,6 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
         "imports": [
           "net461",
           "net462",
@@ -85,12 +76,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "frameworkReferences": {
-          "Microsoft.NETCore.App": {
-            "privateAssets": "all"
-          }
-        },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

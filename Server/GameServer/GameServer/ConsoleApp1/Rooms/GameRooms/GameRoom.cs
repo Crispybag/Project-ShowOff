@@ -14,6 +14,9 @@ namespace Server
         //1 is player
         //2 is wall
         //3 is spawn point
+        //4 is lever
+        //5 is pressure plate
+        //6 is door
 
         public List<Player> players;
         public List<SpawnPoint> spawnPoints;
