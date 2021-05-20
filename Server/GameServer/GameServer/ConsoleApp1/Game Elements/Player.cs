@@ -16,7 +16,7 @@ namespace Server
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0) : base(CollInteractType.SOLID)
         {
             position = new int[2] { pX, pY };
-            Logging.LogInfo("\nPlayer's position is now ( " + position[0] + ", " + position[1] + ")\n", Logging.debugState.DETAILED);
+            //Logging.LogInfo("\nPlayer's position is now ( " + position[0] + ", " + position[1] + ")\n", Logging.debugState.DETAILED);
             _room = pRoom;
             _client = pClient;
         }

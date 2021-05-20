@@ -40,7 +40,10 @@ namespace Server
 
         private void handleDoorToggle(ConfDoorToggle pMessage)
         {
-            roomArray[pMessage.posX, pMessage.posY] = 0;
+            if (pMessage.posX < 10 && pMessage.posX > -1 && pMessage.posY < 10 && pMessage.posY > -1)
+            {
+                roomArray[pMessage.posX, pMessage.posY] = 0;
+            }
         }
 
         private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)
