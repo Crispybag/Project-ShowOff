@@ -18,12 +18,17 @@ namespace Server
 
         protected CollInteractType moveState;
 
-        public GameObject(CollInteractType pMoveState)
+        public GameObject(GameRoom pRoom, CollInteractType pMoveState)
         {
+            pRoom.gameObjects.Add(this);
             position = new int[2];
             moveState = pMoveState;
         }
 
+        public virtual void Update()
+        {
+
+        }
 
     }
 }

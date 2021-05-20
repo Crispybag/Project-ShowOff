@@ -7,7 +7,7 @@ using sharedAngy;
 
 namespace Server
 {
-    abstract class Room
+    public abstract class Room
     {
         //get access to the server
         protected TCPGameServer _server;

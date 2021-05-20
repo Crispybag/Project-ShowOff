@@ -58,6 +58,39 @@ public class BasicTCPClient : MonoBehaviour
             keyDown.keyInput = ReqKeyDown.KeyType.RIGHT;
             serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
         }
+
+
+
+        if(Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            ReqKeyUp keyUp = new ReqKeyUp();
+            keyUp.keyInput = ReqKeyUp.KeyType.UP;
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
+
+        }
+        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            ReqKeyUp keyUp = new ReqKeyUp();
+            keyUp.keyInput = ReqKeyUp.KeyType.DOWN;
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
+
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            ReqKeyUp keyUp = new ReqKeyUp();
+            keyUp.keyInput = ReqKeyUp.KeyType.LEFT;
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
+
+        }
+        else if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            ReqKeyUp keyUp = new ReqKeyUp();
+            keyUp.keyInput = ReqKeyUp.KeyType.RIGHT;
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
+
+        }
+
+
     }
 
     private void connectToServer()

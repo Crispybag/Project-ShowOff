@@ -1,61 +1,95 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using sharedAngy;
 namespace Server
 {
-    class Player : GameObject
+    public class Player : GameObject
     {
         private GameRoom _room;
         private TCPMessageChannel _client;
-
+        private int[] walkDirection;
         public TCPMessageChannel getClient()
         {
             return _client;
         }
-        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0) : base(CollInteractType.SOLID)
+        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0) : base(pRoom, CollInteractType.SOLID)
         {
             position = new int[2] { pX, pY };
+            walkDirection = new int[2];
             _room = pRoom;
             _client = pClient;
         }
 
         #region input
-        public void checkInput(ReqKeyDown.KeyType lastInput)
+        public void addInput(ReqKeyDown.KeyType lastInput)
         {
             
             switch (lastInput)
             {
                 //up
                 case (ReqKeyDown.KeyType.UP):
-                    tryPositionChange(0, 1);
+                    changeWalkDirection(0, 1);
                     break;
 
                 //down
                 case (ReqKeyDown.KeyType.DOWN):
-                    tryPositionChange(0, -1);
+                    changeWalkDirection(0, -1);
                     break;
                 
                 //left
                 case (ReqKeyDown.KeyType.LEFT):
-                    tryPositionChange(-1, 0);
+                    changeWalkDirection(-1, 0);
                     break;
                 
 
                 //right
                 case (ReqKeyDown.KeyType.RIGHT):
-                    tryPositionChange(1, 0);
+                    changeWalkDirection(1, 0);
                     break;
 
                     
 
             }
 
-            _room.roomArray[position[0], position[1]] = 1;
-            sendConfMove();
-            Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
+            
+            Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
+
         }
 
+        public void removeInput(ReqKeyUp.KeyType lastInput)
+        {
+            switch (lastInput)
+            {
+                case (ReqKeyUp.KeyType.UP):
+                    tryCancelDirection(0, 1);
+                    break;
+
+                case (ReqKeyUp.KeyType.DOWN):
+                    tryCancelDirection(0, -1);
+                    break;
+
+                case (ReqKeyUp.KeyType.LEFT):
+                    tryCancelDirection(-1, 0);
+                    break;
+
+                case (ReqKeyUp.KeyType.RIGHT):
+                    tryCancelDirection(1, 0);
+                    break;
+
+
+
+
+            }
+            Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
+
+        }
+        private void changeWalkDirection(int pX, int pY)
+        {
+            walkDirection = new int[2] { pX, pY };
+           
+        }
         private void tryPositionChange(int pX, int pY)
         {
             int[] direction = { pX, pY };
@@ -71,6 +105,8 @@ namespace Server
                     position[0] += direction[0];
                     position[1] += direction[1];
                 }
+                _room.roomArray[position[0], position[1]] = 1;
+                sendConfMove();
             }
 
             catch(Exception e)
@@ -79,6 +115,17 @@ namespace Server
                 Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
+
+
+        private void tryCancelDirection(int pX, int pY)
+        {
+            if (walkDirection[0] == pX && walkDirection[1] == pY)
+            {
+                walkDirection[0] = 0; walkDirection[1] = 0;
+
+            }
+        }
+
         #endregion
 
         private void sendConfMove()
@@ -103,6 +150,39 @@ namespace Server
             Logging.LogInfo("WHHHHHHHHHHAAAAAAAAAAAAT, player is not in list you stupid fuckig dumbass", Logging.debugState.DETAILED);
             return 0;
         }
+
+
+
+        private int timer = 0;
+        public override void Update()
+        {
+            base.Update();
+
+
+            if (walkDirection[0] != 0 || walkDirection[1] != 0)
+            {
+                //Logging.LogInfo("trying to walk in a direction");
+                if (timer >= 2)
+                {
+                    timer = 0;
+                }
+
+                if (timer == 0)
+                {
+                    tryPositionChange(walkDirection[0], walkDirection[1]);
+                }
+               
+
+                timer++;
+                
+            }
+            else
+            {
+                timer = 0;
+            }
+
+        }
+
 
     }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Server
 {
-    abstract class GameRoom : Room
+    public abstract class GameRoom : Room
     {
         public int[,] roomArray;
         public int[,] roomStatic;
@@ -15,6 +15,7 @@ namespace Server
         //2 is wall
         //3 is spawn point
 
+        public List<GameObject> gameObjects;
         public List<Player> players;
         public List<SpawnPoint> spawnPoints;
  
@@ -24,6 +25,7 @@ namespace Server
             roomStatic = new int[roomWidth, roomHeight];
             players = new List<Player>();
             spawnPoints = new List<SpawnPoint>();
+            gameObjects = new List<GameObject>();
         }
 
 
@@ -48,14 +50,21 @@ namespace Server
             {
                 if (pSender == player.getClient())
                 {
-                    player.checkInput(pKeyDown.keyInput);
+                    player.addInput(pKeyDown.keyInput);
                 }
             }
         }
 
         private void handleReqKeyUp(ReqKeyUp pKeyUp, TCPMessageChannel pSender)
         {
-            //dont forget to make one here later
+            Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.DETAILED);
+            foreach (Player player in players)
+            {
+                if (pSender == player.getClient())
+                {
+                    player.removeInput(pKeyUp.keyInput);
+                }
+            }
         }
 
         public override void AddMember(TCPMessageChannel pListener)
@@ -144,6 +153,15 @@ namespace Server
             base.RemoveMember(pListener);
             
         }
-        
+
+        public override void Update()
+        {
+            base.Update();
+            foreach(GameObject obj in gameObjects)
+            {
+                obj.Update();
+            }
+        }
+
     }
 }

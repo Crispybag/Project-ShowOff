@@ -4,10 +4,10 @@ using System.Text;
 using sharedAngy;
 namespace Server
 {
-    class Wall : GameObject
+    public class Wall : GameObject
     {
         GameRoom _room;
-        public Wall(GameRoom pRoom, int pX, int pY) : base(CollInteractType.SOLID)
+        public Wall(GameRoom pRoom, int pX, int pY) : base(pRoom, CollInteractType.SOLID)
         {
             _room = pRoom;
             position[0] = pX;

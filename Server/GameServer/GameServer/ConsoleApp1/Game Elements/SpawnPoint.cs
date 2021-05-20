@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Server
 {
-    class SpawnPoint : GameObject
+    public class SpawnPoint : GameObject
     {
         GameRoom _room;
         public int spawnIndex;
-        public SpawnPoint(GameRoom pRoom, int pPlayer, int pX, int pY) : base(CollInteractType.PASS)
+        public SpawnPoint(GameRoom pRoom, int pPlayer, int pX, int pY) : base(pRoom, CollInteractType.PASS)
         {
             spawnIndex = pPlayer;
             _room = pRoom;

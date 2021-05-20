@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Server
 {
-    class TCPGameServer
+    public class TCPGameServer
     {
         public Dictionary<TCPMessageChannel, PlayerInfo> allConnectedUsers;
         public Dictionary<string, Room> availableRooms;
