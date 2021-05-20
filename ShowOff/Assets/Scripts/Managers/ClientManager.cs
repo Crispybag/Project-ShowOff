@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class ClientManager : MonoBehaviour
 {
-    //AUTHOR:
-    //SHORT DISCRIPTION:
+    //AUTHOR: Ezra
+    //SHORT DISCRIPTION: Handles all incomming data from the server and makes sure it gets handled correctly.
 
     //=========================================================================================
     //                                     > Variables <
@@ -42,7 +42,6 @@ public class ClientManager : MonoBehaviour
     {
 
         serviceLocator.AddToList("ClientManager", this.gameObject);
-        //connectToServer();
     }
 
     // Update is called once per frame
@@ -55,12 +54,18 @@ public class ClientManager : MonoBehaviour
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    public void SendPackage(ASerializable pSerializable)
+    {
+        //create the packet
+        Packet _outPacket = new Packet();
+        _outPacket.Write(pSerializable);
+        //send package to the stream
+        StreamUtil.Write(client.GetStream(), _outPacket.GetBytes());
+    }
+
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
-
-
-
 
     private void handlePackage(ASerializable pInMessage)
     {
@@ -170,13 +175,6 @@ public class ClientManager : MonoBehaviour
 
     #endregion
 
-    public void SendPackage(ASerializable pSerializable)
-    {
-        //create the packet
-        Packet _outPacket = new Packet();
-        _outPacket.Write(pSerializable);
-        //send package to the stream
-        StreamUtil.Write(client.GetStream(), _outPacket.GetBytes());
-    }
+
 
 }
