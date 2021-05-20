@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using sharedAngy;
 
-namespace Server.Game_Elements
+namespace Server
 {
-    GameRoom _room;
-    public Lever(GameRoom pRoom, int pX, int pY) : base(CollInteractType.SOLID)
+    class Lever : GameObject
     {
-        _room = pRoom;
-        position[0] = pX;
-        position[1] = pY;
-        _room.roomArray[position[0], position[1]] = 4;
+        GameRoom _room;
+        bool isActivated = false;
+        public Lever(GameRoom pRoom, int pX, int pY, bool activated) : base(CollInteractType.SOLID)
+        {
+            _room = pRoom;
+            position[0] = pX;
+            position[1] = pY;
+            isActivated = activated;
+            _room.roomArray[position[0], position[1]] = 4;
+        }
     }
 }

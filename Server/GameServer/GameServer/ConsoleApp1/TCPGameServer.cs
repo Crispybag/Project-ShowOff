@@ -43,7 +43,7 @@ namespace Server
             TcpListener listener = new TcpListener(IPAddress.Any, 42069);
             
             //Look for max 10 clients
-            listener.Start(10);
+            listener.Start(2);
 
             while (true)
             {

@@ -73,8 +73,21 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ChatMessage) { handleChatMessage(pInMessage as ChatMessage); }
         if (pInMessage is ConfJoinRoom) { handleConfJoinRoom(pInMessage as ConfJoinRoom); }
         if (pInMessage is ConfMove) { handleConfMove(pInMessage as ConfMove); }
+        if (pInMessage is ConfActuatorToggle) { handleConfActuatorToggle(pInMessage as ConfActuatorToggle); }
     }
 
+
+    private void handleConfActuatorToggle(ConfActuatorToggle pMessage)
+    {
+        Lever[] levers = FindObjectsOfType<Lever>();
+        foreach(Lever lever in levers)
+        {
+            if(lever.gameObject.transform.position.x == pMessage.posX && lever.gameObject.transform.position.y == pMessage.posY)
+            {
+                lever.SetActivatedLever();
+            }
+        }
+    }
     private void handleConfMove(ConfMove pMessage)
     {
         FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);

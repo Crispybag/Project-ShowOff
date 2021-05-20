@@ -57,6 +57,14 @@ public class BasicTCPClient : MonoBehaviour
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.RIGHT;
             serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
+        }        
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("trying to send a package");
+
+            ReqKeyDown keyDown = new ReqKeyDown();
+            keyDown.keyInput = ReqKeyDown.KeyType.INTERACTION;
+            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
         }
     }
 

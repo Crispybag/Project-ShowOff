@@ -16,6 +16,7 @@ namespace Server
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0) : base(CollInteractType.SOLID)
         {
             position = new int[2] { pX, pY };
+            Logging.LogInfo("\nPlayer's position is now ( " + position[0] + ", " + position[1] + ")\n", Logging.debugState.DETAILED);
             _room = pRoom;
             _client = pClient;
         }
@@ -68,29 +69,49 @@ namespace Server
 
         private void handleInteraction()
         {
-            int[] left = new int[position[0] - 1, position[1]];
-            int[] up = new int[position[0], position[1] + 1];
-            int[] right = new int[position[0] + 1, position[1]];
-            int[] down = new int[position[0], position[1] - 1];
+            //left
+            if (position[0] > 0)
+            {
+                if (_room.roomArray[position[0] - 1, position[1]] == 4)
+                {
+                    sendActuatorToggle(position[0] - 1, position[1] );
+                }
+            }
+            //up
+            if (position[1] < 9)
+            {
+                if (_room.roomArray[position[0], position[1] + 1] == 4)
+                {
+                    sendActuatorToggle(position[0], position[1] + 1);
+                }
+            }
+            //right
+            if (position[0] < 9)
+            {
+                if (_room.roomArray[position[0] + 1, position[1]] == 4)
+                {
+                    sendActuatorToggle(position[0] + 1, position[1]);
+                }
+            }
+            //down
+            if (position[1] > 0)
+            {
+                if (_room.roomArray[position[0], position[1] - 1] == 4)
+                {
+                    sendActuatorToggle(position[0], position[1] - 1);
+                }
+            }
+        }
 
-            Logging.LogInfo("Checking the following positions for a lever: left: " + left + " up: " + up + " right: " + right + " down: " + down , Logging.debugState.DETAILED);
-
-            if (_room.roomArray[left] == 4)
-            {
-                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
-            }
-            if (_room.roomArray[up] == 4)
-            {
-                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
-            }
-            if (_room.roomArray[right] == 4)
-            {
-                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
-            }
-            if (_room.roomArray[down] == 4)
-            {
-                Logging.LogInfo("Hit a lever!", Logging.debugState.DETAILED);
-            }
+        private void sendActuatorToggle(int posX, int posY)
+        {
+            Logging.LogInfo("Hit a lever on position : X: " + posX + " Y: " + posY, Logging.debugState.DETAILED);
+            ConfActuatorToggle newToggle = new ConfActuatorToggle();
+            newToggle.isActivated = true;
+            newToggle.posX = posX;
+            newToggle.posY = posY;
+            newToggle.posZ = 0 ;
+            _room.sendToAll(newToggle);
         }
 
 
