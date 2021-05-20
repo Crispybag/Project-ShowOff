@@ -55,6 +55,27 @@ namespace Server
             }
         }
 
+        public bool coordinatesContain(int pX, int pY, int pValue)
+        {
+            foreach (int value in roomArray[pX, pY])
+            {
+                if (value == pValue) return true;
+            }
+
+            return false;
+        }
+
+        public void coordinatesRemove(int pX, int pY, int pValue)
+        {
+            foreach (int value in roomArray[pX, pY])
+            {
+                if (value == pValue) roomArray[pX,pY].Remove(value);
+            }
+
+            
+        }
+
+
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
         {
             Logging.LogInfo("Received a package! Trying to handle", Logging.debugState.SPAM);
@@ -65,7 +86,8 @@ namespace Server
 
         private void handleDoorToggle(ConfDoorToggle pMessage)
         {
-            roomArray[pMessage.posX, pMessage.posY] = 0;
+            //roomArray[pMessage.posX, pMessage.posY] = 0;
+            coordinatesRemove(pMessage.posX, pMessage.posY, 6);
         }
 
         private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)

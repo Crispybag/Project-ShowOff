@@ -110,7 +110,7 @@ namespace Server
             //left
             if (position[0] > 0)
             {
-                if (_room.roomArray[position[0] - 1, position[1]] == 4)
+                if (_room.coordinatesContain(position[0] - 1, position[1], 4))
                 {
                     sendActuatorToggle(position[0] - 1, position[1] );
                 }
@@ -118,7 +118,7 @@ namespace Server
             //up
             if (position[1] < 9)
             {
-                if (_room.roomArray[position[0], position[1] + 1] == 4)
+                if (_room.coordinatesContain(position[0], position[1] + 1, 4))
                 {
                     sendActuatorToggle(position[0], position[1] + 1);
                 }
@@ -126,7 +126,7 @@ namespace Server
             //right
             if (position[0] < 9)
             {
-                if (_room.roomArray[position[0] + 1, position[1]] == 4)
+                if (_room.coordinatesContain(position[0] + 1, position[1], 4))
                 {
                     sendActuatorToggle(position[0] + 1, position[1]);
                 }
@@ -134,11 +134,14 @@ namespace Server
             //down
             if (position[1] > 0)
             {
-                if (_room.roomArray[position[0], position[1] - 1] == 4)
+                if (_room.coordinatesContain(position[0], position[1] - 1, 4))
                 {
                     sendActuatorToggle(position[0], position[1] - 1);
                 }
             }
+
+
+
         }
 
         private void sendActuatorToggle(int posX, int posY)
@@ -163,11 +166,8 @@ namespace Server
                     Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
                 }
                 else
-                {
-                        for (int i = 0; i < _room.roomArray[position[0], position[1]].Count; i++)
-                        {
-                            if (_room.roomArray[position[0], position[1]][i] == 1) _room.roomArray[position[0], position[1]].Remove(i);
-                        }
+                {   
+                    _room.coordinatesRemove(position[0], position[1], 1);
                     position[0] += direction[0];
                     position[1] += direction[1];
                 }

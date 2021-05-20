@@ -25,6 +25,9 @@ namespace Server
             _users = new List<TCPMessageChannel>();
         }
 
+       
+
+
         #region adding and removing members
         //=================================================================
         // Handle Adding and Removing Members

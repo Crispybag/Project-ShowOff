@@ -9,13 +9,13 @@ namespace Server
     {
         GameRoom _room;
         bool isActivated = false;
-        public Lever(GameRoom pRoom, int pX, int pY, bool activated) : base(CollInteractType.SOLID)
+        public Lever(GameRoom pRoom, int pX, int pY, bool activated) : base(pRoom, CollInteractType.SOLID)
         {
             _room = pRoom;
             position[0] = pX;
             position[1] = pY;
             isActivated = activated;
-            _room.roomArray[position[0], position[1]] = 4;
+            _room.roomArray[position[0], position[1]].Add(4);
         }
     }
 }
