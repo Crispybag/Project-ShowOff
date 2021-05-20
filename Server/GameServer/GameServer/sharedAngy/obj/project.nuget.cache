@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "EG24rYRSVIZCrE93fKashwQYldUy+sSBs9yz9D6Mc6w4kCwDBN7B2HCqJmZo6gDrdQ0euTUJqYwuRxnIqVyFFA==",
+  "dgSpecHash": "bHeq9XmU8xbeUvtVhz85EwbCkIU2Q189UdnLsVPhD2B/kRWS0F3YhvsCkqpioy7SQPaKhd7ZvZI8bXJSi66zwA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ljans\\OneDrive\\Bureaublad\\Final Approach\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj",
+  "projectFilePath": "C:\\Git repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\ljans\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\ljans\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\ezrad\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\ezrad\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }

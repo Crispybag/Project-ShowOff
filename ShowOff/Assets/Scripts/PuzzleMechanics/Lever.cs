@@ -60,6 +60,24 @@ public class Lever : PuzzleFactory
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    public void SetActivatedLever()
+    {
+        isActuated = !isActuated;
+        setMaterial();
+    }
+
+    private void setMaterial()
+    {
+        if (isActuated)
+        {
+            this.gameObject.GetComponent<MeshRenderer>().material = _mat2;
+        }
+        else
+        {
+            this.gameObject.GetComponent<MeshRenderer>().material = _mat1;
+        }
+    }
+
     public override void FinishMechanic()
     {
         throw new System.NotImplementedException();

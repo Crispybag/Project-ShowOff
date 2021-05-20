@@ -31,7 +31,7 @@ namespace Server
                 }
                 else if ((int)pRoomRequest.room == 2)
                 {
-                    if (_users.Count == 2)
+                    if (_users.Count >= 1)
                     {
                         Logging.LogInfo("Trying to move to game room", Logging.debugState.DETAILED);
                         ConfJoinRoom confirmGameRoom = new ConfJoinRoom();

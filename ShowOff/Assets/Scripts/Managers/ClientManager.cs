@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class ClientManager : MonoBehaviour
 {
-    //AUTHOR:
-    //SHORT DISCRIPTION:
+    //AUTHOR: Ezra
+    //SHORT DISCRIPTION: Handles all incomming data from the server and makes sure it gets handled correctly.
 
     //=========================================================================================
     //                                     > Variables <
@@ -42,7 +42,6 @@ public class ClientManager : MonoBehaviour
     {
 
         serviceLocator.AddToList("ClientManager", this.gameObject);
-        //connectToServer();
     }
 
     // Update is called once per frame
@@ -55,12 +54,18 @@ public class ClientManager : MonoBehaviour
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    public void SendPackage(ASerializable pSerializable)
+    {
+        //create the packet
+        Packet _outPacket = new Packet();
+        _outPacket.Write(pSerializable);
+        //send package to the stream
+        StreamUtil.Write(client.GetStream(), _outPacket.GetBytes());
+    }
+
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
-
-
-
 
     private void handlePackage(ASerializable pInMessage)
     {
@@ -68,8 +73,21 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ChatMessage) { handleChatMessage(pInMessage as ChatMessage); }
         if (pInMessage is ConfJoinRoom) { handleConfJoinRoom(pInMessage as ConfJoinRoom); }
         if (pInMessage is ConfMove) { handleConfMove(pInMessage as ConfMove); }
+        if (pInMessage is ConfActuatorToggle) { handleConfActuatorToggle(pInMessage as ConfActuatorToggle); }
     }
 
+
+    private void handleConfActuatorToggle(ConfActuatorToggle pMessage)
+    {
+        Lever[] levers = FindObjectsOfType<Lever>();
+        foreach(Lever lever in levers)
+        {
+            if(lever.gameObject.transform.position.x == pMessage.posX && lever.gameObject.transform.position.y == pMessage.posY)
+            {
+                lever.SetActivatedLever();
+            }
+        }
+    }
     private void handleConfMove(ConfMove pMessage)
     {
         FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);
@@ -170,13 +188,6 @@ public class ClientManager : MonoBehaviour
 
     #endregion
 
-    public void SendPackage(ASerializable pSerializable)
-    {
-        //create the packet
-        Packet _outPacket = new Packet();
-        _outPacket.Write(pSerializable);
-        //send package to the stream
-        StreamUtil.Write(client.GetStream(), _outPacket.GetBytes());
-    }
+
 
 }

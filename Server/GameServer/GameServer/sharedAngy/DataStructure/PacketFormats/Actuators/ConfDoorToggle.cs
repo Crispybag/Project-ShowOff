@@ -4,7 +4,7 @@ using System.Text;
 
 namespace sharedAngy
 {
-    public class ConfActuatorToggle : ASerializable
+    public class ConfDoorToggle : ASerializable
     {
         public bool isActivated;
         public int posX;

@@ -14,6 +14,9 @@ namespace Server
         //1 is player
         //2 is wall
         //3 is spawn point
+        //4 is lever
+        //5 is pressure plate
+        //6 is door
 
         public List<GameObject> gameObjects;
         public List<Player> players;
@@ -55,15 +58,14 @@ namespace Server
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
         {
             Logging.LogInfo("Received a package! Trying to handle", Logging.debugState.SPAM);
-            if (pMessage is ReqKeyDown)
-            {
-                handleReqKeyDown(pMessage as ReqKeyDown, pSender);
-            }
+            if (pMessage is ReqKeyDown){handleReqKeyDown(pMessage as ReqKeyDown, pSender);}
+            if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
+            if(pMessage is ConfDoorToggle) { handleDoorToggle(pMessage as ConfDoorToggle); }
+        }
 
-            if (pMessage is ReqKeyUp)
-            {
-                handleReqKeyUp(pMessage as ReqKeyUp, pSender);
-            }
+        private void handleDoorToggle(ConfDoorToggle pMessage)
+        {
+            roomArray[pMessage.posX, pMessage.posY] = 0;
         }
 
         private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)

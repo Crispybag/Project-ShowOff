@@ -11,7 +11,8 @@ namespace sharedAngy
             UP = 0,
             DOWN = 1,
             LEFT = 2,
-            RIGHT = 3
+            RIGHT = 3,
+            INTERACTION = 4
         }
         public KeyType keyInput;
 

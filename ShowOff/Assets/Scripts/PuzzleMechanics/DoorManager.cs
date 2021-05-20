@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ServiceLocator;
+using sharedAngy;
 
 public class DoorManager : MonoBehaviour
 {
@@ -55,6 +57,10 @@ public class DoorManager : MonoBehaviour
             else if (i == conditions.Count)
             {
                 i = 0;
+                ConfDoorToggle doorToggle = new ConfDoorToggle();
+                doorToggle.posX = (int)this.gameObject.transform.position.x;
+                doorToggle.posY = (int)this.gameObject.transform.position.y;
+                serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(doorToggle);
                 Destroy(this.gameObject);
             }
         }

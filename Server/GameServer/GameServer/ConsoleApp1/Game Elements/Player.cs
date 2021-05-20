@@ -53,7 +53,17 @@ namespace Server
                     tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
 
-                    
+                //interaction
+                case (ReqKeyDown.KeyType.INTERACTION):
+                    Logging.LogInfo("Received an interaction key request", Logging.debugState.DETAILED);
+                    handleInteraction();
+                    //do something
+                    break;
+
+                //if we dont handle incomming keytype
+                default:
+                    Logging.LogInfo("Received an incomming keypacket which could not be handled within player", Logging.debugState.SIMPLE);
+                    break;
 
             }
 
@@ -61,6 +71,7 @@ namespace Server
             Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
 
         }
+
 
         public void removeInput(ReqKeyUp.KeyType lastInput)
         {
@@ -94,6 +105,53 @@ namespace Server
             walkDirection = new int[2] { pX, pY };
            
         }
+        private void handleInteraction()
+        {
+            //left
+            if (position[0] > 0)
+            {
+                if (_room.roomArray[position[0] - 1, position[1]] == 4)
+                {
+                    sendActuatorToggle(position[0] - 1, position[1] );
+                }
+            }
+            //up
+            if (position[1] < 9)
+            {
+                if (_room.roomArray[position[0], position[1] + 1] == 4)
+                {
+                    sendActuatorToggle(position[0], position[1] + 1);
+                }
+            }
+            //right
+            if (position[0] < 9)
+            {
+                if (_room.roomArray[position[0] + 1, position[1]] == 4)
+                {
+                    sendActuatorToggle(position[0] + 1, position[1]);
+                }
+            }
+            //down
+            if (position[1] > 0)
+            {
+                if (_room.roomArray[position[0], position[1] - 1] == 4)
+                {
+                    sendActuatorToggle(position[0], position[1] - 1);
+                }
+            }
+        }
+
+        private void sendActuatorToggle(int posX, int posY)
+        {
+            Logging.LogInfo("Hit a lever on position : X: " + posX + " Y: " + posY, Logging.debugState.DETAILED);
+            ConfActuatorToggle newToggle = new ConfActuatorToggle();
+            newToggle.isActivated = true;
+            newToggle.posX = posX;
+            newToggle.posY = posY;
+            newToggle.posZ = 0 ;
+            _room.sendToAll(newToggle);
+        }
+
         private void tryPositionChange(int pX, int pY)
         {
             int[] direction = { pX, pY };
