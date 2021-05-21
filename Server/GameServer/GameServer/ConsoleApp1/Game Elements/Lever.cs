@@ -5,17 +5,11 @@ using sharedAngy;
 
 namespace Server
 {
-    class Lever : GameObject
+    class Lever : Actuator
     {
-        GameRoom _room;
-        bool isActivated = false;
-        public Lever(GameRoom pRoom, int pX, int pY, bool activated) : base(pRoom, CollInteractType.SOLID)
+        public Lever(GameRoom pRoom, int pX, int pY, bool activated) : base(pRoom, pX, pY, activated)
         {
-            _room = pRoom;
-            position[0] = pX;
-            position[1] = pY;
-            isActivated = activated;
-            _room.roomArray[position[0], position[1]].Add(4);
+
         }
     }
 }

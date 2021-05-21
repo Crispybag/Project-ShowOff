@@ -34,6 +34,12 @@ namespace Server
             moveState = pMoveState;
         }
 
+        protected void SetState(CollInteractType pNewState)
+        {
+            moveState = pNewState;
+        }
+
+
         //override update void for children to use
         public virtual void Update()
         {

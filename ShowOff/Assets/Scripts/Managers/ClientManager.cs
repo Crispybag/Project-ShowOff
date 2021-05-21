@@ -84,7 +84,24 @@ public class ClientManager : MonoBehaviour
         {
             if(lever.gameObject.transform.position.x == pMessage.posX && lever.gameObject.transform.position.y == pMessage.posY)
             {
-                lever.SetActivatedLever();
+                switch (pMessage.currentState)
+                {
+                    case ConfActuatorToggle.ActuatorState.TOGGLE:
+                        lever.SetActivatedLever(!lever.isActuated);
+                        break;                    
+                    case ConfActuatorToggle.ActuatorState.TRUE:
+                        lever.SetActivatedLever(true);
+                        break;                    
+                    case ConfActuatorToggle.ActuatorState.FALSE:
+                        lever.SetActivatedLever(false);
+                        break;
+                    default:
+                        Debug.LogError("Trying to handle switching lever but given enum is not handled in client manager!");
+                        break;
+                }
+
+                    
+
             }
         }
     }

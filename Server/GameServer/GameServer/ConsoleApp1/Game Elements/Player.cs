@@ -221,8 +221,9 @@ namespace Server
         private void sendActuatorToggle(int posX, int posY)
         {
             Logging.LogInfo("Hit a lever on position : X: " + posX + " Y: " + posY, Logging.debugState.DETAILED);
+
             ConfActuatorToggle newToggle = new ConfActuatorToggle();
-            newToggle.isActivated = true;
+            newToggle.currentState = ConfActuatorToggle.ActuatorState.TOGGLE;
             newToggle.posX = posX;
             newToggle.posY = posY;
             newToggle.posZ = 0;

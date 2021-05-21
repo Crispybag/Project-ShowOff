@@ -36,7 +36,10 @@ namespace Server
             Lever lever0 = new Lever(this, 5, 2, false);
             Lever lever1 = new Lever(this, 9, 9, false);
             Lever lever2 = new Lever(this, 0, 9, false);
-            
+
+            Door door0 = new Door(this, 3, 2);
+            lever0.doors.Add(door0);
+
             SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 0);
             spawnPoints.Add(_spawnPoint0);
 
@@ -53,12 +56,12 @@ namespace Server
             base.AddMember(pListener);
             if (_users.Count <= 1)
             {
-                SetPlayerCoord(pListener, 0, 0);
+                SetPlayerCoord(pListener, 9, 0);
             }
 
             else
             {
-                SetPlayerCoord(pListener, 9, 0);
+                SetPlayerCoord(pListener, 0, 0);
             }
         }
     }
