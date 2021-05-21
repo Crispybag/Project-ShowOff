@@ -15,12 +15,32 @@ namespace Server
             _room.roomArray[position[0], position[1]].Add(2);
         }
 
-        public bool CanBeShoved(int pX, int pY)
+        public bool CanBeShoved(int pPosX, int pPosY)
         {
-            if (!_room.coordinatesContain(pX, pY, 5))
+            //try check for edge of array
+            try
+            {
+                //check if coordinates you are trying to shove to is empty
+                if (_room.coordinatesEmpty(pPosX, pPosY))
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void TryShove(int pDirX, int pDirY)
+        {
+            if (CanBeShoved(position[0] + pDirX, position[1] + pDirY))
             {
 
             }
         }
+
+
     }
 }
