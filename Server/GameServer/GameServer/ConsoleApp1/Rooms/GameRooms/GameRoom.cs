@@ -158,7 +158,6 @@ namespace Server
         //handle door toggle
         private void handleDoorToggle(ConfDoorToggle pMessage)
         {
-            //roomArray[pMessage.posX, pMessage.posY] = 0;
             coordinatesRemove(pMessage.posX, pMessage.posY, 6);
         }
 
