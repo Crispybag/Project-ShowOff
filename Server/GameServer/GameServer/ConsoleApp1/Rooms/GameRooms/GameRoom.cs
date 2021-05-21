@@ -17,6 +17,7 @@ namespace Server
         //4 is lever
         //5 is pressure plate
         //6 is door
+        //7 is box
 
         public List<GameObject> gameObjects;
         public List<Player> players;
@@ -79,6 +80,17 @@ namespace Server
                 if (value == pValue) return true;
             }
 
+            return false;
+        }
+        /// <summary>
+        /// Checks if coordinates[pX, pY] is empty
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <returns>true if list count is 0</returns>
+        public bool coordinatesEmpty(int pX, int pY)
+        {
+            if (roomArray[pX, pY] == null) return true;
             return false;
         }
 
