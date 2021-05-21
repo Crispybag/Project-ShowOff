@@ -124,11 +124,7 @@ namespace Server
             {
                 foreach (GameObject obj in gameObjects)
                 {
-                    if (obj is Box)
-                    {
-
-                    }
-                    if (obj.position[0] == pX && obj.position[1] == pY)
+                    if (obj.position[0] == pX && obj.position[1] == pY && obj.objectIndex == index)
                     {
                         return obj;
                     }

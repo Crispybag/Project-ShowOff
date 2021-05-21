@@ -21,6 +21,7 @@ namespace Server
             walkDirection = new int[2];
             _room = pRoom;
             _client = pClient;
+            objectIndex = 1;
         }
 
         #region input

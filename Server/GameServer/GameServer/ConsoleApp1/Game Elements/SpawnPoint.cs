@@ -15,6 +15,7 @@ namespace Server
             position[0] = pX;
             position[1] = pY;
             _room.roomArray[position[0], position[1]].Add(3);
+            objectIndex = 3;
         }
     }
 }
