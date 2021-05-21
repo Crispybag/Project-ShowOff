@@ -25,6 +25,19 @@ namespace Server
         private void handleReqJoinServer(ReqJoinServer reqJoinServer, TCPMessageChannel pSender)
         {
             ConfJoinServer joinMessage = new ConfJoinServer();
+
+            //Check valid name length
+            if(_server.allConnectedUsers.Count >= 2)
+            {
+                joinMessage.acceptStatus = false;
+                joinMessage.message = "2 players are already connected to this server, please connect to other server";
+                Logging.LogInfo("Client got rejected of a full server", Logging.debugState.DETAILED);
+                pSender.SendMessage(joinMessage);
+                removeAndCloseMember(pSender);
+                return;
+            }
+
+
             if(reqJoinServer.requestedName.Length < 3)
             {
                 joinMessage.acceptStatus = false;
@@ -34,6 +47,8 @@ namespace Server
                 removeAndCloseMember(pSender);
                 return;
             }
+
+            //check is there are no duplicate names
             foreach (PlayerInfo pInfo in _server.allConnectedUsers.Values)
             {
                 if (reqJoinServer.requestedName == pInfo.GetPlayerName())
@@ -47,6 +62,8 @@ namespace Server
                 }
                 
             }
+
+            //got accepted, sending him to correct place
             joinMessage.acceptStatus = true;
             joinMessage.message = "Client accepted with the name" + reqJoinServer.requestedName;
             Logging.LogInfo("Client got accepted with the name:  " + reqJoinServer.requestedName + "\n", Logging.debugState.DETAILED);
@@ -55,5 +72,6 @@ namespace Server
             _server.availableRooms["Lobby"].AddMember(pSender);
             RemoveMember(pSender);
         }
+
     }
 }

@@ -35,7 +35,7 @@ namespace Server
 
             Lever lever0 = new Lever(this, 5, 2, false);
             Lever lever1 = new Lever(this, 9, 9, false);
-
+            Lever lever2 = new Lever(this, 0, 9, false);
             
             SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 0);
             spawnPoints.Add(_spawnPoint0);
