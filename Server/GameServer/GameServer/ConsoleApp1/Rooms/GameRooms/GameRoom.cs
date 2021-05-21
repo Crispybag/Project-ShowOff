@@ -160,6 +160,7 @@ namespace Server
         {
             //roomArray[pMessage.posX, pMessage.posY] = 0;
             coordinatesRemove(pMessage.posX, pMessage.posY, 6);
+
         }
 
         //handle request key down package
