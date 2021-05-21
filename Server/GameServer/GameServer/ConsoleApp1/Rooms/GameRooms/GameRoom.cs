@@ -21,21 +21,27 @@ namespace Server
         public List<GameObject> gameObjects;
         public List<Player> players;
         public List<SpawnPoint> spawnPoints;
- 
+
+        #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight) : base(pServer)
         {
+            //set up rooms
             roomArray = new List<int>[roomWidth, roomHeight];
-            
-
-
             roomStatic = new List<int>[roomWidth, roomHeight];
+
+            //initialise every list in list array
             initializeAllLists();
+
+            //set up miscellaneous lists
             players = new List<Player>();
             spawnPoints = new List<SpawnPoint>();
             gameObjects = new List<GameObject>();
         }
+
+        //makes a new list for every single list in the arrays
         private void initializeAllLists()
         {
+            //Make all lists for room array
             for (int y = 0; y < roomArray.GetLength(0); y++)
             {
                 for (int x = 0; x < roomArray.GetLength(1); x++)
@@ -45,6 +51,7 @@ namespace Server
                 
             }
 
+            //Make all lists for room static
             for (int y = 0; y < roomStatic.GetLength(0); y++)
             {
                 for (int x = 0; x < roomStatic.GetLength(1); x++)
@@ -55,6 +62,16 @@ namespace Server
             }
         }
 
+        #endregion
+
+        #region grid tools
+        /// <summary>
+        /// checks if the coordinates have a certain value
+        /// </summary>
+        /// <param name="pX"> x-coordinate</param>
+        /// <param name="pY"> y-coordinate</param>
+        /// <param name="pValue"> value on coordinate </param>
+        /// <returns>true if the coordinates contain the value</returns>
         public bool coordinatesContain(int pX, int pY, int pValue)
         {
             foreach (int value in roomArray[pX, pY])
@@ -65,6 +82,12 @@ namespace Server
             return false;
         }
 
+        /// <summary>
+        /// quick tool function to remove all values from given value
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pValue">value</param>
         public void coordinatesRemove(int pX, int pY, int pValue)
         {
             foreach (int value in roomArray[pX, pY])
@@ -75,56 +98,7 @@ namespace Server
             
         }
 
-
-        protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
-        {
-            Logging.LogInfo("Received a package! Trying to handle", Logging.debugState.SPAM);
-            if (pMessage is ReqKeyDown){handleReqKeyDown(pMessage as ReqKeyDown, pSender);}
-            if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
-            if(pMessage is ConfDoorToggle) { handleDoorToggle(pMessage as ConfDoorToggle); }
-        }
-
-        private void handleDoorToggle(ConfDoorToggle pMessage)
-        {
-            //roomArray[pMessage.posX, pMessage.posY] = 0;
-            coordinatesRemove(pMessage.posX, pMessage.posY, 6);
-        }
-
-        private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)
-        {
-            Logging.LogInfo("Received a HandleReqKeyDown Package", Logging.debugState.DETAILED);
-            foreach (Player player in players)
-            {
-                if (pSender == player.getClient())
-                {
-                    player.addInput(pKeyDown.keyInput);
-                }
-            }
-        }
-
-        private void handleReqKeyUp(ReqKeyUp pKeyUp, TCPMessageChannel pSender)
-        {
-            Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.DETAILED);
-            foreach (Player player in players)
-            {
-                if (pSender == player.getClient())
-                {
-                    player.removeInput(pKeyUp.keyInput);
-                }
-            }
-        }
-
-        public override void AddMember(TCPMessageChannel pListener)
-        {
-            Logging.LogInfo("Added client to gameRoom0");
-            base.AddMember(pListener);
-        }
-
-        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY)
-        {
-            players.Add(new Player(this, pListener, pX, pY));
-        }
-
+        //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         public void printGrid(List<int>[,] pGrid)
         {
             for (int y = 0; y < pGrid.GetLength(0); y++)
@@ -137,18 +111,7 @@ namespace Server
             }
         }
 
-        public void ResetRoom()
-        {
-            Logging.LogInfo("Current Grid");
-            printGrid(roomArray);
-
-            Logging.LogInfo("\n\nSaved Grid");
-            printGrid(roomStatic);
-            CopyGrid(roomArray, roomStatic);
-
-            RespawnPlayer();
-        }
-
+        //Copy the values of grid 1 to grid 0. Mostly used for resetting the level
         public void CopyGrid(List<int>[,] pGrid0, List<int>[,] pGrid1)
         {
             try
@@ -167,11 +130,92 @@ namespace Server
                 Logging.LogInfo("The grids were probably not equal in size", Logging.debugState.DETAILED);
             }
         }
+        #endregion
+
+        #region network handling
+
+        //Receives a package and determine how to open the package
+        protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
+        {
+            Logging.LogInfo("Received a package! Trying to handle", Logging.debugState.SPAM);
+            if (pMessage is ReqKeyDown){handleReqKeyDown(pMessage as ReqKeyDown, pSender);}
+            if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
+            if(pMessage is ConfDoorToggle) { handleDoorToggle(pMessage as ConfDoorToggle); }
+        }
+
+        //handle door toggle
+        private void handleDoorToggle(ConfDoorToggle pMessage)
+        {
+            //roomArray[pMessage.posX, pMessage.posY] = 0;
+            coordinatesRemove(pMessage.posX, pMessage.posY, 6);
+        }
+
+        //handle request key down package
+        private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)
+        {
+            Logging.LogInfo("Received a HandleReqKeyDown Package", Logging.debugState.DETAILED);
+            
+            //search which player should be influenced by this package send
+            foreach (Player player in players)
+            {
+                if (pSender == player.getClient())
+                {
+                    //goes to player for further processing of the package
+                    player.addInput(pKeyDown.keyInput);
+                }
+            }
+        }
+
+        //handle request key up package
+        private void handleReqKeyUp(ReqKeyUp pKeyUp, TCPMessageChannel pSender)
+        {
+            Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.DETAILED);
+            
+            //search which player should be influenced by the package send
+            foreach (Player player in players)
+            {
+                if (pSender == player.getClient())
+                {
+                    //goes to player for further processing of the package
+                    player.removeInput(pKeyUp.keyInput);
+                }
+            }
+        }
+        #endregion
+
+        #region resetting
+        //Teleports player to certain coordinates
+        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY)
+        {
+            players.Add(new Player(this, pListener, pX, pY));
+        }
+
+
+        //Reset the room to the initial state
+        public void ResetRoom()
+        {
+            //for debug purposes print grid
+            Logging.LogInfo("Current Grid");
+            printGrid(roomArray);
+
+            Logging.LogInfo("\n\nSaved Grid");
+            printGrid(roomStatic);
+
+            //copy static grid to room grid
+            CopyGrid(roomArray, roomStatic);
+
+            //reset player positions
+            RespawnPlayer();
+
+            //probably need to handle lever states or whatever aswell
+        }
+
+        //spawns a player on a checkpoint if the checkpoint is available
         public void RespawnPlayer()
         {
             try
             {
-                
+                //for each player teleport to corresponding respawn point
                 for (int i = 0; i < players.Count; i++)
                 {
                     Logging.LogInfo("teleporting to:  ( " + spawnPoints[i].position[0] + ", " + spawnPoints[i].position[1] + ")");
@@ -186,7 +230,18 @@ namespace Server
             }
         }
 
-        
+
+        #endregion
+
+        #region overrides (add member/ remove member/ update)
+        public override void AddMember(TCPMessageChannel pListener)
+        {
+            //quick extra debug info to show that the client joined a game room
+            Logging.LogInfo("Added client to gameRoom");
+            base.AddMember(pListener);
+        }
+
+        //in addition to removing the user from users, remove them from the player list, as well.
         public override void RemoveMember(TCPMessageChannel pListener)
         {
             //get index 
@@ -201,6 +256,7 @@ namespace Server
             
         }
 
+        //update each gameobject update() in this update loop
         public override void Update()
         {
             base.Update();
@@ -209,6 +265,7 @@ namespace Server
                 obj.Update();
             }
         }
+        #endregion
 
     }
 }
