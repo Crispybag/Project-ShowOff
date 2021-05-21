@@ -118,22 +118,37 @@ namespace Server
                 roomArray[pX, pY].Remove(removedValue);
             }
         }
+
+        /// <summary>
+        /// Get game object of index on specific coordinate
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="index">index type of the gameobject</param>
+        /// <returns></returns>
         public GameObject coordinatesGetGameObject(int pX, int pY, int index)
         {
+            //check if the coordinate does indeed containt the index
             if (coordinatesContain(pX,pY,index))
             {
+                //go through game object list and see if you can get the right index
                 foreach (GameObject obj in gameObjects)
                 {
+                    //make sure the type and coordinates are the same
                     if (obj.position[0] == pX && obj.position[1] == pY && obj.objectIndex == index)
                     {
+                        //yay you get the game object
                         return obj;
                     }
                     
                 }
+                Logging.LogInfo("When trying to look for the game object it could not be found", Logging.debugState.DETAILED);
                 return null;
             }
 
             else
+                Logging.LogInfo("coordinate does not contain the wished for index", Logging.debugState.DETAILED);
+
             return null;
         }
 

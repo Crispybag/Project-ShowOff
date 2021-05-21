@@ -167,16 +167,23 @@ namespace Server
                         {
                             //box interaction
                             case (7):
+
                                 Box pBox = null;
-                                int yCoord = position[1] + pY;
-                                int xCoord = position[0] + pX;
+                                
+                                // try and get the game object on the position if it is a box
                                 GameObject gameObject = _room.coordinatesGetGameObject(position[0] + pX, position[1] + pY, 7);
+                                
+                                //set box value to that box
                                 if (gameObject is Box) pBox = gameObject as Box;
 
+                                //a quick safeguard check if the box shoving works
                                 if (pBox != null)
                                 { 
+
+                                    //if it can be shoved 2 tiles in that direction
                                     if (pBox.CanBeShoved(position[0] + 2 * pX, position[1] + 2* pY))
                                     {
+                                        //try shoving the box (it should always be able to)
                                         pBox.TryShove(pX, pY);
 
                                         //move player
