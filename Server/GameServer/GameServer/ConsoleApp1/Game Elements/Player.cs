@@ -100,7 +100,7 @@ namespace Server
 
 
             }
-            Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
+            //Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
 
         }
 
@@ -162,6 +162,34 @@ namespace Server
                 {
                     if (obj != 0)
                     {
+                        switch(obj)
+                        {
+                            //box interaction
+                            case (7):
+                                Box pBox = null;
+                                int yCoord = position[1] + pY;
+                                int xCoord = position[0] + pX;
+                                GameObject gameObject = _room.coordinatesGetGameObject(position[0] + pX, position[1] + pY, 7);
+                                if (gameObject is Box) pBox = gameObject as Box;
+
+                                if (pBox != null)
+                                { 
+                                    if (pBox.CanBeShoved(position[0] + 2 * pX, position[1] + 2* pY))
+                                    {
+                                        pBox.TryShove(pX, pY);
+
+                                        //move player
+                                        _room.coordinatesRemove(position[0], position[1], 1);
+                                        position[0] += direction[0];
+                                        position[1] += direction[1];
+                                        //add
+                                        _room.roomArray[position[0], position[1]].Add(1);
+                                        sendConfMove();
+                                    }
+                                }
+
+                                break;
+                        }
                         //player bumps into something code
                         Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
                         objectAtLocation = true;
@@ -178,7 +206,7 @@ namespace Server
                         //add
                         _room.roomArray[position[0], position[1]].Add(1);
                         sendConfMove();
-                    Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
+                    //Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
 
                 }
 
@@ -209,13 +237,14 @@ namespace Server
         //Send a confirm move package based on new position
         private void sendConfMove()
         {
-            Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
+            //Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
             ConfMove _confMove = new ConfMove();
             _confMove.player = getPlayerIndex();
             _confMove.dirX = position[0];
             _confMove.dirY = position[1];
             _confMove.dirZ = 0;
             _room.sendToAll(_confMove);
+            _room.printGrid(_room.roomArray);
         }
 
         //Send an actuator toggle packet

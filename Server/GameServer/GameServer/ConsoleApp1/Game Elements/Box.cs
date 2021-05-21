@@ -35,9 +35,13 @@ namespace Server
 
         public void TryShove(int pDirX, int pDirY)
         {
+            //check if it can be shoved
             if (CanBeShoved(position[0] + pDirX, position[1] + pDirY))
             {
+                //remove box from coordinate
                 _room.coordinatesRemove(position[0], position[1], 7);
+
+                //add the movement to it
                 position[0] += pDirX;
                 position[1] += pDirY;
                 _room.roomArray[position[0], position[1]].Add(7);

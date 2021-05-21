@@ -91,7 +91,7 @@ namespace Server
         /// <returns>true if list count is 0</returns>
         public bool coordinatesEmpty(int pX, int pY)
         {
-            if (roomArray[pX, pY] == null) return true;
+            if (roomArray[pX, pY].Count == 0) return true;
             return false;
         }
 
@@ -112,11 +112,35 @@ namespace Server
                     
                 }
             }
+
             foreach(int removedValue in thingToRemove)
             {
                 roomArray[pX, pY].Remove(removedValue);
             }
         }
+        public GameObject coordinatesGetGameObject(int pX, int pY, int index)
+        {
+            if (coordinatesContain(pX,pY,index))
+            {
+                foreach (GameObject obj in gameObjects)
+                {
+                    if (obj is Box)
+                    {
+
+                    }
+                    if (obj.position[0] == pX && obj.position[1] == pY)
+                    {
+                        return obj;
+                    }
+                    
+                }
+                return null;
+            }
+
+            else
+            return null;
+        }
+
 
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         public void printGrid(List<int>[,] pGrid)
@@ -125,11 +149,22 @@ namespace Server
             {
                 for (int x = 0; x < pGrid.GetLength(1); x++)
                 {
+                    int reverseY = pGrid.GetLength(0) - y - 1;
                     Console.Write("[ ");
-                    for (int element = 0; element < pGrid[x, y].Count; element++)
+                    for (int element = 0; element < pGrid[x, reverseY].Count; element++)
                     {
                         if (element != 0) Console.Write(", ");
-                        Console.Write(pGrid[x, y][element]);
+                        else Console.Write("  ");
+                        Console.Write(pGrid[x, reverseY][element]);
+                    }
+
+                    if (pGrid[x, reverseY].Count < 3)
+                    {
+                        for (int element = 0; element < 3 - pGrid[x, reverseY].Count; element++)
+                        {
+                            Console.Write("   ");
+
+                        }
                     }
                     Console.Write(" ]");
                 }
