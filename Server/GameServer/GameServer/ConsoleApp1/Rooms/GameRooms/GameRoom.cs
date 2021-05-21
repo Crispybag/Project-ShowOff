@@ -37,6 +37,7 @@ namespace Server
             players = new List<Player>();
             spawnPoints = new List<SpawnPoint>();
             gameObjects = new List<GameObject>();
+
         }
 
         //makes a new list for every single list in the arrays
@@ -117,7 +118,13 @@ namespace Server
             {
                 for (int x = 0; x < pGrid.GetLength(1); x++)
                 {
-                    Console.Write(pGrid[x, y]);
+                    Console.Write("[ ");
+                    for (int element = 0; element < pGrid[x, y].Count; element++)
+                    {
+                        if (element != 0) Console.Write(", ");
+                        Console.Write(pGrid[x, y][element]);
+                    }
+                    Console.Write(" ]");
                 }
                 Console.Write("\n");
             }
