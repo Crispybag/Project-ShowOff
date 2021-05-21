@@ -83,16 +83,15 @@ public abstract class Movement : MonoBehaviour
 
     public void moveToTile(Vector3 pDirection)
     {
-        if (canMove)
-        {
+
             //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
             pDirection = getNormalizedDirection(pDirection);
             //if there isnt a wall update our target position to where we want to go.
             _targetPosition = pDirection + _currentPosition;
+            //_targetPosition += pDirection;
             //toBePosition = _targetPosition;
             timer = 0f;
             
-        }
     }
 
     protected void checkForMovement()

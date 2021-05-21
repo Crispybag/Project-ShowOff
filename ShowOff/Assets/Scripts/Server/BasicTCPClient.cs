@@ -13,10 +13,12 @@ public class BasicTCPClient : MonoBehaviour
     [SerializeField] private string _username = "Poggywoggy";
     [SerializeField] private int _port = 42069;
     public TcpClient _client;
+    private ClientManager _clientManager;
     
     void Start()
     {
         //connectToServer();
+        _clientManager = serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>();
     }
 
     // Update is called once per frame
@@ -31,7 +33,7 @@ public class BasicTCPClient : MonoBehaviour
             Debug.Log("trying to send a package");
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.UP;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
+            _clientManager.SendPackage(keyDown);
         }
 
         else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -40,7 +42,7 @@ public class BasicTCPClient : MonoBehaviour
 
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.DOWN;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
+            _clientManager.SendPackage(keyDown);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -48,7 +50,7 @@ public class BasicTCPClient : MonoBehaviour
 
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.LEFT;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
+            _clientManager.SendPackage(keyDown);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -56,7 +58,7 @@ public class BasicTCPClient : MonoBehaviour
 
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.RIGHT;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
+            _clientManager.SendPackage(keyDown);
         }        
         else if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -64,7 +66,7 @@ public class BasicTCPClient : MonoBehaviour
 
             ReqKeyDown keyDown = new ReqKeyDown();
             keyDown.keyInput = ReqKeyDown.KeyType.INTERACTION;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyDown);
+            _clientManager.SendPackage(keyDown);
         }
 
 
@@ -73,70 +75,31 @@ public class BasicTCPClient : MonoBehaviour
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.UP;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
+            _clientManager.SendPackage(keyUp);
 
         }
         else if (Input.GetKeyUp(KeyCode.DownArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.DOWN;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
+            _clientManager.SendPackage(keyUp);
 
         }
         else if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.LEFT;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
+            _clientManager.SendPackage(keyUp);
 
         }
         else if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.RIGHT;
-            serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(keyUp);
-
-        }
-
-
-    }
-
-    private void connectToServer()
-    {
-        try
-        {
-            _client = new TcpClient();
-            //connect to the ip
-            _client.Connect(_hostname, _port);
-            ReqJoinServer joinRequest = new ReqJoinServer();
-            joinRequest.requestedName = _username;
-            sendPackage(joinRequest);
-
-        }
-        catch
-        {
-            Debug.LogError("could not connect client to server");
+            _clientManager.SendPackage(keyUp);
         }
     }
 
-    private void sendPackage(ASerializable pSerializable)
-    {
-        //create the packet
-        Debug.Log("We are going to send a package");
-        Packet _outPacket = new Packet();
-        _outPacket.Write(pSerializable);
-        //send package to the stream
-        StreamUtil.Write(_client.GetStream(), _outPacket.GetBytes());
-        Debug.Log("Sent the package to the stream");
-    }
-
-
-    private void handlePackage(ASerializable pInMessage)
-    {
-        Debug.Log("Handling :)");
-        if (pInMessage is ConfMove)         { handleConfMove(pInMessage as ConfMove); }
-        if (pInMessage is ConfJoinServer)   { handleConfJoin(pInMessage as ConfJoinServer); }
-    }
 
     [SerializeField] private GameObject player0;
     [SerializeField] private GameObject player1;
@@ -154,63 +117,8 @@ public class BasicTCPClient : MonoBehaviour
         {
             player1.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player1.transform.position);
             //player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
-            //player1.transform.position = new Vector3(-10, -10, pMoveConfirm.dirZ);
             Debug.Log("Moved player 1!");
         }
     }
-
-    private Packet receivePacket()
-    {
-        try
-        {
-            byte[] inBytes = StreamUtil.Read(serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().client.GetStream());
-            Packet packet = null;
-            if (inBytes.Length != 0)
-            {
-                packet = new Packet(inBytes);
-            }
-            return packet;
-        }
-        catch
-        {
-            _client.Close();
-            return null;
-        }
-    }
-
-    private void handleConfJoin(ConfJoinServer pJoinConfirm)
-    {
-        if (pJoinConfirm.acceptStatus)
-        {
-            Debug.Log("YAY :D, You connected");
-        }
-        else
-        {
-            Debug.Log("Not Accepted, same name probably");
-        }
-    }
-    private void receiveText()
-    {
-        if (serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().client.Available > 0)
-        {
-            //receive the packet
-            Packet packet = receivePacket();
-
-            if (null == packet)
-            {
-                Debug.Log("received Packet is null");
-                return;
-            }
-
-            while (!packet.isReaderEmpty())
-            {
-                //unwrap the packet
-                ASerializable inObject = packet.ReadObject();
-                handlePackage(inObject);
-
-            }
-        }
-    }
-
 
 }

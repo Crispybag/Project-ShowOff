@@ -103,12 +103,19 @@ namespace Server
         /// <param name="pValue">value</param>
         public void coordinatesRemove(int pX, int pY, int pValue)
         {
+            List<int> thingToRemove = new List<int>();
             foreach (int value in roomArray[pX, pY])
             {
-                if (value == pValue) roomArray[pX,pY].Remove(value);
+                if (value == pValue)
+                {
+                    thingToRemove.Add(value);
+                    
+                }
             }
-
-            
+            foreach(int removedValue in thingToRemove)
+            {
+                roomArray[pX, pY].Remove(removedValue);
+            }
         }
 
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
