@@ -44,6 +44,8 @@ namespace Server
             spawnPoints.Add(_spawnPoint1);
 
             CopyGrid(roomStatic, roomArray);
+            printGrid(roomArray);
+
         }
 
         public override void AddMember(TCPMessageChannel pListener)

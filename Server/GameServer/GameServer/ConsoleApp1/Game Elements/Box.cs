@@ -12,7 +12,7 @@ namespace Server
             _room = pRoom;
             position[0] = pX;
             position[1] = pY;
-            _room.roomArray[position[0], position[1]].Add(2);
+            _room.roomArray[position[0], position[1]].Add(7);
         }
 
         public bool CanBeShoved(int pPosX, int pPosY)
@@ -37,6 +37,10 @@ namespace Server
         {
             if (CanBeShoved(position[0] + pDirX, position[1] + pDirY))
             {
+                _room.coordinatesRemove(position[0], position[1], 7);
+                position[0] += pDirX;
+                position[1] += pDirY;
+                _room.roomArray[position[0], position[1]].Add(7);
 
             }
         }

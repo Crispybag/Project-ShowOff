@@ -147,7 +147,7 @@ public class BasicTCPClient : MonoBehaviour
         if (pMoveConfirm.player == 0)
         {
             player0.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player0.transform.position);
-            player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            //player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
             Debug.Log("Moved player 0!");
         }
         else

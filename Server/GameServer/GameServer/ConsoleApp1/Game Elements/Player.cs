@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using sharedAngy;
+
 namespace Server
 {
     public class Player : GameObject
@@ -156,26 +157,31 @@ namespace Server
             int[] direction = { pX, pY };
             try
             {
+                bool objectAtLocation = false;
                 //check if the list contains something that is not 0
-                foreach(int obj in _room.roomArray[position[0] + direction[0], position[1] + direction[1]])
-                if (obj != 0)
+                foreach (int obj in _room.roomArray[position[0] + direction[0], position[1] + direction[1]])
                 {
-                    //player bumps into something code
-                    Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
+                    if (obj != 0)
+                    {
+                        //player bumps into something code
+                        Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
+                        objectAtLocation = true;
+                    }
                 }
 
-                //Passes the check and can move
-                else
-                {   
-                    //change the location of the player and remove the player value from the grid at the place the player was
-                    _room.coordinatesRemove(position[0], position[1], 1);
-                    position[0] += direction[0];
-                    position[1] += direction[1];
-                }
+                    //Passes the check and can move
+                    if (!objectAtLocation)
+                    {
+                        //change the location of the player and remove the player value from the grid at the place the player was
+                        _room.coordinatesRemove(position[0], position[1], 1);
+                        position[0] += direction[0];
+                        position[1] += direction[1];
+                        //add
+                        _room.roomArray[position[0], position[1]].Add(1);
+                        sendConfMove();
+                    }
+                
 
-                //add 
-                _room.roomArray[position[0], position[1]].Add(1);
-                sendConfMove();
             }
 
             catch(Exception e)
@@ -202,6 +208,7 @@ namespace Server
         //Send a confirm move package based on new position
         private void sendConfMove()
         {
+            Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
             ConfMove _confMove = new ConfMove();
             _confMove.player = getPlayerIndex();
             _confMove.dirX = position[0];
