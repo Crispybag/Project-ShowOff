@@ -35,26 +35,26 @@ namespace Server
                 case (ReqKeyDown.KeyType.UP):
                     //for each of those, add a direction vector to their movement and immediately try to change position as well to minimise latency.
                     changeWalkDirection(0, 1);
-                    tryPositionChange(walkDirection[0], walkDirection[1]);
+                    if (timer == 0)tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
 
                 //down
                 case (ReqKeyDown.KeyType.DOWN):
                     changeWalkDirection(0, -1);
-                    tryPositionChange(walkDirection[0], walkDirection[1]);
+                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
                 
                 //left
                 case (ReqKeyDown.KeyType.LEFT):
                     changeWalkDirection(-1, 0);
-                    tryPositionChange(walkDirection[0], walkDirection[1]);
+                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
                 
 
                 //right
                 case (ReqKeyDown.KeyType.RIGHT):
                     changeWalkDirection(1, 0);
-                    tryPositionChange(walkDirection[0], walkDirection[1]);
+                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1]);
                     break;
 
                 //interaction
@@ -72,7 +72,6 @@ namespace Server
             }
 
             
-            Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
 
         }
 
@@ -179,8 +178,10 @@ namespace Server
                         //add
                         _room.roomArray[position[0], position[1]].Add(1);
                         sendConfMove();
-                    }
-                
+                    Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
+
+                }
+
 
             }
 
