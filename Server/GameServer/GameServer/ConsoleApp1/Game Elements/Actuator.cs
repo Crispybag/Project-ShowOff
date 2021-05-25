@@ -6,8 +6,8 @@ namespace Server
 {
     class Actuator : GameObject
     {
-        GameRoom _room;
-        bool isActivated = false;
+        public GameRoom _room;
+        public bool isActivated = false;
         public int ID;
         public List<Door> doors = new List<Door>();
 
