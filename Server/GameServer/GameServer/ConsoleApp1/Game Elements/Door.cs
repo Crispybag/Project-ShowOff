@@ -41,7 +41,7 @@ namespace Server
             }
             else
             {
-                //_room.coordinatesAdd(position[0], position[1], 6);
+                _room.coordinatesAdd(position[0], position[1], 6);
             }
             ConfDoorToggle doorToggle = new ConfDoorToggle();
             doorToggle.isActivated = isOpen;
@@ -51,7 +51,6 @@ namespace Server
 
         private bool checkActuators()
         {
-            Logging.LogInfo("Checking actuators", Logging.debugState.DETAILED);
             foreach (Actuator actuator in actuators)
             {
                 if (!actuator.isActivated)

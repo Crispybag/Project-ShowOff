@@ -5,8 +5,12 @@ using sharedAngy;
 
 namespace Server
 {
+
     class PressurePlate : Actuator
     {
+
+        public List<Door> doors = new List<Door>();
+
         public PressurePlate(GameRoom pRoom, int pX, int pY, int pID, bool pActivated) : base(pRoom, pX, pY, pID, pActivated)
         {
             _room = pRoom;
@@ -58,6 +62,10 @@ namespace Server
             plateToggle.isActived = isActivated;
             plateToggle.obj = ConfActuatorToggle.Object.PRESSUREPLATE;
             _room.sendToAll(plateToggle);
+            foreach(Door door in doors)
+            {
+                door.CheckDoor();
+            }
         }
 
 

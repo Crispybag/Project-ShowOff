@@ -51,6 +51,13 @@ namespace Server
             Door doorVictory = new Door(this, 2, 8, 7, false);
 
             PressurePlate pressurePlate0 = new PressurePlate(this, 7, 4, 8, false);
+            PressurePlate pressurePlate1 = new PressurePlate(this, 0, 6, 9, false);
+
+            pressurePlate0.doors.Add(door2);
+            door2.actuators.Add(pressurePlate0);
+
+            pressurePlate1.doors.Add(door1);
+            door1.actuators.Add(pressurePlate1);
 
             lever0.doors.Add(door0);
             lever1.doors.Add(door1);
