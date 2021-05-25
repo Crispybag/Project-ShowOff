@@ -26,6 +26,14 @@ namespace Server
                 {
                     return true;
                 }
+                foreach(int item in _room.roomArray[pPosX, pPosY])
+                {
+                    //pressure plate
+                    if(item == 5)
+                    {
+                        return true;
+                    }
+                }
                 return false;
             }
             catch

@@ -74,12 +74,35 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfJoinRoom) { handleConfJoinRoom(pInMessage as ConfJoinRoom); }
         if (pInMessage is ConfMove) { handleConfMove(pInMessage as ConfMove); }
         if (pInMessage is ConfActuatorToggle) { handleConfActuatorToggle(pInMessage as ConfActuatorToggle); }
+        if (pInMessage is ConfDoorToggle) { handleConfDoorToggle(pInMessage as ConfDoorToggle); }
     }
 
+    private void handleConfDoorToggle(ConfDoorToggle pMessage)
+    {
+        GameObject obj = serviceLocator.interactableList[pMessage.ID];
+        obj.GetComponent<DoorManager>().SetDoor(pMessage.isActivated);
+    }
 
     private void handleConfActuatorToggle(ConfActuatorToggle pMessage)
     {
-        Lever[] levers = FindObjectsOfType<Lever>();
+        Debug.Log("Got a actuator toggle with ID: " + pMessage.ID + "!");
+        GameObject obj = serviceLocator.interactableList[pMessage.ID];
+        switch (pMessage.obj)
+        {
+            case ConfActuatorToggle.Object.LEVER:
+                Debug.Log("Its a lever toggle!");
+                obj.GetComponent<Lever>().SetActivatedLever(pMessage.isActived);
+                break;
+            case ConfActuatorToggle.Object.PRESSUREPLATE:
+                Debug.Log("Its a pressure plate toggle!");
+                obj.GetComponent<PressurePlate>().UpdateActuator(pMessage.isActived);
+                break;
+            default:
+                Debug.LogError("ClientManager: Cannot handle actuator toggle!");
+                break;
+        }
+
+/*        Lever[] levers = FindObjectsOfType<Lever>();
         foreach(Lever lever in levers)
         {
             if(lever.gameObject.transform.position.x == pMessage.posX && lever.gameObject.transform.position.y == pMessage.posY)
@@ -99,11 +122,8 @@ public class ClientManager : MonoBehaviour
                         Debug.LogError("Trying to handle switching lever but given enum is not handled in client manager!");
                         break;
                 }
-
-                    
-
             }
-        }
+        }*/
     }
     private void handleConfMove(ConfMove pMessage)
     {

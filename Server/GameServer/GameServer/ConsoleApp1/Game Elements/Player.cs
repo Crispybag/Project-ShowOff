@@ -112,40 +112,50 @@ namespace Server
            
         }
 
-        //hello :)
+        //Handles the interaction button, check if there are any interactionables around, and interacts with them
         private void handleInteraction()
         {
             //from player position it will check in a plus sign if there is an actuator
             try
             {
                 //left
-                if (_room.coordinatesContain(position[0] - 1, position[1], 4))
+                if (position[0] > 0)
                 {
-                    sendActuatorToggle(position[0] - 1, position[1] );
+                    if (_room.coordinatesContain(position[0] - 1, position[1], 4))
+                    {
+                        sendActuatorToggle(position[0] - 1, position[1]);
+                    }
                 }
-            
                 //up
-                if (_room.coordinatesContain(position[0], position[1] + 1, 4))
+                if (position[1] < 9)
                 {
-                    sendActuatorToggle(position[0], position[1] + 1);
+                    if (_room.coordinatesContain(position[0], position[1] + 1, 4))
+                    {
+                        sendActuatorToggle(position[0], position[1] + 1);
+                    }
                 }
-            
+
                 //right
-                if (_room.coordinatesContain(position[0] + 1, position[1], 4))
+                if (position[0] < 9)
                 {
-                    sendActuatorToggle(position[0] + 1, position[1]);
-                
+                    if (_room.coordinatesContain(position[0] + 1, position[1], 4))
+                    {
+                        sendActuatorToggle(position[0] + 1, position[1]);
+                    }
                 }
 
                 //down
-                if (_room.coordinatesContain(position[0], position[1] - 1, 4))
+                if (position[1] > 0)
                 {
-                    sendActuatorToggle(position[0], position[1] - 1);
+                    if (_room.coordinatesContain(position[0], position[1] - 1, 4))
+                    {
+                        sendActuatorToggle(position[0], position[1] - 1);
+                    }
                 }
             }
             catch (Exception e)
             {
-                Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
+                Logging.LogInfo("Player.cs: " + e.Message, Logging.debugState.DETAILED);
             }
 
 
@@ -199,24 +209,32 @@ namespace Server
                                 }
 
                                 break;
+
+                            //presure plate
+                            case (5):
+                                objectAtLocation = false;
+                                break;
+                            default:
+                                //player bumps into something code
+                                Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
+                                objectAtLocation = true;
+                                break;
                         }
-                        //player bumps into something code
-                        Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
-                        objectAtLocation = true;
+
                     }
                 }
 
-                    //Passes the check and can move
-                    if (!objectAtLocation)
-                    {
-                        //change the location of the player and remove the player value from the grid at the place the player was
-                        _room.coordinatesRemove(position[0], position[1], 1);
-                        position[0] += direction[0];
-                        position[1] += direction[1];
-                        //add
-                        _room.roomArray[position[0], position[1]].Add(1);
-                        sendConfMove();
-                    //Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
+                //Passes the check and can move
+                if (!objectAtLocation)
+                {
+                //change the location of the player and remove the player value from the grid at the place the player was
+                _room.coordinatesRemove(position[0], position[1], 1);
+                    position[0] += direction[0];
+                    position[1] += direction[1];
+                    //add
+                    _room.roomArray[position[0], position[1]].Add(1);
+                    sendConfMove();
+                //Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
 
                 }
 
@@ -262,22 +280,28 @@ namespace Server
         {
             Logging.LogInfo("Hit a actuator on position : X: " + posX + " Y: " + posY, Logging.debugState.DETAILED);
 
-            List<int> objects = _room.GetObjectsFromPosition(posX, posY);
-            foreach(int obj in objects)
+            //4 is actuator
+            try
             {
-                //4 is actuator
-                if(obj == 4)
+                GameObject obj = _room.coordinatesGetGameObject(posX, posY, 4);
+                Actuator actuator = obj as Actuator;
+                actuator.isActivated = !actuator.isActivated;
+
+                foreach(Door door in actuator.doors)
                 {
-
+                    door.CheckDoor();
                 }
-            }
 
-            ConfActuatorToggle newToggle = new ConfActuatorToggle();
-            //newToggle.currentState = ;
-            newToggle.posX = posX;
-            newToggle.posY = posY;
-            newToggle.posZ = 0;
-            _room.sendToAll(newToggle);
+                ConfActuatorToggle newToggle = new ConfActuatorToggle();
+                newToggle.isActived = actuator.isActivated;
+                newToggle.ID = actuator.ID;
+                newToggle.obj = ConfActuatorToggle.Object.LEVER;
+                _room.sendToAll(newToggle);
+            }
+            catch
+            {
+                Logging.LogInfo("Player.cs: Could not get actuator!", Logging.debugState.DETAILED);
+            }
         }
         #endregion
 

@@ -9,9 +9,19 @@ namespace Server
     {
         public GameTestRoom0(TCPGameServer pServer, int pWidth, int pHeight) : base(pServer, pWidth, pHeight)
         {
+
+            //quick cheat sheet
+            //0 is empty
+            //1 is player
+            //2 is wall
+            //3 is spawn point
+            //4 is actuator
+            //5 is pressure plate
+            //6 is door
+            //7 is box
             Wall wall0 = new Wall(this, 0, 3);
             Wall wall1 = new Wall(this, 1, 3);
-            Wall doorish = new Wall(this, 2, 3);
+            //Wall doorish = new Wall(this, 2, 3);
             Wall wall2 = new Wall(this, 3, 3);
 
             Wall wall3 = new Wall(this, 4, 0);
@@ -25,20 +35,32 @@ namespace Server
             Wall wall10 = new Wall(this, 6, 5);
             Wall wall11 = new Wall(this, 7, 5);
             Wall wall12 = new Wall(this, 8, 5);
-            Wall doorish1 = new Wall(this, 9, 5);
 
             Wall wall13 = new Wall(this, 0, 7);
             Wall wall14 = new Wall(this, 1, 7);
             Wall wall15 = new Wall(this, 2, 7);
-            Wall doorish2 = new Wall(this, 2, 8);
             Wall wall16 = new Wall(this, 2, 9);
 
             Lever lever0 = new Lever(this, 5, 2, 1, false);
             Lever lever1 = new Lever(this, 9, 9, 2, false);
             Lever lever2 = new Lever(this, 0, 9, 3, false);
 
-            Door door0 = new Door(this, 3, 2);
+            Door door0 = new Door(this, 2, 3, 4, false);
+            Door door1 = new Door(this, 9, 5, 5, false);
+            Door door2 = new Door(this, 2, 8, 6, false);
+            Door doorVictory = new Door(this, 2, 8, 7, false);
+
+            PressurePlate pressurePlate0 = new PressurePlate(this, 7, 4, 8, false);
+
             lever0.doors.Add(door0);
+            lever1.doors.Add(door1);
+            lever1.doors.Add(door2);
+            lever2.doors.Add(doorVictory);
+
+            door0.actuators.Add(lever0);
+            door1.actuators.Add(lever1);
+            door2.actuators.Add(lever1);
+            doorVictory.actuators.Add(lever2);
 
             Box box = new Box(this, 1, 2);
 

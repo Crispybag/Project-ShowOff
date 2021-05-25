@@ -14,7 +14,7 @@ namespace Server
         //1 is player
         //2 is wall
         //3 is spawn point
-        //4 is lever
+        //4 is actuator
         //5 is pressure plate
         //6 is door
         //7 is box
@@ -104,19 +104,40 @@ namespace Server
         public void coordinatesRemove(int pX, int pY, int pValue)
         {
             List<int> thingToRemove = new List<int>();
-            foreach (int value in roomArray[pX, pY])
+            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + " with the value of: " + pValue, Logging.debugState.DETAILED);
+            try
             {
-                if (value == pValue)
+                if (roomArray[pX, pY].Count != 0)
                 {
-                    thingToRemove.Add(value);
-                    
+                    foreach (int value in roomArray[pX, pY])
+                    {
+                        if (value == pValue)
+                        {
+                            thingToRemove.Add(value);
+                        }
+                    }
+                }
+
+                foreach (int removedValue in thingToRemove)
+                {
+                    roomArray[pX, pY].Remove(removedValue);
                 }
             }
-
-            foreach(int removedValue in thingToRemove)
+            catch
             {
-                roomArray[pX, pY].Remove(removedValue);
+                Logging.LogInfo("GameRoom.cs: Could not find position probably out of bounds", Logging.debugState.DETAILED);
             }
+        }
+
+        /// <summary>
+        /// Adds a new objects (int) to given position
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pValue">value</param>
+        public void coordinatesAdd(int pX, int pY, int pValue)
+        {
+            roomArray[pX, pY].Add(pValue);
         }
 
         /// <summary>
@@ -248,14 +269,9 @@ namespace Server
             Logging.LogInfo("Received a package! Trying to handle", Logging.debugState.SPAM);
             if (pMessage is ReqKeyDown){handleReqKeyDown(pMessage as ReqKeyDown, pSender);}
             if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
-            if(pMessage is ConfDoorToggle) { handleDoorToggle(pMessage as ConfDoorToggle); }
         }
 
-        //handle door toggle
-        private void handleDoorToggle(ConfDoorToggle pMessage)
-        {
-            coordinatesRemove(pMessage.posX, pMessage.posY, 6);
-        }
+
 
         //handle request key down package
         private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)

@@ -6,32 +6,29 @@ namespace sharedAngy
 {
     public class ConfActuatorToggle : ASerializable
     {
-        public ActuatorState currentState;
-        public int posX;
-        public int posY;
-        public int posZ;
+        public bool isActived;
+        public int ID;
+        public Object obj;
 
         public override void Serialize(Packet pPacket)
         {
-            pPacket.Write((int)currentState);
-            pPacket.Write(posX);
-            pPacket.Write(posY);
-            pPacket.Write(posZ);
+            pPacket.Write(isActived);
+            pPacket.Write(ID);
+            pPacket.Write((int)obj);
         }
 
         public override void Deserialize(Packet pPacket)
         {
-            currentState = (ActuatorState)pPacket.ReadInt();
-            posX = pPacket.ReadInt();
-            posY = pPacket.ReadInt();
-            posZ = pPacket.ReadInt();
+            isActived = pPacket.ReadBool();
+            ID = pPacket.ReadInt();
+            obj = (Object)pPacket.ReadInt();
         }
 
-        public enum ActuatorState
+        public enum Object
         {
-            TRUE,
-            FALSE,
-            TOGGLE
+            LEVER,
+            PRESSUREPLATE
         }
+
     }
 }

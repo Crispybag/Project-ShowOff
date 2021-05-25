@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ServiceLocator;
 
 public class PressurePlate : PuzzleFactory
 {
@@ -12,6 +13,8 @@ public class PressurePlate : PuzzleFactory
     //=========================================================================================
 
     //------------------------ public ------------------------
+
+    public int ID;
 
     //----------------------- private ------------------------
 
@@ -25,7 +28,7 @@ public class PressurePlate : PuzzleFactory
     //=========================================================================================
     private void Start()
     {
-
+        serviceLocator.interactableList.Add(ID, this.gameObject);
     }
 
     private void Update()
@@ -41,7 +44,7 @@ public class PressurePlate : PuzzleFactory
     //                             > Private Tool Functions <
     //=========================================================================================
 
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
         foreach(string tag in _collisionTags)
         {
@@ -52,9 +55,9 @@ public class PressurePlate : PuzzleFactory
                 break;
             }
         }
-    }
+    }*/
 
-    private void OnTriggerExit(Collider other)
+/*    private void OnTriggerExit(Collider other)
     {
         foreach (string tag in _collisionTags)
         {
@@ -65,11 +68,11 @@ public class PressurePlate : PuzzleFactory
                 break;
             }
         }
-    }
+    }*/
 
-    private void UpdateActuator()
+    public void UpdateActuator(bool isActive)
     {
-        if(_currentObjects.Count > 0)
+        if(isActive)
         {
             GetComponent<MeshRenderer>().material = mat2;
             isActuated = true;

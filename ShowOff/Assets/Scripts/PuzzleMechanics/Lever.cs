@@ -15,12 +15,12 @@ public class Lever : PuzzleFactory
 
     //------------------------ public ------------------------
 
+    public int ID;
 
     //----------------------- private ------------------------
 
     [SerializeField] private Material _mat1;
     [SerializeField] private Material _mat2;
-    [SerializeField] private float radius;
     private InputManager _inputManager;
 
     //=========================================================================================
@@ -28,6 +28,7 @@ public class Lever : PuzzleFactory
     //=========================================================================================
     private void Start()
     {
+        serviceLocator.interactableList.Add(ID, this.gameObject);
         this.gameObject.GetComponent<MeshRenderer>().material = _mat1;
     }
 

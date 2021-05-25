@@ -11,14 +11,9 @@ namespace Server
         public int ID;
         public List<Door> doors = new List<Door>();
 
-        public Actuator(GameRoom pRoom, int pX, int pY, int _ID, bool activated) : base(pRoom, CollInteractType.SOLID)
+        public Actuator(GameRoom pRoom, int pX, int pY, int pID, bool pActivated) : base(pRoom, CollInteractType.SOLID)
         {
-            ID = _ID;
-            _room = pRoom;
-            position[0] = pX;
-            position[1] = pY;
-            isActivated = activated;
-            _room.roomArray[position[0], position[1]].Add(4);
+
         }
     }
 
