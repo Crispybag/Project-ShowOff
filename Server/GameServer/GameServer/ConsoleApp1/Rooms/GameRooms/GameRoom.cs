@@ -166,8 +166,28 @@ namespace Server
             return null;
         }
 
+        /// <summary>
+        /// Get all game objects of index(if specified) on specific coordinate
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pIndex">index type of the gameobject</param>
+        /// <returns></returns>
+        public List<GameObject> CoordinatesGetGameObjects(int pX, int pY, int pIndex = -1)
+        {
+            List<GameObject> objectList = new List<GameObject>();
+            foreach (GameObject obj in gameObjects)
+            {
+                //make sure the type and coordinates are the same
+                if (obj.position[0] == pX && obj.position[1] == pY && (pIndex == -1 || obj.objectIndex == pIndex))
+                {
+                    //yay you get the game object
+                    objectList.Add(obj);
 
-
+                }
+            }
+                return objectList;
+        }
 
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         public void printGrid(List<int>[,] pGrid)
