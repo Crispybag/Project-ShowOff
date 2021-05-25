@@ -8,11 +8,6 @@ using static ServiceLocator;
 
 public class BasicTCPClient : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] private string _hostname = "localhost";
-    [SerializeField] private string _username = "Poggywoggy";
-    [SerializeField] private int _port = 42069;
-    public TcpClient _client;
     private ClientManager _clientManager;
     
     void Start()
@@ -28,6 +23,7 @@ public class BasicTCPClient : MonoBehaviour
         //receiveText();
 
 
+        //Send Inputs
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Debug.Log("trying to send a package");
@@ -97,27 +93,6 @@ public class BasicTCPClient : MonoBehaviour
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.RIGHT;
             _clientManager.SendPackage(keyUp);
-        }
-    }
-
-
-    [SerializeField] private GameObject player0;
-    [SerializeField] private GameObject player1;
-    public void handleConfMove(ConfMove pMoveConfirm)
-    {
-        Debug.Log("We got a confirmed movement for the player : " + pMoveConfirm.player);
-        Debug.Log("With the following data: x: " + pMoveConfirm.dirX + " y: " + pMoveConfirm.dirY );
-        if (pMoveConfirm.player == 0)
-        {
-            player0.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player0.transform.position);
-            //player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
-            Debug.Log("Moved player 0!");
-        }
-        else
-        {
-            player1.GetComponent<Movement>().moveToTile(new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ) - player1.transform.position);
-            //player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
-            Debug.Log("Moved player 1!");
         }
     }
 

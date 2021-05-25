@@ -28,6 +28,7 @@ public class WeightMovement : Movement
     //                              > Public Tool Functions <
     //=========================================================================================
 
+    /*
     override public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {
         bool isWall = base.wallCheck(pTargetPosition, pCurrentPosition);
@@ -39,6 +40,7 @@ public class WeightMovement : Movement
         }
         return isWall;
     }
+    */
 
     protected override void Update()
     {

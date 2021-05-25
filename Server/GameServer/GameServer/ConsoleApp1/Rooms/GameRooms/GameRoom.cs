@@ -152,6 +152,11 @@ namespace Server
             return null;
         }
 
+        public List<GameObject> CoordinatesGetGameObjects(int pX, int pY)
+        {
+            objectList
+        }
+
 
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         public void printGrid(List<int>[,] pGrid)
