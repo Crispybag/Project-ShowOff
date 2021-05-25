@@ -10,7 +10,7 @@ namespace Server
     {
         //position that each game object hasa
         public int[] position;
-
+        public int objectIndex = 0;
         //determines how a collision interaction will be handled
         public enum CollInteractType
         {

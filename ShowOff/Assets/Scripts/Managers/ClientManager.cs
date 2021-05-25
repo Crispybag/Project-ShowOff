@@ -107,7 +107,25 @@ public class ClientManager : MonoBehaviour
     }
     private void handleConfMove(ConfMove pMessage)
     {
-        FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);
+        //FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);
+        GameObject player1 = serviceLocator.GetFromList("Player1");
+        GameObject player2 = serviceLocator.GetFromList("Player2");
+
+
+
+        if (pMessage.player == 0)
+        {
+            player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
+            //player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            Debug.Log("Moved player 1!");
+        }
+        else
+        {
+            player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
+            //player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            Debug.Log("Moved player 2!");
+        }
+    
     }
 
     private void handleConfJoinRoom(ConfJoinRoom pMessage)

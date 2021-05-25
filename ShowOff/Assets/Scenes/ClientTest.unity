@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1458,11 +1458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a7115a19fbf42469351125cc3e3e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hostname: localhost
-  _username: Poggywoggu
-  _port: 42069
-  player0: {fileID: 1175971543}
-  player1: {fileID: 1732365093}
 --- !u!4 &574305318
 Transform:
   m_ObjectHideFlags: 0
@@ -2968,7 +2963,7 @@ MonoBehaviour:
   leftDirection: {x: 0, y: 0, z: 0}
   rightDirection: {x: 0, y: 0, z: 0}
   canMove: 1
-  _moveSpeed: 0.1
+  _moveSpeed: 0.05
   playerPushWeight: 0
   playerName: Player1
   basicClient: {fileID: 0}
@@ -4051,7 +4046,7 @@ MonoBehaviour:
   canMove: 1
   _moveSpeed: 0.1
   playerPushWeight: 0
-  playerName: Player1
+  playerName: Player2
   basicClient: {fileID: 0}
 --- !u!1 &1840045340
 GameObject:

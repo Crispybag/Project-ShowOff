@@ -40,10 +40,12 @@ namespace Server
             Door door0 = new Door(this, 3, 2);
             lever0.doors.Add(door0);
 
+            Box box = new Box(this, 1, 2);
+
             SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 0);
             spawnPoints.Add(_spawnPoint0);
 
-            SpawnPoint _spawnPoint1 = new SpawnPoint(this, 9, 0, 0);
+            SpawnPoint _spawnPoint1 = new SpawnPoint(this, 1, 9, 0);
             spawnPoints.Add(_spawnPoint1);
 
             CopyGrid(roomStatic, roomArray);

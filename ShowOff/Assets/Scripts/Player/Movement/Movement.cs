@@ -85,10 +85,11 @@ public abstract class Movement : MonoBehaviour
     {
 
             //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
-            pDirection = getNormalizedDirection(pDirection);
+            //pDirection = getNormalizedDirection(pDirection);
             //if there isnt a wall update our target position to where we want to go.
-            _targetPosition = pDirection + _currentPosition;
-            //_targetPosition += pDirection;
+            //_targetPosition = pDirection + _currentPosition;
+            _targetPosition = pDirection;
+            _currentPosition = transform.position;
             //toBePosition = _targetPosition;
             timer = 0f;
             
@@ -98,15 +99,17 @@ public abstract class Movement : MonoBehaviour
     {
         //makes sure we dont move multiple tiles within the same amount of time
         //because when holding the button id would stack if we wouldnt do this.
-        if ((_targetPosition - transform.position).magnitude < 0.001f)
+        canMove = true;
+
+        if ((_targetPosition - transform.position).magnitude < 0.01f)
         {
-            canMove = true;
+            //canMove = true;
             transform.position = _targetPosition;
             _currentPosition = transform.position;
         }
         else
         {
-            canMove = false;
+            //canMove = false;
         }
     }
     //=========================================================================================
