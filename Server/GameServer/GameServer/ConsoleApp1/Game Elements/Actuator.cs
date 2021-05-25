@@ -8,10 +8,12 @@ namespace Server
     {
         GameRoom _room;
         bool isActivated = false;
+        public int ID;
         public List<Door> doors = new List<Door>();
 
-        public Actuator(GameRoom pRoom, int pX, int pY, bool activated) : base(pRoom, CollInteractType.SOLID)
+        public Actuator(GameRoom pRoom, int pX, int pY, int _ID, bool activated) : base(pRoom, CollInteractType.SOLID)
         {
+            ID = _ID;
             _room = pRoom;
             position[0] = pX;
             position[1] = pY;

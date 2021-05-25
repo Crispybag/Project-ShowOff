@@ -12,7 +12,7 @@ namespace Server
         private TCPMessageChannel _client;
         private int[] walkDirection;
 
-        
+        private int timer = 0;
 
         //standard stuff, along with quick coordinates
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0) : base(pRoom, CollInteractType.SOLID)
@@ -115,27 +115,29 @@ namespace Server
         //hello :)
         private void handleInteraction()
         {
-            
+            //from player position it will check in a plus sign if there is an actuator
             try
             {
+                //left
                 if (_room.coordinatesContain(position[0] - 1, position[1], 4))
                 {
                     sendActuatorToggle(position[0] - 1, position[1] );
                 }
             
-            
+                //up
                 if (_room.coordinatesContain(position[0], position[1] + 1, 4))
                 {
                     sendActuatorToggle(position[0], position[1] + 1);
                 }
             
-            
+                //right
                 if (_room.coordinatesContain(position[0] + 1, position[1], 4))
                 {
                     sendActuatorToggle(position[0] + 1, position[1]);
                 
                 }
-      
+
+                //down
                 if (_room.coordinatesContain(position[0], position[1] - 1, 4))
                 {
                     sendActuatorToggle(position[0], position[1] - 1);
@@ -220,10 +222,20 @@ namespace Server
         //Send an actuator toggle packet
         private void sendActuatorToggle(int posX, int posY)
         {
-            Logging.LogInfo("Hit a lever on position : X: " + posX + " Y: " + posY, Logging.debugState.DETAILED);
+            Logging.LogInfo("Hit a actuator on position : X: " + posX + " Y: " + posY, Logging.debugState.DETAILED);
+
+            List<int> objects = _room.GetObjectsFromPosition(posX, posY);
+            foreach(int obj in objects)
+            {
+                //4 is actuator
+                if(obj == 4)
+                {
+
+                }
+            }
 
             ConfActuatorToggle newToggle = new ConfActuatorToggle();
-            newToggle.currentState = ConfActuatorToggle.ActuatorState.TOGGLE;
+            //newToggle.currentState = ;
             newToggle.posX = posX;
             newToggle.posY = posY;
             newToggle.posZ = 0;
@@ -255,7 +267,7 @@ namespace Server
         #endregion
 
         #region update
-        private int timer = 0;
+
 
 
         public override void Update()

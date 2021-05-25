@@ -13,7 +13,7 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public int currentSprite;
     public bool isButtonHovering = false;
     public int timer;
-    private int currentTimer;
+    private float currentTimer;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -45,7 +45,8 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             }
             else
             {
-                currentTimer--;
+                //60 = second
+                currentTimer-= Time.deltaTime * 60;
             }
         }
         else

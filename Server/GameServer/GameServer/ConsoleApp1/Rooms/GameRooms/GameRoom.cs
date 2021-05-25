@@ -118,6 +118,23 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Gets all objects from the location
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        public List<int> GetObjectsFromPosition(int pX, int pY)
+        {
+            List<int> objects = new List<int>();
+            foreach (int value in roomArray[pX, pY])
+            {
+                objects.Add(value);
+            }
+            return objects;
+        }
+
+
+
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         public void printGrid(List<int>[,] pGrid)
         {

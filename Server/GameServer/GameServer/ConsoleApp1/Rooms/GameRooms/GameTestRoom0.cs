@@ -33,9 +33,9 @@ namespace Server
             Wall doorish2 = new Wall(this, 2, 8);
             Wall wall16 = new Wall(this, 2, 9);
 
-            Lever lever0 = new Lever(this, 5, 2, false);
-            Lever lever1 = new Lever(this, 9, 9, false);
-            Lever lever2 = new Lever(this, 0, 9, false);
+            Lever lever0 = new Lever(this, 5, 2, 1, false);
+            Lever lever1 = new Lever(this, 9, 9, 2, false);
+            Lever lever2 = new Lever(this, 0, 9, 3, false);
 
             Door door0 = new Door(this, 3, 2);
             lever0.doors.Add(door0);

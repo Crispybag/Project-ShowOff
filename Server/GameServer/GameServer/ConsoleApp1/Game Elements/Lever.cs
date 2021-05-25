@@ -7,7 +7,7 @@ namespace Server
 {
     class Lever : Actuator
     {
-        public Lever(GameRoom pRoom, int pX, int pY, bool activated) : base(pRoom, pX, pY, activated)
+        public Lever(GameRoom pRoom, int pX, int pY, int _ID, bool activated) : base(pRoom, pX, pY, activated)
         {
 
         }
