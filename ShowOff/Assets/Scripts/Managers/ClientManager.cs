@@ -75,6 +75,14 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfMove) { handleConfMove(pInMessage as ConfMove); }
         if (pInMessage is ConfActuatorToggle) { handleConfActuatorToggle(pInMessage as ConfActuatorToggle); }
         if (pInMessage is ConfDoorToggle) { handleConfDoorToggle(pInMessage as ConfDoorToggle); }
+        if (pInMessage is ConfElevatorMove) { handleConfElevatorMove(pInMessage as ConfElevatorMove); }
+    }
+
+    private void handleConfElevatorMove(ConfElevatorMove pMessage)
+    {
+        Debug.Log("Got a elevator move with ID: " + pMessage.ID + "!");
+        GameObject obj = serviceLocator.interactableList[pMessage.ID];
+        obj.GetComponent<Elevator>().SetTargetPosition(pMessage.posX, pMessage.posY);
     }
 
     private void handleConfDoorToggle(ConfDoorToggle pMessage)
@@ -96,6 +104,10 @@ public class ClientManager : MonoBehaviour
             case ConfActuatorToggle.Object.PRESSUREPLATE:
                 Debug.Log("Its a pressure plate toggle!");
                 obj.GetComponent<PressurePlate>().UpdateActuator(pMessage.isActived);
+                break;
+            case ConfActuatorToggle.Object.BUTTON:
+                Debug.Log("Its a button toggle!");
+                obj.GetComponent<Button>().UpdateActuator(pMessage.isActived);
                 break;
             default:
                 Debug.LogError("ClientManager: Cannot handle actuator toggle!");

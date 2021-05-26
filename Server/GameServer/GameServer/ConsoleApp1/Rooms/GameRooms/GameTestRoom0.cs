@@ -56,6 +56,23 @@ namespace Server
             PressurePlate pressurePlate0 = new PressurePlate(this, 7, 4, 8, false);
             PressurePlate pressurePlate1 = new PressurePlate(this, 0, 6, 9, false);
 
+            Button button0 = new Button(this, 3, 9, 10);
+            Button button1 = new Button(this, 7, 6, 11);
+
+            Elevator elevator0 = new Elevator(this, 5, 6, 12);
+            EmptyGameObject empty0 = new EmptyGameObject(this,5,6);
+            EmptyGameObject empty1 = new EmptyGameObject(this,7,7);
+            EmptyGameObject empty2 = new EmptyGameObject(this,5,9);
+            elevator0.points.Add(0,empty0);
+            elevator0.points.Add(1,empty1);
+            elevator0.points.Add(2,empty2);
+
+            button0.currentDirection = Button.Direction.DOWN;
+            button1.currentDirection = Button.Direction.UP;
+
+            button0.elevators.Add(elevator0);
+            button1.elevators.Add(elevator0);
+
             pressurePlate0.doors.Add(door2);
             door2.actuators.Add(pressurePlate0);
 

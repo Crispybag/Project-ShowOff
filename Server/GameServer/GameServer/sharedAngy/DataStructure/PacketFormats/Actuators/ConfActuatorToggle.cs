@@ -27,7 +27,8 @@ namespace sharedAngy
         public enum Object
         {
             LEVER,
-            PRESSUREPLATE
+            PRESSUREPLATE,
+            BUTTON
         }
 
     }

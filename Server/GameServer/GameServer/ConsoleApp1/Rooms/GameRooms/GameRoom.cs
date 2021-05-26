@@ -177,12 +177,12 @@ namespace Server
                     }
                     
                 }
-                Logging.LogInfo("When trying to look for the game object it could not be found", Logging.debugState.DETAILED);
+                Logging.LogInfo("GameRoom.cs: When trying to look for the game object it could not be found", Logging.debugState.DETAILED);
                 return null;
             }
 
             else
-                Logging.LogInfo("coordinate does not contain the wished for index", Logging.debugState.DETAILED);
+                Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
 
             return null;
         }

@@ -121,35 +121,39 @@ namespace Server
                 //left
                 if (position[0] > 0)
                 {
+                    sendActuatorToggle(position[0] - 1, position[1]);
                     if (_room.coordinatesContain(position[0] - 1, position[1], 4))
                     {
-                        sendActuatorToggle(position[0] - 1, position[1]);
+                        
                     }
                 }
                 //up
                 if (position[1] < 9)
                 {
+                    sendActuatorToggle(position[0], position[1] + 1);
                     if (_room.coordinatesContain(position[0], position[1] + 1, 4))
                     {
-                        sendActuatorToggle(position[0], position[1] + 1);
+                        
                     }
                 }
 
                 //right
                 if (position[0] < 9)
                 {
+                    sendActuatorToggle(position[0] + 1, position[1]);
                     if (_room.coordinatesContain(position[0] + 1, position[1], 4))
                     {
-                        sendActuatorToggle(position[0] + 1, position[1]);
+
                     }
                 }
 
                 //down
                 if (position[1] > 0)
                 {
+                    sendActuatorToggle(position[0], position[1] - 1);
                     if (_room.coordinatesContain(position[0], position[1] - 1, 4))
                     {
-                        sendActuatorToggle(position[0], position[1] - 1);
+                        
                     }
                 }
             }
@@ -278,29 +282,58 @@ namespace Server
         //Send an actuator toggle packet
         private void sendActuatorToggle(int posX, int posY)
         {
-            Logging.LogInfo("Hit a actuator on position : X: " + posX + " Y: " + posY, Logging.debugState.DETAILED);
-
-            //4 is actuator
             try
             {
-                GameObject obj = _room.coordinatesGetGameObject(posX, posY, 4);
-                Actuator actuator = obj as Actuator;
-                actuator.isActivated = !actuator.isActivated;
-
-                foreach(Door door in actuator.doors)
+                List<int> actuators = _room.roomArray[posX, posY];
+                foreach (int actuator in actuators)
                 {
-                    door.CheckDoor();
-                }
+                    switch (actuator)
+                    {
+                        //4 = lever
+                        case (4):
+                            Logging.LogInfo("Player.cs: Hit an lever on position : " + posX + "," + posY + "!", Logging.debugState.DETAILED);
+                            GameObject gameObject = _room.coordinatesGetGameObject(posX, posY, 4);
+                            Actuator lever = gameObject as Actuator;
+                            lever.isActivated = !lever.isActivated;
 
-                ConfActuatorToggle newToggle = new ConfActuatorToggle();
-                newToggle.isActived = actuator.isActivated;
-                newToggle.ID = actuator.ID;
-                newToggle.obj = ConfActuatorToggle.Object.LEVER;
-                _room.sendToAll(newToggle);
+                            foreach (Door door in lever.doors)
+                            {
+                                door.CheckDoor();
+                            }
+
+                            ConfActuatorToggle newLeverToggle = new ConfActuatorToggle();
+                            newLeverToggle.isActived = lever.isActivated;
+                            newLeverToggle.ID = lever.ID;
+                            newLeverToggle.obj = ConfActuatorToggle.Object.LEVER;
+                            _room.sendToAll(newLeverToggle);
+                            break;
+                        //8 = button
+                        case (8):
+                            Logging.LogInfo("Player.cs: Hit an button on position : " + posX + "," +  posY + "!", Logging.debugState.DETAILED);
+                            GameObject gameObject1 = _room.coordinatesGetGameObject(posX, posY, 8);
+                            Button button = gameObject1 as Button;
+                            if (null != button)
+                            {
+                                button.SetActive();
+                                if (button.elevators.Count > 0)
+                                {
+                                    foreach (Elevator elevator in button.elevators)
+                                    {
+                                        elevator.NextPosition(button.currentDirection);
+                                    }
+                                }
+
+                            }
+                            break;
+                    }
+
+
+
+                }
             }
             catch
             {
-                Logging.LogInfo("Player.cs: Could not get actuator!", Logging.debugState.DETAILED);
+                //Logging.LogInfo("Player.cs: Could not get actuator!", Logging.debugState.DETAILED);
             }
         }
         #endregion
