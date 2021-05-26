@@ -25,7 +25,7 @@ namespace Server
             
             availableRooms.Add("Lobby", _lobbyRoom);
             availableRooms.Add("Login", _loginRoom);
-            _gameTestRoom0 = new GameTestRoom0(this, 10, 10);
+            _gameTestRoom0 = new GameTestRoom0(this, 10, 1, 10);
             availableRooms.Add("Test0", _gameTestRoom0);
 
         }

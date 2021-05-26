@@ -7,12 +7,13 @@ namespace Server
     public class Wall : GameObject
     {
         GameRoom _room;
-        public Wall(GameRoom pRoom, int pX, int pY) : base(pRoom, CollInteractType.SOLID)
+        public Wall(GameRoom pRoom, int pX, int pY, int pZ) : base(pRoom, CollInteractType.SOLID)
         {
             _room = pRoom;
             position[0] = pX;
             position[1] = pY;
-            _room.roomArray[position[0], position[1]].Add(2);
+            position[2] = pZ;
+            _room.roomArray[position[0], position[1], position[2]].Add(2);
             objectIndex = 2;
         }
     }

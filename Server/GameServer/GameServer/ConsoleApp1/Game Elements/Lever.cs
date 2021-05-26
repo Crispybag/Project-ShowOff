@@ -13,9 +13,9 @@ namespace Server
         {
             _room = pRoom;
             position[0] = pX;
-            position[1] = pY;
+            position[2] = pY;
             isActivated = activated;
-            _room.roomArray[position[0], position[1]].Add(4);
+            _room.roomArray[position[0], position[1], position[2]].Add(4);
             objectIndex = 4;
         }
     }
