@@ -16,6 +16,7 @@ namespace Server
             objectIndex = 7;
         }
 
+        /*
         public bool CanBeShoved(int pPosX, int pPosY)
         {
             //try check for edge of array
@@ -45,6 +46,9 @@ namespace Server
         public void TryShove(int pDirX, int pDirY)
         {
             //check if it can be shoved
+            int[] oldPosition = new int[2];
+            oldPosition[0] = position[0]; oldPosition[1] = position[1];
+
             if (CanBeShoved(position[0] + pDirX, position[1] + pDirY))
             {
                 //remove box from coordinate
@@ -58,6 +62,6 @@ namespace Server
             }
         }
 
-
+        */
     }
 }

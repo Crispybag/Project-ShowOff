@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using System.Linq;
 
 namespace Server
 {
@@ -44,10 +46,12 @@ namespace Server
         private void initializeAllLists()
         {
             //Make all lists for room array
-            for (int y = 0; y < roomArray.GetLength(0); y++)
+            for (int y = 0; y < roomArray.GetLength(1); y++)
             {
-                for (int x = 0; x < roomArray.GetLength(1); x++)
+                for (int x = 0; x < roomArray.GetLength(0); x++)
                 {
+                    int nDebugLength = roomArray.GetLength(0);
+                    int nDebugLength1 = roomArray.GetLength(1);
                     roomArray[x, y] = new List<int>();
                 }
                 
@@ -213,11 +217,11 @@ namespace Server
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         public void printGrid(List<int>[,] pGrid)
         {
-            for (int y = 0; y < pGrid.GetLength(0); y++)
+            for (int y = 0; y < pGrid.GetLength(1); y++)
             {
-                for (int x = 0; x < pGrid.GetLength(1); x++)
+                for (int x = 0; x < pGrid.GetLength(0); x++)
                 {
-                    int reverseY = pGrid.GetLength(0) - y - 1;
+                    int reverseY = pGrid.GetLength(1) - y - 1;
                     Console.Write("[ ");
                     for (int element = 0; element < pGrid[x, reverseY].Count; element++)
                     {
@@ -257,6 +261,94 @@ namespace Server
             {
                 Logging.LogInfo(e.Message);
                 Logging.LogInfo("The grids were probably not equal in size", Logging.debugState.DETAILED);
+            }
+        }
+        #endregion
+        #region level data loading
+
+        public void generateGridFromText(string filePath)
+        {
+            //values to determine grid size
+            int minX = 0, minY = 0;
+
+            //get the file path
+            List<string> lines = File.ReadAllLines(filePath).ToList();
+            determineGridSize(lines, out minX, out minY);
+            initializeAllLists();
+            addObjectsToGrid(lines, minX, minY);
+
+        }
+
+        /// <summary>
+        /// Determines how big the grid should be, it also returns minX and minY to reposition all items to fit into the grid
+        /// </summary>
+        /// <param name="information"> all information</param>
+        /// <param name="minX">the lowest X value of the grid</param>
+        /// <param name="minY">the lowest Y Value of the grid</param>
+        private void determineGridSize(List<string> information, out int minX, out int minY)
+        {
+            int maxX = -5000000, maxY = -5000000;
+            minX = 5000000;minY = 5000000;
+            foreach (string line in information)
+            {
+                //split the strings based on spaces
+                string[] rawInformation = line.Split(' ');
+                //determine x and y coord
+                int xCoord = (int)float.Parse(rawInformation[1]);
+                int yCoord = (int)float.Parse(rawInformation[2]);
+
+                //determine minimum X, maximum X, minimum Y, maximumY
+                if (xCoord < minX) minX = (int)xCoord;
+                if (xCoord > maxX) maxX = (int)xCoord;
+                if (yCoord < minY) minY = (int)yCoord;
+                if (yCoord > maxY) maxY = (int)yCoord;
+
+
+            }
+            //set new size of room
+            Logging.LogInfo("Grid Size: " + (maxX + 1 - minX) + " by " + (maxY + 1 - minY),Logging.debugState.DETAILED);
+            roomArray = new List<int>[maxX + 1 - minX, maxY + 1 - minY];
+        }
+
+        /// <summary>
+        /// add all objects to the grid based on the information
+        /// </summary>
+        /// <param name="information">all the information that we need to use</param>
+        /// <param name="minX">the minimum X of the grid</param>
+        /// <param name="minY">the minimum Y of the grid</param>
+        private void addObjectsToGrid(List<string> information, int minX, int minY)
+        {
+            foreach (string line in information)
+            {
+                //split information again with spaces to retrieve each coordinate
+                string[] rawInformation = line.Split(' ');
+
+                switch((int)float.Parse(rawInformation[0]))
+                {
+                    case (1):
+                        //TODO: this might be an issue as we need to link a TCPChannel to a player, it is probably better to link spawn points and spawn those into the level
+                        break;
+
+                    case (2):
+                        //coordinates are the information values + the minimum X to put the most left/most bottom/ most forward object in the (0,0,0) spot
+                        Wall wall = new Wall(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY);
+                        break;
+
+                    case (5):
+                        Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, true);
+                        break;
+
+                    case (6):
+                        //Door door = new Door(this, int.Parse(rawInformation[1]), int.Parse(rawInformation[2]), true);
+                        //Door does not exist yet
+                        break;
+
+                    case (7):
+                        Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY);
+                        break;
+
+                }
+
             }
         }
         #endregion
