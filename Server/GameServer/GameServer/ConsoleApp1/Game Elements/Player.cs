@@ -19,11 +19,11 @@ namespace Server
 
 
         //standard stuff, along with quick coordinates
-        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0) : base(pRoom, CollInteractType.SOLID)
+        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0) : base(pRoom, CollInteractType.SOLID)
         {
-            position = new int[2] { pX, pY };
+            position = new int[3] { pX, pY, pX };
             orientation = new int[2] { 0, 1 };
-            walkDirection = new int[2];
+            walkDirection = new int[3];
             _room = pRoom;
             _client = pClient;
             objectIndex = 1;
@@ -40,27 +40,27 @@ namespace Server
                 //up
                 case (ReqKeyDown.KeyType.UP):
                     //for each of those, add a direction vector to their movement and immediately try to change position as well to minimise latency.
-                    changeWalkDirection(0, 1);
-                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1]);
+                    changeWalkDirection(0, 0, 1);
+                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
                 //down
                 case (ReqKeyDown.KeyType.DOWN):
-                    changeWalkDirection(0, -1);
-                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1]);
+                    changeWalkDirection(0, 0, -1);
+                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
                 //left
                 case (ReqKeyDown.KeyType.LEFT):
-                    changeWalkDirection(-1, 0);
-                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1]);
+                    changeWalkDirection(-1, 0, 0);
+                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
 
                 //right
                 case (ReqKeyDown.KeyType.RIGHT):
-                    changeWalkDirection(1, 0);
-                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1]);
+                    changeWalkDirection(1, 0, 0);
+                    if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
                 //interaction
@@ -87,19 +87,19 @@ namespace Server
             switch (lastInput)
             {
                 case (ReqKeyUp.KeyType.UP):
-                    tryCancelDirection(0, 1);
+                    tryCancelDirection(0, 0, 1);
                     break;
 
                 case (ReqKeyUp.KeyType.DOWN):
-                    tryCancelDirection(0, -1);
+                    tryCancelDirection(0, 0, -1);
                     break;
 
                 case (ReqKeyUp.KeyType.LEFT):
-                    tryCancelDirection(-1, 0);
+                    tryCancelDirection(-1, 0, 0);
                     break;
 
                 case (ReqKeyUp.KeyType.RIGHT):
-                    tryCancelDirection(1, 0);
+                    tryCancelDirection(1, 0, 0);
                     break;
 
 
@@ -111,9 +111,9 @@ namespace Server
         }
 
         //change the walk direction, the direction in which the player wants to move
-        private void changeWalkDirection(int pX, int pY)
+        private void changeWalkDirection(int pX, int pY, int pZ)
         {
-            walkDirection = new int[2] { pX, pY };
+            walkDirection = new int[3] { pX, pY, pZ };
 
         }
 
@@ -166,24 +166,25 @@ namespace Server
                 if (!_hasBox)
                 {
                     //for lever
-                    if (_room.coordinatesContain(position[0] + orientation[0], position[1] + orientation[1], 4))
+                    if (_room.coordinatesContain(OneInFront(), 4))
                     {
-                        sendActuatorToggle(position[0] + orientation[0], position[1] + orientation[1]);
+                        sendActuatorToggle(OneInFront());
                     }
 
                     //for box
-                    else if (_room.coordinatesContain(position[0] + orientation[0], position[1] + orientation[1], 7))
+                    else if (_room.coordinatesContain(OneInFront(), 7))
                     {
-                        sendPickUpBox(position[0] + orientation[0], position[1] + orientation[1]);
+                        sendPickUpBox(OneInFront());
                     }
                 }
                 else
                 {
-                    //check if box can be placed
-                    if (_room.coordinatesEmpty(position[0] + orientation[0], position[1] + orientation[1]) )
+                    //check if box can be placed (at position + orientation)
+                    if (_room.coordinatesEmpty(OneInFront()) )
                     {
                         //place box
-                        _room.roomArray[position[0] + orientation[0], position[1] + orientation[1]].Add(7);
+                        try { _room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7); }
+                        catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
                         _hasBox = false;
                     }
                 }
@@ -199,16 +200,16 @@ namespace Server
 
 
         //Does the check whether the player can change position or not
-        private void tryPositionChange(int pX, int pY)
+        private void tryPositionChange(int pX, int pY, int pZ)
         {
-            int[] direction = { pX, pY };
+            int[] direction = { pX, pY, pZ };
             orientation[0] = pX;
-            orientation[1] = pY;
+            orientation[1] = pZ;
             try
             {
                 bool objectAtLocation = false;
                 //check if the list contains something that is not 0
-                foreach (int obj in _room.roomArray[position[0] + direction[0], position[1] + direction[1]])
+                foreach (int obj in _room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
                 {
                     if (obj != 0)
                     {
@@ -264,16 +265,17 @@ namespace Server
                 //Passes the check and can move
                 if (!objectAtLocation)
                 {
-                //change the location of the player and remove the player value from the grid at the place the player was
-                _room.coordinatesRemove(position[0], position[1], 1);
 
+                    
+
+                    //change the location of the player and remove the player value from the grid at the place the player was
+                    _room.coordinatesRemove(position[0], position[1], position[2], 1);
                     position[0] += direction[0];
                     position[1] += direction[1];
                     //add
-                    _room.roomArray[position[0], position[1]].Add(1);
+                    _room.roomArray[position[0], position[1], position[2]].Add(1);
+                    //Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
                     sendConfMove();
-
-
                 }
 
 
@@ -287,11 +289,11 @@ namespace Server
         }
 
         //cancel the movement direction and then player stop :)
-        private void tryCancelDirection(int pX, int pY)
+        private void tryCancelDirection(int pX, int pY, int pZ)
         {
-            if (walkDirection[0] == pX && walkDirection[1] == pY)
+            if (walkDirection[0] == pX && walkDirection[1] == pY && walkDirection[2] == pZ)
             {
-                walkDirection[0] = 0; walkDirection[1] = 0;
+                walkDirection[0] = 0; walkDirection[1] = 0; walkDirection[2] = 0;
 
             }
         }
@@ -308,7 +310,7 @@ namespace Server
             _confMove.player = getPlayerIndex();
             _confMove.dirX = position[0];
             _confMove.dirY = position[1];
-            _confMove.dirZ = 0;
+            _confMove.dirZ = position[2];
 
             //set y rotation
             if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 0; }
@@ -321,8 +323,10 @@ namespace Server
             _room.printGrid(_room.roomArray);
         }
 
+
+
         //Send an actuator toggle packet
-        private void sendActuatorToggle(int posX, int posY)
+        private void sendActuatorToggle(int posX, int posY, int posZ)
         {
             try
             {
@@ -377,12 +381,39 @@ namespace Server
             {
                 //Logging.LogInfo("Player.cs: Could not get actuator!", Logging.debugState.DETAILED);
             }
+            Logging.LogInfo("Hit a lever on position : X: " + posX + " Y: " + posY + " Z: " + posZ, Logging.debugState.DETAILED);
+            ConfActuatorToggle newToggle = new ConfActuatorToggle();
+            newToggle.isActivated = true;
+            newToggle.posX = posX;
+            newToggle.posY = posY;
+            newToggle.posZ = posZ;
+            _room.sendToAll(newToggle);
         }
 
-        private void sendPickUpBox(int pX, int pY)
+        private void sendActuatorToggle(int[] pPos)
+        {
+            try 
+            {
+                Logging.LogInfo("Hit a lever on position : X: " + pPos[0] + " Y: " + pPos[1] + " Z: " + pPos[2], Logging.debugState.DETAILED);
+                ConfActuatorToggle newToggle = new ConfActuatorToggle();
+                newToggle.isActivated = true;
+                newToggle.posX = pPos[0];
+                newToggle.posY = pPos[1];
+                newToggle.posZ = pPos[2];
+                _room.sendToAll(newToggle);
+            }
+            catch 
+            {
+                Logging.LogInfo("the pPosition array length in sendActuator toggle was not 3 long", Logging.debugState.SIMPLE);
+            }
+        }
+
+
+        //Send a pickup box packet
+        private void sendPickUpBox(int pX, int pY, int pZ)
         {
             //remove box at the position
-            _room.coordinatesRemove(pX, pY, 7);
+            _room.coordinatesRemove(pX, pY, pZ, 7);
             //set player to have a box
             _hasBox = true;
 
@@ -390,12 +421,38 @@ namespace Server
             ConfHandleBox confHandleBox = new ConfHandleBox();
             confHandleBox.posX = pX;
             confHandleBox.posY = pY;
+            confHandleBox.posZ = pZ;
             confHandleBox.isPickingUp = true;
         }
+        private void sendPickUpBox(int[] pPos)
+        {
+            try
+            {
+                //remove box at the position
+                _room.coordinatesRemove(pPos[0], pPos[1], pPos[2], 7);
+                //set player to have a box
+                _hasBox = true;
+
+                //send package
+                ConfHandleBox confHandleBox = new ConfHandleBox();
+                confHandleBox.posX = pPos[0];
+                confHandleBox.posY = pPos[1];
+                confHandleBox.posZ = pPos[2];
+                confHandleBox.isPickingUp = true;
+            }
+            catch
+            {
+                Logging.LogInfo("the pPosition array length in send pickup box was not 3 long", Logging.debugState.SIMPLE);
+
+            }
+        }
+
+
+
         #endregion
 
         #region player tools
-        
+
         //get the index the player has 
         private int getPlayerIndex()
         {
@@ -415,6 +472,16 @@ namespace Server
         {
             return _client;
         }
+
+        public int[] OneInFront()
+        {
+            int[] positionInFront = new int[3];
+            positionInFront[0] = position[0] + orientation[0];  // xPosition + xOrientation
+            positionInFront[1] = position[1];                   // yPosition
+            positionInFront[2] = position[2] + orientation[1];  // zPosition + zOrientation
+
+            return positionInFront;
+        }
         #endregion
 
         #region update
@@ -432,7 +499,7 @@ namespace Server
                 if (timer >= 2)
                 {
                     timer = 0;
-                    tryPositionChange(walkDirection[0], walkDirection[1]);
+                    tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                 }
                 timer++;
                 

@@ -9,8 +9,8 @@ namespace Server
 {
     public abstract class GameRoom : Room
     {
-        public List<int>[,] roomArray;
-        public List<int>[,] roomStatic;
+        public List<int>[,,] roomArray;
+        public List<int>[,,] roomStatic;
         //quick cheat sheet
         //0 is empty
         //1 is player
@@ -26,11 +26,11 @@ namespace Server
         public List<SpawnPoint> spawnPoints;
 
         #region initialization
-        public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight) : base(pServer)
+        public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
             //set up rooms
-            roomArray = new List<int>[roomWidth, roomHeight];
-            roomStatic = new List<int>[roomWidth, roomHeight];
+            roomArray = new List<int>[roomWidth, roomHeight, roomLength];
+            roomStatic = new List<int>[roomWidth, roomHeight, roomLength];
 
             //initialise every list in list array
             initializeAllLists();
@@ -46,25 +46,31 @@ namespace Server
         private void initializeAllLists()
         {
             //Make all lists for room array
-            for (int y = 0; y < roomArray.GetLength(1); y++)
+            for (int z = 0; z < roomArray.GetLength(2); z++)
             {
-                for (int x = 0; x < roomArray.GetLength(0); x++)
+                for (int y = 0; y < roomArray.GetLength(1); y++)
                 {
-                    int nDebugLength = roomArray.GetLength(0);
-                    int nDebugLength1 = roomArray.GetLength(1);
-                    roomArray[x, y] = new List<int>();
+                    for (int x = 0; x < roomArray.GetLength(0); x++)
+                    {
+                        int nDebugLength = roomArray.GetLength(0);
+                        int nDebugLength1 = roomArray.GetLength(1);
+                        roomArray[x, y, z] = new List<int>();
+                    }
+
                 }
-                
             }
 
             //Make all lists for room static
-            for (int y = 0; y < roomStatic.GetLength(0); y++)
+            for (int z = 0; z < roomStatic.GetLength(2); z++)
             {
-                for (int x = 0; x < roomStatic.GetLength(1); x++)
+                for (int y = 0; y < roomStatic.GetLength(1); y++)
                 {
-                    roomStatic[x, y] = new List<int>();
+                    for (int x = 0; x < roomStatic.GetLength(0); x++)
+                    {
+                        roomStatic[x, y, z] = new List<int>();
+                    }
+
                 }
-                
             }
         }
 
@@ -78,26 +84,62 @@ namespace Server
         /// <param name="pY"> y-coordinate</param>
         /// <param name="pValue"> value on coordinate </param>
         /// <returns>true if the coordinates contain the value</returns>
-        public bool coordinatesContain(int pX, int pY, int pValue)
+        public bool coordinatesContain(int pX, int pY, int pZ, int pValue)
         {
-            foreach (int value in roomArray[pX, pY])
+            foreach (int value in roomArray[pX, pY, pZ])
             {
                 if (value == pValue) return true;
             }
 
             return false;
         }
+
+        public bool coordinatesContain(int[] pPos, int pValue)
+        {
+            try
+            {
+                foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
+                {
+                    if (value == pValue) return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                Logging.LogInfo("CoordinatesContain got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
+                return false;
+            }
+
+        }
+
+
+
         /// <summary>
         /// Checks if coordinates[pX, pY] is empty
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
         /// <returns>true if list count is 0</returns>
-        public bool coordinatesEmpty(int pX, int pY)
+        public bool coordinatesEmpty(int pX, int pY, int pZ)
         {
-            if (roomArray[pX, pY].Count == 0) return true;
+            if (roomArray[pX, pY, pZ].Count == 0) return true;
             return false;
         }
+        public bool coordinatesEmpty(int[] pPos)
+        {
+            try
+            {
+                if (roomArray[pPos[0], pPos[1], pPos[2]].Count == 0) return true;
+                return false;
+            }
+            catch
+            {
+                Logging.LogInfo("CoordinatesEmpty got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// quick tool function to remove all values from given value
@@ -105,11 +147,13 @@ namespace Server
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
         /// <param name="pValue">value</param>
-        public void coordinatesRemove(int pX, int pY, int pValue)
+        public void coordinatesRemove(int pX, int pY, int pZ, int pValue)
         {
             List<int> thingToRemove = new List<int>();
+
             Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + " with the value of: " + pValue, Logging.debugState.DETAILED);
             try
+            foreach (int value in roomArray[pX, pY, pZ])
             {
                 if (roomArray[pX, pY].Count != 0)
                 {
@@ -130,6 +174,7 @@ namespace Server
             catch
             {
                 Logging.LogInfo("GameRoom.cs: Could not find position probably out of bounds", Logging.debugState.DETAILED);
+                roomArray[pX, pY, pZ].Remove(removedValue);
             }
         }
 
@@ -165,16 +210,16 @@ namespace Server
         /// <param name="pY">y-coordinate</param>
         /// <param name="index">index type of the gameobject</param>
         /// <returns></returns>
-        public GameObject coordinatesGetGameObject(int pX, int pY, int index)
+        public GameObject coordinatesGetGameObject(int pX, int pY, int pZ, int index)
         {
             //check if the coordinate does indeed containt the index
-            if (coordinatesContain(pX,pY,index))
+            if (coordinatesContain(pX,pY, pZ, index))
             {
                 //go through game object list and see if you can get the right index
                 foreach (GameObject obj in gameObjects)
                 {
                     //make sure the type and coordinates are the same
-                    if (obj.position[0] == pX && obj.position[1] == pY && obj.objectIndex == index)
+                    if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && obj.objectIndex == index)
                     {
                         //yay you get the game object
                         return obj;
@@ -198,13 +243,13 @@ namespace Server
         /// <param name="pY">y-coordinate</param>
         /// <param name="pIndex">index type of the gameobject</param>
         /// <returns></returns>
-        public List<GameObject> CoordinatesGetGameObjects(int pX, int pY, int pIndex = -1)
+        public List<GameObject> CoordinatesGetGameObjects(int pX, int pY, int pZ, int pIndex = -1)
         {
             List<GameObject> objectList = new List<GameObject>();
             foreach (GameObject obj in gameObjects)
             {
                 //make sure the type and coordinates are the same
-                if (obj.position[0] == pX && obj.position[1] == pY && (pIndex == -1 || obj.objectIndex == pIndex))
+                if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && (pIndex == -1 || obj.objectIndex == pIndex))
                 {
                     //yay you get the game object
                     objectList.Add(obj);
@@ -215,45 +260,53 @@ namespace Server
         }
 
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
-        public void printGrid(List<int>[,] pGrid)
+        public void printGrid(List<int>[,,] pGrid)
         {
             for (int y = 0; y < pGrid.GetLength(1); y++)
             {
-                for (int x = 0; x < pGrid.GetLength(0); x++)
+                int reverseY = pGrid.GetLength(1) - y - 1;
+                for (int z = 0; z < pGrid.GetLength(2); z++)
                 {
-                    int reverseY = pGrid.GetLength(1) - y - 1;
-                    Console.Write("[ ");
-                    for (int element = 0; element < pGrid[x, reverseY].Count; element++)
+                    for (int x = 0; x < pGrid.GetLength(0); x++)
                     {
-                        if (element != 0) Console.Write(", ");
-                        else Console.Write("  ");
-                        Console.Write(pGrid[x, reverseY][element]);
-                    }
-
-                    if (pGrid[x, reverseY].Count < 3)
-                    {
-                        for (int element = 0; element < 3 - pGrid[x, reverseY].Count; element++)
+                        int reverseZ = pGrid.GetLength(2) - z - 1;
+                        Console.Write("[ ");
+                        for (int element = 0; element < pGrid[x, reverseY, reverseZ].Count; element++)
                         {
-                            Console.Write("   ");
-
+                            if (element != 0) Console.Write(", ");
+                            else Console.Write("  ");
+                            Console.Write(pGrid[x, reverseY, reverseZ][element]);
                         }
+
+                        if (pGrid[x, y, reverseZ].Count < 3)
+                        {
+                            for (int element = 0; element < 3 - pGrid[x, reverseY, reverseZ].Count; element++)
+                            {
+                                Console.Write("   ");
+
+                            }
+                        }
+                        Console.Write(" ]");
                     }
-                    Console.Write(" ]");
+                    Console.Write("\n");
                 }
-                Console.Write("\n");
+                Console.WriteLine("=================================================================");
             }
         }
 
         //Copy the values of grid 1 to grid 0. Mostly used for resetting the level
-        public void CopyGrid(List<int>[,] pGrid0, List<int>[,] pGrid1)
+        public void CopyGrid(List<int>[,,] pGrid0, List<int>[,,] pGrid1)
         {
             try
             {
-                for (int y = 0; y < pGrid0.GetLength(0); y++)
+                for (int z = 0; z < pGrid0.GetLength(2); z++)
                 {
-                    for (int x = 0; x < pGrid0.GetLength(1); x++)
+                    for (int y = 0; y < pGrid0.GetLength(1); y++)
                     {
-                        pGrid0[x, y] = pGrid1[x, y];
+                        for (int x = 0; x < pGrid0.GetLength(0); x++)
+                        {
+                            pGrid0[x, y, z] = pGrid1[x, y, z];
+                        }
                     }
                 }
             }
@@ -269,13 +322,13 @@ namespace Server
         public void generateGridFromText(string filePath)
         {
             //values to determine grid size
-            int minX = 0, minY = 0;
+            int minX = 0, minY = 0, minZ = 0;
 
             //get the file path
             List<string> lines = File.ReadAllLines(filePath).ToList();
-            determineGridSize(lines, out minX, out minY);
+            determineGridSize(lines, out minX, out minY, out minZ);
             initializeAllLists();
-            addObjectsToGrid(lines, minX, minY);
+            addObjectsToGrid(lines, minX, minY, minZ);
 
         }
 
@@ -285,10 +338,10 @@ namespace Server
         /// <param name="information"> all information</param>
         /// <param name="minX">the lowest X value of the grid</param>
         /// <param name="minY">the lowest Y Value of the grid</param>
-        private void determineGridSize(List<string> information, out int minX, out int minY)
+        private void determineGridSize(List<string> information, out int minX, out int minY, out int minZ)
         {
-            int maxX = -5000000, maxY = -5000000;
-            minX = 5000000;minY = 5000000;
+            int maxX = -5000000, maxY = -5000000, maxZ = -5000000;
+            minX = 5000000;minY = 5000000; minZ = 500000000;
             foreach (string line in information)
             {
                 //split the strings based on spaces
@@ -296,18 +349,21 @@ namespace Server
                 //determine x and y coord
                 int xCoord = (int)float.Parse(rawInformation[1]);
                 int yCoord = (int)float.Parse(rawInformation[2]);
+                int zCoord = (int)float.Parse(rawInformation[3]);
 
                 //determine minimum X, maximum X, minimum Y, maximumY
                 if (xCoord < minX) minX = (int)xCoord;
                 if (xCoord > maxX) maxX = (int)xCoord;
                 if (yCoord < minY) minY = (int)yCoord;
                 if (yCoord > maxY) maxY = (int)yCoord;
+                if (zCoord < minZ) minZ = (int)zCoord;
+                if (zCoord > maxZ) maxZ = (int)zCoord;
 
 
             }
             //set new size of room
-            Logging.LogInfo("Grid Size: " + (maxX + 1 - minX) + " by " + (maxY + 1 - minY),Logging.debugState.DETAILED);
-            roomArray = new List<int>[maxX + 1 - minX, maxY + 1 - minY];
+            Logging.LogInfo("Grid Size: " + (maxX + 1 - minX) + " by " + (maxY + 1 - minY) + " by " + (maxZ + 1 - minZ),Logging.debugState.DETAILED);
+            roomArray = new List<int>[maxX + 1 - minX, maxY + 1 - minY, maxZ + 1 - minZ];
         }
 
         /// <summary>
@@ -316,7 +372,7 @@ namespace Server
         /// <param name="information">all the information that we need to use</param>
         /// <param name="minX">the minimum X of the grid</param>
         /// <param name="minY">the minimum Y of the grid</param>
-        private void addObjectsToGrid(List<string> information, int minX, int minY)
+        private void addObjectsToGrid(List<string> information, int minX, int minY, int minZ)
         {
             foreach (string line in information)
             {
@@ -331,7 +387,7 @@ namespace Server
 
                     case (2):
                         //coordinates are the information values + the minimum X to put the most left/most bottom/ most forward object in the (0,0,0) spot
-                        Wall wall = new Wall(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY);
+                        Wall wall = new Wall(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ );
                         break;
 
                     case (5):
@@ -344,7 +400,7 @@ namespace Server
                         break;
 
                     case (7):
-                        Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY);
+                        Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ);
                         break;
 
                 }

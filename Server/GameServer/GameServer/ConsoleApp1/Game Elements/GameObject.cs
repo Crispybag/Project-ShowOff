@@ -30,7 +30,7 @@ namespace Server
             pRoom.gameObjects.Add(this);
 
             //initialise values
-            position = new int[2];
+            position = new int[3];
             moveState = pMoveState;
         }
 
