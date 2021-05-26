@@ -37,11 +37,14 @@ namespace Server
             Lever lever1 = new Lever(this, 9, 9, false);
             Lever lever2 = new Lever(this, 0, 9, false);
             Box box = new Box(this, 1, 2);
+
+            generateGridFromText("../../../../LevelFiles/actualCoolLevel.txt");
+
             SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 0);
             spawnPoints.Add(_spawnPoint0);
 
-            SpawnPoint _spawnPoint1 = new SpawnPoint(this, 1, 9, 0);
-            spawnPoints.Add(_spawnPoint1);
+            //SpawnPoint _spawnPoint1 = new SpawnPoint(this, 1, 9, 0);
+            //spawnPoints.Add(_spawnPoint1);
 
             CopyGrid(roomStatic, roomArray);
             printGrid(roomArray);

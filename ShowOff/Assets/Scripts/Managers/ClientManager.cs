@@ -74,6 +74,7 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfJoinRoom) { handleConfJoinRoom(pInMessage as ConfJoinRoom); }
         if (pInMessage is ConfMove) { handleConfMove(pInMessage as ConfMove); }
         if (pInMessage is ConfActuatorToggle) { handleConfActuatorToggle(pInMessage as ConfActuatorToggle); }
+        if (pInMessage is ConfHandleBox) { handleConfHandleBox(pInMessage as ConfHandleBox); }
     }
 
 
@@ -99,13 +100,14 @@ public class ClientManager : MonoBehaviour
         if (pMessage.player == 0)
         {
             player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
-            //player0.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
             Debug.Log("Moved player 1!");
         }
         else
         {
             player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
-            //player1.transform.position = new Vector3(pMoveConfirm.dirX, pMoveConfirm.dirY, pMoveConfirm.dirZ);
+            player2.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
+
             Debug.Log("Moved player 2!");
         }
     
@@ -155,7 +157,17 @@ public class ClientManager : MonoBehaviour
         }
     }
 
-
+    private void handleConfHandleBox(ConfHandleBox pHandleBox)
+    {
+        if(pHandleBox.isPickingUp)
+        {
+            //remove box from scene
+        }
+        else
+        {
+            //add box to scene
+        }
+    }
 
     #region ReadIncommingData
 
