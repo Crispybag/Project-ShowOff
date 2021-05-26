@@ -19,6 +19,9 @@ namespace Server
             //5 is pressure plate
             //6 is door
             //7 is box
+            //8 is button
+
+
             Wall wall0 = new Wall(this, 0, 3);
             Wall wall1 = new Wall(this, 1, 3);
             //Wall doorish = new Wall(this, 2, 3);
