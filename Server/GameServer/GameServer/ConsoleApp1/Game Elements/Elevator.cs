@@ -14,15 +14,14 @@ namespace Server
         public Dictionary<int, EmptyGameObject> points = new Dictionary<int, EmptyGameObject>();
 
 
-        GameRoom _room;
-
-        public Elevator(GameRoom pRoom, int pX, int pY, int pID) : base(pRoom, CollInteractType.SOLID)
+        public Elevator(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, CollInteractType.SOLID)
         {
             ID = pID;
-            _room = pRoom;
             position[0] = pX;
             position[1] = pY;
-            _room.roomArray[position[0], position[1]].Add(9);
+            position[2] = pZ;
+            room = pRoom;
+            room.roomArray[position[0], position[1], position[2]].Add(9);
             objectIndex = 9;
             currentPos = 0;
         }
@@ -48,9 +47,9 @@ namespace Server
                 elevatorMove.posX = points[currentPos].position[0];
                 elevatorMove.posY = points[currentPos].position[1];
 
-                _room.coordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], 9);
-                _room.coordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], 9);
-                _room.sendToAll(elevatorMove);
+                room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
+                room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);
+                room.sendToAll(elevatorMove);
             }
 
             else if (currentDirection == Button.Direction.UP)
@@ -70,9 +69,9 @@ namespace Server
                 elevatorMove.posX = points[currentPos].position[0];
                 elevatorMove.posY = points[currentPos].position[1];
 
-                _room.coordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], 9);
-                _room.coordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], 9);
-                _room.sendToAll(elevatorMove);
+                room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
+                room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);
+                room.sendToAll(elevatorMove);
             }
             else
             {

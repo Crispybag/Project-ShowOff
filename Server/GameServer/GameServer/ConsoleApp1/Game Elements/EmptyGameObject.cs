@@ -7,12 +7,12 @@ namespace Server
 {
     class EmptyGameObject : GameObject
     {
-        GameRoom _room;
-
-        public EmptyGameObject(GameRoom pRoom, int pX, int pY) : base(pRoom, CollInteractType.SOLID)
+        public EmptyGameObject(GameRoom pRoom, int pX, int pY, int pZ) : base(pRoom, CollInteractType.SOLID)
         {
             position[0] = pX;
             position[1] = pY;
+            position[2] = pZ;
+            room = pRoom;
         }
     }
 }

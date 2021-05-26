@@ -76,250 +76,10 @@ namespace Server
 
         #endregion
 
-        #region grid tools
-        /// <summary>
-        /// checks if the coordinates have a certain value
-        /// </summary>
-        /// <param name="pX"> x-coordinate</param>
-        /// <param name="pY"> y-coordinate</param>
-        /// <param name="pValue"> value on coordinate </param>
-        /// <returns>true if the coordinates contain the value</returns>
-        public bool coordinatesContain(int pX, int pY, int pZ, int pValue)
-        {
-            foreach (int value in roomArray[pX, pY, pZ])
-            {
-                if (value == pValue) return true;
-            }
 
-            return false;
-        }
-
-        public bool coordinatesContain(int[] pPos, int pValue)
-        {
-            try
-            {
-                foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
-                {
-                    if (value == pValue) return true;
-                }
-
-                return false;
-            }
-            catch
-            {
-                Logging.LogInfo("CoordinatesContain got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
-                return false;
-            }
-
-        }
-
-
-
-        /// <summary>
-        /// Checks if coordinates[pX, pY] is empty
-        /// </summary>
-        /// <param name="pX">x-coordinate</param>
-        /// <param name="pY">y-coordinate</param>
-        /// <returns>true if list count is 0</returns>
-        public bool coordinatesEmpty(int pX, int pY, int pZ)
-        {
-            if (roomArray[pX, pY, pZ].Count == 0) return true;
-            return false;
-        }
-        public bool coordinatesEmpty(int[] pPos)
-        {
-            try
-            {
-                if (roomArray[pPos[0], pPos[1], pPos[2]].Count == 0) return true;
-                return false;
-            }
-            catch
-            {
-                Logging.LogInfo("CoordinatesEmpty got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
-                return false;
-            }
-        }
-
-
-        /// <summary>
-        /// quick tool function to remove all values from given value
-        /// </summary>
-        /// <param name="pX">x-coordinate</param>
-        /// <param name="pY">y-coordinate</param>
-        /// <param name="pValue">value</param>
-        public void coordinatesRemove(int pX, int pY, int pZ, int pValue)
-        {
-            List<int> thingToRemove = new List<int>();
-
-            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + " with the value of: " + pValue, Logging.debugState.DETAILED);
-            try
-            foreach (int value in roomArray[pX, pY, pZ])
-            {
-                if (roomArray[pX, pY].Count != 0)
-                {
-                    foreach (int value in roomArray[pX, pY])
-                    {
-                        if (value == pValue)
-                        {
-                            thingToRemove.Add(value);
-                        }
-                    }
-                }
-
-                foreach (int removedValue in thingToRemove)
-                {
-                    roomArray[pX, pY].Remove(removedValue);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: Could not find position probably out of bounds", Logging.debugState.DETAILED);
-                roomArray[pX, pY, pZ].Remove(removedValue);
-            }
-        }
-
-        /// <summary>
-        /// Adds a new objects (int) to given position
-        /// </summary>
-        /// <param name="pX">x-coordinate</param>
-        /// <param name="pY">y-coordinate</param>
-        /// <param name="pValue">value</param>
-        public void coordinatesAdd(int pX, int pY, int pValue)
-        {
-            roomArray[pX, pY].Add(pValue);
-        }
-
-        /// <summary>
-        /// Gets all objects from the location
-        /// </summary>
-        /// <param name="pX">x-coordinate</param>
-        /// <param name="pY">y-coordinate</param>
-        public List<int> GetObjectsFromPosition(int pX, int pY)
-        {
-            List<int> objects = new List<int>();
-            foreach (int value in roomArray[pX, pY])
-            {
-                objects.Add(value);
-            }
-            return objects;
-        }
-
-        /// Get game object of index on specific coordinate
-        /// </summary>
-        /// <param name="pX">x-coordinate</param>
-        /// <param name="pY">y-coordinate</param>
-        /// <param name="index">index type of the gameobject</param>
-        /// <returns></returns>
-        public GameObject coordinatesGetGameObject(int pX, int pY, int pZ, int index)
-        {
-            //check if the coordinate does indeed containt the index
-            if (coordinatesContain(pX,pY, pZ, index))
-            {
-                //go through game object list and see if you can get the right index
-                foreach (GameObject obj in gameObjects)
-                {
-                    //make sure the type and coordinates are the same
-                    if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && obj.objectIndex == index)
-                    {
-                        //yay you get the game object
-                        return obj;
-                    }
-                    
-                }
-                Logging.LogInfo("GameRoom.cs: When trying to look for the game object it could not be found", Logging.debugState.DETAILED);
-                return null;
-            }
-
-            else
-                Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
-
-            return null;
-        }
-
-        /// <summary>
-        /// Get all game objects of index(if specified) on specific coordinate
-        /// </summary>
-        /// <param name="pX">x-coordinate</param>
-        /// <param name="pY">y-coordinate</param>
-        /// <param name="pIndex">index type of the gameobject</param>
-        /// <returns></returns>
-        public List<GameObject> CoordinatesGetGameObjects(int pX, int pY, int pZ, int pIndex = -1)
-        {
-            List<GameObject> objectList = new List<GameObject>();
-            foreach (GameObject obj in gameObjects)
-            {
-                //make sure the type and coordinates are the same
-                if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && (pIndex == -1 || obj.objectIndex == pIndex))
-                {
-                    //yay you get the game object
-                    objectList.Add(obj);
-
-                }
-            }
-                return objectList;
-        }
-
-        //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
-        public void printGrid(List<int>[,,] pGrid)
-        {
-            for (int y = 0; y < pGrid.GetLength(1); y++)
-            {
-                int reverseY = pGrid.GetLength(1) - y - 1;
-                for (int z = 0; z < pGrid.GetLength(2); z++)
-                {
-                    for (int x = 0; x < pGrid.GetLength(0); x++)
-                    {
-                        int reverseZ = pGrid.GetLength(2) - z - 1;
-                        Console.Write("[ ");
-                        for (int element = 0; element < pGrid[x, reverseY, reverseZ].Count; element++)
-                        {
-                            if (element != 0) Console.Write(", ");
-                            else Console.Write("  ");
-                            Console.Write(pGrid[x, reverseY, reverseZ][element]);
-                        }
-
-                        if (pGrid[x, y, reverseZ].Count < 3)
-                        {
-                            for (int element = 0; element < 3 - pGrid[x, reverseY, reverseZ].Count; element++)
-                            {
-                                Console.Write("   ");
-
-                            }
-                        }
-                        Console.Write(" ]");
-                    }
-                    Console.Write("\n");
-                }
-                Console.WriteLine("=================================================================");
-            }
-        }
-
-        //Copy the values of grid 1 to grid 0. Mostly used for resetting the level
-        public void CopyGrid(List<int>[,,] pGrid0, List<int>[,,] pGrid1)
-        {
-            try
-            {
-                for (int z = 0; z < pGrid0.GetLength(2); z++)
-                {
-                    for (int y = 0; y < pGrid0.GetLength(1); y++)
-                    {
-                        for (int x = 0; x < pGrid0.GetLength(0); x++)
-                        {
-                            pGrid0[x, y, z] = pGrid1[x, y, z];
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.LogInfo(e.Message);
-                Logging.LogInfo("The grids were probably not equal in size", Logging.debugState.DETAILED);
-            }
-        }
-        #endregion
         #region level data loading
 
-        public void generateGridFromText(string filePath)
+        public void GenerateGridFromText(string filePath)
         {
             //values to determine grid size
             int minX = 0, minY = 0, minZ = 0;
@@ -358,8 +118,6 @@ namespace Server
                 if (yCoord > maxY) maxY = (int)yCoord;
                 if (zCoord < minZ) minZ = (int)zCoord;
                 if (zCoord > maxZ) maxZ = (int)zCoord;
-
-
             }
             //set new size of room
             Logging.LogInfo("Grid Size: " + (maxX + 1 - minX) + " by " + (maxY + 1 - minY) + " by " + (maxZ + 1 - minZ),Logging.debugState.DETAILED);
@@ -391,7 +149,7 @@ namespace Server
                         break;
 
                     case (5):
-                        Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, true);
+                        Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, 1, false);
                         break;
 
                     case (6):
@@ -407,6 +165,8 @@ namespace Server
 
             }
         }
+
+
         #endregion
 
         #region network handling
@@ -467,10 +227,10 @@ namespace Server
         {
             //for debug purposes print grid
             Logging.LogInfo("Current Grid");
-            printGrid(roomArray);
+            PrintGrid(roomArray);
 
             Logging.LogInfo("\n\nSaved Grid");
-            printGrid(roomStatic);
+            PrintGrid(roomStatic);
 
             //copy static grid to room grid
             CopyGrid(roomArray, roomStatic);
@@ -537,6 +297,409 @@ namespace Server
             }
         }
         #endregion
+
+
+        #region grid tools
+
+        /// <summary>
+        /// checks if the coordinates have a certain value
+        /// </summary>
+        /// <param name="pX"> x-coordinate</param>
+        /// <param name="pY"> y-coordinate</param>
+        /// <param name="pValue"> value on coordinate </param>
+        /// <returns>true if the coordinates contain the value</returns>
+        public bool OnCoordinatesContain(int[] pPos, int pValue)
+        {
+            try
+            {
+                foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
+                {
+                    if (value == pValue) return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                Logging.LogInfo("CoordinatesContain got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// checks if the coordinates have a certain value
+        /// </summary>
+        /// <param name="pX"> x-coordinate</param>
+        /// <param name="pY"> y-coordinate</param>
+        /// <param name="pValue"> value on coordinate </param>
+        /// <returns>true if the coordinates contain the value</returns>
+        public bool OnCoordinatesContain(int pX, int pY, int pZ, int pValue)
+        {
+            try
+            {
+                foreach (int value in roomArray[pX, pY, pZ])
+                {
+                    if (value == pValue) return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                Logging.LogInfo("CoordinatesContain got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
+                return false;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Checks if coordinates[pX, pY] is empty
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pZ">y-coordinate</param>
+        /// <returns>true if list count is 0</returns>
+        public bool OnCoordinatesEmpty(int[] pPos)
+        {
+            try
+            {
+                if (roomArray[pPos[0], pPos[1], pPos[2]].Count == 0) return true;
+                return false;
+            }
+            catch
+            {
+                Logging.LogInfo("CoordinatesEmpty got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks if coordinates[pX, pY] is empty
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pZ">y-coordinate</param>
+        /// <returns>true if list count is 0</returns>
+        public bool OnCoordinatesEmpty(int pX, int pY, int pZ)
+        {
+            try
+            {
+                if (roomArray[pX, pY, pZ].Count == 0) return true;
+                return false;
+            }
+            catch
+            {
+                Logging.LogInfo("CoordinatesEmpty got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// quick tool function to remove all values from given value
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pValue">value</param>
+        public void OnCoordinatesRemove(int[] pPos, int pValue)
+        {
+            List<int> thingToRemove = new List<int>();
+
+            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + " with the value of: " + pValue, Logging.debugState.DETAILED);
+            try
+            {
+                foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
+                {
+
+                    if (value == pValue)
+                    {
+                        thingToRemove.Add(value);
+                    }
+                }
+                foreach (int removedValue in thingToRemove)
+                {
+                    roomArray[pPos[0], pPos[1], pPos[2]].Remove(removedValue);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: Could not find position probably out of bounds", Logging.debugState.DETAILED);
+            }
+        }
+
+        /// <summary>
+        /// quick tool function to remove all values from given value
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pValue">value</param>
+        public void OnCoordinatesRemove(int pX, int pY, int pZ, int pValue)
+        {
+            List<int> thingToRemove = new List<int>();
+
+            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + "," + pZ + " with the value of: " + pValue, Logging.debugState.DETAILED);
+            try
+            {
+                foreach (int value in roomArray[pX, pY, pZ])
+                {
+
+                    if (value == pValue)
+                    {
+                        thingToRemove.Add(value);
+                    }
+                }
+                foreach (int removedValue in thingToRemove)
+                {
+                    roomArray[pX, pY, pZ].Remove(removedValue);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: Could not find position probably out of bounds", Logging.debugState.DETAILED);
+            }
+        }
+
+
+        /// <summary>
+        /// Adds a new objects (int) to given position
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pValue">value</param>
+        public void OnCoordinatesAdd(int[] pPos, int pValue)
+        {
+            roomArray[pPos[2], pPos[1], pPos[2]].Add(pValue);
+        }
+
+        /// <summary>
+        /// Adds a new objects (int) to given position
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pValue">value</param>
+        public void OnCoordinatesAdd(int pX, int pY, int pZ, int pValue)
+        {
+            roomArray[pX, pY, pZ].Add(pValue);
+        }
+
+
+        /// <summary>
+        /// Gets all objects from the location
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        public List<int> OnCoordinatesGetIndexes(int[] pPos)
+        {
+            List<int> objects = new List<int>();
+            foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
+            {
+                objects.Add(value);
+            }
+            return objects;
+        }
+
+        /// <summary>
+        /// Gets all objects from the location
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        public List<int> OnCoordinatesGetIndexes(int pX, int pY, int pZ)
+        {
+            List<int> objects = new List<int>();
+            foreach (int value in roomArray[pX, pY, pZ])
+            {
+                objects.Add(value);
+            }
+            return objects;
+        }
+
+
+        /// Get game object of index on specific coordinate
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="index">index type of the gameobject</param>
+        /// <returns></returns>
+        public GameObject OnCoordinatesGetGameObject(int[] pPos, int index)
+        {
+            //check if the coordinate does indeed containt the index
+            if (OnCoordinatesContain(pPos[0], pPos[1], pPos[2], index))
+            {
+                //go through game object list and see if you can get the right index
+                foreach (GameObject obj in gameObjects)
+                {
+                    //make sure the type and coordinates are the same
+                    if (obj.position[0] == pPos[0] && obj.position[1] == pPos[1] && obj.position[2] == pPos[2] && obj.objectIndex == index)
+                    {
+                        //yay you get the game object
+                        return obj;
+                    }
+
+                }
+                Logging.LogInfo("GameRoom.cs: When trying to look for the game object it could not be found", Logging.debugState.DETAILED);
+                return null;
+            }
+
+            else
+                Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
+
+            return null;
+        }
+
+        /// Get game object of index on specific coordinate
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="index">index type of the gameobject</param>
+        /// <returns></returns>
+        public GameObject OnCoordinatesGetGameObject(int pX, int pY, int pZ, int index)
+        {
+            //check if the coordinate does indeed containt the index
+            if (OnCoordinatesContain(pX, pY, pZ, index))
+            {
+                //go through game object list and see if you can get the right index
+                foreach (GameObject obj in gameObjects)
+                {
+                    //make sure the type and coordinates are the same
+                    if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && obj.objectIndex == index)
+                    {
+                        //yay you get the game object
+                        return obj;
+                    }
+
+                }
+                Logging.LogInfo("GameRoom.cs: When trying to look for the game object it could not be found", Logging.debugState.DETAILED);
+                return null;
+            }
+
+            else
+                Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
+
+            return null;
+        }
+
+
+        /// <summary>
+        /// Get all game objects of index(if specified) on specific coordinate
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pIndex">index type of the gameobject</param>
+        /// <returns></returns>
+        public List<GameObject> OnCoordinatesGetGameObjects(int[] pPos, int pIndex = -1)
+        {
+            List<GameObject> objectList = new List<GameObject>();
+            foreach (GameObject obj in gameObjects)
+            {
+                //make sure the type and coordinates are the same
+                if (obj.position[0] == pPos[2] && obj.position[1] == pPos[1] && obj.position[2] == pPos[2] && (pIndex == -1 || obj.objectIndex == pIndex))
+                {
+                    //yay you get the game object
+                    objectList.Add(obj);
+
+                }
+            }
+            return objectList;
+        }
+
+        /// <summary>
+        /// Get all game objects of index(if specified) on specific coordinate
+        /// </summary>
+        /// <param name="pX">x-coordinate</param>
+        /// <param name="pY">y-coordinate</param>
+        /// <param name="pIndex">index type of the gameobject</param>
+        /// <returns></returns>
+        public List<GameObject> OnCoordinatesGetGameObjects(int pX, int pY, int pZ, int pIndex = -1)
+        {
+            List<GameObject> objectList = new List<GameObject>();
+            foreach (GameObject obj in gameObjects)
+            {
+                //make sure the type and coordinates are the same
+                if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && (pIndex == -1 || obj.objectIndex == pIndex))
+                {
+                    //yay you get the game object
+                    objectList.Add(obj);
+
+                }
+            }
+            return objectList;
+        }
+
+
+        /// <summary>
+        /// Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
+        /// </summary>
+        /// <param name="pGrid"></param>
+        ///<returns></returns>
+        public void PrintGrid(List<int>[,,] pGrid)
+        {
+            for (int y = 0; y < pGrid.GetLength(1); y++)
+            {
+                int reverseY = pGrid.GetLength(1) - y - 1;
+                for (int z = 0; z < pGrid.GetLength(2); z++)
+                {
+                    for (int x = 0; x < pGrid.GetLength(0); x++)
+                    {
+                        int reverseZ = pGrid.GetLength(2) - z - 1;
+                        Console.Write("[ ");
+                        for (int element = 0; element < pGrid[x, reverseY, reverseZ].Count; element++)
+                        {
+                            if (element != 0) Console.Write(", ");
+                            else Console.Write("  ");
+                            Console.Write(pGrid[x, reverseY, reverseZ][element]);
+                        }
+
+                        if (pGrid[x, y, reverseZ].Count < 3)
+                        {
+                            for (int element = 0; element < 3 - pGrid[x, reverseY, reverseZ].Count; element++)
+                            {
+                                Console.Write("   ");
+
+                            }
+                        }
+                        Console.Write(" ]");
+                    }
+                    Console.Write("\n");
+                }
+                Console.WriteLine("=================================================================");
+            }
+        }
+
+
+        /// <summary>
+        /// Copy the values of grid 1 to grid 0. Mostly used for resetting the level
+        /// </summary>
+        /// <param name="pGrid0">The grid that will be changed</param>
+        /// <param name="pGrid1">The grid that will contain the values you want</param>
+        /// <returns></returns>
+        public void CopyGrid(List<int>[,,] pGrid0, List<int>[,,] pGrid1)
+        {
+            try
+            {
+                for (int z = 0; z < pGrid0.GetLength(2); z++)
+                {
+                    for (int y = 0; y < pGrid0.GetLength(1); y++)
+                    {
+                        for (int x = 0; x < pGrid0.GetLength(0); x++)
+                        {
+                            pGrid0[x, y, z] = pGrid1[x, y, z];
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.LogInfo(e.Message);
+                Logging.LogInfo("The grids were probably not equal in size", Logging.debugState.DETAILED);
+            }
+        }
+
+
+        #endregion
+
+
 
     }
 }

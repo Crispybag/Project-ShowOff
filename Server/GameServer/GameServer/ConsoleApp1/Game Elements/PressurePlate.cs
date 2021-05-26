@@ -11,14 +11,15 @@ namespace Server
 
         public List<Door> doors = new List<Door>();
 
-        public PressurePlate(GameRoom pRoom, int pX, int pY, int pID, bool pActivated) : base(pRoom, pX, pY, pID, pActivated)
+        public PressurePlate(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, pActivated)
         {
-            _room = pRoom;
+            room = pRoom;
             ID = pID;
             position[0] = pX;
             position[1] = pY;
+            position[2] = pZ;
             isActivated = pActivated;
-            _room.roomArray[position[0], position[1]].Add(5);
+            room.roomArray[position[0], position[1], position[2]].Add(5);
             objectIndex = 5;
         }
 
@@ -28,9 +29,9 @@ namespace Server
         public override void Update()
         {
             base.Update();
-            if(_room.roomArray[position[0], position[1]].Count > 0)
+            if(room.roomArray[position[0], position[1], position[2]].Count > 0)
             {
-                List<int> allItems = _room.roomArray[position[0], position[1]];
+                List<int> allItems = room.roomArray[position[0], position[1], position[2]];
                 foreach(int item in allItems)
                 {
                     //1 = player, 7 = box
@@ -61,7 +62,7 @@ namespace Server
             plateToggle.ID = ID;
             plateToggle.isActived = isActivated;
             plateToggle.obj = ConfActuatorToggle.Object.PRESSUREPLATE;
-            _room.sendToAll(plateToggle);
+            room.sendToAll(plateToggle);
             foreach(Door door in doors)
             {
                 door.CheckDoor();

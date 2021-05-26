@@ -8,7 +8,6 @@ namespace Server
 {
     public class Player : GameObject
     {
-        private GameRoom _room;
         private TCPMessageChannel _client;
         private int[] walkDirection;
 
@@ -24,7 +23,7 @@ namespace Server
             position = new int[3] { pX, pY, pX };
             orientation = new int[2] { 0, 1 };
             walkDirection = new int[3];
-            _room = pRoom;
+            room = pRoom;
             _client = pClient;
             objectIndex = 1;
         }
@@ -123,56 +122,17 @@ namespace Server
 
             try
             {
-                
-                if (_room.coordinatesContain(position[0] - 1, position[1], 4))
-                {
-                    sendActuatorToggle(position[0] - 1, position[1]);
-                    if (_room.coordinatesContain(position[0] - 1, position[1], 4))
-                    {
-                        
-                    }
-                }
-                //up
-                if (position[1] < 9)
-                {
-                    sendActuatorToggle(position[0], position[1] + 1);
-                    if (_room.coordinatesContain(position[0], position[1] + 1, 4))
-                    {
-                        
-                    }
-                }
-
-                //right
-                if (position[0] < 9)
-                {
-                    sendActuatorToggle(position[0] + 1, position[1]);
-                    if (_room.coordinatesContain(position[0] + 1, position[1], 4))
-                    {
-
-                    }
-                }
-
-                //down
-                if (position[1] > 0)
-                {
-                    sendActuatorToggle(position[0], position[1] - 1);
-                    if (_room.coordinatesContain(position[0], position[1] - 1, 4))
-                    {
-                        
-                    }
-                }
-                */
 
                 if (!_hasBox)
                 {
                     //for lever
-                    if (_room.coordinatesContain(OneInFront(), 4))
+                    if (room.OnCoordinatesContain(OneInFront(), 4))
                     {
                         sendActuatorToggle(OneInFront());
                     }
 
                     //for box
-                    else if (_room.coordinatesContain(OneInFront(), 7))
+                    else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
                         sendPickUpBox(OneInFront());
                     }
@@ -180,10 +140,10 @@ namespace Server
                 else
                 {
                     //check if box can be placed (at position + orientation)
-                    if (_room.coordinatesEmpty(OneInFront()) )
+                    if (room.OnCoordinatesEmpty(OneInFront()) )
                     {
                         //place box
-                        try { _room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7); }
+                        try { room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7); }
                         catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
                         _hasBox = false;
                     }
@@ -193,9 +153,6 @@ namespace Server
             {
                 Logging.LogInfo("Player.cs: " + e.Message, Logging.debugState.DETAILED);
             }
-
-
-
         }
 
 
@@ -209,72 +166,25 @@ namespace Server
             {
                 bool objectAtLocation = false;
                 //check if the list contains something that is not 0
-                foreach (int obj in _room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
+                foreach (int obj in room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
                 {
                     if (obj != 0)
                     {
-                        switch(obj)
-                        {
-                            //box interaction
-                            case (7):
-
-                                Box pBox = null;
-                                
-                                // try and get the game object on the position if it is a box
-                                GameObject gameObject = _room.coordinatesGetGameObject(position[0] + pX, position[1] + pY, 7);
-                                
-                                //set box value to that box
-                                if (gameObject is Box) pBox = gameObject as Box;
-
-                                //a quick safeguard check if the box shoving works
-                                if (pBox != null)
-                                { 
-
-                                    //if it can be shoved 2 tiles in that direction
-                                    if (pBox.CanBeShoved(position[0] + 2 * pX, position[1] + 2* pY))
-                                    {
-                                        //try shoving the box (it should always be able to)
-                                        pBox.TryShove(pX, pY);
-
-                                        //move player
-                                        _room.coordinatesRemove(position[0], position[1], 1);
-                                        position[0] += direction[0];
-                                        position[1] += direction[1];
-                                        //add
-                                        _room.roomArray[position[0], position[1]].Add(1);
-                                        sendConfMove();
-                                    }
-                                }
-
-                                break;
-
-                            //presure plate
-                            case (5):
-                                objectAtLocation = false;
-                                break;
-                            default:
-                                //player bumps into something code
-                                Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
-                                objectAtLocation = true;
-                                break;
-                        }
-
+                        objectAtLocation = true;
+                        break;
                     }
                 }
 
                 //Passes the check and can move
                 if (!objectAtLocation)
                 {
-
-                    
-
                     //change the location of the player and remove the player value from the grid at the place the player was
-                    _room.coordinatesRemove(position[0], position[1], position[2], 1);
+                    room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
                     position[0] += direction[0];
                     position[1] += direction[1];
                     //add
-                    _room.roomArray[position[0], position[1], position[2]].Add(1);
-                    //Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
+                    room.roomArray[position[0], position[1], position[2]].Add(1);
+                    Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.DETAILED);
                     sendConfMove();
                 }
 
@@ -319,26 +229,24 @@ namespace Server
             else { _confMove.orientation = -90; }
 
 
-            _room.sendToAll(_confMove);
-            _room.printGrid(_room.roomArray);
+            room.sendToAll(_confMove);
+            room.PrintGrid(room.roomArray);
         }
 
-
-
         //Send an actuator toggle packet
-        private void sendActuatorToggle(int posX, int posY, int posZ)
+        private void sendActuatorToggle(int[] pPos)
         {
             try
             {
-                List<int> actuators = _room.roomArray[posX, posY];
+                List<int> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
                 foreach (int actuator in actuators)
                 {
                     switch (actuator)
                     {
                         //4 = lever
                         case (4):
-                            Logging.LogInfo("Player.cs: Hit an lever on position : " + posX + "," + posY + "!", Logging.debugState.DETAILED);
-                            GameObject gameObject = _room.coordinatesGetGameObject(posX, posY, 4);
+                            Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                            GameObject gameObject = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
                             Actuator lever = gameObject as Actuator;
                             lever.isActivated = !lever.isActivated;
 
@@ -351,12 +259,12 @@ namespace Server
                             newLeverToggle.isActived = lever.isActivated;
                             newLeverToggle.ID = lever.ID;
                             newLeverToggle.obj = ConfActuatorToggle.Object.LEVER;
-                            _room.sendToAll(newLeverToggle);
+                            room.sendToAll(newLeverToggle);
                             break;
                         //8 = button
                         case (8):
-                            Logging.LogInfo("Player.cs: Hit an button on position : " + posX + "," +  posY + "!", Logging.debugState.DETAILED);
-                            GameObject gameObject1 = _room.coordinatesGetGameObject(posX, posY, 8);
+                            Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                            GameObject gameObject1 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 8);
                             Button button = gameObject1 as Button;
                             if (null != button)
                             {
@@ -381,39 +289,14 @@ namespace Server
             {
                 //Logging.LogInfo("Player.cs: Could not get actuator!", Logging.debugState.DETAILED);
             }
-            Logging.LogInfo("Hit a lever on position : X: " + posX + " Y: " + posY + " Z: " + posZ, Logging.debugState.DETAILED);
-            ConfActuatorToggle newToggle = new ConfActuatorToggle();
-            newToggle.isActivated = true;
-            newToggle.posX = posX;
-            newToggle.posY = posY;
-            newToggle.posZ = posZ;
-            _room.sendToAll(newToggle);
-        }
 
-        private void sendActuatorToggle(int[] pPos)
-        {
-            try 
-            {
-                Logging.LogInfo("Hit a lever on position : X: " + pPos[0] + " Y: " + pPos[1] + " Z: " + pPos[2], Logging.debugState.DETAILED);
-                ConfActuatorToggle newToggle = new ConfActuatorToggle();
-                newToggle.isActivated = true;
-                newToggle.posX = pPos[0];
-                newToggle.posY = pPos[1];
-                newToggle.posZ = pPos[2];
-                _room.sendToAll(newToggle);
-            }
-            catch 
-            {
-                Logging.LogInfo("the pPosition array length in sendActuator toggle was not 3 long", Logging.debugState.SIMPLE);
-            }
         }
-
 
         //Send a pickup box packet
         private void sendPickUpBox(int pX, int pY, int pZ)
         {
             //remove box at the position
-            _room.coordinatesRemove(pX, pY, pZ, 7);
+            room.OnCoordinatesRemove(pX, pY, pZ, 7);
             //set player to have a box
             _hasBox = true;
 
@@ -429,7 +312,7 @@ namespace Server
             try
             {
                 //remove box at the position
-                _room.coordinatesRemove(pPos[0], pPos[1], pPos[2], 7);
+                room.OnCoordinatesRemove(pPos[0], pPos[1], pPos[2], 7);
                 //set player to have a box
                 _hasBox = true;
 
@@ -456,9 +339,9 @@ namespace Server
         //get the index the player has 
         private int getPlayerIndex()
         {
-            for (int i = 0; i < _room.players.Count; i++)
+            for (int i = 0; i < room.players.Count; i++)
             {
-                if (this == _room.players[i])
+                if (this == room.players[i])
                 {
                     return i;
                 }

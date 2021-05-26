@@ -22,13 +22,13 @@ namespace Server
         
         protected CollInteractType moveState;
 
-
+        public GameRoom room;
         //First initialise
         public GameObject(GameRoom pRoom, CollInteractType pMoveState)
         {
             //Add gameobject to the list of the room it is a part of so it gets updated once the scene is loaded
             pRoom.gameObjects.Add(this);
-
+            room = pRoom;
             //initialise values
             position = new int[3];
             moveState = pMoveState;

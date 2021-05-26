@@ -7,19 +7,19 @@ namespace Server
 {
     class Door : GameObject
     {
-        GameRoom _room;
         private int ID;
         private bool isOpen = false;
         public List<Actuator> actuators = new List<Actuator>();
 
-        public Door(GameRoom pRoom, int pX, int pY, int pID, bool pIsOpen) : base(pRoom, CollInteractType.SOLID)
+        public Door(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pIsOpen) : base(pRoom, CollInteractType.SOLID)
         {
             ID = pID;
             isOpen = pIsOpen;
-            _room = pRoom;
             position[0] = pX;
             position[1] = pY;
-            _room.roomArray[position[0], position[1]].Add(6);
+            position[2] = pZ;
+            room = pRoom;
+            room.roomArray[position[0], position[1], position[2]].Add(6);
         }
 
         public void CheckDoor()
@@ -37,16 +37,16 @@ namespace Server
             if (isOpen)
             {
                 Logging.LogInfo("Door.cs: Trying to remove a object on position : " + position[0] + "," + position[1], Logging.debugState.DETAILED);
-                _room.coordinatesRemove(position[0], position[1], 6);
+                room.OnCoordinatesRemove(position[0], position[1], position[2], 6);
             }
             else
             {
-                _room.coordinatesAdd(position[0], position[1], 6);
+                room.OnCoordinatesAdd(position[0], position[1], position[2], 6);
             }
             ConfDoorToggle doorToggle = new ConfDoorToggle();
             doorToggle.isActivated = isOpen;
             doorToggle.ID = ID;
-            _room.sendToAll(doorToggle);
+            room.sendToAll(doorToggle);
         }
 
         private bool checkActuators()

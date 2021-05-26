@@ -12,13 +12,14 @@ namespace Server
         public float timer = 3;
         private float currentTimer;
 
-        public Button(GameRoom pRoom, int pX, int pY, int pID) : base(pRoom, pX, pY, pID)
+        public Button(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, pX, pY, pZ, pID)
         {
-            _room = pRoom;
             ID = pID;
             position[0] = pX;
             position[1] = pY;
-            _room.roomArray[position[0], position[1]].Add(8);
+            position[2] = pZ;
+            room = pRoom;
+            room.roomArray[position[0], position[1], position[2]].Add(8);
             objectIndex = 8;
         }
 
@@ -34,7 +35,7 @@ namespace Server
                     newButtonToggle.isActived = isActivated;
                     newButtonToggle.ID = ID;
                     newButtonToggle.obj = ConfActuatorToggle.Object.BUTTON;
-                    _room.sendToAll(newButtonToggle);
+                    room.sendToAll(newButtonToggle);
                 }
                 else
                 {
@@ -52,10 +53,8 @@ namespace Server
             newButtonToggle.isActived = isActivated;
             newButtonToggle.ID = ID;
             newButtonToggle.obj = ConfActuatorToggle.Object.BUTTON;
-            _room.sendToAll(newButtonToggle);
+            room.sendToAll(newButtonToggle);
         }
-
-
 
         public enum Direction
         {
