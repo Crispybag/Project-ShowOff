@@ -25,6 +25,8 @@ namespace Server
         public List<Player> players;
         public List<SpawnPoint> spawnPoints;
 
+        public Dictionary<int, GameObject> InteractableGameobjects = new Dictionary<int, GameObject>();
+
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -123,8 +125,11 @@ namespace Server
             roomArray = new List<int>[maxX + 1 - minX, maxY + 1 - minY, maxZ + 1 - minZ];
         }
 
-        private List<List<int>> createLists(string[] pRawInformation)
+        private List<List<int>> createLists(string[] pRawInformation, out List<string> testName)
         {
+
+            testName = pRawInformation.ToList<string>();
+
             //working out lists 
             List<List<int>> lists = new List<List<int>>();
 
@@ -140,6 +145,7 @@ namespace Server
                 //signal that list has ended
                 if (info == ")")
                 {
+                    testName.Remove(info);
                     //create a list data that is going to be added to lists
                     List<int> listData = new List<int>();
 
@@ -160,6 +166,7 @@ namespace Server
                 {
                     try
                     {
+                        testName.Remove(info);
                         tempList.Add((int)float.Parse(info));
                     }
                     catch
@@ -171,6 +178,7 @@ namespace Server
                 //signal that reader needs to start paying attention for lists
                 if (info == "(")
                 {
+                    testName.Remove(info);
                     isAddingToList = true;
                 }
             }
@@ -194,7 +202,11 @@ namespace Server
                 //split information again with spaces to retrieve each coordinate
                 string[] rawInformation = line.Split(' ');
 
-                List<List<int>> informationLists = createLists(rawInformation);
+                List<string> testName = new List<string>();
+
+                List<List<int>> informationLists = createLists(rawInformation, out testName);
+
+
             
                 switch((int)float.Parse(rawInformation[0]))
                 {
@@ -209,23 +221,107 @@ namespace Server
 
                     case (4):
                         Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+                        InteractableGameobjects.Add(lever.ID, lever);
+                        try
+                        {
+                            foreach (int index in informationLists[0])
+                            {
+                                Logging.LogInfo("GameRoom.cs: Added door to lever!", Logging.debugState.DETAILED);
+                                lever.doors.Add(index);
+                            }
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("GameRoom.cs: We could not handle given information about lever", Logging.debugState.DETAILED);
+                        }
                         break;
 
                     case (5):
                         PressurePlate pressurePlate = new PressurePlate(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+                        InteractableGameobjects.Add(pressurePlate.ID, pressurePlate);
+                        try
+                        {
+                            foreach (int index in informationLists[0])
+                            {
+                                Logging.LogInfo("GameRoom.cs: Added door to pressure plate!", Logging.debugState.DETAILED);
+                                pressurePlate.doors.Add(index);
+                            }
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("GameRoom.cs: We could not handle given information about pressure plate", Logging.debugState.DETAILED);
+                        }
                         break;
 
                     case (6):
-                        //Door door = new Door(this, int.Parse(rawInformation[1]), int.Parse(rawInformation[2]), true);
-                        //Door does not exist yet
+                        Door door = new Door(this, int.Parse(rawInformation[1]), int.Parse(rawInformation[2]), int.Parse(rawInformation[3]), int.Parse(rawInformation[7]), true);
+                        InteractableGameobjects.Add(door.ID, door);
+                        try
+                        {
+                            foreach (int index in informationLists[0])
+                            {
+                                Logging.LogInfo("GameRoom.cs: Added actuator to door!", Logging.debugState.DETAILED);
+                                door.actuators.Add(index);
+                            }
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
+                        }
                         break;
 
                     case (7):
-                        Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ);
+                        Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
                         break;
 
                     case (8):
                         Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+                        InteractableGameobjects.Add(button.ID, button);
+                        switch (int.Parse(testName[8]))
+                        {
+                            case (0):
+                                button.currentDirection = Button.Direction.DOWN;
+                                break;
+                            case (1):
+                                button.currentDirection = Button.Direction.UP;
+                                break;
+                            default:
+                                Logging.LogInfo("GameRoom.cs: Cant handle button direction!", Logging.debugState.DETAILED);
+                                break;
+                        }
+                        try
+                        {
+                            foreach (int index in informationLists[0])
+                            {
+                                Logging.LogInfo("GameRoom.cs: Added door to button!", Logging.debugState.DETAILED);
+                                button.elevators.Add(index);
+                            }
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("GameRoom.cs: We could not handle given information about button", Logging.debugState.DETAILED);
+                        }
+                        break;
+
+                    case (9):
+                        Elevator elevator = new Elevator(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+                        InteractableGameobjects.Add(elevator.ID, elevator);
+                        Console.WriteLine("Added an elevator on positions: " + elevator.position[0] + "," + elevator.position[1] + "," + elevator.position[2]);
+                        try
+                        {
+                            //List<EmptyGameObject> empties = new List<EmptyGameObject>();
+                            for(int i = 0; i < informationLists[0].Count / 3; i++)
+                            {
+                                EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3*i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2]);
+                                Console.WriteLine("Added an empty on positions: " + empty.position[0] + "," + empty.position[1] + "," + empty.position[2]);
+                                elevator.points.Add(i,empty);
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                        
                         break;
 
                     case (10):

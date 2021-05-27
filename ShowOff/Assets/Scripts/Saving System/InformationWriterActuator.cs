@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InformationWriterActuator : InformationWriter
 {
-
     public override void Start()
     {
         base.Start();
@@ -13,5 +12,6 @@ public class InformationWriterActuator : InformationWriter
     {
         base.WriteAllInformation();
         AddToInformation(this.gameObject.GetComponent<PuzzleFactory>().ID);
+        AddToInformation(this.gameObject.GetComponent<PuzzleFactory>().interactableIDs);
     }
 }

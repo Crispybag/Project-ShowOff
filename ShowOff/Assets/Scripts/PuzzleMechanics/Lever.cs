@@ -58,10 +58,6 @@ public class Lever : PuzzleFactory
         }
     }
 
-    public override void FinishMechanic()
-    {
-        throw new System.NotImplementedException();
-    }
 
 
     //=========================================================================================

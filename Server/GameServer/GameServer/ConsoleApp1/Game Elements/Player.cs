@@ -16,6 +16,8 @@ namespace Server
         private int[] orientation;
         private bool _hasBox;
 
+        private int currentBoxID;
+
 
         //standard stuff, along with quick coordinates
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0) : base(pRoom, CollInteractType.SOLID)
@@ -154,6 +156,15 @@ namespace Server
                         { 
                             room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
                             _hasBox = false;
+                            GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
+
+                            BoxInfo box = new BoxInfo();
+                            box.ID = currentBoxID;
+                            box.isPickedUp = false;
+                            box.posX = OneInFront()[0];
+                            box.posY = OneInFront()[1];
+                            box.posZ = OneInFront()[2];
+                            room.sendToAll(box);
                         }
                         catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
 
@@ -171,6 +182,16 @@ namespace Server
                         }
                         room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
                         _hasBox = false;
+
+                        GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
+
+                        BoxInfo box = new BoxInfo();
+                        box.ID = currentBoxID;
+                        box.isPickedUp = false;
+                        box.posX = OneInFront()[0];
+                        box.posY = OneInFront()[1];
+                        box.posZ = OneInFront()[2];
+                        room.sendToAll(box);
                     }
                 }
             }
@@ -300,9 +321,16 @@ namespace Server
                             Actuator lever = gameObject as Actuator;
                             lever.isActivated = !lever.isActivated;
 
-                            foreach (Door door in lever.doors)
+                            foreach (int door in lever.doors)
                             {
-                                door.CheckDoor();
+                                try
+                                {
+                                    (room.InteractableGameobjects[door] as Door).CheckDoor();
+                                }
+                                catch
+                                {
+                                    Logging.LogInfo("Player.cs: Could not handle door, probably not in interactablegameobject list in room!", Logging.debugState.DETAILED);
+                                }
                             }
 
                             ConfActuatorToggle newLeverToggle = new ConfActuatorToggle();
@@ -321,9 +349,16 @@ namespace Server
                                 button.SetActive();
                                 if (button.elevators.Count > 0)
                                 {
-                                    foreach (Elevator elevator in button.elevators)
+                                    foreach (int elevator in button.elevators)
                                     {
-                                        elevator.NextPosition(button.currentDirection);
+                                        try
+                                        {
+                                            (room.InteractableGameobjects[elevator] as Elevator).NextPosition(button.currentDirection);
+                                        }
+                                        catch
+                                        {
+                                            Logging.LogInfo("Player.cs: Could not handle the button acutator!", Logging.debugState.DETAILED);
+                                        }
                                     }
                                 }
 
@@ -349,33 +384,58 @@ namespace Server
         //Send a pickup box packet
         private void sendPickUpBox(int pX, int pY, int pZ)
         {
+            GameObject boxies = room.OnCoordinatesGetGameObject(pX, pY, pZ, 7);
+            BoxInfo box = new BoxInfo();
+            box.isPickedUp = false;
+            box.ID = (boxies as Box).ID;
+            box.posX = OneInFront()[0];
+            box.posY = OneInFront()[1];
+            box.posZ = OneInFront()[2];
+            room.sendToAll(box);
+            currentBoxID = (boxies as Box).ID;
+
             //remove box at the position
             room.OnCoordinatesRemove(pX, pY, pZ, 7);
             //set player to have a box
             _hasBox = true;
 
+
             //send package
-            ConfHandleBox confHandleBox = new ConfHandleBox();
+/*            ConfHandleBox confHandleBox = new ConfHandleBox();
             confHandleBox.posX = pX;
             confHandleBox.posY = pY;
             confHandleBox.posZ = pZ;
-            confHandleBox.isPickingUp = true;
+            confHandleBox.isPickingUp = true;*/
         }
         private void sendPickUpBox(int[] pPos)
         {
             try
             {
+
+
+                GameObject boxies = room.OnCoordinatesGetGameObject(pPos, 7);
+
+                BoxInfo box = new BoxInfo();
+                box.isPickedUp = false;
+                box.ID = (boxies as Box).ID;
+                box.posX = OneInFront()[0];
+                box.posY = OneInFront()[1];
+                box.posZ = OneInFront()[2];
+                room.sendToAll(box);
+
+                currentBoxID = (boxies as Box).ID;
+
                 //remove box at the position
                 room.OnCoordinatesRemove(pPos[0], pPos[1], pPos[2], 7);
                 //set player to have a box
                 _hasBox = true;
 
-                //send package
-                ConfHandleBox confHandleBox = new ConfHandleBox();
-                confHandleBox.posX = pPos[0];
-                confHandleBox.posY = pPos[1];
-                confHandleBox.posZ = pPos[2];
-                confHandleBox.isPickingUp = true;
+                /*                //send package
+                                ConfHandleBox confHandleBox = new ConfHandleBox();
+                                confHandleBox.posX = pPos[0];
+                                confHandleBox.posY = pPos[1];
+                                confHandleBox.posZ = pPos[2];
+                                confHandleBox.isPickingUp = true;*/
             }
             catch
             {

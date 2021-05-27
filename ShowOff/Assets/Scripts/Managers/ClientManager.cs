@@ -76,14 +76,14 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfActuatorToggle) { handleConfActuatorToggle(pInMessage as ConfActuatorToggle); }
         if (pInMessage is ConfDoorToggle) { handleConfDoorToggle(pInMessage as ConfDoorToggle); }
         if (pInMessage is ConfElevatorMove) { handleConfElevatorMove(pInMessage as ConfElevatorMove); }
-        if (pInMessage is ConfHandleBox) { handleConfHandleBox(pInMessage as ConfHandleBox); }
+        if (pInMessage is BoxInfo) { handleBoxInfo(pInMessage as BoxInfo); }
     }
 
     private void handleConfElevatorMove(ConfElevatorMove pMessage)
     {
         Debug.Log("Got a elevator move with ID: " + pMessage.ID + "!");
         GameObject obj = serviceLocator.interactableList[pMessage.ID];
-        obj.GetComponent<Elevator>().SetTargetPosition(pMessage.posX, pMessage.posY);
+        obj.GetComponent<Elevator>().SetTargetPosition(pMessage.posX, pMessage.posY, pMessage.posZ);
     }
 
     private void handleConfDoorToggle(ConfDoorToggle pMessage)
@@ -206,15 +206,15 @@ public class ClientManager : MonoBehaviour
         }
     }
 
-    private void handleConfHandleBox(ConfHandleBox pHandleBox)
+    private void handleBoxInfo(BoxInfo pHandleBox)
     {
-        if(pHandleBox.isPickingUp)
+        try
         {
-            //remove box from scene
+            serviceLocator.interactableList[pHandleBox.ID].GetComponent<BoxMovement>().UpdateBox(pHandleBox.isPickedUp, pHandleBox.posX, pHandleBox.posY, pHandleBox.posZ);
         }
-        else
+        catch
         {
-            //add box to scene
+            Debug.LogError("Could not find box movement");
         }
     }
 

@@ -5,11 +5,11 @@ using sharedAngy;
 
 namespace Server
 {
-    class Door : GameObject
+    public class Door : GameObject
     {
-        private int ID;
+        public int ID;
         private bool isOpen = false;
-        public List<Actuator> actuators = new List<Actuator>();
+        public List<int> actuators = new List<int>();
 
         public Door(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pIsOpen) : base(pRoom, CollInteractType.SOLID)
         {
@@ -42,7 +42,10 @@ namespace Server
             }
             else
             {
-                room.OnCoordinatesAdd(position[0], position[1], position[2], 6);
+                if (room.OnCoordinatesEmpty(position))
+                {
+                    room.OnCoordinatesAdd(position[0], position[1], position[2], 6);
+                }
             }
             ConfDoorToggle doorToggle = new ConfDoorToggle();
             doorToggle.isActivated = isOpen;
@@ -52,11 +55,18 @@ namespace Server
 
         private bool checkActuators()
         {
-            foreach (Actuator actuator in actuators)
+            foreach (int actuator in actuators)
             {
-                if (!actuator.isActivated)
+                try
                 {
-                    return false;
+                    if (!(room.InteractableGameobjects[actuator] as Actuator).isActivated)
+                    {
+                        return false;
+                    }
+                }
+                catch
+                {
+                    Logging.LogInfo("Door.cs: Could not handle actuator, probably not in list in room!", Logging.debugState.DETAILED);
                 }
             }
             return true;

@@ -8,17 +8,20 @@ public class Elevator : MonoBehaviour
 
     public int ID;
 
+    public List<GameObject> elevatorPoints = new List<GameObject>();
+
     private float timer;
-    protected float _travelTime = 1f;
+    protected float _travelTime = 0.5f;
 
     protected Vector3 _currentPosition;
     private Vector3 _targetPosition;
 
     private void Start()
     {
-        serviceLocator.interactableList.Add(ID, this.gameObject);
-        _currentPosition = this.transform.position;
+
+        _currentPosition = elevatorPoints[0].transform.position;
         _targetPosition = this.transform.position;
+        serviceLocator.interactableList.Add(ID, this.gameObject);
     }
 
     private void Update()
@@ -31,12 +34,12 @@ public class Elevator : MonoBehaviour
         checkForMovement();
     }
 
-    public void SetTargetPosition(int pX, int pY)
+    public void SetTargetPosition(int pX, int pY, int pZ)
     {
         Debug.Log("Set the new position of the elevator to : " + pX + "," + pY + "!");
         _targetPosition.x = pX;
         _targetPosition.y = pY;
-        _targetPosition.z = 0;
+        _targetPosition.z = pZ;
 
         _currentPosition = transform.position;
         timer = 0f;

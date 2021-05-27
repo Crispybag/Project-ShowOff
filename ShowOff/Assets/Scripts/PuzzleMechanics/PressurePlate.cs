@@ -18,7 +18,6 @@ public class PressurePlate : PuzzleFactory
     //----------------------- private ------------------------
 
     private List<GameObject> _currentObjects = new List<GameObject>();
-    [SerializeField] private string[] _collisionTags;
     [SerializeField] private Material mat1;
     [SerializeField] private Material mat2;
 
@@ -83,10 +82,5 @@ public class PressurePlate : PuzzleFactory
             isActuated = false;
             ToggleMechanics();
         }
-    }
-
-    public override void FinishMechanic()
-    {
-
     }
 }

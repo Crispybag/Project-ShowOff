@@ -13,7 +13,8 @@ public class InformationWriterDoor : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        //base.AddToInformation();
+        base.AddToInformation(this.GetComponent<DoorManager>().ID);
+        base.AddToInformation(this.GetComponent<DoorManager>().conditionsID);
     }
 
 }

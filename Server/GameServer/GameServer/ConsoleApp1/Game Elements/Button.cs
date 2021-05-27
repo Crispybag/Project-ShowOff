@@ -9,7 +9,7 @@ namespace Server
 
     class Button : Actuator
     {
-        public List<Elevator> elevators = new List<Elevator>();
+        public List<int> elevators = new List<int>();
         public Direction currentDirection;
         //this timer will decide after how long the button will turn off again, 3 stays on for around 0.5 seconds
         public float timer = 3;

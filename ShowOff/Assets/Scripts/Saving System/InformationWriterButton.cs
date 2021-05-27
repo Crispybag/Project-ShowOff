@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InformationWriterSlope : InformationWriter
+public class InformationWriterButton : InformationWriterActuator
 {
     // Start is called before the first frame update
     public override void Start()
@@ -13,8 +13,6 @@ public class InformationWriterSlope : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        AddToInformation(transform.rotation.eulerAngles.y);
+        AddToInformation(this.gameObject.GetComponent<Button>().direction);
     }
-
-
 }

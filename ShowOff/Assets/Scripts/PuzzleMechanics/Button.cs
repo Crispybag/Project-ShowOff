@@ -6,6 +6,8 @@ using static ServiceLocator;
 public class Button : PuzzleFactory
 {
 
+    [Tooltip("0 = down, 1 = up")]public int direction = 0;
+
     public Material mat1;
     public Material mat2;
 
@@ -13,11 +15,6 @@ public class Button : PuzzleFactory
     private void Start()
     {
         serviceLocator.interactableList.Add(ID,this.gameObject);
-    }
-
-    public override void FinishMechanic()
-    {
-        throw new System.NotImplementedException();
     }
 
     public void UpdateActuator(bool isActive)

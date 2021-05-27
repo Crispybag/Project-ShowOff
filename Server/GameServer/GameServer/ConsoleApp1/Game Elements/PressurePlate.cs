@@ -9,7 +9,7 @@ namespace Server
     class PressurePlate : Actuator
     {
 
-        public List<Door> doors = new List<Door>();
+        public List<int> doors = new List<int>();
         private bool newActived;
 
         public PressurePlate(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, pActivated)
@@ -64,9 +64,16 @@ namespace Server
             plateToggle.isActived = isActivated;
             plateToggle.obj = ConfActuatorToggle.Object.PRESSUREPLATE;
             room.sendToAll(plateToggle);
-            foreach(Door door in doors)
+            foreach(int door in doors)
             {
-                door.CheckDoor();
+                try
+                {
+                    (room.InteractableGameobjects[door] as Door).CheckDoor();
+                }
+                catch
+                {
+                    Logging.LogInfo("PressurePlate.cs: Could not handle given information about door, probably because its not in interactable list!", Logging.debugState.DETAILED);
+                }
             }
         }
 
