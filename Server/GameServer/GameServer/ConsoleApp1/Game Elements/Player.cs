@@ -401,7 +401,7 @@ namespace Server
             base.Update();
 
             //walk timer
-            if (walkDirection[0] != 0 || walkDirection[1] != 0)
+            if (walkDirection[0] != 0 || walkDirection[2] != 0)
             {
                 //Logging.LogInfo("trying to walk in a direction");
                 if (timer >= 2)
