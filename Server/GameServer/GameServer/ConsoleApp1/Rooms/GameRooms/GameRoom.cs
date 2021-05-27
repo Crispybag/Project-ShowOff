@@ -123,6 +123,64 @@ namespace Server
             roomArray = new List<int>[maxX + 1 - minX, maxY + 1 - minY, maxZ + 1 - minZ];
         }
 
+        private List<List<int>> createLists(string[] pRawInformation)
+        {
+            //working out lists 
+            List<List<int>> lists = new List<List<int>>();
+
+            //determines whether it should write values to a list
+            bool isAddingToList = false;
+
+            //temporary list that values get stored into
+            List<int> tempList = new List<int>();
+
+            foreach (string info in pRawInformation)
+            {
+
+                //signal that list has ended
+                if (info == ")")
+                {
+                    //create a list data that is going to be added to lists
+                    List<int> listData = new List<int>();
+
+                    //stop trying to read more ints
+                    isAddingToList = false;
+                    foreach (int value in tempList)
+                    {
+                        listData.Add(value);
+                    }
+
+                    //add the list to lists and clear the temporary list
+                    lists.Add(listData);
+                    tempList.Clear();
+                }
+
+                //add upcoming value to a list if possible when it is adding things to the list
+                if (isAddingToList)
+                {
+                    try
+                    {
+                        tempList.Add((int)float.Parse(info));
+                    }
+                    catch
+                    {
+                        Logging.LogInfo("found a non float value, which it can't parse", Logging.debugState.DETAILED);
+                    }
+                }
+
+                //signal that reader needs to start paying attention for lists
+                if (info == "(")
+                {
+                    isAddingToList = true;
+                }
+            }
+
+            return lists;
+
+        }
+
+
+
         /// <summary>
         /// add all objects to the grid based on the information
         /// </summary>
@@ -136,6 +194,8 @@ namespace Server
                 //split information again with spaces to retrieve each coordinate
                 string[] rawInformation = line.Split(' ');
 
+                List<List<int>> informationLists = createLists(rawInformation);
+            
                 switch((int)float.Parse(rawInformation[0]))
                 {
                     case (1):

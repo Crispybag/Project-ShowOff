@@ -59,6 +59,18 @@ public class InformationWriter : MonoBehaviour
         informationString += pInfo.z + " ";
     }
 
+    protected void AddToInformation(List<int> pInfo)
+    {
+        informationString += "( ";
+        foreach (int element in pInfo)
+        {
+            informationString += element + " ";
+        }
+        informationString += ") ";
+    }
+
+
+
     //Main function to be overwritten by child classes if you want to add your own information. Make sure to not forget to add base.WriteAllinformation(). Because that can really mess up things
     public virtual void WriteAllInformation()
     {
