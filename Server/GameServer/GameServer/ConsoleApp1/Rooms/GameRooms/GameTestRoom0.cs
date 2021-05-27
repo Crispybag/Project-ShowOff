@@ -23,11 +23,10 @@ namespace Server
             //generateGridFromText("../../../../LevelFiles/actualCoolLevel.txt");
 
 
-            GenerateGridFromText("../../../../LevelFiles/pogLevel.txt");
+            GenerateGridFromText("../../../../LevelFiles/TestSpawnPoint.txt");
 
 
-            SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 1, 0);
-            spawnPoints.Add(_spawnPoint0);
+            //SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 1, 0);
 
             CopyGrid(roomStatic, roomArray);
             PrintGrid(roomArray);
@@ -37,13 +36,28 @@ namespace Server
         public override void AddMember(TCPMessageChannel pListener)
         {
             base.AddMember(pListener);
-            if (_users.Count <= 1)
+            
+            bool player1Connected = false;
+            foreach (Player player in players)
+            {
+                if (player.GetPlayerIndex() == 0) player1Connected = true;
+            }
+
+            if (!player1Connected)
             {
                 try
                 {
                     //spawn player at spawn point if there is one
-                    SpawnPoint _spawnPoint = OnCoordinatesFindGameObjectOfType(3)[0] as SpawnPoint;
-                    if (null!= _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.position[0], _spawnPoint.position[1], _spawnPoint.position[2]);
+                    List<GameObject> _spawnPoints = OnCoordinatesFindGameObjectOfType(3);
+                    SpawnPoint _spawnPoint = null;
+                    
+                    foreach (GameObject obj in _spawnPoints)
+                    {
+                        SpawnPoint smiley = obj as SpawnPoint;
+                        if (smiley.spawnIndex == 0) _spawnPoint = smiley;
+                    }
+
+                    if (null!= _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.position[0], _spawnPoint.position[1], _spawnPoint.position[2], 0);
                     PrintGrid(roomArray);
                 }
                 catch
@@ -54,7 +68,27 @@ namespace Server
 
             else
             {
-                SetPlayerCoord(pListener, 9, 0, 0);
+                try
+                {
+                    //spawn player at spawn point if there is one
+                    List<GameObject> _spawnPoints = OnCoordinatesFindGameObjectOfType(3);
+                    SpawnPoint _spawnPoint = new SpawnPoint(this, 0, 0, 0, 0);
+
+                    foreach (GameObject obj in _spawnPoints)
+                    {
+                        SpawnPoint smiley = obj as SpawnPoint;
+                        if (smiley.spawnIndex == 1) _spawnPoint = smiley;
+                    }
+
+                    if (null != _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.position[0], _spawnPoint.position[1], _spawnPoint.position[2], 1);
+                    PrintGrid(roomArray);
+                }
+                catch
+                {
+                    Logging.LogInfo("AAAAAAAAAAAAAAAAAAAAAAA something went wrong lol (in gametestroom0 adding member)", Logging.debugState.SIMPLE);
+                }
+
+                //SetPlayerCoord(pListener, 9, 0, 0, 1);
             }
         }
     }

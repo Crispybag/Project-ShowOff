@@ -206,7 +206,9 @@ namespace Server
                         //coordinates are the information values + the minimum X to put the most left/most bottom/ most forward object in the (0,0,0) spot
                         Wall wall = new Wall(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ );
                         break;
-
+                    case (3):
+                        SpawnPoint spawnPoint = new SpawnPoint(this, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ);
+                        break;
                     case (5):
                         Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, 1, false);
                         break;
@@ -278,9 +280,16 @@ namespace Server
 
         #region resetting
         //Teleports player to certain coordinates
-        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY, int pZ)
+        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY, int pZ, int pPlayerIndex)
         {
-            players.Add(new Player(this, pListener, pX, pY, pZ));
+            foreach(Player player in players)
+            {
+                if (pPlayerIndex == player.GetPlayerIndex())
+                {
+                    players.Remove(player);
+                }
+            }
+            players.Add(new Player(this, pListener, pX, pY, pZ, pPlayerIndex));
         }
 
 
@@ -338,13 +347,21 @@ namespace Server
         public override void RemoveMember(TCPMessageChannel pListener)
         {
             //get index 
+            List<Player> playersToRemove = new List<Player>();
             for (int i = 0; i < _users.Count; i++)
             {
                 if (_users[i] == pListener)
                 {
-                    players.Remove(players[i]);
+                    playersToRemove.Add(players[i]);
                 }
             }
+
+            foreach (Player pPlayer in playersToRemove)
+            {
+                players.Remove(pPlayer);
+            }
+
+            playersToRemove.Clear();
             base.RemoveMember(pListener);
             
         }
