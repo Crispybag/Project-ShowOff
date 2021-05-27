@@ -17,11 +17,12 @@ namespace Server
         //standard stuff, along with quick coordinates
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0) : base(pRoom, CollInteractType.SOLID)
         {
-            position = new int[3] { pX, pY, pX };
+            position = new int[3] { pX, pY, pZ };
             orientation = new int[2] { 0, 1 };
             walkDirection = new int[3];
             _room = pRoom;
             _client = pClient;
+            _room.roomArray[position[0], position[1], position[2]].Add(1);
             objectIndex = 1;
         }
 
@@ -192,7 +193,8 @@ namespace Server
                 //check if the list contains something that is not 0
                 foreach (int obj in _room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
                 {
-                    if (obj != 0)
+                    //not nothing and not spawn point (make more flexible later if needed)
+                    if (obj != 0 && obj != 3)
                     {
                         //player bumps into something code
                         Logging.LogInfo("player bumped into something", Logging.debugState.DETAILED);
@@ -206,11 +208,30 @@ namespace Server
                     //change the location of the player and remove the player value from the grid at the place the player was
                     _room.coordinatesRemove(position[0], position[1], position[2], 1);
                     position[0] += direction[0];
-                    position[1] += direction[1];
+                    position[2] += direction[2];
                     //add
                     _room.roomArray[position[0], position[1], position[2]].Add(1);
-                    //Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
+                    Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1]  +", " + position[2] + ")", Logging.debugState.DETAILED);
 
+                }
+
+                // slope check, might make this an own function as well
+                else if (_room.coordinatesContain(OneInFront(), 10))
+                {
+                    //check if coordinates have a slope object
+                    if (_room.coordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) is Slope)
+                    {
+                        //get the slope as game object
+                        Slope pSlope = _room.coordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) as Slope;
+                        
+                        //check if the player can move on the slope and move on it when the player can move on the slope
+                        if (pSlope.CanMoveOnSlope(OneInFront(), orientation)) 
+                        {
+                            _room.coordinatesRemove(position[0], position[1], position[2], 1);
+                            position = pSlope.MoveOnSlope(OneInFront());
+                            _room.roomArray[position[0], position[1], position[2]].Add(1);
+                        }
+                    }
                 }
                 sendConfMove();
 

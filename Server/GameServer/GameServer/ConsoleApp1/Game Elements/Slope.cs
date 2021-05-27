@@ -11,7 +11,12 @@ namespace Server
         //rotation of the slope
         private int[] orientation;
         
-        //since slopes are 2 * 1 * 1 it takes up 2 positions
+        //since slopes are 2 * 1 * 1 it takes up 3 positions
+
+        //slope positions
+        //s2     
+        //s1 s0  
+
         private int[] _s0Position;
         private int[] _s1Position;
         private int[] _s2Position;
@@ -57,14 +62,25 @@ namespace Server
             }
 
             //set positions to respective parts
-            _s0Position = new int[3] { position[0], position[1], position[2] };                                  //
-            _s1Position = new int[3] { position[0] + orientation[0], position[1], position[2] + orientation[1]}; //
-            _s2Position = new int[3] { _s1Position[0], _s1Position[1] + 1, _s1Position[2] };                        //position above s1
+            try
+            {
+                _s0Position = new int[3] { position[0], position[1], position[2] };                                     //
+                _s1Position = new int[3] { position[0] + orientation[0], position[1], position[2] + orientation[1] };   //
+                _s2Position = new int[3] { _s1Position[0], _s1Position[1] + 1, _s1Position[2] };                        //position above s1
+
+                //load objects in the scene
+                objectIndex = 10;
+                _room.roomArray[_s0Position[0], _s0Position[1], _s0Position[2]].Add(10);
+                _room.roomArray[_s1Position[0], _s1Position[1], _s1Position[2]].Add(11);
+                _room.roomArray[_s2Position[0], _s2Position[1], _s2Position[2]].Add(12);
+            }
+
+            catch
+            {
+                Logging.LogInfo("Index falls out of range of the array when initialising slope, make sure to generate slopes properly and expand room if necessary", Logging.debugState.DETAILED);
+            }
+
             
-            //load objects in the scene
-            _room.roomArray[_s0Position[0], _s0Position[1], _s0Position[2]].Add(10);
-            _room.roomArray[_s1Position[0], _s1Position[1], _s1Position[2]].Add(11);
-            _room.roomArray[_s2Position[0], _s2Position[1], _s2Position[2]].Add(12);
         }
         #endregion
 
@@ -77,7 +93,7 @@ namespace Server
         public bool CanMoveOnSlope(int[] pPosition, int[] pOrientation)
         {
             //if it hits position 2 and has opposing orientation
-            if      (pPosition == _s2Position && pOrientation[0] == -orientation[0] && pOrientation[1] == -pOrientation[1]) 
+            if      (positionEquals(pPosition, _s2Position) && pOrientation[0] == orientation[0] && orientation[1] == pOrientation[1]) 
             {
                 try 
                 { 
@@ -92,9 +108,9 @@ namespace Server
                     return false;
                 }
             }
-
+            
             //if it hits position 0 and has same orientation
-            else if (pPosition == _s0Position && pOrientation[0] == orientation[0] && pOrientation[1] == orientation[1]) 
+            else if (positionEquals(pPosition, _s0Position) && pOrientation[0] == orientation[0] && pOrientation[1] == orientation[1]) 
             {
                 try
                 {
@@ -109,7 +125,8 @@ namespace Server
                     return false;
                 }
             }
-
+            int o = orientation[1];
+            int p = pOrientation[1];
             return false;
         }
 
@@ -123,10 +140,10 @@ namespace Server
             try
             {
                 //if position is s0, move it one past s2
-                if (pPosition == _s0Position) { return OneInFront(_s2Position, orientation); }
-
+                Logging.LogInfo("Coordinates are " + _s2Position[0] + orientation[0] + ", " + _s2Position[1] + ", " + _s2Position[2] + orientation[1], Logging.debugState.DETAILED);
+                if (positionEquals(pPosition, _s0Position)) { return OneInFront(_s2Position, orientation); }
                 //if position is s2, move it one past s0
-                else if (pPosition == _s2Position) { return OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] } ); }
+                else if (positionEquals(pPosition, _s2Position)) { return OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] } ); }
 
                 //code should not be able to read this place, check if you are calling the function correctly
                 Logging.LogInfo("this function should not be called as the player's target is not at the slope's location", Logging.debugState.SIMPLE);
@@ -161,6 +178,12 @@ namespace Server
                 Logging.LogInfo("pPosition or pOrientation was not given a proper value in OneInFront", Logging.debugState.DETAILED);
                 return null;
             }
+        }
+
+        public bool positionEquals(int[] pPosition0, int[] pPosition1)
+        {
+            if (pPosition0[0] == pPosition1[0] && pPosition0[1] == pPosition1[1] && pPosition0[2] == pPosition1[2]) { return true; }
+            return false;
         }
     }
 }

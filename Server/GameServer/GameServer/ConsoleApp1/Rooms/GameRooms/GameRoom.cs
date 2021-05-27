@@ -221,6 +221,22 @@ namespace Server
                 return objectList;
         }
 
+        /// <summary>
+        /// finds a single object of given type, it only works with singletons at the moment, so if this needs an upgrade for other objects, notify me
+        /// </summary>
+        /// <param name="pIndex"></param>
+        /// <returns></returns>
+        public List<GameObject> CoordinatesFindGameObjectOfType(int pIndex)
+        {
+            List<GameObject> objList = new List<GameObject>();
+
+            foreach (GameObject obj in gameObjects)
+            {
+                if (obj.objectIndex == pIndex) { objList.Add(obj); }
+            }
+            return objList;
+        }
+
         //Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         public void printGrid(List<int>[,,] pGrid)
         {
@@ -366,6 +382,9 @@ namespace Server
                         Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ);
                         break;
 
+                    case (10):
+                        Slope slope = new Slope(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
+                        break;
                 }
 
             }
@@ -424,9 +443,9 @@ namespace Server
 
         #region resetting
         //Teleports player to certain coordinates
-        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY)
+        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY, int pZ)
         {
-            players.Add(new Player(this, pListener, pX, pY));
+            players.Add(new Player(this, pListener, pX, pY, pZ));
         }
 
 
