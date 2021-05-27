@@ -13,6 +13,7 @@ public abstract class PuzzleFactory : MonoBehaviour
 
     //------------------------ public ------------------------
 
+    public int ID;
     public bool isActuated;
 
     //----------------------- private ------------------------

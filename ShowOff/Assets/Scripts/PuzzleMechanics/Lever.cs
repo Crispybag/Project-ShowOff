@@ -15,7 +15,7 @@ public class Lever : PuzzleFactory
 
     //------------------------ public ------------------------
 
-    public int ID;
+
 
     //----------------------- private ------------------------
 

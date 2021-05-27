@@ -7,7 +7,7 @@ namespace Server
     public class SpawnPoint : GameObject
     {
         public int spawnIndex;
-        public SpawnPoint(GameRoom pRoom, int pPlayer, int pX, int pY, int pZ) : base(pRoom, CollInteractType.PASS)
+        public SpawnPoint(GameRoom pRoom, int pX, int pY, int pZ, int pPlayer) : base(pRoom, CollInteractType.PASS)
         {
             spawnIndex = pPlayer;
             room = pRoom;

@@ -130,6 +130,12 @@ namespace Server
                     if (room.OnCoordinatesContain(OneInFront(), 4))
                     {
                         sendActuatorToggle(OneInFront());
+                    }                    
+                    
+                    //for button
+                    if (room.OnCoordinatesContain(OneInFront(), 8))
+                    {
+                        sendActuatorToggle(OneInFront());
                     }
 
                     //for box
@@ -144,8 +150,26 @@ namespace Server
                     if (room.OnCoordinatesEmpty(OneInFront()) )
                     {
                         //place box
-                        try { room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7); }
+                        try 
+                        { 
+                            room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
+                            _hasBox = false;
+                        }
                         catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
+
+                    }
+                    else
+                    {
+                        List<int> index = room.OnCoordinatesGetIndexes(OneInFront());
+                        foreach(int item in index)
+                        {
+                            //5 is pressure plate
+                            if(item != 5)
+                            {
+                                return;
+                            }
+                        }
+                        room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
                         _hasBox = false;
                     }
                 }
@@ -171,7 +195,7 @@ namespace Server
                 foreach (int obj in room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
                 {
                     //not nothing and not spawn point (make more flexible later if needed)
-                    if (obj != 0 && obj != 3)
+                    if (obj != 0 && obj != 3 && obj != 5)
                     {
                         objectAtLocation = true;
                         break;
@@ -261,6 +285,7 @@ namespace Server
         //Send an actuator toggle packet
         private void sendActuatorToggle(int[] pPos)
         {
+
             try
             {
                 List<int> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
@@ -303,6 +328,10 @@ namespace Server
                                 }
 
                             }
+                            break;
+
+                        default:
+                            Logging.LogInfo("Player.cs: Found an actuator but couldnt handle it!", Logging.debugState.DETAILED);
                             break;
                     }
 
@@ -401,10 +430,10 @@ namespace Server
             base.Update();
 
             //walk timer
-            if (walkDirection[0] != 0 || walkDirection[1] != 0)
+            if (walkDirection[0] != 0 || walkDirection[2] != 0)
             {
                 //Logging.LogInfo("trying to walk in a direction");
-                if (timer >= 2)
+                if (timer >= 1)
                 {
                     timer = 0;
                     tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);

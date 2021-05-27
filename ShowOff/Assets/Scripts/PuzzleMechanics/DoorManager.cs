@@ -19,7 +19,7 @@ public class DoorManager : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleFactory> conditions = new List<PuzzleFactory>();
+    [SerializeField] private List<int> conditionsID = new List<int>();
 
     //=========================================================================================
     //                                   > Start/Update <

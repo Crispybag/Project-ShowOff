@@ -14,7 +14,6 @@ public class PressurePlate : PuzzleFactory
 
     //------------------------ public ------------------------
 
-    public int ID;
 
     //----------------------- private ------------------------
 

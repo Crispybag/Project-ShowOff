@@ -6,7 +6,6 @@ using static ServiceLocator;
 public class Button : PuzzleFactory
 {
 
-    public int ID;
     public Material mat1;
     public Material mat2;
 
