@@ -9,7 +9,7 @@ namespace Server
     {
         public GameTestRoom1(TCPGameServer pServer) : base(pServer, 0, 0, 0)
         {
-            GenerateGridFromText("../../testLevel1.txt");
+            //GenerateGridFromText("../../testLevel1.txt");
         }
     }
 }

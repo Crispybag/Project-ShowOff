@@ -76,7 +76,6 @@ namespace Server
 
         #endregion
 
-
         #region level data loading
 
         public void GenerateGridFromText(string filePath)
@@ -161,6 +160,9 @@ namespace Server
                         Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ);
                         break;
 
+                    case (10):
+                        Slope slope = new Slope(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
+                        break;
                 }
 
             }
@@ -216,9 +218,9 @@ namespace Server
 
         #region resetting
         //Teleports player to certain coordinates
-        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY)
+        protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY, int pZ)
         {
-            players.Add(new Player(this, pListener, pX, pY));
+            players.Add(new Player(this, pListener, pX, pY, pZ));
         }
 
 
@@ -297,7 +299,6 @@ namespace Server
             }
         }
         #endregion
-
 
         #region grid tools
 

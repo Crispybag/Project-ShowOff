@@ -26,7 +26,7 @@ namespace Server
             GenerateGridFromText("../../../../LevelFiles/pogLevel.txt");
 
 
-            SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 0, 0);
+            SpawnPoint _spawnPoint0 = new SpawnPoint(this, 0, 0, 1, 0);
             spawnPoints.Add(_spawnPoint0);
 
             CopyGrid(roomStatic, roomArray);
@@ -39,12 +39,22 @@ namespace Server
             base.AddMember(pListener);
             if (_users.Count <= 1)
             {
-                SetPlayerCoord(pListener, 9, 0);
+                try
+                {
+                    //spawn player at spawn point if there is one
+                    SpawnPoint _spawnPoint = CoordinatesFindGameObjectOfType(3)[0] as SpawnPoint;
+                    if (null!= _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.position[0], _spawnPoint.position[1], _spawnPoint.position[2]);
+                    printGrid(roomArray);
+                }
+                catch
+                {
+                    Logging.LogInfo("AAAAAAAAAAAAAAAAAAAAAAA something went wrong lol (in gametestroom0 adding member)", Logging.debugState.SIMPLE);
+                }
             }
 
             else
             {
-                SetPlayerCoord(pListener, 0, 0);
+                SetPlayerCoord(pListener, 9, 0, 0);
             }
         }
     }

@@ -36,7 +36,7 @@ public class InformationWriter : MonoBehaviour
         fileName = standardPathPrefix + fileName;
         clearData();
     }
-    void Start()
+    public virtual void Start()
     {
         WriteAllInformation();
         saveData();
