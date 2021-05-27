@@ -6,7 +6,6 @@ namespace Server
 {
     public class Slope : GameObject
     {
-        private GameRoom _room;
 
         //rotation of the slope
         private int[] orientation;
@@ -22,9 +21,9 @@ namespace Server
         private int[] _s2Position;
 
         #region intialization
-        public Slope(GameRoom room, int pX, int pY, int pZ, int rotation) : base(room, CollInteractType.PASS)
+        public Slope(GameRoom pRoom, int pX, int pY, int pZ, int pRotation) : base(pRoom, CollInteractType.PASS)
         {
-            _room = room;
+            room = pRoom;
 
             //set the base position of the gmae object
             position[0] = pX;
@@ -33,7 +32,7 @@ namespace Server
 
             //set the orientation based on the y-rotation of the objects
             orientation = new int[2];
-            switch (rotation)
+            switch (pRotation)
             {
                 case (0):
                     orientation[0] = 0; orientation[1] = -1;
@@ -70,9 +69,9 @@ namespace Server
 
                 //load objects in the scene
                 objectIndex = 10;
-                _room.roomArray[_s0Position[0], _s0Position[1], _s0Position[2]].Add(10);
-                _room.roomArray[_s1Position[0], _s1Position[1], _s1Position[2]].Add(11);
-                _room.roomArray[_s2Position[0], _s2Position[1], _s2Position[2]].Add(12);
+                room.roomArray[_s0Position[0], _s0Position[1], _s0Position[2]].Add(10);
+                room.roomArray[_s1Position[0], _s1Position[1], _s1Position[2]].Add(11);
+                room.roomArray[_s2Position[0], _s2Position[1], _s2Position[2]].Add(12);
             }
 
             catch
@@ -98,7 +97,7 @@ namespace Server
                 try 
                 { 
                 //make sure that the room the player wants to move to is empty and exists
-                if (_room.coordinatesEmpty(OneInFront(_s0Position, orientation))) { return true; }
+                if (room.OnCoordinatesEmpty(OneInFront(_s0Position, orientation))) { return true; }
                     return false;
                 
                 }
@@ -115,7 +114,7 @@ namespace Server
                 try
                 {
                     //make sure that the room the player wants to move to is empty and exists
-                    if (_room.coordinatesEmpty(OneInFront(_s2Position, orientation))) { return true; }
+                    if (room.OnCoordinatesEmpty(OneInFront(_s2Position, orientation))) { return true; }
                     return false;
 
                 }

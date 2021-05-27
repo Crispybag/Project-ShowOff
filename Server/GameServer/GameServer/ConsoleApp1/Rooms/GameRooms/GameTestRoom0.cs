@@ -42,9 +42,9 @@ namespace Server
                 try
                 {
                     //spawn player at spawn point if there is one
-                    SpawnPoint _spawnPoint = CoordinatesFindGameObjectOfType(3)[0] as SpawnPoint;
+                    SpawnPoint _spawnPoint = OnCoordinatesFindGameObjectOfType(3)[0] as SpawnPoint;
                     if (null!= _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.position[0], _spawnPoint.position[1], _spawnPoint.position[2]);
-                    printGrid(roomArray);
+                    PrintGrid(roomArray);
                 }
                 catch
                 {

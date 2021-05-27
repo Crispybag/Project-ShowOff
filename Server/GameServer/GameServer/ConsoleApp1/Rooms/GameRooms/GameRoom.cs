@@ -303,6 +303,23 @@ namespace Server
         #region grid tools
 
         /// <summary>
+        /// finds a single object of given type, it only works with singletons at the moment, so if this needs an upgrade for other objects, notify me
+        /// </summary>
+        /// <param name="pIndex"></param>
+        /// <returns></returns>
+        public List<GameObject> OnCoordinatesFindGameObjectOfType(int pIndex)
+        {
+            List<GameObject> objList = new List<GameObject>();
+
+            foreach (GameObject obj in gameObjects)
+            {
+                if (obj.objectIndex == pIndex) { objList.Add(obj); }
+            }
+            return objList;
+        }
+
+
+        /// <summary>
         /// checks if the coordinates have a certain value
         /// </summary>
         /// <param name="pX"> x-coordinate</param>

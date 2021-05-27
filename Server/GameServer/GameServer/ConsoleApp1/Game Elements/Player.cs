@@ -25,7 +25,7 @@ namespace Server
             walkDirection = new int[3];
             room = pRoom;
             _client = pClient;
-            _room.roomArray[position[0], position[1], position[2]].Add(1);
+            room.roomArray[position[0], position[1], position[2]].Add(1);
             objectIndex = 1;
         }
 
@@ -193,18 +193,18 @@ namespace Server
                 }
 
                 // slope check, might make this an own function as well
-                else if (room.coordinatesContain(OneInFront(), 10))
+                else if (room.OnCoordinatesContain(OneInFront(), 10))
                 {
                     //check if coordinates have a slope object
-                    if (room.coordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) is Slope)
+                    if (room.OnCoordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) is Slope)
                     {
                         //get the slope as game object
-                        Slope pSlope = room.coordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) as Slope;
+                        Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) as Slope;
                         
                         //check if the player can move on the slope and move on it when the player can move on the slope
                         if (pSlope.CanMoveOnSlope(OneInFront(), orientation)) 
                         {
-                            room.coordinatesRemove(position[0], position[1], position[2], 1);
+                            room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
                             position = pSlope.MoveOnSlope(OneInFront());
                             room.roomArray[position[0], position[1], position[2]].Add(1);
                         }
