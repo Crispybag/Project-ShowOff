@@ -92,24 +92,28 @@ namespace Server
         public bool CanMoveOnSlope(int[] pPosition, int[] pOrientation)
         {
             //if it hits position 2 and has opposing orientation
-            if      (positionEquals(pPosition, _s2Position) && pOrientation[0] == orientation[0] && orientation[1] == pOrientation[1]) 
+            if (positionEquals(pPosition, _s2Position))
             {
-                try 
-                { 
-                //make sure that the room the player wants to move to is empty and exists
-                if (room.OnCoordinatesEmpty(OneInFront(_s0Position, orientation))) { return true; }
-                    return false;
-                
-                }
-                catch
+                if (pOrientation[0] == -orientation[0] && orientation[1] == -pOrientation[1])
                 {
-                    Logging.LogInfo("Slope tries to send player outside of bounds of array in CanMoveOnSlope", Logging.debugState.DETAILED);
-                    return false;
+                    {
+                        try
+                        {
+                            //make sure that the room the player wants to move to is empty and exists
+                            if (room.OnCoordinatesEmpty(OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] }))) { return true; }
+                            return false;
+
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("Slope tries to send player outside of bounds of array in CanMoveOnSlope", Logging.debugState.DETAILED);
+                            return false;
+                        }
+                    }
                 }
             }
-            
             //if it hits position 0 and has same orientation
-            else if (positionEquals(pPosition, _s0Position) && pOrientation[0] == orientation[0] && pOrientation[1] == orientation[1]) 
+            else if (positionEquals(pPosition, _s0Position) && pOrientation[0] == orientation[0] && pOrientation[1] == orientation[1])
             {
                 try
                 {

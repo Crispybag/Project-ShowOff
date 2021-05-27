@@ -15,12 +15,12 @@ namespace Server
 
         private int[] orientation;
         private bool _hasBox;
-
         private int currentBoxID;
 
+        public int playerIndex;
 
         //standard stuff, along with quick coordinates
-        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0) : base(pRoom, CollInteractType.SOLID)
+        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pRoom, CollInteractType.SOLID)
         {
             position = new int[3] { pX, pY, pZ };
             orientation = new int[2] { 0, 1 };
@@ -29,6 +29,7 @@ namespace Server
             _client = pClient;
             room.roomArray[position[0], position[1], position[2]].Add(1);
             objectIndex = 1;
+            playerIndex = pPlayerIndex;
         }
 
         #region input
@@ -255,6 +256,20 @@ namespace Server
                         }
                     }
                 }
+                else if(room.OnCoordinatesContain(OneInFront(), 12))
+                {
+                    if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
+                    {
+                        Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) as Slope;
+
+                        if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
+                        {
+                            room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
+                            position = pSlope.MoveOnSlope(OneInFront());
+                            room.roomArray[position[0], position[1], position[2]].Add(1);
+                        }
+                    }
+                }
                 sendConfMove();
 
 
@@ -287,7 +302,7 @@ namespace Server
         {
             //Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
             ConfMove _confMove = new ConfMove();
-            _confMove.player = getPlayerIndex();
+            _confMove.player = GetPlayerIndex();
             _confMove.dirX = position[0];
             _confMove.dirY = position[1];
             _confMove.dirZ = position[2];
@@ -451,15 +466,11 @@ namespace Server
         #region player tools
 
         //get the index the player has 
-        private int getPlayerIndex()
+        public int GetPlayerIndex()
         {
-            for (int i = 0; i < room.players.Count; i++)
-            {
-                if (this == room.players[i])
-                {
-                    return i;
-                }
-            }
+
+            return playerIndex;
+
             Logging.LogInfo("WHHHHHHHHHHAAAAAAAAAAAAT, player is not in list you stupid fuckig dumbass", Logging.debugState.DETAILED);
             return 0;
         }
