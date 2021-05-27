@@ -27,8 +27,8 @@ namespace Server
             GenerateGridFromText("../../../../LevelFiles/3DPrototype.txt");
 
 
-            SpawnPoint _spawnPoint0 = new SpawnPoint(this, 1, 0, 1, 0);
-            spawnPoints.Add(_spawnPoint0);
+            //SpawnPoint _spawnPoint0 = new SpawnPoint(this, 1, 0, 1, 0);
+            //spawnPoints.Add(_spawnPoint0);
 
 
             CopyGrid(roomStatic, roomArray);

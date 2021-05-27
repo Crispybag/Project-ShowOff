@@ -315,7 +315,7 @@ namespace Server
 
 
             room.sendToAll(_confMove);
-            room.PrintGrid(room.roomArray);
+            //room.PrintGrid(room.roomArray);
         }
 
         //Send an actuator toggle packet

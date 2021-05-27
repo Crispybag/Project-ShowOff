@@ -220,7 +220,7 @@ namespace Server
                         break;
 
                     case (3):
-                        SpawnPoint spawnPoint = new SpawnPoint(this, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ);
+                        SpawnPoint spawnPoint = new SpawnPoint(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
                         break;
 
                     case (4):

@@ -43,10 +43,24 @@ namespace Server
                         {
                             clientsToBeMoved.Add(client);
                         }
+                        int i = 0;
                         foreach(TCPMessageChannel client in clientsToBeMoved)
                         {
                             client.SendMessage(confirmGameRoom);
                             _server.availableRooms["Test0"].AddMember(client);
+                            if (i == 0)
+                            {
+                                ConfPlayer newPlayer = new ConfPlayer();
+                                newPlayer.playerName = "Player1";
+                                client.SendMessage(newPlayer);
+                            }
+                            else
+                            {
+                                ConfPlayer newPlayer = new ConfPlayer();
+                                newPlayer.playerName = "Player2";
+                                client.SendMessage(newPlayer);
+                            }
+                            i++;
                             RemoveMember(client);
                         }
                     }

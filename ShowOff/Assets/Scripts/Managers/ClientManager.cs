@@ -18,6 +18,7 @@ public class ClientManager : MonoBehaviour
     //------------------------ public ------------------------
 
     public TcpClient client;
+    public string ClientName;
 
     //----------------------- private ------------------------
 
@@ -77,6 +78,22 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfDoorToggle) { handleConfDoorToggle(pInMessage as ConfDoorToggle); }
         if (pInMessage is ConfElevatorMove) { handleConfElevatorMove(pInMessage as ConfElevatorMove); }
         if (pInMessage is BoxInfo) { handleBoxInfo(pInMessage as BoxInfo); }
+        if(pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
+    }
+
+
+    private void handlePlayerInfo(ConfPlayer pMessage)
+    {
+        ClientName = pMessage.playerName;
+        Debug.Log("Joined game as " + ClientName);
+        try
+        {
+            serviceLocator.GetFromList("CameraManager").GetComponent<CameraManager>()._playerCameraGameObject = serviceLocator.GetFromList(ClientName).transform.Find("CameraPosition").gameObject;
+        }
+        catch
+        {
+            Debug.LogError("Could not find gameobjects for camera movement!");
+        }
     }
 
     private void handleConfElevatorMove(ConfElevatorMove pMessage)
@@ -144,18 +161,17 @@ public class ClientManager : MonoBehaviour
         GameObject player1 = serviceLocator.GetFromList("Player1");
         GameObject player2 = serviceLocator.GetFromList("Player2");
 
-
-
         if (pMessage.player == 0)
         {
             player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
-            player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
+            //player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
+
             Debug.Log("Moved player 1!");
         }
         else
         {
             player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
-            player2.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
+            //player2.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
 
             Debug.Log("Moved player 2!");
         }

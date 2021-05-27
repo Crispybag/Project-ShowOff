@@ -13,7 +13,24 @@ public class InformationWriterSlope : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        AddToInformation(transform.rotation.eulerAngles.y);
+        float rot = transform.rotation.eulerAngles.y;
+        if(rot >= -45f && rot <= 45)
+        {
+            rot = 0;
+        }
+        else if (rot >= 45f && rot <= 135)
+        {
+            rot = 90;
+        }
+        else if (rot >= -135f && rot <= -45)
+        {
+            rot = -90;
+        }
+        else
+        {
+            rot = 180;
+        }
+        AddToInformation(rot);
     }
 
 
