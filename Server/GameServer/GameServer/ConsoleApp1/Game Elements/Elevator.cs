@@ -8,9 +8,9 @@ namespace Server
     class Elevator : GameObject
     {
         public int ID;
-        //public List<GameObject> point = new List<GameObject>();
         private int currentPos;
         private int oldPos;
+        //contains the points the elevator can go in
         public Dictionary<int, EmptyGameObject> points = new Dictionary<int, EmptyGameObject>();
 
 
@@ -35,6 +35,7 @@ namespace Server
             {
                 oldPos = currentPos;
 
+                //makes sure it doesnt go outside the dictonairy
                 if (currentPos <= 0)
                 {
                     currentPos = 0;
@@ -43,9 +44,11 @@ namespace Server
                 {
                     currentPos--;
                 }
+
                 elevatorMove.ID = ID;
                 elevatorMove.posX = points[currentPos].position[0];
                 elevatorMove.posY = points[currentPos].position[1];
+                elevatorMove.posZ = points[currentPos].position[2];
 
                 room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
                 room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);
@@ -57,6 +60,7 @@ namespace Server
 
                 oldPos = currentPos;
 
+                //makes sure it doesnt go outside the dictonairy
                 if (currentPos >= points.Count -1)
                 {
                     currentPos = points.Count -1;
@@ -65,9 +69,11 @@ namespace Server
                 {
                     currentPos++;
                 }
+
                 elevatorMove.ID = ID;
                 elevatorMove.posX = points[currentPos].position[0];
                 elevatorMove.posY = points[currentPos].position[1];
+                elevatorMove.posZ = points[currentPos].position[2];
 
                 room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
                 room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);

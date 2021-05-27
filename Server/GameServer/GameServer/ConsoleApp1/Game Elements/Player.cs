@@ -162,6 +162,7 @@ namespace Server
             int[] direction = { pX, pY, pZ };
             orientation[0] = pX;
             orientation[1] = pZ;
+            Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.DETAILED);
             try
             {
                 bool objectAtLocation = false;
@@ -182,6 +183,7 @@ namespace Server
                     room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
                     position[0] += direction[0];
                     position[1] += direction[1];
+                    position[2] += direction[2];
                     //add
                     room.roomArray[position[0], position[1], position[2]].Add(1);
                     Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.DETAILED);
@@ -207,6 +209,7 @@ namespace Server
 
             }
         }
+
 
         #endregion
 

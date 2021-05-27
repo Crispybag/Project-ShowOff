@@ -5,10 +5,13 @@ using sharedAngy;
 
 namespace Server
 {
+    //button class is very similar to Lever, but instead of staying on, the button turn itself off after a time.
+
     class Button : Actuator
     {
         public List<Elevator> elevators = new List<Elevator>();
         public Direction currentDirection;
+        //this timer will decide after how long the button will turn off again, 3 stays on for around 0.5 seconds
         public float timer = 3;
         private float currentTimer;
 
@@ -26,10 +29,12 @@ namespace Server
         public override void Update()
         {
             base.Update();
+            //will only run when its activated, since it only needs to turn off after a while
             if (isActivated)
             {
                 if (currentTimer <= 0)
                 {
+                    //send the new package to the players that it turned off.
                     isActivated = false;
                     ConfActuatorToggle newButtonToggle = new ConfActuatorToggle();
                     newButtonToggle.isActived = isActivated;
@@ -46,6 +51,7 @@ namespace Server
 
         public void SetActive()
         {
+            //the button just turned on, so create new package to send to players.
             isActivated = true;
             currentTimer = timer;
 

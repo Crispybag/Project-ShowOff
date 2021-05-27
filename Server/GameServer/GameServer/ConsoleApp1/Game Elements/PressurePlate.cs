@@ -10,6 +10,7 @@ namespace Server
     {
 
         public List<Door> doors = new List<Door>();
+        private bool newActived;
 
         public PressurePlate(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, pActivated)
         {
@@ -23,7 +24,7 @@ namespace Server
             objectIndex = 5;
         }
 
-        private bool newActived;
+
 
 
         public override void Update()
@@ -45,6 +46,7 @@ namespace Server
                         newActived = false;
                     }
                 }
+                //This check makes sure the player doesnt contantly get packages of the pressureplate being updated.
                 if (newActived != isActivated)
                 {
                     UpdateClient();
@@ -57,7 +59,6 @@ namespace Server
         private void UpdateClient()
         {
             isActivated = newActived;
-            Logging.LogInfo("Pressure Plate: " + isActivated, Logging.debugState.DETAILED);
             ConfActuatorToggle plateToggle = new ConfActuatorToggle();
             plateToggle.ID = ID;
             plateToggle.isActived = isActivated;

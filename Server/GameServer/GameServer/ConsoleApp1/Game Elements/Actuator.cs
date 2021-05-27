@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Server
 {
+
+    //Class for implementing actuators like levers, pressure plate, and buttons.
+    //Will contain the information that all actuators can have
     class Actuator : GameObject
     {
         public bool isActivated = false;

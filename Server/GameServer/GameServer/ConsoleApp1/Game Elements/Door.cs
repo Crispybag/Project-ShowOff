@@ -24,6 +24,7 @@ namespace Server
 
         public void CheckDoor()
         {
+            //Will return true if all actuators in the list are turned on
             if (checkActuators())
             {
                 isOpen = true;
@@ -34,9 +35,9 @@ namespace Server
                 isOpen = false;
 
             }
+            //if the door is open, it will remove the door, if not, it will add the door
             if (isOpen)
             {
-                Logging.LogInfo("Door.cs: Trying to remove a object on position : " + position[0] + "," + position[1], Logging.debugState.DETAILED);
                 room.OnCoordinatesRemove(position[0], position[1], position[2], 6);
             }
             else
