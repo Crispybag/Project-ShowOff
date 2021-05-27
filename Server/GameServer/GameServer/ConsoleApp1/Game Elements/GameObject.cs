@@ -10,6 +10,10 @@ namespace Server
     {
         //position that each game object hasa
         public int[] position;
+        public int x() { return position[0]; }
+        public int y() { return position[1]; }
+        public int z() { return position[2]; }
+
         public int objectIndex = 0;
         //determines how a collision interaction will be handled
         public enum CollInteractType
