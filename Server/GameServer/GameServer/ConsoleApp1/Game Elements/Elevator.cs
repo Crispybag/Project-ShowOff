@@ -5,6 +5,9 @@ using sharedAngy;
 
 namespace Server
 {
+    /// <summary>
+    /// (Ezra) This class implements an elevator, with positions it can go to
+    /// </summary>
     class Elevator : GameObject
     {
         public int ID;
@@ -23,7 +26,9 @@ namespace Server
             currentPos = 0;
         }
 
-
+        /// <summary>
+        /// (Ezra) Changes position based on input
+        /// </summary>
         public void NextPosition(Button.Direction currentDirection)
         {
             ConfElevatorMove elevatorMove = new ConfElevatorMove();

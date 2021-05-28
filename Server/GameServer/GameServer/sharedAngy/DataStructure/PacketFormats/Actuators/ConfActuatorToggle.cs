@@ -4,6 +4,7 @@ using System.Text;
 
 namespace sharedAngy
 {
+
     public class ConfActuatorToggle : ASerializable
     {
         public bool isActived;
@@ -28,7 +29,8 @@ namespace sharedAngy
         {
             LEVER,
             PRESSUREPLATE,
-            BUTTON
+            BUTTON,
+            CRACK
         }
 
     }

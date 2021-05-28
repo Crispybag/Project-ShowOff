@@ -5,8 +5,9 @@ using System.Text;
 namespace Server
 {
 
-    //Class for implementing actuators like levers, pressure plate, and buttons.
-    //Will contain the information that all actuators can have
+    /// <summary>
+    /// (Ezra) Class for all actuators, this class holds all necessary information that all actuators have
+    /// </summary>
     public class Actuator : GameObject
     {
         public bool isActivated = false;

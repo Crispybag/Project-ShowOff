@@ -4,6 +4,9 @@ using System.Text;
 using sharedAngy;
 namespace Server
 {
+    /// <summary>
+    /// (Leo) This class implements a slope, which lets the player move up and down.
+    /// </summary>
     public class Slope : GameObject
     {
 
@@ -80,7 +83,7 @@ namespace Server
         #endregion
 
         /// <summary>
-        /// Checks if the player can move on the slope or not based on the position it is trying to hit the slope and the orientation the player currently has
+        /// (Leo) Checks if the player can move on the slope or not based on the position it is trying to hit the slope and the orientation the player currently has
         /// </summary>
         /// <param name="pPosition"></param>
         /// <param name="pOrientation"></param>
@@ -88,28 +91,26 @@ namespace Server
         public bool CanMoveOnSlope(int[] pPosition, int[] pOrientation)
         {
             //if it hits position 2 and has opposing orientation
-            if (positionEquals(pPosition, _s2Position))
+            if (PositionEquals(pPosition, _s2Position))
             {
                 if (pOrientation[0] == -orientation[0] && orientation[1] == -pOrientation[1])
                 {
+                    try
                     {
-                        try
-                        {
-                            //make sure that the room the player wants to move to is empty and exists
-                            if (room.OnCoordinatesEmpty(OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] }))) { return true; }
-                            return false;
+                        //make sure that the room the player wants to move to is empty and exists
+                        if (room.OnCoordinatesEmpty(OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] }))) { return true; }
+                        return false;
 
-                        }
-                        catch
-                        {
-                            Logging.LogInfo("Slope tries to send player outside of bounds of array in CanMoveOnSlope", Logging.debugState.DETAILED);
-                            return false;
-                        }
+                    }
+                    catch
+                    {
+                        Logging.LogInfo("Slope tries to send player outside of bounds of array in CanMoveOnSlope", Logging.debugState.DETAILED);
+                        return false;
                     }
                 }
             }
             //if it hits position 0 and has same orientation
-            else if (positionEquals(pPosition, _s0Position) && pOrientation[0] == orientation[0] && pOrientation[1] == orientation[1])
+            else if (PositionEquals(pPosition, _s0Position) && pOrientation[0] == orientation[0] && pOrientation[1] == orientation[1])
             {
                 try
                 {
@@ -128,7 +129,7 @@ namespace Server
         }
 
         /// <summary>
-        /// move the player on the slope based on which of the 2 positions the player has hit
+        /// (leo) Move the player on the slope based on which of the 2 positions the player has hit
         /// </summary>
         /// <param name="pPosition"></param>
         /// <returns></returns>
@@ -138,9 +139,9 @@ namespace Server
             {
                 //if position is s0, move it one past s2
                 Logging.LogInfo("Coordinates are " + _s2Position[0] + orientation[0] + ", " + _s2Position[1] + ", " + _s2Position[2] + orientation[1], Logging.debugState.DETAILED);
-                if (positionEquals(pPosition, _s0Position)) { return OneInFront(_s2Position, orientation); }
+                if (PositionEquals(pPosition, _s0Position)) { return OneInFront(_s2Position, orientation); }
                 //if position is s2, move it one past s0
-                else if (positionEquals(pPosition, _s2Position)) { return OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] } ); }
+                else if (PositionEquals(pPosition, _s2Position)) { return OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] } ); }
 
                 //code should not be able to read this place, check if you are calling the function correctly
                 Logging.LogInfo("this function should not be called as the player's target is not at the slope's location", Logging.debugState.SIMPLE);
@@ -154,7 +155,7 @@ namespace Server
         }
 
         /// <summary>
-        /// a function to determine one in front of the object it is currently facing.
+        /// (Leo)  A function to determine one in front of the object it is currently facing.
         /// </summary>
         /// <param name="pPosition"></param>
         /// <param name="pOrientation"></param>
@@ -177,7 +178,7 @@ namespace Server
             }
         }
 
-        public bool positionEquals(int[] pPosition0, int[] pPosition1)
+        public bool PositionEquals(int[] pPosition0, int[] pPosition1)
         {
             if (pPosition0[0] == pPosition1[0] && pPosition0[1] == pPosition1[1] && pPosition0[2] == pPosition1[2]) { return true; }
             return false;

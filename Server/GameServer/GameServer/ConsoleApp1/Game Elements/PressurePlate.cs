@@ -5,7 +5,9 @@ using sharedAngy;
 
 namespace Server
 {
-
+    /// <summary>
+    /// (Ezra) Subclass of actuator for implementing a pressureplate.
+    /// </summary>
     class PressurePlate : Actuator
     {
 

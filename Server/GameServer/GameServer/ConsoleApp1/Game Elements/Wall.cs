@@ -4,6 +4,10 @@ using System.Text;
 using sharedAngy;
 namespace Server
 {
+
+    /// <summary>
+    /// (Leo) Implements inwalking tiles
+    /// </summary>
     public class Wall : GameObject
     {
         public Wall(GameRoom pRoom, int pX, int pY, int pZ) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)

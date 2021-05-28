@@ -33,7 +33,9 @@ namespace Server
 
         #region input
 
-        //adds a direction input for the server to remember that the player can move in a certain direction
+        /// <summary>
+        /// (Leo) adds a direction input for the server to remember that the player can move in a certain direction
+        /// </summary>
         public void addInput(ReqKeyDown.KeyType lastInput)
         {
 
@@ -83,7 +85,9 @@ namespace Server
 
         }
 
-        //handle the release of the input where you remove the input from the list and cancel the direction if it is the direction the player is currently moving in
+        /// <summary>
+        /// (Leo) handle the release of the input where you remove the input from the list and cancel the direction if it is the direction the player is currently moving in
+        /// </summary>
         public void removeInput(ReqKeyUp.KeyType lastInput)
         {
             switch (lastInput)
@@ -116,10 +120,11 @@ namespace Server
         private void changeWalkDirection(int pX, int pY, int pZ)
         {
             walkDirection = new int[3] { pX, pY, pZ };
-
         }
 
-        //Handles the interaction button, check if there are any interactionables around, and interacts with them
+        /// <summary>
+        /// (Ezra) Handles the interaction button, check if there are any interactionables around, and interacts with them
+        /// </summary>
         private void handleInteraction()
         {
 
@@ -337,11 +342,9 @@ namespace Server
             }
         }
 
-
-
-
-
-        //cancel the movement direction and then player stop :)
+        /// <summary>
+        /// (Leo) Cancel the movement direction and then player stop :)
+        /// </summary>
         private void tryCancelDirection(int pX, int pY, int pZ)
         {
             if (walkDirection[0] == pX && walkDirection[1] == pY && walkDirection[2] == pZ)
@@ -355,7 +358,9 @@ namespace Server
 
         #region output
 
-        //Send a confirm move package based on new position
+        /// <summary>
+        /// (Leo) Send a confirm move package based on new position
+        /// </summary>
         private void sendConfMove()
         {
             //Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
@@ -376,10 +381,11 @@ namespace Server
             //room.PrintGrid(room.roomArray);
         }
 
-        //Send an actuator toggle packet
+        /// <summary>
+        /// (Ezra) Send an actuator toggle packet
+        /// </summary>
         private void sendActuatorToggle(int[] pPos)
         {
-
             try
             {
                 List<GameObject> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
@@ -391,60 +397,28 @@ namespace Server
                         case (4):
                             Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
                             GameObject gameObject = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
-                            Actuator lever = gameObject as Actuator;
-                            lever.isActivated = !lever.isActivated;
-
-                            foreach (int door in lever.doors)
-                            {
-                                try
-                                {
-                                    (room.InteractableGameobjects[door] as Door).CheckDoor();
-                                }
-                                catch
-                                {
-                                    Logging.LogInfo("Player.cs: Could not handle door, probably not in interactablegameobject list in room!", Logging.debugState.DETAILED);
-                                }
-                            }
-
-                            ConfActuatorToggle newLeverToggle = new ConfActuatorToggle();
-                            newLeverToggle.isActived = lever.isActivated;
-                            newLeverToggle.ID = lever.ID;
-                            newLeverToggle.obj = ConfActuatorToggle.Object.LEVER;
-                            room.sendToAll(newLeverToggle);
+                            Lever lever = gameObject as Lever;
+                            if (null != lever) { lever.ToggleLever(); }
                             break;
                         //8 = button
                         case (8):
                             Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
                             GameObject gameObject1 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 8);
                             Button button = gameObject1 as Button;
-                            if (null != button)
-                            {
-                                button.SetActive();
-                                if (button.elevators.Count > 0)
-                                {
-                                    foreach (int elevator in button.elevators)
-                                    {
-                                        try
-                                        {
-                                            (room.InteractableGameobjects[elevator] as Elevator).NextPosition(button.currentDirection);
-                                        }
-                                        catch
-                                        {
-                                            Logging.LogInfo("Player.cs: Could not handle the button acutator!", Logging.debugState.DETAILED);
-                                        }
-                                    }
-                                }
-
-                            }
+                            if (null != button) { button.SetActive(); }
+                            break;
+                        //crack
+                        case (12):
+                            Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                            GameObject gameObject2 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 12);
+                            Crack crack = gameObject2 as Crack;
+                            if (null != crack) { crack.FixCrack(); }
                             break;
 
                         default:
                             Logging.LogInfo("Player.cs: Found an actuator but couldnt handle it!", Logging.debugState.DETAILED);
                             break;
                     }
-
-
-
                 }
             }
             catch
@@ -454,7 +428,9 @@ namespace Server
 
         }
 
-        //Send a pickup box packet
+        /// <summary>
+        /// (Leo) Send a pickup box packet
+        /// </summary>
         private void sendPickUpBox(int pX, int pY, int pZ)
         {
             GameObject boxies = room.OnCoordinatesGetGameObject(pX, pY, pZ, 7);
@@ -480,12 +456,14 @@ namespace Server
             confHandleBox.posZ = pZ;
             confHandleBox.isPickingUp = true;*/
         }
+
+        /// <summary>
+        /// (Leo) Send a pickup box packet
+        /// </summary>
         private void sendPickUpBox(int[] pPos)
         {
             try
             {
-
-
                 GameObject boxies = room.OnCoordinatesGetGameObject(pPos, 7);
 
                 BoxInfo box = new BoxInfo();
@@ -523,7 +501,9 @@ namespace Server
 
         #region player tools
 
-        //get the index the player has 
+        /// <summary>
+        /// (Leo) get the index the player has 
+        /// </summary>
         public int GetPlayerIndex()
         {
 
@@ -533,12 +513,17 @@ namespace Server
             return 0;
         }
 
-        //get client that is attached to the player
+        /// <summary>
+        /// (Leo) get client that is attached to the player
+        /// </summary>
         public TCPMessageChannel getClient()
         {
             return _client;
         }
 
+        /// <summary>
+        /// (Leo) Returns the position the position the character is facing
+        /// </summary>
         public int[] OneInFront()
         {
             int[] positionInFront = new int[3];

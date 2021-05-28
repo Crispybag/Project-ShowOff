@@ -4,6 +4,9 @@ using System.Text;
 using sharedAngy;
 namespace Server
 {
+    /// <summary>
+    /// (Leo) Contains the information about the box
+    /// </summary>
     public class Box : GameObject
     {
 
