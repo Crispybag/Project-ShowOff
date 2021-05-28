@@ -5,6 +5,9 @@ using sharedAngy;
 
 namespace Server
 {
+    /// <summary>
+    /// (Ezra) Class for creating doors with door functionalities.
+    /// </summary>
     public class Door : GameObject
     {
         public int ID;
@@ -22,6 +25,9 @@ namespace Server
             room.roomArray[position[0], position[1], position[2]].Add(6);
         }
 
+        /// <summary>
+        /// (Ezra) Will check all actuator conditions connected to the door, if all return true, it will open the door.
+        /// </summary>
         public void CheckDoor()
         {
             //Will return true if all actuators in the list are turned on

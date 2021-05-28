@@ -11,15 +11,6 @@ namespace Server
     {
         public List<int>[,,] roomArray;
         public List<int>[,,] roomStatic;
-        //quick cheat sheet
-        //0 is empty
-        //1 is player
-        //2 is wall
-        //3 is spawn point
-        //4 is actuator
-        //5 is pressure plate
-        //6 is door
-        //7 is box
 
         public List<GameObject> gameObjects;
         public List<Player> players;
@@ -44,7 +35,9 @@ namespace Server
 
         }
 
-        //makes a new list for every single list in the arrays
+        /// <summary>
+        /// (Leo) Makes a list for every list in the txt
+        /// </summary>
         private void initializeAllLists()
         {
             //Make all lists for room array
@@ -80,6 +73,9 @@ namespace Server
 
         #region level data loading
 
+        /// <summary>
+        /// (Leo) Generates the grid
+        /// </summary>
         public void GenerateGridFromText(string filePath)
         {
             //values to determine grid size
@@ -94,7 +90,7 @@ namespace Server
         }
 
         /// <summary>
-        /// Determines how big the grid should be, it also returns minX and minY to reposition all items to fit into the grid
+        /// (Leo) Determines how big the grid should be, it also returns minX and minY to reposition all items to fit into the grid
         /// </summary>
         /// <param name="information"> all information</param>
         /// <param name="minX">the lowest X value of the grid</param>
@@ -125,10 +121,14 @@ namespace Server
             roomArray = new List<int>[maxX + 1 - minX, maxY + 1 - minY, maxZ + 1 - minZ];
         }
 
-        private List<List<int>> createLists(string[] pRawInformation, out List<string> testName)
+        /// <summary>
+        /// (Leo) Creates a list from the text file
+        /// </summary>
+        /// <returns></returns>
+        private List<List<int>> createLists(string[] pRawInformation, out List<string> informationData)
         {
 
-            testName = pRawInformation.ToList<string>();
+            informationData = pRawInformation.ToList<string>();
 
             //working out lists 
             List<List<int>> lists = new List<List<int>>();
@@ -145,7 +145,7 @@ namespace Server
                 //signal that list has ended
                 if (info == ")")
                 {
-                    testName.Remove(info);
+                    informationData.Remove(info);
                     //create a list data that is going to be added to lists
                     List<int> listData = new List<int>();
 
@@ -166,7 +166,7 @@ namespace Server
                 {
                     try
                     {
-                        testName.Remove(info);
+                        informationData.Remove(info);
                         tempList.Add((int)float.Parse(info));
                     }
                     catch
@@ -178,7 +178,7 @@ namespace Server
                 //signal that reader needs to start paying attention for lists
                 if (info == "(")
                 {
-                    testName.Remove(info);
+                    informationData.Remove(info);
                     isAddingToList = true;
                 }
             }
@@ -187,10 +187,8 @@ namespace Server
 
         }
 
-
-
         /// <summary>
-        /// add all objects to the grid based on the information
+        /// (Leo) Add all objects to the grid based on the information
         /// </summary>
         /// <param name="information">all the information that we need to use</param>
         /// <param name="minX">the minimum X of the grid</param>
@@ -202,9 +200,9 @@ namespace Server
                 //split information again with spaces to retrieve each coordinate
                 string[] rawInformation = line.Split(' ');
 
-                List<string> testName = new List<string>();
+                List<string> informationData = new List<string>();
 
-                List<List<int>> informationLists = createLists(rawInformation, out testName);
+                List<List<int>> informationLists = createLists(rawInformation, out informationData);
 
 
             
@@ -224,54 +222,15 @@ namespace Server
                         break;
 
                     case (4):
-                        Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
-                        InteractableGameobjects.Add(lever.ID, lever);
-                        try
-                        {
-                            foreach (int index in informationLists[0])
-                            {
-                                Logging.LogInfo("GameRoom.cs: Added door to lever!", Logging.debugState.DETAILED);
-                                lever.doors.Add(index);
-                            }
-                        }
-                        catch
-                        {
-                            Logging.LogInfo("GameRoom.cs: We could not handle given information about lever", Logging.debugState.DETAILED);
-                        }
+                        importLever(informationLists, rawInformation, minX, minY, minZ);
                         break;
 
                     case (5):
-                        PressurePlate pressurePlate = new PressurePlate(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
-                        InteractableGameobjects.Add(pressurePlate.ID, pressurePlate);
-                        try
-                        {
-                            foreach (int index in informationLists[0])
-                            {
-                                Logging.LogInfo("GameRoom.cs: Added door to pressure plate!", Logging.debugState.DETAILED);
-                                pressurePlate.doors.Add(index);
-                            }
-                        }
-                        catch
-                        {
-                            Logging.LogInfo("GameRoom.cs: We could not handle given information about pressure plate", Logging.debugState.DETAILED);
-                        }
+                        importPressurePlate(informationLists, rawInformation, minX, minY, minZ);
                         break;
 
                     case (6):
-                        Door door = new Door(this, int.Parse(rawInformation[1]), int.Parse(rawInformation[2]), int.Parse(rawInformation[3]), int.Parse(rawInformation[7]), true);
-                        InteractableGameobjects.Add(door.ID, door);
-                        try
-                        {
-                            foreach (int index in informationLists[0])
-                            {
-                                Logging.LogInfo("GameRoom.cs: Added actuator to door!", Logging.debugState.DETAILED);
-                                door.actuators.Add(index);
-                            }
-                        }
-                        catch
-                        {
-                            Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
-                        }
+                        importDoor(informationLists, rawInformation, minX, minY, minZ);
                         break;
 
                     case (7):
@@ -279,53 +238,11 @@ namespace Server
                         break;
 
                     case (8):
-                        Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
-                        InteractableGameobjects.Add(button.ID, button);
-                        switch (int.Parse(testName[8]))
-                        {
-                            case (0):
-                                button.currentDirection = Button.Direction.DOWN;
-                                break;
-                            case (1):
-                                button.currentDirection = Button.Direction.UP;
-                                break;
-                            default:
-                                Logging.LogInfo("GameRoom.cs: Cant handle button direction!", Logging.debugState.DETAILED);
-                                break;
-                        }
-                        try
-                        {
-                            foreach (int index in informationLists[0])
-                            {
-                                Logging.LogInfo("GameRoom.cs: Added door to button!", Logging.debugState.DETAILED);
-                                button.elevators.Add(index);
-                            }
-                        }
-                        catch
-                        {
-                            Logging.LogInfo("GameRoom.cs: We could not handle given information about button", Logging.debugState.DETAILED);
-                        }
+                        importButton(informationLists,rawInformation, informationData, minX, minY, minZ);
                         break;
 
                     case (9):
-                        Elevator elevator = new Elevator(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
-                        InteractableGameobjects.Add(elevator.ID, elevator);
-                        Console.WriteLine("Added an elevator on positions: " + elevator.position[0] + "," + elevator.position[1] + "," + elevator.position[2]);
-                        try
-                        {
-                            //List<EmptyGameObject> empties = new List<EmptyGameObject>();
-                            for(int i = 0; i < informationLists[0].Count / 3; i++)
-                            {
-                                EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3*i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2]);
-                                Console.WriteLine("Added an empty on positions: " + empty.position[0] + "," + empty.position[1] + "," + empty.position[2]);
-                                elevator.points.Add(i,empty);
-                            }
-                        }
-                        catch
-                        {
-
-                        }
-                        
+                        importElevator(informationLists, rawInformation, minX ,minY,minZ);
                         break;
 
                     case (10):
@@ -336,6 +253,120 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// (Ezra) Import pressure plates from txt
+        /// </summary>
+        private void importPressurePlate(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            PressurePlate pressurePlate = new PressurePlate(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+            InteractableGameobjects.Add(pressurePlate.ID, pressurePlate);
+            try
+            {
+                foreach (int index in informationLists[0])
+                {
+                    Logging.LogInfo("GameRoom.cs: Added door to pressure plate!", Logging.debugState.DETAILED);
+                    pressurePlate.doors.Add(index);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: We could not handle given information about pressure plate", Logging.debugState.DETAILED);
+            }
+        }
+        /// <summary>
+        /// (Ezra) Import lever plates from txt
+        /// </summary>
+        private void importLever(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+            InteractableGameobjects.Add(lever.ID, lever);
+            try
+            {
+                foreach (int index in informationLists[0])
+                {
+                    Logging.LogInfo("GameRoom.cs: Added door to lever!", Logging.debugState.DETAILED);
+                    lever.doors.Add(index);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: We could not handle given information about lever", Logging.debugState.DETAILED);
+            }
+        }
+        /// <summary>
+        /// (Ezra) Import door plates from txt
+        /// </summary>
+        private void importDoor(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Door door = new Door(this, int.Parse(rawInformation[1]) - minX, int.Parse(rawInformation[2]) - minY, int.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), true);
+            InteractableGameobjects.Add(door.ID, door);
+            try
+            {
+                foreach (int index in informationLists[0])
+                {
+                    Logging.LogInfo("GameRoom.cs: Added actuator to door!", Logging.debugState.DETAILED);
+                    door.actuators.Add(index);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
+            }
+        }
+        /// <summary>
+        /// (Ezra) Import button plates from txt
+        /// </summary>
+        private void importButton(List<List<int>> informationLists ,string[] rawInformation, List<string> informationData, int minX, int minY, int minZ)
+        {
+            Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+            InteractableGameobjects.Add(button.ID, button);
+            switch (int.Parse(informationData[8]))
+            {
+                case (0):
+                    button.currentDirection = Button.Direction.DOWN;
+                    break;
+                case (1):
+                    button.currentDirection = Button.Direction.UP;
+                    break;
+                default:
+                    Logging.LogInfo("GameRoom.cs: Cant handle button direction!", Logging.debugState.DETAILED);
+                    break;
+            }
+            try
+            {
+                foreach (int index in informationLists[0])
+                {
+                    Logging.LogInfo("GameRoom.cs: Added door to button!", Logging.debugState.DETAILED);
+                    button.elevators.Add(index);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: We could not handle given information about button", Logging.debugState.DETAILED);
+            }
+        }
+        /// <summary>
+        /// (Ezra) Import elevator plates from txt
+        /// </summary>
+        private void importElevator(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Elevator elevator = new Elevator(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+            InteractableGameobjects.Add(elevator.ID, elevator);
+            Console.WriteLine("Added an elevator on positions: " + elevator.position[0] + "," + elevator.position[1] + "," + elevator.position[2]);
+            try
+            {
+                for (int i = 0; i < informationLists[0].Count / 3; i++)
+                {
+                    EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2]);
+                    Console.WriteLine("Added an empty on positions: " + empty.position[0] + "," + empty.position[1] + "," + empty.position[2]);
+                    elevator.points.Add(i, empty);
+                }
+            }
+            catch
+            {
+
+            }
+        }
 
         #endregion
 
@@ -351,7 +382,9 @@ namespace Server
 
 
 
-        //handle request key down package
+        /// <summary>
+        /// (Leo) Handles request key down
+        /// </summary>
         private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)
         {
             Logging.LogInfo("Received a HandleReqKeyDown Package", Logging.debugState.DETAILED);
@@ -367,7 +400,9 @@ namespace Server
             }
         }
 
-        //handle request key up package
+        /// <summary>
+        /// (Leo) Handles request key up
+        /// </summary>
         private void handleReqKeyUp(ReqKeyUp pKeyUp, TCPMessageChannel pSender)
         {
             Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.DETAILED);
@@ -385,7 +420,10 @@ namespace Server
         #endregion
 
         #region resetting
-        //Teleports player to certain coordinates
+
+        /// <summary>
+        /// (Leo) Teleports player to certain coordinates
+        /// </summary>
         protected void SetPlayerCoord(TCPMessageChannel pListener, int pX, int pY, int pZ, int pPlayerIndex)
         {
             foreach(Player player in players)
@@ -399,7 +437,9 @@ namespace Server
         }
 
 
-        //Reset the room to the initial state
+        /// <summary>
+        /// (Leo) Resets room to initial state
+        /// </summary>
         public void ResetRoom()
         {
             //for debug purposes print grid
@@ -418,7 +458,9 @@ namespace Server
             //probably need to handle lever states or whatever aswell
         }
 
-        //spawns a player on a checkpoint if the checkpoint is available
+        /// <summary>
+        /// (Leo) Respawns player
+        /// </summary>
         public void RespawnPlayer()
         {
             try
@@ -486,7 +528,7 @@ namespace Server
         #region grid tools
 
         /// <summary>
-        /// finds a single object of given type, it only works with singletons at the moment, so if this needs an upgrade for other objects, notify me
+        /// (Leo) Finds a single object of given type, it only works with singletons at the moment, so if this needs an upgrade for other objects, notify me
         /// </summary>
         /// <param name="pIndex"></param>
         /// <returns></returns>
@@ -503,7 +545,7 @@ namespace Server
 
 
         /// <summary>
-        /// checks if the coordinates have a certain value
+        /// (Leo) Checks if the coordinates have a certain value
         /// </summary>
         /// <param name="pX"> x-coordinate</param>
         /// <param name="pY"> y-coordinate</param>
@@ -529,7 +571,7 @@ namespace Server
         }
 
         /// <summary>
-        /// checks if the coordinates have a certain value
+        /// (Leo) Checks if the coordinates have a certain value
         /// </summary>
         /// <param name="pX"> x-coordinate</param>
         /// <param name="pY"> y-coordinate</param>
@@ -556,7 +598,7 @@ namespace Server
 
 
         /// <summary>
-        /// Checks if coordinates[pX, pY] is empty
+        /// (Leo) Checks if coordinates[pX, pY] is empty
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -577,7 +619,7 @@ namespace Server
         }
 
         /// <summary>
-        /// Checks if coordinates[pX, pY] is empty
+        /// (Leo) Checks if coordinates[pX, pY] is empty
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -599,7 +641,7 @@ namespace Server
 
 
         /// <summary>
-        /// quick tool function to remove all values from given value
+        /// (Leo) Quick tool function to remove all values from given value
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -631,7 +673,7 @@ namespace Server
         }
 
         /// <summary>
-        /// quick tool function to remove all values from given value
+        /// (Leo) Quick tool function to remove all values from given value
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -664,7 +706,7 @@ namespace Server
 
 
         /// <summary>
-        /// Adds a new objects (int) to given position
+        /// (Leo) Adds a new objects (int) to given position
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -687,7 +729,7 @@ namespace Server
 
 
         /// <summary>
-        /// Gets all objects from the location
+        /// (Leo) Gets all objects from the location
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -702,7 +744,7 @@ namespace Server
         }
 
         /// <summary>
-        /// Gets all objects from the location
+        /// (Leo) Gets all objects from the location
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -716,8 +758,8 @@ namespace Server
             return objects;
         }
 
-
-        /// Get game object of index on specific coordinate
+        /// <summary>
+        /// (Leo) Get game object of index on specific coordinate
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -749,7 +791,8 @@ namespace Server
             return null;
         }
 
-        /// Get game object of index on specific coordinate
+        /// <summary>
+        /// (Leo) Get game object of index on specific coordinate
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -783,7 +826,7 @@ namespace Server
 
 
         /// <summary>
-        /// Get all game objects of index(if specified) on specific coordinate
+        /// (Leo) Get all game objects of index(if specified) on specific coordinate
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -806,7 +849,7 @@ namespace Server
         }
 
         /// <summary>
-        /// Get all game objects of index(if specified) on specific coordinate
+        /// (Leo) Get all game objects of index(if specified) on specific coordinate
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -830,7 +873,7 @@ namespace Server
 
 
         /// <summary>
-        /// Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
+        /// (Leo) Tool that prints the entire grid in the console, for debugging purposes (not yet tested with list printing)
         /// </summary>
         /// <param name="pGrid"></param>
         ///<returns></returns>
@@ -870,7 +913,7 @@ namespace Server
 
 
         /// <summary>
-        /// Copy the values of grid 1 to grid 0. Mostly used for resetting the level
+        /// (Leo) Copy the values of grid 1 to grid 0. Mostly used for resetting the level
         /// </summary>
         /// <param name="pGrid0">The grid that will be changed</param>
         /// <param name="pGrid1">The grid that will contain the values you want</param>
@@ -899,8 +942,6 @@ namespace Server
 
 
         #endregion
-
-
 
     }
 }

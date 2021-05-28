@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Server
 {
+
+    /// <summary>
+    /// (Leo) Implements a spawnpoint where players spawn. 
+    /// </summary>
     public class SpawnPoint : GameObject
     {
         public int spawnIndex;

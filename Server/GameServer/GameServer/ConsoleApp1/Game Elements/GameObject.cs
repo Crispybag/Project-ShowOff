@@ -6,6 +6,9 @@ using sharedAngy;
 
 namespace Server
 {
+    /// <summary>
+    /// (Leo) Class for implementing all objects which need positions and functions
+    /// </summary>
     public abstract class GameObject
     {
         //position that each game object hasa
