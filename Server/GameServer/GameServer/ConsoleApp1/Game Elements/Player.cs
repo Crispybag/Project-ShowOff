@@ -201,11 +201,18 @@ namespace Server
                 Logging.LogInfo("Player.cs: " + e.Message, Logging.debugState.DETAILED);
             }
         }
+        #endregion
 
+        #region movement checks
+        //=========================================================================================
+        //                                    > Movement Check <
+        //=========================================================================================
 
-        //check if object blocks path
-        //determine whether to move without getting blocked
-        //determine exceptions
+        /// <summary>
+        /// check if player is being blocked
+        /// </summary>
+        /// <param name="position">position player tries to move to</param>
+        /// <returns></returns>
         private bool isBlockedByObject(int[] position)
         {
             List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
@@ -216,7 +223,67 @@ namespace Server
             return false;
         }
 
-        
+        /// <summary>
+        /// handle when slope 0 is being hit
+        /// </summary>
+        private void handleS0Hit()
+        {
+            //check if coordinates have a slope object
+            if (room.OnCoordinatesGetGameObject(OneInFront(), 10) is Slope)
+            {
+                //get the slope as game object
+                Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront(), 10) as Slope;
+
+                //check if the player can move on the slope and move on it when the player can move on the slope
+                if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
+                {
+                    MovePosition(pSlope.MoveOnSlope(OneInFront()));
+                }
+            }
+        }
+        /// <summary>
+        /// handle when slope 2 is being hit
+        /// </summary>
+        private void handleS2Hit()
+        {
+            //Add orientation and check 1 down if s0 is there
+            if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
+            {
+                //if that is true return the slope on that coordinate to the player
+                Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) as Slope;
+
+                //check with that slope whether the player can move on it
+                if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
+                {
+                    MovePosition(pSlope.MoveOnSlope(OneInFront()));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Contains all special interactions that need to have its own handling
+        /// </summary>
+        private void checkSpecialCollision()
+        {
+            List<int> objectsOnCoord = room.OnCoordinatesGetIndexes(OneInFront());
+            foreach (int index in objectsOnCoord)
+            {
+                switch (index)
+                {
+                    //slope hit at s0
+                    case (10):
+                        handleS0Hit();
+                        break;
+
+                    //slope hit at s2
+                    case (12):
+                        handleS2Hit();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
         //Does the check whether the player can change position or not
         private void tryPositionChange(int pX, int pY, int pZ)
@@ -225,52 +292,26 @@ namespace Server
             int[] direction = { pX, pY, pZ };
             orientation[0] = pX;
             orientation[1] = pZ;
-            Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.DETAILED);
+            Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.SPAM);
+
             try
             {
                 bool objectAtLocation = isBlockedByObject(OneInFront());
-                
+
                 //Passes the check and can move
                 if (!objectAtLocation)
                 {
                     MoveDirection(direction);
                 }
 
-                
-                // slope check, might make this an own function as well
-                else if (room.OnCoordinatesContain(OneInFront(), 10))
+                //check objects that need to be checked
+                else
                 {
-                    //check if coordinates have a slope object
-                    if (room.OnCoordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) is Slope)
-                    {
-                        //get the slope as game object
-                        Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) as Slope;
-                        
-                        //check if the player can move on the slope and move on it when the player can move on the slope
-                        if (pSlope.CanMoveOnSlope(OneInFront(), orientation)) 
-                        {
-                            MovePosition(pSlope.MoveOnSlope(OneInFront()));
-                        }
-                    }
+                    checkSpecialCollision();
                 }
 
-                else if(room.OnCoordinatesContain(OneInFront(), 12))
-                {
-                    if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
-                    {
-                        Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) as Slope;
-
-                        if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
-                        {
-                            room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
-                            position = pSlope.MoveOnSlope(OneInFront());
-                            room.roomArray[position[0], position[1], position[2]].Add(1);
-                        }
-                    }
-                }
+                //send the package to the clients
                 sendConfMove();
-
-
             }
 
             catch (Exception e)
@@ -293,9 +334,8 @@ namespace Server
 
             }
         }
-
-
         #endregion
+
 
         #region output
 
