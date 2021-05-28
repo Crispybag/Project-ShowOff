@@ -20,14 +20,13 @@ namespace Server
         public int playerIndex;
 
         //standard stuff, along with quick coordinates
-        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pRoom, CollInteractType.SOLID)
+        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
-            position = new int[3] { pX, pY, pZ };
             orientation = new int[2] { 0, 1 };
             walkDirection = new int[3];
             room = pRoom;
             _client = pClient;
-            room.roomArray[position[0], position[1], position[2]].Add(1);
+            room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 1;
             playerIndex = pPlayerIndex;
         }
@@ -155,7 +154,7 @@ namespace Server
                         //place box
                         try 
                         { 
-                            room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
+                            room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(this);
                             _hasBox = false;
                             GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
 
@@ -172,16 +171,16 @@ namespace Server
                     }
                     else
                     {
-                        List<int> index = room.OnCoordinatesGetIndexes(OneInFront());
-                        foreach(int item in index)
+                        List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
+                        foreach(GameObject item in index)
                         {
                             //5 is pressure plate
-                            if(item != 5)
+                            if(item.objectIndex != 5)
                             {
                                 return;
                             }
                         }
-                        room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
+                        room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(this);
                         _hasBox = false;
 
                         GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
@@ -240,14 +239,9 @@ namespace Server
                     MovePosition(pSlope.MoveOnSlope(OneInFront()));
                 }
             }
-        }
-        /// <summary>
-        /// handle when slope 2 is being hit
-        /// </summary>
-        private void handleS2Hit()
-        {
-            //Add orientation and check 1 down if s0 is there
-            if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
+
+            //else it could be the s2 position so check that as well here
+            else if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
             {
                 //if that is true return the slope on that coordinate to the player
                 Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) as Slope;
@@ -265,19 +259,14 @@ namespace Server
         /// </summary>
         private void checkSpecialCollision()
         {
-            List<int> objectsOnCoord = room.OnCoordinatesGetIndexes(OneInFront());
-            foreach (int index in objectsOnCoord)
+            List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(OneInFront());
+            foreach (GameObject index in objectsOnCoord)
             {
-                switch (index)
+                switch (index.objectIndex)
                 {
                     //slope hit at s0
                     case (10):
                         handleS0Hit();
-                        break;
-
-                    //slope hit at s2
-                    case (12):
-                        handleS2Hit();
                         break;
                     default:
                         break;
@@ -292,7 +281,7 @@ namespace Server
             int[] direction = { pX, pY, pZ };
             orientation[0] = pX;
             orientation[1] = pZ;
-            Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.SPAM);
+            Logging.LogInfo("Player's position is now ( " + x() + "," + y() + "," + z() + ")", Logging.debugState.SPAM);
 
             try
             {
@@ -309,7 +298,7 @@ namespace Server
                 {
                     checkSpecialCollision();
                 }
-
+                room.PrintGrid(room.roomArray);
                 //send the package to the clients
                 sendConfMove();
             }
@@ -345,9 +334,9 @@ namespace Server
             //Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
             ConfMove _confMove = new ConfMove();
             _confMove.player = GetPlayerIndex();
-            _confMove.dirX = position[0];
-            _confMove.dirY = position[1];
-            _confMove.dirZ = position[2];
+            _confMove.dirX = x();
+            _confMove.dirY = y();
+            _confMove.dirZ = z();
 
             //set y rotation
             if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 0; }
@@ -366,10 +355,10 @@ namespace Server
 
             try
             {
-                List<int> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
-                foreach (int actuator in actuators)
+                List<GameObject> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
+                foreach (GameObject actuator in actuators)
                 {
-                    switch (actuator)
+                    switch (actuator.objectIndex)
                     {
                         //4 = lever
                         case (4):
@@ -526,9 +515,9 @@ namespace Server
         public int[] OneInFront()
         {
             int[] positionInFront = new int[3];
-            positionInFront[0] = position[0] + orientation[0];  // xPosition + xOrientation
-            positionInFront[1] = position[1];                   // yPosition
-            positionInFront[2] = position[2] + orientation[1];  // zPosition + zOrientation
+            positionInFront[0] = x() + orientation[0];  // xPosition + xOrientation
+            positionInFront[1] = y();                   // yPosition
+            positionInFront[2] = z() + orientation[1];  // zPosition + zOrientation
 
             return positionInFront;
         }

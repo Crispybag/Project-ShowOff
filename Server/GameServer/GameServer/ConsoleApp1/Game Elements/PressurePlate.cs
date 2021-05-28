@@ -16,11 +16,8 @@ namespace Server
         {
             room = pRoom;
             ID = pID;
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
             isActivated = pActivated;
-            room.roomArray[position[0], position[1], position[2]].Add(5);
+            room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 5;
         }
 
@@ -30,13 +27,13 @@ namespace Server
         public override void Update()
         {
             base.Update();
-            if(room.roomArray[position[0], position[1], position[2]].Count > 0)
+            if(room.roomArray[x(), y(), z()].Count > 0)
             {
-                List<int> allItems = room.roomArray[position[0], position[1], position[2]];
-                foreach(int item in allItems)
+                List<GameObject> allItems = room.roomArray[x(), y(), z()];
+                foreach(GameObject item in allItems)
                 {
                     //1 = player, 7 = box
-                    if(item == 1 || item == 7)
+                    if(item.objectIndex == 1 || item.objectIndex == 7)
                     {
                         newActived = true;
                         break;

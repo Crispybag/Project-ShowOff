@@ -9,7 +9,7 @@ namespace Server
     public abstract class GameObject
     {
         //position that each game object hasa
-        public int[] position;
+        private int[] position;
         public int x() { return position[0]; }
         public int y() { return position[1]; }
         public int z() { return position[2]; }
@@ -28,13 +28,16 @@ namespace Server
 
         public GameRoom room;
         //First initialise
-        public GameObject(GameRoom pRoom, CollInteractType pMoveState)
+        public GameObject(int pX, int pY, int pZ, GameRoom pRoom, CollInteractType pMoveState)
         {
             //Add gameobject to the list of the room it is a part of so it gets updated once the scene is loaded
             pRoom.gameObjects.Add(this);
             room = pRoom;
             //initialise values
             position = new int[3];
+            position[0] = pX;
+            position[1] = pY;
+            position[2] = pZ;
             collState = pMoveState;
         }
 
@@ -52,7 +55,7 @@ namespace Server
             position[1] += pY;
             position[2] += pZ;
             //add
-            room.roomArray[x(), y(), z()].Add(objectIndex);
+            room.roomArray[x(), y(), z()].Add(this);
             Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
         }
         public void MoveDirection(int[] pDirection)
@@ -65,7 +68,7 @@ namespace Server
                 position[1] += pDirection[1];
                 position[2] += pDirection[2];
                 //add
-                room.roomArray[x(), y(), z()].Add(objectIndex);
+                room.roomArray[x(), y(), z()].Add(this);
                 Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
             }
             catch
@@ -81,7 +84,7 @@ namespace Server
             position[1] = pY;
             position[2] = pZ;
             //add
-            room.roomArray[x(), y(), z()].Add(objectIndex);
+            room.roomArray[x(), y(), z()].Add(this);
             Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
         }
         public void MovePosition(int[] pPosition)
@@ -89,12 +92,12 @@ namespace Server
             try
             {
                 //change the location of the player and remove the player value from the grid at the place the player was
-                room.OnCoordinatesRemove(x(), y(), z(), 1);
+                room.OnCoordinatesRemove(x(), y(), z(), objectIndex);
                 position[0] = pPosition[0];
                 position[1] = pPosition[1];
                 position[2] = pPosition[2];
                 //add
-                room.roomArray[x(), y(), z()].Add(1);
+                room.roomArray[x(), y(), z()].Add(this);
                 Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
             }
             catch

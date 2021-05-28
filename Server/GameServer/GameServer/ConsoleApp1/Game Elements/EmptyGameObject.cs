@@ -8,11 +8,8 @@ namespace Server
     class EmptyGameObject : GameObject
     {
         //Class for if you just need points in the scene, like for the elevator
-        public EmptyGameObject(GameRoom pRoom, int pX, int pY, int pZ) : base(pRoom, CollInteractType.SOLID)
+        public EmptyGameObject(GameRoom pRoom, int pX, int pY, int pZ) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
             room = pRoom;
         }
     }

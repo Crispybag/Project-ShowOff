@@ -11,15 +11,12 @@ namespace Server
         private bool isOpen = false;
         public List<int> actuators = new List<int>();
 
-        public Door(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pIsOpen) : base(pRoom, CollInteractType.SOLID)
+        public Door(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pIsOpen) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             ID = pID;
             isOpen = pIsOpen;
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
             room = pRoom;
-            room.roomArray[position[0], position[1], position[2]].Add(6);
+            room.roomArray[x(), y(), z()].Add(this);
         }
 
         public void CheckDoor()
@@ -38,13 +35,13 @@ namespace Server
             //if the door is open, it will remove the door, if not, it will add the door
             if (isOpen)
             {
-                room.OnCoordinatesRemove(position[0], position[1], position[2], 6);
+                room.OnCoordinatesRemove(x(), y(), z(), 6);
             }
             else
             {
-                if (room.OnCoordinatesEmpty(position))
+                if (room.OnCoordinatesEmpty(x(), y(), z()))
                 {
-                    room.OnCoordinatesAdd(position[0], position[1], position[2], 6);
+                    room.OnCoordinatesAdd(x(), y(), z(), this);
                 }
             }
             ConfDoorToggle doorToggle = new ConfDoorToggle();

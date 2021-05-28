@@ -14,14 +14,11 @@ namespace Server
         public Dictionary<int, EmptyGameObject> points = new Dictionary<int, EmptyGameObject>();
 
 
-        public Elevator(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, CollInteractType.SOLID)
+        public Elevator(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             ID = pID;
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
             room = pRoom;
-            room.roomArray[position[0], position[1], position[2]].Add(9);
+            room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 9;
             currentPos = 0;
         }
@@ -46,12 +43,14 @@ namespace Server
                 }
 
                 elevatorMove.ID = ID;
-                elevatorMove.posX = points[currentPos].position[0];
-                elevatorMove.posY = points[currentPos].position[1];
-                elevatorMove.posZ = points[currentPos].position[2];
+                elevatorMove.posX = points[currentPos].x();
+                elevatorMove.posY = points[currentPos].y();
+                elevatorMove.posZ = points[currentPos].z();
 
-                room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
-                room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);
+                //room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
+                //room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);                
+                MovePosition(points[currentPos].x(), points[currentPos].y(), points[currentPos].z());
+
                 room.sendToAll(elevatorMove);
             }
 
@@ -71,12 +70,12 @@ namespace Server
                 }
 
                 elevatorMove.ID = ID;
-                elevatorMove.posX = points[currentPos].position[0];
-                elevatorMove.posY = points[currentPos].position[1];
-                elevatorMove.posZ = points[currentPos].position[2];
+                elevatorMove.posX = points[currentPos].x();
+                elevatorMove.posY = points[currentPos].y();
+                elevatorMove.posZ = points[currentPos].z();
 
-                room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
-                room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);
+                room.OnCoordinatesAdd(points[currentPos].x(), points[currentPos].y(), points[currentPos].z(), this);
+                room.OnCoordinatesRemove(points[oldPos].x(), points[oldPos].y(), points[currentPos].z(), 9);
                 room.sendToAll(elevatorMove);
             }
             else
