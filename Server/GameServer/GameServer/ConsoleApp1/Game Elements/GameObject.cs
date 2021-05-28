@@ -24,7 +24,7 @@ namespace Server
         }
 
         
-        protected CollInteractType moveState;
+        protected CollInteractType collState;
 
         public GameRoom room;
         //First initialise
@@ -35,12 +35,12 @@ namespace Server
             room = pRoom;
             //initialise values
             position = new int[3];
-            moveState = pMoveState;
+            collState = pMoveState;
         }
 
         protected void SetState(CollInteractType pNewState)
         {
-            moveState = pNewState;
+            collState = pNewState;
         }
 
 

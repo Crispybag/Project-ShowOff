@@ -203,41 +203,40 @@ namespace Server
         }
 
 
+        //check if object blocks path
+        //determine whether to move without getting blocked
+        //determine exceptions
+        private bool isBlockedByObject(int[] position)
+        {
+            List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (gameObject.collState == CollInteractType.SOLID) return true;
+            }
+            return false;
+        }
+
+        
+
         //Does the check whether the player can change position or not
         private void tryPositionChange(int pX, int pY, int pZ)
         {
+            //determine direction and set orientation
             int[] direction = { pX, pY, pZ };
             orientation[0] = pX;
             orientation[1] = pZ;
             Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.DETAILED);
             try
             {
-                bool objectAtLocation = false;
-                //check if the list contains something that is not 0
-                foreach (int obj in room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
-                {
-                    //not nothing and not spawn point (make more flexible later if needed)
-                    if (obj != 0 && obj != 3 && obj != 5)
-                    {
-                        objectAtLocation = true;
-                        break;
-                    }
-                }
-
+                bool objectAtLocation = isBlockedByObject(OneInFront());
+                
                 //Passes the check and can move
                 if (!objectAtLocation)
                 {
-                    //change the location of the player and remove the player value from the grid at the place the player was
-                    room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
-                    position[0] += direction[0];
-                    position[1] += direction[1];
-                    position[2] += direction[2];
-                    //add
-                    room.roomArray[position[0], position[1], position[2]].Add(1);
-                    Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1]  +", " + position[2] + ")", Logging.debugState.DETAILED);
-
+                    MoveDirection(direction);
                 }
 
+                
                 // slope check, might make this an own function as well
                 else if (room.OnCoordinatesContain(OneInFront(), 10))
                 {
@@ -250,12 +249,11 @@ namespace Server
                         //check if the player can move on the slope and move on it when the player can move on the slope
                         if (pSlope.CanMoveOnSlope(OneInFront(), orientation)) 
                         {
-                            room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
-                            position = pSlope.MoveOnSlope(OneInFront());
-                            room.roomArray[position[0], position[1], position[2]].Add(1);
+                            MovePosition(pSlope.MoveOnSlope(OneInFront()));
                         }
                     }
                 }
+
                 else if(room.OnCoordinatesContain(OneInFront(), 12))
                 {
                     if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
@@ -281,6 +279,10 @@ namespace Server
                 Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
+
+
+
+
 
         //cancel the movement direction and then player stop :)
         private void tryCancelDirection(int pX, int pY, int pZ)
