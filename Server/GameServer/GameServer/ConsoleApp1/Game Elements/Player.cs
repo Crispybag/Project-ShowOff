@@ -22,14 +22,13 @@ namespace Server
 
 
         //standard stuff, along with quick coordinates
-        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pRoom, CollInteractType.SOLID)
+        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
-            position = new int[3] { pX, pY, pZ };
             orientation = new int[2] { 0, 1 };
             walkDirection = new int[3];
             room = pRoom;
             _client = pClient;
-            room.roomArray[position[0], position[1], position[2]].Add(1);
+            room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 1;
             playerIndex = pPlayerIndex;
         }
@@ -162,7 +161,7 @@ namespace Server
                         //place box
                         try 
                         { 
-                            room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
+                            room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(this);
                             _hasBox = false;
                             GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
 
@@ -179,16 +178,16 @@ namespace Server
                     }
                     else
                     {
-                        List<int> index = room.OnCoordinatesGetIndexes(OneInFront());
-                        foreach(int item in index)
+                        List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
+                        foreach(GameObject item in index)
                         {
                             //5 is pressure plate
-                            if(item != 5)
+                            if(item.objectIndex != 5)
                             {
                                 return;
                             }
                         }
-                        room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(7);
+                        room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(this);
                         _hasBox = false;
 
                         GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
@@ -208,24 +207,42 @@ namespace Server
                 Logging.LogInfo("Player.cs: " + e.Message, Logging.debugState.DETAILED);
             }
         }
+        #endregion
 
+        #region movement checks
+        //=========================================================================================
+        //                                    > Movement Check <
+        //=========================================================================================
 
         /// <summary>
-        /// (Leo) Does the check whether the player can change position or not
+        /// check if player is being blocked
         /// </summary>
-        private void tryPositionChange(int pX, int pY, int pZ)
+        /// <param name="position">position player tries to move to</param>
+        /// <returns></returns>
+        private bool isBlockedByObject(int[] position)
         {
-            int[] direction = { pX, pY, pZ };
-            orientation[0] = pX;
-            orientation[1] = pZ;
-            Logging.LogInfo("Player's position is now ( " + position[0] + "," + position[1] + "," + position[2] + ")", Logging.debugState.DETAILED);
-            try
+            List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
+            foreach (GameObject gameObject in gameObjects)
             {
-                bool objectAtLocation = false;
-                //check if the list contains something that is not 0
-                foreach (int obj in room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
+                if (gameObject.collState == CollInteractType.SOLID) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// handle when slope 0 is being hit
+        /// </summary>
+        private void handleS0Hit()
+        {
+            //check if coordinates have a slope object
+            if (room.OnCoordinatesGetGameObject(OneInFront(), 10) is Slope)
+            {
+                //get the slope as game object
+                Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront(), 10) as Slope;
+
+                //check if the player can move on the slope and move on it when the player can move on the slope
+                if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
                 {
-                    Console.WriteLine(obj);
                     //not nothing and not spawn point (make more flexible later if needed)
                     if (obj != 0 && obj != 3 && obj != 5 && obj != 15)
                     {
@@ -237,57 +254,98 @@ namespace Server
                     {
                         startDialogue(obj, direction);
                     }
+                    MovePosition(pSlope.MoveOnSlope(OneInFront()));
                 }
+            }
+
+            //else it could be the s2 position so check that as well here
+            else if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
+            {
+                //if that is true return the slope on that coordinate to the player
+                Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) as Slope;
+
+                //check with that slope whether the player can move on it
+                if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
+                {
+                    MovePosition(pSlope.MoveOnSlope(OneInFront()));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Contains all special interactions that need to have its own handling
+        /// </summary>
+        private void checkSpecialCollision()
+        {
+            List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(OneInFront());
+            foreach (GameObject index in objectsOnCoord)
+            {
+                switch (index.objectIndex)
+                {
+                    //slope hit at s0
+                    case (10):
+                        handleS0Hit();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        private void checkGrounded()
+        {
+            try
+            {
+                bool isGrounded = false;
+
+                while (!isGrounded)
+                {
+                    int[] pPosition = new int[3] { x(), y() - 1, z() };
+                    //if object is 1 below you, stop falling
+                    if (isBlockedByObject(pPosition) || y() <= 0)
+                    {
+                        isGrounded = true;
+                    }
+
+                    //else fall 1 further down
+                    else
+                    {
+                        MoveDirection(0, -1, 0);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        //Does the check whether the player can change position or not
+        private void tryPositionChange(int pX, int pY, int pZ)
+        {
+            //determine direction and set orientation
+            int[] direction = { pX, pY, pZ };
+            orientation[0] = pX;
+            orientation[1] = pZ;
+            Logging.LogInfo("Player's position is now ( " + x() + "," + y() + "," + z() + ")", Logging.debugState.SPAM);
+
+            try
+            {
+                bool objectAtLocation = isBlockedByObject(OneInFront());
 
                 //Passes the check and can move
                 if (!objectAtLocation)
                 {
-                    //change the location of the player and remove the player value from the grid at the place the player was
-                    room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
-                    position[0] += direction[0];
-                    position[1] += direction[1];
-                    position[2] += direction[2];
-                    //add
-                    room.roomArray[position[0], position[1], position[2]].Add(1);
-                    Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1]  +", " + position[2] + ")", Logging.debugState.DETAILED);
-
+                    MoveDirection(direction);
                 }
 
-                // slope check, might make this an own function as well
-                else if (room.OnCoordinatesContain(OneInFront(), 10))
+                //check objects that need to be checked
+                else
                 {
-                    //check if coordinates have a slope object
-                    if (room.OnCoordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) is Slope)
-                    {
-                        //get the slope as game object
-                        Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0], OneInFront()[1], OneInFront()[2], 10) as Slope;
-                        
-                        //check if the player can move on the slope and move on it when the player can move on the slope
-                        if (pSlope.CanMoveOnSlope(OneInFront(), orientation)) 
-                        {
-                            room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
-                            position = pSlope.MoveOnSlope(OneInFront());
-                            room.roomArray[position[0], position[1], position[2]].Add(1);
-                        }
-                    }
+                    checkSpecialCollision();
                 }
-                else if(room.OnCoordinatesContain(OneInFront(), 12))
-                {
-                    if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
-                    {
-                        Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) as Slope;
-
-                        if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
-                        {
-                            room.OnCoordinatesRemove(position[0], position[1], position[2], 1);
-                            position = pSlope.MoveOnSlope(OneInFront());
-                            room.roomArray[position[0], position[1], position[2]].Add(1);
-                        }
-                    }
-                }
+                checkGrounded();
+                room.PrintGrid(room.roomArray);
+                //send the package to the clients
                 sendConfMove();
-
-
             }
 
             catch (Exception e)
@@ -323,9 +381,8 @@ namespace Server
 
             }
         }
-
-
         #endregion
+
 
         #region output
 
@@ -337,9 +394,9 @@ namespace Server
             //Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
             ConfMove _confMove = new ConfMove();
             _confMove.player = GetPlayerIndex();
-            _confMove.dirX = position[0];
-            _confMove.dirY = position[1];
-            _confMove.dirZ = position[2];
+            _confMove.dirX = x();
+            _confMove.dirY = y();
+            _confMove.dirZ = z();
 
             //set y rotation
             if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 0; }
@@ -359,10 +416,10 @@ namespace Server
         {
             try
             {
-                List<int> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
-                foreach (int actuator in actuators)
+                List<GameObject> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
+                foreach (GameObject actuator in actuators)
                 {
-                    switch (actuator)
+                    switch (actuator.objectIndex)
                     {
                         //4 = lever
                         case (4):
@@ -498,9 +555,9 @@ namespace Server
         public int[] OneInFront()
         {
             int[] positionInFront = new int[3];
-            positionInFront[0] = position[0] + orientation[0];  // xPosition + xOrientation
-            positionInFront[1] = position[1];                   // yPosition
-            positionInFront[2] = position[2] + orientation[1];  // zPosition + zOrientation
+            positionInFront[0] = x() + orientation[0];  // xPosition + xOrientation
+            positionInFront[1] = y();                   // yPosition
+            positionInFront[2] = z() + orientation[1];  // zPosition + zOrientation
 
             return positionInFront;
         }

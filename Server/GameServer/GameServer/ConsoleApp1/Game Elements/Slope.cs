@@ -20,19 +20,13 @@ namespace Server
         //s1 s0  
 
         private int[] _s0Position;
-        private int[] _s1Position;
+       // private int[] _s1Position;
         private int[] _s2Position;
 
         #region intialization
-        public Slope(GameRoom pRoom, int pX, int pY, int pZ, int pRotation) : base(pRoom, CollInteractType.PASS)
+        public Slope(GameRoom pRoom, int pX, int pY, int pZ, int pRotation) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             room = pRoom;
-
-            //set the base position of the gmae object
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
-
             //set the orientation based on the y-rotation of the objects
             orientation = new int[2];
             switch (pRotation)
@@ -66,15 +60,17 @@ namespace Server
             //set positions to respective parts
             try
             {
-                _s0Position = new int[3] { position[0], position[1], position[2] };                                     //
-                _s1Position = new int[3] { position[0] + orientation[0], position[1], position[2] + orientation[1] };   //
-                _s2Position = new int[3] { _s1Position[0], _s1Position[1] + 1, _s1Position[2] };                        //position above s1
+                _s0Position = new int[3] { x(), y(), z() };
+                _s2Position = new int[3] { x() + orientation[0], y() + 1, z() + orientation[1] };                        
 
                 //load objects in the scene
                 objectIndex = 10;
-                room.roomArray[_s0Position[0], _s0Position[1], _s0Position[2]].Add(10);
-                room.roomArray[_s1Position[0], _s1Position[1], _s1Position[2]].Add(11);
-                room.roomArray[_s2Position[0], _s2Position[1], _s2Position[2]].Add(12);
+                room.roomArray[_s0Position[0], _s0Position[1], _s0Position[2]].Add(this);
+                room.roomArray[_s2Position[0], _s2Position[1], _s2Position[2]].Add(this);
+
+                //place a wall to obstruct people walking under the slope
+                Wall wall = new Wall(room, x() + orientation[0], y(), z() + orientation[1]);
+                room.roomArray[x() + orientation[0], y(), z() + orientation[1]].Add(wall);
             }
 
             catch
@@ -170,7 +166,7 @@ namespace Server
             {
                 int[] positionInFront = new int[3];
                 positionInFront[0] = pPosition[0] + pOrientation[0];  // xPosition + xOrientation
-                positionInFront[1] = pPosition[1];                   // yPosition
+                positionInFront[1] = pPosition[1];                    // yPosition
                 positionInFront[2] = pPosition[2] + pOrientation[1];  // zPosition + zOrientation
 
                 return positionInFront;

@@ -10,13 +10,13 @@ namespace Server
     /// </summary>
     public class Wall : GameObject
     {
-        public Wall(GameRoom pRoom, int pX, int pY, int pZ) : base(pRoom, CollInteractType.SOLID)
+        public Wall(GameRoom pRoom, int pX, int pY, int pZ) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             room = pRoom;
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
-            room.roomArray[position[0], position[1], position[2]].Add(2);
+            Logging.LogInfo(x() +" "+ y() + " "+ z());
+            //room.PrintGrid(room.roomArray);
+            room.roomArray[x(), y(), z()].Add(this);
+            
             objectIndex = 2;
         }
     }

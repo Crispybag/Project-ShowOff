@@ -12,14 +12,11 @@ namespace Server
 
         public int ID;
 
-        public Box(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, CollInteractType.SHOVE)
+        public Box(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SHOVE)
         {
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
             ID = pID;
             room = pRoom;
-            room.roomArray[position[0], position[1], position[2]].Add(7);
+            room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 7;
         }
     }

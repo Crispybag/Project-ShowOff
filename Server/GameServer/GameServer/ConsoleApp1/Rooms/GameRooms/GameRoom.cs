@@ -9,8 +9,8 @@ namespace Server
 {
     public abstract class GameRoom : Room
     {
-        public List<int>[,,] roomArray;
-        public List<int>[,,] roomStatic;
+        public List<GameObject>[,,] roomArray;
+        public List<GameObject>[,,] roomStatic;
 
         public List<GameObject> gameObjects;
         public List<Player> players;
@@ -24,8 +24,8 @@ namespace Server
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
             //set up rooms
-            roomArray = new List<int>[roomWidth, roomHeight, roomLength];
-            roomStatic = new List<int>[roomWidth, roomHeight, roomLength];
+            roomArray = new List<GameObject>[roomWidth, roomHeight, roomLength];
+            roomStatic = new List<GameObject>[roomWidth, roomHeight, roomLength];
 
             //initialise every list in list array
             initializeAllLists();
@@ -51,7 +51,7 @@ namespace Server
                     {
                         int nDebugLength = roomArray.GetLength(0);
                         int nDebugLength1 = roomArray.GetLength(1);
-                        roomArray[x, y, z] = new List<int>();
+                        roomArray[x, y, z] = new List<GameObject>();
                     }
 
                 }
@@ -64,7 +64,7 @@ namespace Server
                 {
                     for (int x = 0; x < roomStatic.GetLength(0); x++)
                     {
-                        roomStatic[x, y, z] = new List<int>();
+                        roomStatic[x, y, z] = new List<GameObject>();
                     }
 
                 }
@@ -120,7 +120,7 @@ namespace Server
             }
             //set new size of room
             Logging.LogInfo("Grid Size: " + (maxX + 1 - minX) + " by " + (maxY + 1 - minY) + " by " + (maxZ + 1 - minZ),Logging.debugState.DETAILED);
-            roomArray = new List<int>[maxX + 1 - minX, maxY + 1 - minY, maxZ + 1 - minZ];
+            roomArray = new List<GameObject>[maxX + 1 - minX, maxY + 1 - minY, maxZ + 1 - minZ];
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Server
                         break;
 
                     case (7):
-                        Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+                        Box box = new Box(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
                         break;
 
                     case (8):
@@ -367,13 +367,13 @@ namespace Server
         {
             Elevator elevator = new Elevator(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
             InteractableGameobjects.Add(elevator.ID, elevator);
-            Console.WriteLine("Added an elevator on positions: " + elevator.position[0] + "," + elevator.position[1] + "," + elevator.position[2]);
+            Console.WriteLine("Added an elevator on positions: " + elevator.x() + "," + elevator.y() + "," + elevator.z());
             try
             {
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2]);
-                    Console.WriteLine("Added an empty on positions: " + empty.position[0] + "," + empty.position[1] + "," + empty.position[2]);
+                    Console.WriteLine("Added an empty on positions: " + empty.x() + "," + empty.y() + "," + empty.z());
                     elevator.points.Add(i, empty);
                 }
             }
@@ -386,6 +386,9 @@ namespace Server
         #endregion
 
         #region network handling
+        //=========================================================================================
+        //                                 > Network Handling <
+        //=========================================================================================
 
         //Receives a package and determine how to open the package
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
@@ -489,9 +492,8 @@ namespace Server
                 //for each player teleport to corresponding respawn point
                 for (int i = 0; i < players.Count; i++)
                 {
-                    Logging.LogInfo("teleporting to:  ( " + spawnPoints[i].position[0] + ", " + spawnPoints[i].position[1] + ")");
-                    players[i].position[0] = spawnPoints[i].position[0];
-                    players[i].position[1] = spawnPoints[i].position[1];
+                    Logging.LogInfo("teleporting to:  ( " + spawnPoints[i].x() + ", " + spawnPoints[i].y() + ")");
+                    players[i].MovePosition(spawnPoints[i].x(), spawnPoints[i].y(), spawnPoints[1].z());
                 }
             }
             catch (Exception e)
@@ -576,9 +578,9 @@ namespace Server
         {
             try
             {
-                foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
+                foreach (GameObject value in roomArray[pPos[0], pPos[1], pPos[2]])
                 {
-                    if (value == pValue) return true;
+                    if (value.objectIndex == pValue) return true;
                 }
 
                 return false;
@@ -602,9 +604,9 @@ namespace Server
         {
             try
             {
-                foreach (int value in roomArray[pX, pY, pZ])
+                foreach (GameObject value in roomArray[pX, pY, pZ])
                 {
-                    if (value == pValue) return true;
+                    if (value.objectIndex == pValue) return true;
                 }
 
                 return false;
@@ -669,20 +671,20 @@ namespace Server
         /// <param name="pValue">value</param>
         public void OnCoordinatesRemove(int[] pPos, int pValue)
         {
-            List<int> thingToRemove = new List<int>();
+            List<GameObject> thingToRemove = new List<GameObject>();
 
             Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + " with the value of: " + pValue, Logging.debugState.DETAILED);
             try
             {
-                foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
+                foreach (GameObject obj in roomArray[pPos[0], pPos[1], pPos[2]])
                 {
 
-                    if (value == pValue)
+                    if (obj.objectIndex == pValue)
                     {
-                        thingToRemove.Add(value);
+                        thingToRemove.Add(obj);
                     }
                 }
-                foreach (int removedValue in thingToRemove)
+                foreach (GameObject removedValue in thingToRemove)
                 {
                     roomArray[pPos[0], pPos[1], pPos[2]].Remove(removedValue);
                 }
@@ -701,20 +703,20 @@ namespace Server
         /// <param name="pValue">value</param>
         public void OnCoordinatesRemove(int pX, int pY, int pZ, int pValue)
         {
-            List<int> thingToRemove = new List<int>();
+            List<GameObject> thingToRemove = new List<GameObject>();
 
             Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + "," + pZ + " with the value of: " + pValue, Logging.debugState.DETAILED);
             try
             {
-                foreach (int value in roomArray[pX, pY, pZ])
+                foreach (GameObject value in roomArray[pX, pY, pZ])
                 {
 
-                    if (value == pValue)
+                    if (value.objectIndex == pValue)
                     {
                         thingToRemove.Add(value);
                     }
                 }
-                foreach (int removedValue in thingToRemove)
+                foreach (GameObject removedValue in thingToRemove)
                 {
                     roomArray[pX, pY, pZ].Remove(removedValue);
                 }
@@ -732,9 +734,10 @@ namespace Server
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
         /// <param name="pValue">value</param>
-        public void OnCoordinatesAdd(int[] pPos, int pValue)
+        public void OnCoordinatesAdd(int[] pPos, GameObject pValue)
         {
-            roomArray[pPos[2], pPos[1], pPos[2]].Add(pValue);
+            pValue.MovePosition(pPos);
+            roomArray[pPos[0], pPos[1], pPos[2]].Add(pValue);
         }
 
         /// <summary>
@@ -743,8 +746,9 @@ namespace Server
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
         /// <param name="pValue">value</param>
-        public void OnCoordinatesAdd(int pX, int pY, int pZ, int pValue)
+        public void OnCoordinatesAdd(int pX, int pY, int pZ, GameObject pValue)
         {
+            pValue.MovePosition(pX, pY, pZ);
             roomArray[pX, pY, pZ].Add(pValue);
         }
 
@@ -754,10 +758,10 @@ namespace Server
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
-        public List<int> OnCoordinatesGetIndexes(int[] pPos)
+        public List<GameObject> OnCoordinatesGetIndexes(int[] pPos)
         {
-            List<int> objects = new List<int>();
-            foreach (int value in roomArray[pPos[0], pPos[1], pPos[2]])
+            List<GameObject> objects = new List<GameObject>();
+            foreach (GameObject value in roomArray[pPos[0], pPos[1], pPos[2]])
             {
                 objects.Add(value);
             }
@@ -769,10 +773,10 @@ namespace Server
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
-        public List<int> OnCoordinatesGetIndexes(int pX, int pY, int pZ)
+        public List<GameObject> OnCoordinatesGetIndexes(int pX, int pY, int pZ)
         {
-            List<int> objects = new List<int>();
-            foreach (int value in roomArray[pX, pY, pZ])
+            List<GameObject> objects = new List<GameObject>();
+            foreach (GameObject value in roomArray[pX, pY, pZ])
             {
                 objects.Add(value);
             }
@@ -795,7 +799,7 @@ namespace Server
                 foreach (GameObject obj in gameObjects)
                 {
                     //make sure the type and coordinates are the same
-                    if (obj.position[0] == pPos[0] && obj.position[1] == pPos[1] && obj.position[2] == pPos[2] && obj.objectIndex == index)
+                    if (obj.x() == pPos[0] && obj.y() == pPos[1] && obj.z() == pPos[2] && obj.objectIndex == index)
                     {
                         //yay you get the game object
                         return obj;
@@ -828,13 +832,15 @@ namespace Server
                 foreach (GameObject obj in gameObjects)
                 {
                     //make sure the type and coordinates are the same
-                    if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && obj.objectIndex == index)
+                    if (obj.x() == pX && obj.y() == pY && obj.z() == pZ && obj.objectIndex == index)
                     {
                         //yay you get the game object
                         return obj;
                     }
 
                 }
+
+
                 Logging.LogInfo("GameRoom.cs: When trying to look for the game object it could not be found", Logging.debugState.DETAILED);
                 return null;
             }
@@ -856,16 +862,11 @@ namespace Server
         public List<GameObject> OnCoordinatesGetGameObjects(int[] pPos, int pIndex = -1)
         {
             List<GameObject> objectList = new List<GameObject>();
-            foreach (GameObject obj in gameObjects)
+            foreach (GameObject gObj in roomArray[pPos[0], pPos[1], pPos[2]])
             {
-                //make sure the type and coordinates are the same
-                if (obj.position[0] == pPos[2] && obj.position[1] == pPos[1] && obj.position[2] == pPos[2] && (pIndex == -1 || obj.objectIndex == pIndex))
-                {
-                    //yay you get the game object
-                    objectList.Add(obj);
-
-                }
+                objectList.Add(gObj);
             }
+
             return objectList;
         }
 
@@ -879,15 +880,9 @@ namespace Server
         public List<GameObject> OnCoordinatesGetGameObjects(int pX, int pY, int pZ, int pIndex = -1)
         {
             List<GameObject> objectList = new List<GameObject>();
-            foreach (GameObject obj in gameObjects)
+            foreach (GameObject gObj in roomArray[pX,pY,pZ])
             {
-                //make sure the type and coordinates are the same
-                if (obj.position[0] == pX && obj.position[1] == pY && obj.position[2] == pZ && (pIndex == -1 || obj.objectIndex == pIndex))
-                {
-                    //yay you get the game object
-                    objectList.Add(obj);
-
-                }
+                objectList.Add(gObj);
             }
             return objectList;
         }
@@ -898,7 +893,7 @@ namespace Server
         /// </summary>
         /// <param name="pGrid"></param>
         ///<returns></returns>
-        public void PrintGrid(List<int>[,,] pGrid)
+        public void PrintGrid(List<GameObject>[,,] pGrid)
         {
             for (int y = 0; y < pGrid.GetLength(1); y++)
             {
@@ -913,7 +908,7 @@ namespace Server
                         {
                             if (element != 0) Console.Write(", ");
                             else Console.Write("  ");
-                            Console.Write(pGrid[x, reverseY, reverseZ][element]);
+                            Console.Write(pGrid[x, reverseY, reverseZ][element].objectIndex);
                         }
 
                         if (pGrid[x, y, reverseZ].Count < 3)
@@ -939,7 +934,7 @@ namespace Server
         /// <param name="pGrid0">The grid that will be changed</param>
         /// <param name="pGrid1">The grid that will contain the values you want</param>
         /// <returns></returns>
-        public void CopyGrid(List<int>[,,] pGrid0, List<int>[,,] pGrid1)
+        public void CopyGrid(List<GameObject>[,,] pGrid0, List<GameObject>[,,] pGrid1)
         {
             try
             {
@@ -963,6 +958,5 @@ namespace Server
 
 
         #endregion
-
     }
 }

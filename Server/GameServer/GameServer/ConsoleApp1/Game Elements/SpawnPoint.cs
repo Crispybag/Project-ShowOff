@@ -11,14 +11,11 @@ namespace Server
     public class SpawnPoint : GameObject
     {
         public int spawnIndex;
-        public SpawnPoint(GameRoom pRoom, int pX, int pY, int pZ, int pPlayer) : base(pRoom, CollInteractType.PASS)
+        public SpawnPoint(GameRoom pRoom, int pX, int pY, int pZ, int pPlayer) : base(pX, pY, pZ, pRoom, CollInteractType.PASS)
         {
             spawnIndex = pPlayer;
             room = pRoom;
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
-            room.roomArray[position[0], position[1], position[2]].Add(3);
+            room.roomArray[x(), y(), z()].Add(this);
             room.spawnPoints.Add(this);
 
             objectIndex = 3;

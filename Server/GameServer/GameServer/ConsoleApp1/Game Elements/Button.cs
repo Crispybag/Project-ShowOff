@@ -19,11 +19,8 @@ namespace Server
         public Button(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, pX, pY, pZ, pID)
         {
             ID = pID;
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
             room = pRoom;
-            room.roomArray[position[0], position[1], position[2]].Add(8);
+            room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 8;
         }
 

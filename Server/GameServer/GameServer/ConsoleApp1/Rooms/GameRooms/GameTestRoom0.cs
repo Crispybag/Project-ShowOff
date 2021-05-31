@@ -9,7 +9,7 @@ namespace Server
     {
         public GameTestRoom0(TCPGameServer pServer, int pWidth, int pHeight, int pLength) : base(pServer, pWidth, pHeight, pLength)
         {
-            GenerateGridFromText("../../../../LevelFiles/3DPrototype.txt");
+            GenerateGridFromText("../../../../LevelFiles/TestSpawnPoint.txt");
             CopyGrid(roomStatic, roomArray);
             PrintGrid(roomArray);
         }
@@ -38,7 +38,7 @@ namespace Server
                         if (smiley.spawnIndex == 0) _spawnPoint = smiley;
                     }
 
-                    if (null!= _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.position[0], _spawnPoint.position[1], _spawnPoint.position[2], 0);
+                    if (null!= _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.x(), _spawnPoint.y(), _spawnPoint.z(), 0);
                     PrintGrid(roomArray);
                 }
                 catch
@@ -61,7 +61,7 @@ namespace Server
                         if (smiley.spawnIndex == 1) _spawnPoint = smiley;
                     }
 
-                    if (null != _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.position[0], _spawnPoint.position[1], _spawnPoint.position[2], 1);
+                    if (null != _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.x(), _spawnPoint.y(), _spawnPoint.z(), 1);
                     PrintGrid(roomArray);
                 }
                 catch
