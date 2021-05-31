@@ -10,7 +10,7 @@ namespace Server
     /// </summary>
     class Lever : Actuator
     {
-        public Lever(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, pActivated)
+        public Lever(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, CollInteractType.SOLID,pActivated)
         {
             ID = pID;
             room = pRoom;

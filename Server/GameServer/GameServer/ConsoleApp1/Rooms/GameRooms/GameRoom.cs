@@ -664,7 +664,7 @@ namespace Server
 
 
         /// <summary>
-        /// (Leo) Quick tool function to remove all values from given value
+        /// (Leo) Quick tool function to remove all values from given value also gameobjects
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -726,7 +726,6 @@ namespace Server
                 Logging.LogInfo("GameRoom.cs: Could not find position probably out of bounds", Logging.debugState.DETAILED);
             }
         }
-
 
         /// <summary>
         /// (Leo) Adds a new objects (int) to given position

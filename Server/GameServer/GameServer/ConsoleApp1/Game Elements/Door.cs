@@ -42,12 +42,14 @@ namespace Server
             if (isOpen)
             {
                 room.OnCoordinatesRemove(x(), y(), z(), 6);
+                this.SetState(CollInteractType.PASS);
             }
             else
             {
                 if (room.OnCoordinatesEmpty(x(), y(), z()))
                 {
                     room.OnCoordinatesAdd(x(), y(), z(), this);
+                    this.SetState(CollInteractType.SOLID);
                 }
             }
             ConfDoorToggle doorToggle = new ConfDoorToggle();

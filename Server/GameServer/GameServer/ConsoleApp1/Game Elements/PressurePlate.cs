@@ -14,7 +14,7 @@ namespace Server
         public List<int> doors = new List<int>();
         private bool newActived;
 
-        public PressurePlate(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, pActivated)
+        public PressurePlate(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, CollInteractType.PASS ,pActivated)
         {
             room = pRoom;
             ID = pID;

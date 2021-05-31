@@ -13,14 +13,11 @@ namespace Server
 
         public int ID;
 
-        public Dialogue(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, CollInteractType.PASS)
+        public Dialogue(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.PASS)
         {
             ID = pID;
-            position[0] = pX;
-            position[1] = pY;
-            position[2] = pZ;
             room = pRoom;
-            room.roomArray[position[0], position[1], position[2]].Add(15);
+            room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 15;
         }
     }
