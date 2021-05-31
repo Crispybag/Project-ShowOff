@@ -6,7 +6,7 @@ using sharedAngy;
 using System.Text;
 using static ServiceLocator;
 
-public class BasicTCPClient : MonoBehaviour
+public class PlayerInputHandler : MonoBehaviour
 {
     private ClientManager _clientManager;
     
