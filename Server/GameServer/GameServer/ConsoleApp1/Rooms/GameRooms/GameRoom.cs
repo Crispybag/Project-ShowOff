@@ -18,6 +18,8 @@ namespace Server
 
         public Dictionary<int, GameObject> InteractableGameobjects = new Dictionary<int, GameObject>();
 
+        public int currentDialogue;
+
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -248,9 +250,22 @@ namespace Server
                     case (10):
                         Slope slope = new Slope(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
                         break;
+                    case (15):
+                        importDialogue(informationLists, rawInformation, minX, minY, minZ);
+                        break;
                 }
 
             }
+        }
+
+        /// <summary>
+        /// (Ezra) Imports dialogue from txt
+        /// </summary>
+        private void importDialogue(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Dialogue dia = new Dialogue(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+            InteractableGameobjects.Add(dia.ID, dia);
+            Logging.LogInfo("GameRoom.cs: Added dialogue to room!", Logging.debugState.DETAILED);
         }
 
         /// <summary>
@@ -378,9 +393,15 @@ namespace Server
             Logging.LogInfo("Received a package! Trying to handle", Logging.debugState.SPAM);
             if (pMessage is ReqKeyDown){handleReqKeyDown(pMessage as ReqKeyDown, pSender);}
             if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
+            if (pMessage is ReqProgressDialogue){ handleReqProgressDialogue(pSender);}
         }
 
-
+        private void handleReqProgressDialogue(TCPMessageChannel pSender)
+        {
+            ConfProgressDialogue progressDialogue = new ConfProgressDialogue();
+            progressDialogue.ID = currentDialogue;
+            sendToUser(progressDialogue, pSender);
+        }
 
         /// <summary>
         /// (Leo) Handles request key down

@@ -79,8 +79,13 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfElevatorMove) { handleConfElevatorMove(pInMessage as ConfElevatorMove); }
         if (pInMessage is BoxInfo) { handleBoxInfo(pInMessage as BoxInfo); }
         if(pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
+        if(pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
     }
 
+    private void handleProgressDialogue(ConfProgressDialogue pMessage)
+    {
+        serviceLocator.interactableList[pMessage.ID].GetComponent<Dialogue>().ProgressDialogue();
+    }
 
     private void handlePlayerInfo(ConfPlayer pMessage)
     {

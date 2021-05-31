@@ -19,6 +19,8 @@ namespace Server
 
         public int playerIndex;
 
+
+
         //standard stuff, along with quick coordinates
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pRoom, CollInteractType.SOLID)
         {
@@ -223,11 +225,17 @@ namespace Server
                 //check if the list contains something that is not 0
                 foreach (int obj in room.roomArray[position[0] + direction[0], position[1] + direction[1], position[2] + direction[2]])
                 {
+                    Console.WriteLine(obj);
                     //not nothing and not spawn point (make more flexible later if needed)
-                    if (obj != 0 && obj != 3 && obj != 5)
+                    if (obj != 0 && obj != 3 && obj != 5 && obj != 15)
                     {
                         objectAtLocation = true;
                         break;
+                    }
+                    //dialogue
+                    if(obj == 15)
+                    {
+                        startDialogue(obj, direction);
                     }
                 }
 
@@ -288,6 +296,21 @@ namespace Server
                 Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
+
+        /// <summary>
+        /// (Ezra) Starts new dialogue
+        /// </summary>
+        private void startDialogue(int obj, int[] direction)
+        {
+            GameObject diaobj = room.OnCoordinatesGetGameObject(position[0] + direction[0], position[1] + direction[1], position[2] + direction[2], obj);
+            Dialogue dia = diaobj as Dialogue;
+            ConfProgressDialogue progressDialogue = new ConfProgressDialogue();
+            progressDialogue.ID = dia.ID;
+            room.currentDialogue = dia.ID;
+            room.sendToAll(progressDialogue);
+            room.OnCoordinatesRemove(position[0] + direction[0], position[1] + direction[1], position[2] + direction[2], obj);
+        }
+
 
         /// <summary>
         /// (Leo) Cancel the movement direction and then player stop :)
