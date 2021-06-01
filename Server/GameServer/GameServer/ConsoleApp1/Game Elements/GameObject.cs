@@ -44,7 +44,7 @@ namespace Server
             collState = pMoveState;
         }
 
-        protected void SetState(CollInteractType pNewState)
+        public void SetState(CollInteractType pNewState)
         {
             collState = pNewState;
         }

@@ -134,7 +134,7 @@ namespace Server
             try
             {
 
-                if (!_hasBox)
+                if (null == currentBox)
                 {
                     //for lever
                     if (room.OnCoordinatesContain(OneInFront(), 4))
@@ -170,14 +170,9 @@ namespace Server
             //check if box can be placed (at position + orientation) if its empty
             if (room.OnCoordinatesEmpty(OneInFront()))
             {
-                Console.WriteLine("in front is empty for box!");
                 //place box
                 try
                 {
-                    /*                    room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(this);
-                                        _hasBox = false;
-                                        GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
-                    */
                     currentBox.MovePosition(OneInFront());
                     sendBoxPackage(currentBox, OneInFront(), false);
                     currentBox = null;
@@ -210,6 +205,14 @@ namespace Server
         {
             try
             {
+                if (pIsPickedUp)
+                {
+                    box.SetState(CollInteractType.PASS);
+                }
+                else
+                {
+                    box.SetState(CollInteractType.SOLID);
+                }
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
