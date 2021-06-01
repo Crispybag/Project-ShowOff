@@ -18,11 +18,6 @@ namespace Server
 
         public Dictionary<int, GameObject> InteractableGameobjects = new Dictionary<int, GameObject>();
 
-<<<<<<< Updated upstream
-=======
-        public int currentDialogue;
-        public int minX = 0, minY = 0, minZ = 0;
->>>>>>> Stashed changes
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -84,6 +79,7 @@ namespace Server
         public void GenerateGridFromText(string filePath)
         {
             //values to determine grid size
+            int minX = 0, minY = 0, minZ = 0;
 
             //get the file path
             List<string> lines = File.ReadAllLines(filePath).ToList();
@@ -252,15 +248,6 @@ namespace Server
                     case (10):
                         Slope slope = new Slope(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
                         break;
-<<<<<<< Updated upstream
-=======
-                    case (13):
-                        AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]) , (int)float.Parse(rawInformation[9]));
-                        break;
-                    case (15):
-                        importDialogue(informationLists, rawInformation, minX, minY, minZ);
-                        break;
->>>>>>> Stashed changes
                 }
 
             }
@@ -654,61 +641,6 @@ namespace Server
             }
         }
 
-        /// <summary>
-        /// (Leo) checks if there is a gameobject at coordinates that is solid
-        /// </summary>
-        /// <param name="pPos"></param>
-        /// <returns></returns>
-        public bool OnCoordinatesCanMove(int[] pPos)
-        {
-            try
-            {
-                if (roomArray[pPos[0], pPos[1], pPos[2]].Count != 0)
-                {
-                    foreach (GameObject obj in roomArray[pPos[0], pPos[1], pPos[2]])
-                    {
-                        if (obj.collState == GameObject.CollInteractType.SOLID)
-                            return false;
-                    }
-                }
-                return true;
-            }
-            catch
-            {
-                Logging.LogInfo("CoordinatesCanMove got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
-
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// (Leo)checks if there is a gameobject at coordinates that is solid
-        /// </summary>
-        /// <param name="pX"></param>
-        /// <param name="pY"></param>
-        /// <param name="pZ"></param>
-        /// <returns></returns>
-        public bool OnCoordinatesCanMove(int pX, int pY, int pZ)
-        {
-            try
-            {
-                if (roomArray[pX, pY, pZ].Count != 0)
-                {
-                    foreach (GameObject obj in roomArray[pX, pY, pZ])
-                    {
-                        if (obj.collState == GameObject.CollInteractType.SOLID)
-                            return false;
-                    }
-                }
-                return true;
-            }
-            catch
-            {
-                Logging.LogInfo("CoordinatesCanMove got a pPos value that was not 3 long, might want to recheck that", Logging.debugState.SIMPLE);
-
-                return false;
-            }
-        }
 
         /// <summary>
         /// (Leo) Quick tool function to remove all values from given value

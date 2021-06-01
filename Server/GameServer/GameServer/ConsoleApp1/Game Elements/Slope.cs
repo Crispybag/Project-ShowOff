@@ -36,7 +36,7 @@ namespace Server
                     break;
 
                 case (90):
-                    orientation[0] = -1; orientation[1] = 0;
+                    orientation[0] = 1; orientation[1] = 0;
                     break;
 
                 case (180):
@@ -44,11 +44,11 @@ namespace Server
                     break;
 
                 case (270):
-                    orientation[0] = 1; orientation[1] = 0;
+                    orientation[0] = -1; orientation[1] = 0;
                     break;
 
                 case (-90):
-                    orientation[0] = 1; orientation[1] = 0;
+                    orientation[0] = -1; orientation[1] = 0;
                     break;
 
                 default:
@@ -98,7 +98,7 @@ namespace Server
                     try
                     {
                         //make sure that the room the player wants to move to is empty and exists
-                        if (room.OnCoordinatesCanMove(OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] }))) { return true; }
+                        if (room.OnCoordinatesEmpty(OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] }))) { return true; }
                         return false;
 
                     }
@@ -115,7 +115,7 @@ namespace Server
                 try
                 {
                     //make sure that the room the player wants to move to is empty and exists
-                    if (room.OnCoordinatesCanMove(OneInFront(_s2Position, orientation))) { return true; }
+                    if (room.OnCoordinatesEmpty(OneInFront(_s2Position, orientation))) { return true; }
                     return false;
 
                 }

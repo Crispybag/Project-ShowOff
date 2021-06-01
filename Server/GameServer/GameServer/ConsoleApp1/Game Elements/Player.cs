@@ -19,14 +19,6 @@ namespace Server
 
         public int playerIndex;
 
-<<<<<<< Updated upstream
-=======
-        public GameObject currentBox;
-        private int[,,] position;
-
-        private int callLoopPrevent;
-
->>>>>>> Stashed changes
         //standard stuff, along with quick coordinates
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
@@ -207,45 +199,6 @@ namespace Server
                         room.sendToAll(box);
                     }
                 }
-<<<<<<< Updated upstream
-=======
-                Console.WriteLine("In front is empty for box! but with interactable");
-                currentBox.MovePosition(OneInFront());
-                sendBoxPackage(currentBox, OneInFront(), false);
-                currentBox = null;
-            }
-        }
-
-        private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
-        {
-            try
-            {
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = position[0];
-                boxInf.posY = position[1];
-                boxInf.posZ = position[2];
-                room.sendToAll(boxInf);
-            }
-            catch
-            {
-                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
-            }
-        }
-
-        private void sendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
-        {
-            try
-            {
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX;
-                boxInf.posY = pY + room.minY;
-                boxInf.posZ = pZ + room.minZ;
-                room.sendToAll(boxInf);
->>>>>>> Stashed changes
             }
             catch (Exception e)
             {
@@ -277,96 +230,49 @@ namespace Server
         /// <summary>
         /// handle when slope 0 is being hit
         /// </summary>
-        private void handleS0Hit(int[] pPosition)
+        private void handleS0Hit()
         {
             //check if coordinates have a slope object
-            if (room.OnCoordinatesGetGameObject(pPosition, 10) is Slope)
+            if (room.OnCoordinatesGetGameObject(OneInFront(), 10) is Slope)
             {
                 //get the slope as game object
-                Slope pSlope = room.OnCoordinatesGetGameObject(pPosition, 10) as Slope;
+                Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront(), 10) as Slope;
 
                 //check if the player can move on the slope and move on it when the player can move on the slope
-                if (pSlope.CanMoveOnSlope(pPosition, orientation))
+                if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
                 {
-                    MovePosition(pSlope.MoveOnSlope(pPosition));
-                }
-                else
-                {
-                    checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
-
+                    MovePosition(pSlope.MoveOnSlope(OneInFront()));
                 }
             }
 
             //else it could be the s2 position so check that as well here
-            else if (room.OnCoordinatesGetGameObject(pPosition[0] + orientation[0], pPosition[1] - 1, pPosition[2] + orientation[1], 10) is Slope)
+            else if (room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) is Slope)
             {
                 //if that is true return the slope on that coordinate to the player
-                Slope pSlope = room.OnCoordinatesGetGameObject(pPosition[0] + orientation[0], pPosition[1] - 1, pPosition[2] + orientation[1], 10) as Slope;
+                Slope pSlope = room.OnCoordinatesGetGameObject(OneInFront()[0] + orientation[0], OneInFront()[1] - 1, OneInFront()[2] + orientation[1], 10) as Slope;
 
                 //check with that slope whether the player can move on it
-                if (pSlope.CanMoveOnSlope(pPosition, orientation))
+                if (pSlope.CanMoveOnSlope(OneInFront(), orientation))
                 {
-                    MovePosition(pSlope.MoveOnSlope(pPosition));
-                }
-                else
-                {
-                    checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// (Leo)handles special air channel hit event
-        /// </summary>
-        /// <param name="pPosition"></param>
-        private void handleAirChannelHit(int [] pPosition)
-        {
-            if (room.OnCoordinatesGetGameObject(pPosition, 13) is AirChannel)
-            {
-               
-                AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
-                if (airChannel.CanPushPlayer(pPosition))
-                {
-                    MovePosition(airChannel.PushPlayer(pPosition));
-                }
-                else
-                {
-                    checkSpecialCollision(airChannel.PushPlayer(pPosition));
+                    MovePosition(pSlope.MoveOnSlope(OneInFront()));
                 }
             }
         }
 
         /// <summary>
-        /// (Leo)Contains all special interactions that need to have its own handling
+        /// Contains all special interactions that need to have its own handling
         /// </summary>
-        private void checkSpecialCollision(int[] pPosition)
+        private void checkSpecialCollision()
         {
-            List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(pPosition);
-
-            //infinite recursive loop prevention
-            callLoopPrevent++;
-            if (callLoopPrevent >= 20)
-            {
-                Logging.LogInfo("potential infinite recursive loop in check special collision, make sure that the code runs properly or increase treshold", Logging.debugState.DETAILED);
-            }
-
+            List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(OneInFront());
             foreach (GameObject index in objectsOnCoord)
             {
                 switch (index.objectIndex)
                 {
                     //slope hit at s0
                     case (10):
-                        handleS0Hit(pPosition);
-                        callLoopPrevent = 0;
+                        handleS0Hit();
                         break;
-
-                    case (13):
-                        handleAirChannelHit(pPosition);
-                        callLoopPrevent = 0;
-
-                        break;
-
                     default:
                         break;
                 }
@@ -421,7 +327,7 @@ namespace Server
                 //check objects that need to be checked
                 else
                 {
-                    checkSpecialCollision(OneInFront());
+                    checkSpecialCollision();
                 }
                 checkGrounded();
                 room.PrintGrid(room.roomArray);
@@ -460,9 +366,9 @@ namespace Server
             //Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
             ConfMove _confMove = new ConfMove();
             _confMove.player = GetPlayerIndex();
-            _confMove.dirX = x() + room.minX;
-            _confMove.dirY = y() + room.minY;
-            _confMove.dirZ = z() + room.minZ;
+            _confMove.dirX = x();
+            _confMove.dirY = y();
+            _confMove.dirZ = z();
 
             //set y rotation
             if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 0; }
@@ -531,9 +437,9 @@ namespace Server
             BoxInfo box = new BoxInfo();
             box.isPickedUp = false;
             box.ID = (boxies as Box).ID;
-            box.posX = OneInFront()[0] + room.minX;
-            box.posY = OneInFront()[1] + room.minY;
-            box.posZ = OneInFront()[2] + room.minZ;
+            box.posX = OneInFront()[0];
+            box.posY = OneInFront()[1];
+            box.posZ = OneInFront()[2];
             room.sendToAll(box);
             currentBoxID = (boxies as Box).ID;
 
