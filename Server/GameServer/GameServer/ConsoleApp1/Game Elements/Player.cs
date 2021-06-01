@@ -134,14 +134,14 @@ namespace Server
             try
             {
 
-                if (!_hasBox)
+                if (null == currentBox)
                 {
                     //for lever
                     if (room.OnCoordinatesContain(OneInFront(), 4))
                     {
                         sendActuatorToggle(OneInFront());
-                    }                    
-                    
+                    }
+
                     //for button
                     if (room.OnCoordinatesContain(OneInFront(), 8))
                     {
@@ -156,60 +156,48 @@ namespace Server
                 }
                 else
                 {
-                    //check if box can be placed (at position + orientation)
-                    if (room.OnCoordinatesEmpty(OneInFront()) )
+                    handleBox();
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.LogInfo("Player.cs: " + e.Message, Logging.debugState.DETAILED);
+            }
+        }
+
+        private void handleBox()
+        {
+            //check if box can be placed (at position + orientation) if its empty
+            if (room.OnCoordinatesEmpty(OneInFront()))
+            {
+                //place box
+                try
+                {
+                    currentBox.MovePosition(OneInFront());
+                    sendBoxPackage(currentBox, OneInFront(), false);
+                    currentBox = null;
+                }
+                catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
+
+            }
+            //if its not empty, there are a few exceptions like the pressure plate
+            else
+            {
+                Console.WriteLine("Box is checking in front!");
+                List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
+                foreach (GameObject item in index)
+                {
+                    //5 is pressure plate
+                    if (item.objectIndex != 5)
                     {
-                        //place box
-                        try 
-                        { 
-                            room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(this);
-                            _hasBox = false;
-                            GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
-
-                            BoxInfo box = new BoxInfo();
-                            box.ID = currentBoxID;
-                            box.isPickedUp = false;
-                            box.posX = OneInFront()[0];
-                            box.posY = OneInFront()[1];
-                            box.posZ = OneInFront()[2];
-                            room.sendToAll(box);
-                        }
-                        catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
-
-                    }
-                    else
-                    {
-                        List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
-                        foreach(GameObject item in index)
-                        {
-                            //5 is pressure plate
-                            if(item.objectIndex != 5)
-                            {
-                                return;
-                            }
-                        }
-                        room.roomArray[OneInFront()[0], OneInFront()[1], OneInFront()[2]].Add(this);
-                        _hasBox = false;
-
-                        GameObject boxies = room.OnCoordinatesGetGameObject(OneInFront(), 7);
-
-                        BoxInfo box = new BoxInfo();
-                        box.ID = currentBoxID;
-                        box.isPickedUp = false;
-                        box.posX = OneInFront()[0];
-                        box.posY = OneInFront()[1];
-                        box.posZ = OneInFront()[2];
-                        room.sendToAll(box);
+                        //if its anything else, return out of the method
+                        return;
                     }
                 }
                 Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
                 sendBoxPackage(currentBox, OneInFront(), false);
                 currentBox = null;
-            }
-            catch
-            {
-
             }
 
 
@@ -219,6 +207,14 @@ namespace Server
         {
             try
             {
+                if (pIsPickedUp)
+                {
+                    box.SetState(CollInteractType.PASS);
+                }
+                else
+                {
+                    box.SetState(CollInteractType.SOLID);
+                }
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
@@ -240,16 +236,17 @@ namespace Server
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX;
-                boxInf.posY = pY + room.minY;
-                boxInf.posZ = pZ + room.minZ;
+                boxInf.posX = pX;
+                boxInf.posY = pY;
+                boxInf.posZ = pZ;
                 room.sendToAll(boxInf);
             }
-            catch (Exception e)
+            catch
             {
-                Logging.LogInfo("Player.cs: " + e.Message, Logging.debugState.DETAILED);
+                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
             }
         }
+
         #endregion
 
         #region movement checks
@@ -258,7 +255,7 @@ namespace Server
         //=========================================================================================
 
         /// <summary>
-        /// check if player is being blocked
+        /// (Leo) check if player is being blocked
         /// </summary>
         /// <param name="position">position player tries to move to</param>
         /// <returns></returns>
@@ -267,13 +264,19 @@ namespace Server
             List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
             foreach (GameObject gameObject in gameObjects)
             {
+                Console.WriteLine(gameObject.objectIndex);
                 if (gameObject.collState == CollInteractType.SOLID) return true;
+                if(gameObject.objectIndex == 15)
+                {
+                    startDialogue(gameObject, position);
+                    return false;
+                }
             }
             return false;
         }
 
         /// <summary>
-        /// handle when slope 0 is being hit
+        /// (Leo) handle when slope 0 is being hit
         /// </summary>
         private void handleS0Hit(int[] pPosition)
         {
@@ -422,7 +425,7 @@ namespace Server
                     checkSpecialCollision(OneInFront());
                 }
                 checkGrounded();
-                room.PrintGrid(room.roomArray);
+                //room.PrintGrid(room.roomArray);
                 //send the package to the clients
                 sendConfMove();
             }
@@ -433,6 +436,20 @@ namespace Server
                 Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
+
+        /// <summary>
+        /// (Ezra) Starts new dialogue
+        /// </summary>
+        private void startDialogue(GameObject diaobj, int[] direction)
+        {
+            Dialogue dia = diaobj as Dialogue;
+            ConfProgressDialogue progressDialogue = new ConfProgressDialogue();
+            progressDialogue.ID = dia.ID;
+            room.currentDialogue = dia.ID;
+            room.sendToAll(progressDialogue);
+            room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
+        }
+
 
         /// <summary>
         /// (Leo) Cancel the movement direction and then player stop :)
@@ -461,6 +478,12 @@ namespace Server
             _confMove.dirX = x() + room.minX;
             _confMove.dirY = y() + room.minY;
             _confMove.dirZ = z() + room.minZ;
+
+            if(currentBox != null)
+            {
+                currentBox.MovePosition(x(), y(), z());
+                sendBoxPackage(currentBox, x(), y(), z(), true);
+            }
 
             //set y rotation
             if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 0; }
@@ -556,7 +579,7 @@ namespace Server
         {
             try
             {
-                GameObject boxies = room.OnCoordinatesGetGameObject(pPos, 7);
+/*                GameObject boxies = room.OnCoordinatesGetGameObject(pPos, 7);
 
                 BoxInfo box = new BoxInfo();
                 box.isPickedUp = false;
@@ -571,14 +594,13 @@ namespace Server
                 //remove box at the position
                 room.OnCoordinatesRemove(pPos[0], pPos[1], pPos[2], 7);
                 //set player to have a box
-                _hasBox = true;
+                _hasBox = true;*/
 
-                /*                //send package
-                                ConfHandleBox confHandleBox = new ConfHandleBox();
-                                confHandleBox.posX = pPos[0];
-                                confHandleBox.posY = pPos[1];
-                                confHandleBox.posZ = pPos[2];
-                                confHandleBox.isPickingUp = true;*/
+                GameObject boxs = room.OnCoordinatesGetGameObject(pPos, 7);
+                currentBox = boxs;
+                boxs.MovePosition(pPos);
+                sendBoxPackage(currentBox, x(), y(), z() , true);
+
             }
             catch
             {

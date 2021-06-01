@@ -10,7 +10,7 @@ namespace Server
     /// </summary>
     class Crack : Actuator
     {
-        public Crack(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, pX, pY, pZ, pID)
+        public Crack(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, pX, pY, pZ, pID, CollInteractType.SOLID)
         {
             ID = pID;
             room = pRoom;

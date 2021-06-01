@@ -16,7 +16,7 @@ namespace Server
         public float timer = 3;
         private float currentTimer;
 
-        public Button(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, pX, pY, pZ, pID)
+        public Button(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, pX, pY, pZ, pID, CollInteractType.SOLID)
         {
             ID = pID;
             room = pRoom;

@@ -17,8 +17,8 @@ namespace Server
         public List<SpawnPoint> spawnPoints;
 
         public Dictionary<int, GameObject> InteractableGameobjects = new Dictionary<int, GameObject>();
-        public int currentDialogue;
         public int minX = 0, minY = 0, minZ = 0;
+        public int currentDialogue;
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -252,11 +252,21 @@ namespace Server
                         AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]) , (int)float.Parse(rawInformation[9]));
                         break;
                     case (15):
-                        //importDialogue(informationLists, rawInformation, minX, minY, minZ);
+                        importDialogue(informationLists, rawInformation, minX, minY, minZ);
                         break;
                 }
 
             }
+        }
+
+        /// <summary>
+        /// (Ezra) Imports dialogue from txt
+        /// </summary>
+        private void importDialogue(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Dialogue dia = new Dialogue(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+            InteractableGameobjects.Add(dia.ID, dia);
+            Logging.LogInfo("GameRoom.cs: Added dialogue to room!", Logging.debugState.DETAILED);
         }
 
         /// <summary>
@@ -387,9 +397,15 @@ namespace Server
             Logging.LogInfo("Received a package! Trying to handle", Logging.debugState.SPAM);
             if (pMessage is ReqKeyDown){handleReqKeyDown(pMessage as ReqKeyDown, pSender);}
             if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
+            if (pMessage is ReqProgressDialogue){ handleReqProgressDialogue(pSender);}
         }
 
-
+        private void handleReqProgressDialogue(TCPMessageChannel pSender)
+        {
+            ConfProgressDialogue progressDialogue = new ConfProgressDialogue();
+            progressDialogue.ID = currentDialogue;
+            sendToUser(progressDialogue, pSender);
+        }
 
         /// <summary>
         /// (Leo) Handles request key down
@@ -704,7 +720,7 @@ namespace Server
         }
 
         /// <summary>
-        /// (Leo) Quick tool function to remove all values from given value
+        /// (Leo) Quick tool function to remove all values from given value also gameobjects
         /// </summary>
         /// <param name="pX">x-coordinate</param>
         /// <param name="pY">y-coordinate</param>
@@ -766,7 +782,6 @@ namespace Server
                 Logging.LogInfo("GameRoom.cs: Could not find position probably out of bounds", Logging.debugState.DETAILED);
             }
         }
-
 
         /// <summary>
         /// (Leo) Adds a new objects (int) to given position

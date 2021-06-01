@@ -12,7 +12,7 @@ public class PlayerMovement : Movement
     public int playerPushWeight;
 
     [Tooltip("This will be the name in the service locator!")]public string playerName = "Player1";
-    [SerializeField] private BasicTCPClient basicClient;
+    [SerializeField] private PlayerInputHandler basicClient;
 
     private void Awake()
     {

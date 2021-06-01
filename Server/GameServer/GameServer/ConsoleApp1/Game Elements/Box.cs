@@ -12,7 +12,7 @@ namespace Server
 
         public int ID;
 
-        public Box(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SHOVE)
+        public Box(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             ID = pID;
             room = pRoom;
