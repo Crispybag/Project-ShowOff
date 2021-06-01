@@ -48,9 +48,9 @@ namespace Server
                 }
 
                 elevatorMove.ID = ID;
-                elevatorMove.posX = points[currentPos].x();
-                elevatorMove.posY = points[currentPos].y();
-                elevatorMove.posZ = points[currentPos].z();
+                elevatorMove.posX = points[currentPos].x() + room.minX;
+                elevatorMove.posY = points[currentPos].y() + room.minY;
+                elevatorMove.posZ = points[currentPos].z() + room.minZ;
 
                 //room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
                 //room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);                

@@ -22,7 +22,7 @@ public class InformationWriterSlope : InformationWriter
         {
             rot = 90;
         }
-        else if (rot >= -135f && rot <= -45)
+        else if (rot >= -135f && rot <= -45 || rot > 225 && rot <= 315)
         {
             rot = -90;
         }
