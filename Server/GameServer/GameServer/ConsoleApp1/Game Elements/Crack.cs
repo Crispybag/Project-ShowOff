@@ -26,7 +26,7 @@ namespace Server
             isActivated = true;
             ConfActuatorToggle crackToggle = new ConfActuatorToggle();
             crackToggle.isActived = true;
-            crackToggle.obj = ConfActuatorToggle.Object.CRACK;
+            //crackToggle.obj = ConfActuatorToggle.Object.CRACK;
             crackToggle.ID = ID;
             room.sendToAll(crackToggle);
         }
