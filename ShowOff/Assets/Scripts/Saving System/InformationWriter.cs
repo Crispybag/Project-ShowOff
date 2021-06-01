@@ -50,13 +50,13 @@ public class InformationWriter : MonoBehaviour
     //tools for children to append their own information
     protected void AddToInformation(float pInfo)
     {
-        informationString += pInfo + " ";
+        informationString += (int)pInfo + " ";
     }
     protected void AddToInformation(Vector3 pInfo)
     {
-        informationString += pInfo.x + " ";
-        informationString += pInfo.y + " ";
-        informationString += pInfo.z + " ";
+        informationString += (int)pInfo.x + " ";
+        informationString += (int)pInfo.y + " ";
+        informationString += (int)pInfo.z + " ";
     }
 
     protected void AddToInformation(List<int> pInfo)
