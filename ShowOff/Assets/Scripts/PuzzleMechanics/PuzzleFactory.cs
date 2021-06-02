@@ -13,7 +13,7 @@ public abstract class PuzzleFactory : MonoBehaviour
 
     //------------------------ public ------------------------
 
-    public int ID;
+    [HideInInspector]public int ID;
     public bool isActuated;
     public List<GameObject> interactables = new List<GameObject>();
 
