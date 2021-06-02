@@ -19,6 +19,7 @@ public class ServiceLocator : MonoBehaviour
 
     //----------------------- private ------------------------
     private Dictionary<string, GameObject> _serviceList = new Dictionary<string, GameObject>();
+    public Dictionary<int, GameObject> interactableList = new Dictionary<int, GameObject>();
 
 
     //=========================================================================================

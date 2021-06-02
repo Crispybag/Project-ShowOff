@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - AirChannel
+  - Box
+  - Player1
+  - Player2
+  - Interactable
   layers:
   - Default
   - TransparentFX

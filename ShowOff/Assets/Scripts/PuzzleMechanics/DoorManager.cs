@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ServiceLocator;
+using sharedAngy;
 
 public class DoorManager : MonoBehaviour
 {
@@ -13,24 +15,20 @@ public class DoorManager : MonoBehaviour
 
     //------------------------ public ------------------------
 
+    public int ID;
 
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleManager> conditions = new List<PuzzleManager>();
+    public List<GameObject> conditions = new List<GameObject>();
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
     private void Start()
     {
-
+        serviceLocator.interactableList.Add(ID, this.gameObject);
     }
 
-    private void Update()
-    {
-        //checks whether all the conditions return true
-        CheckConditions();
-    }
 
     //=========================================================================================
     //                              > Public Tool Functions <
@@ -41,23 +39,16 @@ public class DoorManager : MonoBehaviour
     //=========================================================================================
 
 
-    private void CheckConditions()
+    public void SetDoor(bool isOpen)
     {
-        int i = 0;
-        foreach (PuzzleManager obj in conditions)
+        if (isOpen)
         {
-            i++;
-            //if all conditions return true it destroys the door (later animation). If a single one is false, it breaks out.
-            if (!obj.isCompleted)
-            {
-                break;
-            }
-            else if (i == conditions.Count)
-            {
-                i = 0;
-                Destroy(this.gameObject);
-            }
+            GetComponent<MeshRenderer>().enabled = false;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().enabled = true;
         }
     }
 
-}
+    }
