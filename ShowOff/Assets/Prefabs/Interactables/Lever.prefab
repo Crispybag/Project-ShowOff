@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3038831532827532631}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2679074798681736287}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 5800910075324742056}
   m_Layer: 0
   m_Name: Lever
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 5800910075346837795}
   - component: {fileID: 5800910075346837980}
   m_Layer: 0
-  m_Name: Lever
+  m_Name: Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 300
   isActuated: 0
-  interactableIDs: 
+  interactableIDs: []
   _mat1: {fileID: 2100000, guid: bcd4a8e0c32e8a648954aca9cb2c0dc3, type: 2}
   _mat2: {fileID: 2100000, guid: 1a7875ae8103fa644be7ad64f1f6cebf, type: 2}
 --- !u!114 &5800910075346837980
@@ -321,5 +321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e0aa2abacd1d946a165a4117158930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentID: 0
   _objectIndex: 4
   fileName: 3DPrototype.txt

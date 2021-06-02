@@ -58,6 +58,7 @@ namespace Server
         private void UpdateClient()
         {
             isActivated = newActived;
+            Console.WriteLine("Pressure plate new active: " + isActivated);
             ConfActuatorToggle plateToggle = new ConfActuatorToggle();
             plateToggle.ID = ID;
             plateToggle.isActived = isActivated;

@@ -13,13 +13,18 @@ public class InformationWriter : MonoBehaviour
     //=========================================================================================
     //                                     > Variables <
     //=========================================================================================
+
+    //----------------------- public ------------------------
+
+    [HideInInspector] public int currentID;
+
     //----------------------- private ------------------------
     //the object index of the object
     [SerializeField] private int _objectIndex;
 
     //the path of the object
-    [SerializeField] private string fileName = "test.txt";
-    private string standardPathPrefix = "../Server/GameServer/GameServer/LevelFiles/";
+     [HideInInspector] public string fileName = "empty";
+    //[HideInInspector]public string standardPathPrefix = "../Server/GameServer/GameServer/LevelFiles/";
 
     //string that all information will be written to
     private string informationString;
@@ -33,11 +38,17 @@ public class InformationWriter : MonoBehaviour
     // Update is called once per frame
     private void Awake()
     {
-        fileName = standardPathPrefix + fileName;
-        clearData();
+        //fileName = standardPathPrefix + fileName + ".txt";
+        //clearData();
     }
     public virtual void Start()
     {
+
+    }
+
+    public virtual void StartSave()
+    {
+        informationString = "";
         WriteAllInformation();
         saveData();
     }

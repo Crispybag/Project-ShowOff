@@ -19,7 +19,7 @@ public class DoorManager : MonoBehaviour
 
     //----------------------- private ------------------------
 
-    public List<int> conditionsID = new List<int>();
+    public List<GameObject> conditions = new List<GameObject>();
 
     //=========================================================================================
     //                                   > Start/Update <

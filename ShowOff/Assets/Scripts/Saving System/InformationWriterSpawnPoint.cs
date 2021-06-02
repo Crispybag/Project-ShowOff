@@ -7,9 +7,9 @@ public class InformationWriterSpawnPoint : InformationWriter
 
     [SerializeField] private int playerIndex = 0;
     // Start is called before the first frame updatr
-    public override void Start()
+    public override void StartSave()
     {
-        base.Start();
+        base.StartSave();
     }
 
     // Update is called once per frame

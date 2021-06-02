@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 2352260555214904796}
   m_Layer: 0
   m_Name: Slope
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -303,5 +303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 916b94d07ac9da1448935da6650789aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentID: 0
   _objectIndex: 10
   fileName: 3DPrototype.txt
