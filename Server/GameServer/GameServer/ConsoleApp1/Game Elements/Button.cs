@@ -69,6 +69,7 @@ namespace Server
 
         private void UpdateElevators()
         {
+            Console.WriteLine("Elevator count: " + elevators.Count);
             if (elevators.Count > 0)
             {
                 foreach (int elevator in elevators)

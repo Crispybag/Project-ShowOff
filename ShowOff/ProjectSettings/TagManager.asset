@@ -8,6 +8,7 @@ TagManager:
   - Box
   - Player1
   - Player2
+  - Interactable
   layers:
   - Default
   - TransparentFX

@@ -15,7 +15,7 @@ public abstract class PuzzleFactory : MonoBehaviour
 
     public int ID;
     public bool isActuated;
-    public List<int> interactableIDs = new List<int>();
+    public List<GameObject> interactables = new List<GameObject>();
 
     //----------------------- private ------------------------
 

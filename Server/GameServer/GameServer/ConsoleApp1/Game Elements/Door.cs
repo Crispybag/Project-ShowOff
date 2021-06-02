@@ -31,12 +31,10 @@ namespace Server
             if (checkActuators())
             {
                 isOpen = true;
-
             }
             else
             {
                 isOpen = false;
-
             }
             //if the door is open, it will remove the door, if not, it will add the door
             if (isOpen)
@@ -46,11 +44,8 @@ namespace Server
             }
             else
             {
-                if (room.OnCoordinatesEmpty(x(), y(), z()))
-                {
-                    room.OnCoordinatesAdd(x(), y(), z(), this);
-                    this.SetState(CollInteractType.SOLID);
-                }
+                this.SetState(CollInteractType.SOLID);
+                room.OnCoordinatesAdd(x(), y(), z(), this);
             }
             ConfDoorToggle doorToggle = new ConfDoorToggle();
             doorToggle.isActivated = isOpen;

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class InformationWriterDialogue : InformationWriter
 {
-    public override void Start()
+    public override void StartSave()
     {
-        base.Start();
+        base.StartSave();
     }
 
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        AddToInformation(this.GetComponent<Dialogue>().ID);
+        AddToInformation(GetComponent<Dialogue>().ID);
     }
 }

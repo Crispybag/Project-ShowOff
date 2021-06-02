@@ -5,9 +5,9 @@ using UnityEngine;
 public class InformationWriterButton : InformationWriterActuator
 {
     // Start is called before the first frame update
-    public override void Start()
+    public override void StartSave()
     {
-        base.Start();
+        base.StartSave();
     }
 
     public override void WriteAllInformation()
