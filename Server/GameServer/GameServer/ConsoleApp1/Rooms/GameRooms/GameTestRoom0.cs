@@ -11,14 +11,14 @@ namespace Server
         {
             GenerateGridFromText("../../../../LevelFiles/3DPrototype.txt");
             CopyGrid(roomStatic, roomArray);
-            PrintGrid(roomArray);
+            //PrintGrid(roomArray);
         }
 
         public override void AddMember(TCPMessageChannel pListener)
         {
             base.AddMember(pListener);
             SpawnPlayer(pListener, _server.allConnectedUsers[pListener].GetPlayerIndex());
-            PrintGrid(roomArray);
+            //PrintGrid(roomArray);
         }
     }
 }

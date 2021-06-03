@@ -432,7 +432,7 @@ namespace Server
 
             try
             {
-                bool objectAtLocation = isBlockedByObject(OneInFront());
+                bool objectAtLocation = isBlockedByObject(new int[3] { direction[0] + x(), direction[1] + y(), direction[2] + z() });
 
                 //Passes the check and can move
                 if (!objectAtLocation)

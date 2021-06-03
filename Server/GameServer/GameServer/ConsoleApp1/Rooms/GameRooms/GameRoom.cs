@@ -605,10 +605,10 @@ namespace Server
         {
             //for debug purposes print grid
             Logging.LogInfo("Current Grid");
-            PrintGrid(roomArray);
+            //PrintGrid(roomArray);
 
             Logging.LogInfo("\n\nSaved Grid");
-            PrintGrid(roomStatic);
+            //PrintGrid(roomStatic);
 
             //copy static grid to room grid
             CopyGrid(roomArray, roomStatic);
