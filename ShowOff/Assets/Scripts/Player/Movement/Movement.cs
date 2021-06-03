@@ -35,7 +35,9 @@ public abstract class Movement : MonoBehaviour
 
     public bool canMove = true;
     private Animator animator;
-    GameObject model; 
+    GameObject model;
+
+    private float animatorCooldown;
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -135,11 +137,18 @@ public abstract class Movement : MonoBehaviour
             //canMove = true;
             transform.position = _targetPosition;
             _currentPosition = transform.position;
-            animator.SetBool("isWalking", false);
+            if (animatorCooldown >= 0.05f)
+            {
+                animator.SetBool("isWalking", false);
+            }
+            animatorCooldown += Time.deltaTime;
+            
         }
         else
         {
+            animatorCooldown = 0;
             animator.SetBool("isWalking", true);
+
             //canMove = false;
         }
     }

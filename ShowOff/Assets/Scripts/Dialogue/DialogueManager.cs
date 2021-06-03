@@ -10,9 +10,18 @@ public class DialogueManager : MonoBehaviour
     public Text dialogueText;
     public GameObject panel;
 
+    public Image nucImagePlace;
+    public Image alexImagePlace;
+
+    [SerializeField]
+    public AudioSource talkingSound;
+
     private Queue<string> sentences = new Queue<string>();
     public bool runningDialogue = false;
 
+    [Tooltip("Neutral, Happy, Confused, Thinking")]public Image[] nucEmotes;
+    [Tooltip("Neutral, Happy, Confused, Worried, Aye")]public Image[] alexEmotes;
+    [Tooltip("AlexNeutral, AlexHappy, AlexThinking, NucNeutral, NucHappy, NucThinking")] public AudioClip[] talkingSounds;
 
     void Awake()
     {
@@ -64,6 +73,33 @@ public class DialogueManager : MonoBehaviour
     {
         panel.SetActive(false);
         runningDialogue = false;
+    }
+
+    public enum NucEmotes
+    {
+        Neutral = 0,
+        Happy = 1,
+        Confused = 2,
+        Thinking = 3
+    }
+
+    public enum AlexEmotes
+    {
+        Neutral = 0,
+        Happy = 1,
+        Confused = 2,
+        Worried = 3,
+        Aye = 4
+    }
+
+    public enum TalkingSounds
+    {
+        AlexNeutral,
+        AlexHappy,
+        AlexThinking,
+        NucNeutral,
+        NucHappy,
+        NucThinking
     }
 
 }
