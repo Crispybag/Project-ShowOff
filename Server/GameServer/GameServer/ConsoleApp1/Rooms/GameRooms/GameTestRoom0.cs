@@ -11,6 +11,7 @@ namespace Server
         {
             GenerateGridFromText("../../../../LevelFiles/3DPrototype.txt");
             CopyGrid(roomStatic, roomArray);
+            //broekn
             //PrintGrid(roomArray);
         }
 
