@@ -1822,7 +1822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  _moveSpeed: 0.1
+  _moveSpeed: 0.25
   playerPushWeight: 0
   playerName: Player1
   basicClient: {fileID: 0}
