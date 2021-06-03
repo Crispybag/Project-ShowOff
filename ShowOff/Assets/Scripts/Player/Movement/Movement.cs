@@ -137,7 +137,7 @@ public abstract class Movement : MonoBehaviour
             //canMove = true;
             transform.position = _targetPosition;
             _currentPosition = transform.position;
-            if (animatorCooldown >= 0.05f)
+            if (animatorCooldown >= 0.1f)
             {
                 animator.SetBool("isWalking", false);
             }

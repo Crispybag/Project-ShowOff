@@ -442,6 +442,7 @@ namespace Server
             else if (orientation[0] == 0 && orientation[1] == 1) { _confMove.orientation = 180; }
             else { _confMove.orientation = -90; }
 
+
             room.sendToAll(_confMove);
             //room.PrintGrid(room.roomArray);
         }
@@ -611,7 +612,7 @@ namespace Server
             if (walkDirection[0] != 0 || walkDirection[2] != 0)
             {
                 //Logging.LogInfo("trying to walk in a direction");
-                if (timer >= 1)
+                if (timer >= 2)
                 {
                     timer = 0;
                     tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
