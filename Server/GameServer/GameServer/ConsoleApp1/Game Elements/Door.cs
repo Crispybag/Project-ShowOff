@@ -38,6 +38,7 @@ namespace Server
                 isOpen = false;
 
             }
+
             //if the door is open, it will remove the door, if not, it will add the door
             if (isOpen)
             {

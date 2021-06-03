@@ -22,6 +22,7 @@ namespace Server
         private int[,,] position;
 
         private int callLoopPrevent;
+        public bool wantsReset;
         //standard stuff, along with quick coordinates
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
@@ -118,6 +119,12 @@ namespace Server
             //Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
 
         }
+
+        public void SetResetStatus(bool pReset)
+        {
+            wantsReset = !wantsReset;
+        }
+
 
         //change the walk direction, the direction in which the player wants to move
         private void changeWalkDirection(int pX, int pY, int pZ)
@@ -338,6 +345,16 @@ namespace Server
             }
         }
 
+        private void handleLevelLoaderHit(int[] pPosition)
+        {
+            if (room.OnCoordinatesGetGameObject(pPosition, 14) is LevelLoader)
+            {
+
+                LevelLoader levelLoader = room.OnCoordinatesGetGameObject(pPosition, 14) as LevelLoader;
+                room.isReloading = true;
+                room.levelFile = levelLoader.fileName;
+            }
+        }
         /// <summary>
         /// (Leo)Contains all special interactions that need to have its own handling
         /// </summary>
@@ -365,7 +382,11 @@ namespace Server
                     case (13):
                         handleAirChannelHit(pPosition);
                         callLoopPrevent = 0;
+                        break;
 
+                    case (14):
+                        handleLevelLoaderHit(pPosition);
+                        callLoopPrevent = 0;
                         break;
 
                     default:
@@ -427,7 +448,7 @@ namespace Server
                 checkGrounded();
                 //room.PrintGrid(room.roomArray);
                 //send the package to the clients
-                sendConfMove();
+                SendConfMove();
             }
 
             catch (Exception e)
@@ -470,7 +491,7 @@ namespace Server
         /// <summary>
         /// (Leo) Send a confirm move package based on new position
         /// </summary>
-        private void sendConfMove()
+        public void SendConfMove()
         {
             //Logging.LogInfo("( " + position[0] + ", " + position[1] + ")", Logging.debugState.DETAILED);
             ConfMove _confMove = new ConfMove();
@@ -529,6 +550,9 @@ namespace Server
                             Crack crack = gameObject2 as Crack;
                             if (null != crack) { crack.FixCrack(); }
                             break;
+                      
+
+
 
                         default:
                             Logging.LogInfo("Player.cs: Found an actuator but couldnt handle it!", Logging.debugState.DETAILED);

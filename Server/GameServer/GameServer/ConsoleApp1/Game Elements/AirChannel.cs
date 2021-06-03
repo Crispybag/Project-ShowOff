@@ -14,8 +14,9 @@ namespace Server
         private bool isOn = true;
         public List<int> actuators = new List<int>();
         public int[] direction = new int[3];
-        public AirChannel(GameRoom pRoom, int pX, int pY, int pZ, int pDirX, int pDirY, int pDirZ) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
+        public AirChannel(GameRoom pRoom, int pX, int pY, int pZ, int pDirX, int pDirY, int pDirZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
+            ID = pID;
             room = pRoom;
             room.roomArray[x(), y(), z()].Add(this);
             direction[0] = pDirX;
@@ -75,19 +76,41 @@ namespace Server
         /// </summary>
         public void ToggleAirChannel()
         {
-            if (isOn)
+            if (!isOn)
             {
-                isOn = false;
                 SetState(CollInteractType.PASS);
             }
             else
             {
-                isOn = true;
                 SetState(CollInteractType.SOLID);
             }
 
         }
 
+        public void CheckAirChannel()
+        {
+            isOn = checkActuators();
+            ToggleAirChannel();
+        }
+
+        private bool checkActuators()
+        {
+            foreach (int actuator in actuators)
+            {
+                try
+                {
+                    if (!(room.InteractableGameobjects[actuator] as Actuator).isActivated)
+                    {
+                        return false;
+                    }
+                }
+                catch
+                {
+                    Logging.LogInfo("Door.cs: Could not handle actuator, probably not in list in room!", Logging.debugState.DETAILED);
+                }
+            }
+            return true;
+        }
 
     }
 }
