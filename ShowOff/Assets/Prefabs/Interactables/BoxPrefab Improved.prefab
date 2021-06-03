@@ -86,10 +86,6 @@ PrefabInstance:
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Level0.txt
       objectReference: {fileID: 0}
-    - target: {fileID: 3791208298268286669, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
-      propertyPath: ID
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 5670349269739586358, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: m_Name
       value: Box1x1x1 (1)

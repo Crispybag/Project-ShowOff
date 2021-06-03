@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8152304906477525738}
   - component: {fileID: 3145197755082045325}
-  - component: {fileID: 3791208298268286669}
+  - component: {fileID: 6594340971999357164}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -48,7 +48,7 @@ MonoBehaviour:
   currentID: 0
   _objectIndex: 7
   fileName: 3DPrototype.txt
---- !u!114 &3791208298268286669
+--- !u!114 &6594340971999357164
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90f9dbc50fb43c47b997ffd57f2182e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 200
+  ID: 0
 --- !u!1 &5670349269739586358
 GameObject:
   m_ObjectHideFlags: 0

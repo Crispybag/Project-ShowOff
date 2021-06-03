@@ -282,9 +282,9 @@ namespace Server
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = position[0];
-                boxInf.posY = position[1];
-                boxInf.posZ = position[2];
+                boxInf.posX = position[0] + room.minX;
+                boxInf.posY = position[1] + room.minY;
+                boxInf.posZ = position[2] + room.minZ;
                 room.sendToAll(boxInf);
             }
             catch
@@ -300,9 +300,9 @@ namespace Server
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX;
-                boxInf.posY = pY;
-                boxInf.posZ = pZ;
+                boxInf.posX = pX + room.minX; 
+                boxInf.posY = pY + room.minY; 
+                boxInf.posZ = pZ + room.minZ; 
                 room.sendToAll(boxInf);
             }
             catch
