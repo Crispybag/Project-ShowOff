@@ -85,6 +85,7 @@ namespace Server
             foreach (TCPMessageChannel pListener in _users)
             {
                 SpawnPlayer(pListener, _server.allConnectedUsers[pListener].GetPlayerIndex());
+
                 foreach (Player player in players)
                 {
                     player.SendConfMove();
@@ -507,6 +508,12 @@ namespace Server
                 }
             }
         }
+
+        private void sendLevelReset()
+        {
+            ConfReloadScene reloadScene = new ConfReloadScene();
+            sendToAll(reloadScene);
+        }
         #endregion
 
         #region resetting
@@ -684,6 +691,13 @@ namespace Server
 
             if (isReloading)
             {
+
+                sendLevelReset();
+                foreach (TCPMessageChannel pListener in _users)
+                {
+                    sendConfPlayer(pListener);
+                }
+
                 LoadLevel(levelFile);
                 isReloading = false;
             }

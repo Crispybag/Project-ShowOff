@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using sharedAngy;
 using static ServiceLocator;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ClientManager : MonoBehaviour
 {
@@ -80,8 +81,14 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is BoxInfo) { handleBoxInfo(pInMessage as BoxInfo); }
         if (pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
         if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
+        if (pInMessage is ConfReloadScene) { handleReloadScene(pInMessage as ConfReloadScene); }
     }
 
+    private void handleReloadScene(ConfReloadScene pMessage)
+    {
+        SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
+        sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+    }
     private void handleProgressDialogue(ConfProgressDialogue pMessage)
     {
         serviceLocator.interactableList[pMessage.ID].GetComponent<Dialogue>().ProgressDialogue();
