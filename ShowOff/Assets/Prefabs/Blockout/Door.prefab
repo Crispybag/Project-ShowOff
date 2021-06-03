@@ -140,8 +140,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 138df989ca2f6164bb74f7d41cbddabf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventPathClosed: event:/gameplay (actions and props)/door closed
+  eventPathOpen: event:/gameplay (actions and props)/door opened
   ID: 4
-  conditionsID: []
+  conditions: []
 --- !u!114 &6278579725099638429
 MonoBehaviour:
   m_ObjectHideFlags: 0

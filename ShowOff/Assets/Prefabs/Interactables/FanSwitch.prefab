@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 2
   isActuated: 0
-  interactableIDs: []
+  interactables: []
+  eventPath: event:/gameplay (actions and props)/lever
   _mat1: {fileID: 2100000, guid: bcd4a8e0c32e8a648954aca9cb2c0dc3, type: 2}
   _mat2: {fileID: 2100000, guid: 1a7875ae8103fa644be7ad64f1f6cebf, type: 2}
 --- !u!114 &4632946133463887218
