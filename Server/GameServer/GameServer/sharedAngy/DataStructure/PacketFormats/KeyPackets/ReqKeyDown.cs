@@ -15,14 +15,17 @@ namespace sharedAngy
             INTERACTION = 4
         }
         public KeyType keyInput;
+        public int rotation; 
 
         public override void Serialize(Packet pPacket)
         {
             pPacket.Write((int)keyInput);
+            pPacket.Write(rotation);
         }
         public override void Deserialize(Packet pPacket)
         {
             keyInput = (KeyType)pPacket.ReadInt();
+            rotation = pPacket.ReadInt();
         }
     }
 }

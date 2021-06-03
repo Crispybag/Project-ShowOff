@@ -475,7 +475,7 @@ namespace Server
                 if (pSender == player.getClient())
                 {
                     //goes to player for further processing of the package
-                    player.addInput(pKeyDown.keyInput);
+                    player.addInput(pKeyDown.keyInput, pKeyDown.rotation);
                 }
             }
         }

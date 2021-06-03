@@ -14,7 +14,7 @@ public class Button : PuzzleFactory
 
     private void Start()
     {
-        serviceLocator.interactableList.Add(ID,this.gameObject);
+        serviceLocator.interactableList.Add(ID, this.gameObject);
     }
 
     public void UpdateActuator(bool isActive)

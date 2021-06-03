@@ -33,7 +33,6 @@ namespace Server
         {
             try
             {
-                Logging.LogInfo(pPosition[0] + " " + pPosition[1] + " " + pPosition[2]);
 
                 if (room.OnCoordinatesCanMove(pPosition[0] + direction[0], pPosition[1] + direction[1], pPosition[2] + direction[2])) return true;
                 else return false;

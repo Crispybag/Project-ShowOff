@@ -23,6 +23,7 @@ namespace Server
 
         private int callLoopPrevent;
         public bool wantsReset;
+        private int cameraRotation;
         //standard stuff, along with quick coordinates
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
@@ -40,7 +41,7 @@ namespace Server
         /// <summary>
         /// (Leo) adds a direction input for the server to remember that the player can move in a certain direction
         /// </summary>
-        public void addInput(ReqKeyDown.KeyType lastInput)
+        public void addInput(ReqKeyDown.KeyType lastInput, int rotation)
         {
 
             switch (lastInput)
@@ -48,26 +49,26 @@ namespace Server
                 //up
                 case (ReqKeyDown.KeyType.UP):
                     //for each of those, add a direction vector to their movement and immediately try to change position as well to minimise latency.
-                    changeWalkDirection(0, 0, 1);
+                    changeWalkDirection(0, 0, 1, rotation);
                     if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
                 //down
                 case (ReqKeyDown.KeyType.DOWN):
-                    changeWalkDirection(0, 0, -1);
+                    changeWalkDirection(0, 0, -1, rotation);
                     if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
                 //left
                 case (ReqKeyDown.KeyType.LEFT):
-                    changeWalkDirection(-1, 0, 0);
+                    changeWalkDirection(-1, 0, 0, rotation);
                     if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
 
                 //right
                 case (ReqKeyDown.KeyType.RIGHT):
-                    changeWalkDirection(1, 0, 0);
+                    changeWalkDirection(1, 0, 0, rotation);
                     if (timer == 0) tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                     break;
 
@@ -127,9 +128,65 @@ namespace Server
 
 
         //change the walk direction, the direction in which the player wants to move
-        private void changeWalkDirection(int pX, int pY, int pZ)
+        private void changeWalkDirection(int pX, int pY, int pZ, int rotation)
         {
-            walkDirection = new int[3] { pX, pY, pZ };
+            switch(rotation)
+            {
+                case (90):
+                    walkDirection = new int[3] { pZ, pY, -pX };
+                    break;
+                case (180):
+                    walkDirection = new int[3] { -pX, pY, -pZ };
+                    break;
+                case (270):
+                    walkDirection = new int[3] { -pZ, pY, pX };
+                    break;
+                default:
+                    walkDirection = new int[3] { pX, pY, pZ };
+                    break;
+            }
+            cameraRotation = rotation;
+        }
+
+        /// <summary>
+        /// (Leo) Cancel the movement direction and then player stop :)
+        /// </summary>
+        private void tryCancelDirection(int pX, int pY, int pZ)
+        {
+            switch (cameraRotation)
+            {
+
+                case (90):
+                    if (walkDirection[0] == pZ && walkDirection[1] == pY && walkDirection[2] == -pX)
+                    {
+                        walkDirection[0] = 0; walkDirection[1] = 0; walkDirection[2] = 0;
+
+                    }
+                    break;
+                case (180):
+                    if (walkDirection[0] == -pX && walkDirection[1] == pY && walkDirection[2] == -pZ)
+                    {
+                        walkDirection[0] = 0; walkDirection[1] = 0; walkDirection[2] = 0;
+
+                    }
+                    break;
+                case (270):
+                    if (walkDirection[0] == -pZ && walkDirection[1] == pY && walkDirection[2] == pX)
+                    {
+                        walkDirection[0] = 0; walkDirection[1] = 0; walkDirection[2] = 0;
+
+                    }
+                    break;
+
+                default:
+                    if (walkDirection[0] == pX && walkDirection[1] == pY && walkDirection[2] == pZ)
+                    {
+                        walkDirection[0] = 0; walkDirection[1] = 0; walkDirection[2] = 0;
+
+                    }
+                    break;
+            }
+            
         }
 
         /// <summary>
@@ -282,6 +339,10 @@ namespace Server
             return false;
         }
 
+        private void determineDirection(int pX, int pY, int pZ, int rotation = -5)
+        {
+
+        }
         /// <summary>
         /// (Leo) handle when slope 0 is being hit
         /// </summary>
@@ -472,17 +533,7 @@ namespace Server
         }
 
 
-        /// <summary>
-        /// (Leo) Cancel the movement direction and then player stop :)
-        /// </summary>
-        private void tryCancelDirection(int pX, int pY, int pZ)
-        {
-            if (walkDirection[0] == pX && walkDirection[1] == pY && walkDirection[2] == pZ)
-            {
-                walkDirection[0] = 0; walkDirection[1] = 0; walkDirection[2] = 0;
-
-            }
-        }
+        
         #endregion
 
 
