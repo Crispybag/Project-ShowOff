@@ -267,8 +267,8 @@ MonoBehaviour:
   SwitchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: ../../../fmod/Project_TheDam/Project_TheDam.fspro
-  sourceBankPath: ..\..\..\fmod\Project_TheDam\Build
+  sourceProjectPath: Assets/FMOD/Project_TheDam/Project_TheDam.fspro
+  sourceBankPath: Assets\FMOD\Project_TheDam\Build
   SourceBankPathUnformatted: 
   AutomaticEventLoading: 1
   BankLoadType: 0

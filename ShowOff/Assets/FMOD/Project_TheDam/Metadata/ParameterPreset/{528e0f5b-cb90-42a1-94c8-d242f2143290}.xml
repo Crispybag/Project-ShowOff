@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{528e0f5b-cb90-42a1-94c8-d242f2143290}">
+		<property name="name">
+			<value>InsideDam</value>
+		</property>
+		<relationship name="folder">
+			<destination>{44875075-1e22-4627-8b5b-c671ee28cfc5}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{aee4ea48-984b-45d6-9c78-80fb03acb52d}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{aee4ea48-984b-45d6-9c78-80fb03acb52d}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
