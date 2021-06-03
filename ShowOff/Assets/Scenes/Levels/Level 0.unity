@@ -4750,47 +4750,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 23.694792
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 19.618454
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 10.732279
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.03826
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.95
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -54.54
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.86214197
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.3673604
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.3269857
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.12181113
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3996265521702048466, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -22976,7 +22976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925549935328, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925549935328, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalScale.x
@@ -23033,6 +23033,14 @@ PrefabInstance:
     - target: {fileID: 3576222925549935330, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+      propertyPath: rainSound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+      propertyPath: windSound
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: _transitionSpeed
@@ -29575,6 +29583,36 @@ Transform:
   m_Father: {fileID: 1560959094}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1032918377 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3996265521702048465, guid: 62051689ef1032e4b90bca4a0e6ba7e4, type: 3}
+  m_PrefabInstance: {fileID: 163580314}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1032918378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032918377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Event: event:/weather/weather system
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params:
+  - Name: InsideDam
+    Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1001 &1034835892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29984,7 +30022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925442835138, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.89
+      value: 2.126
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925442835138, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalPosition.z
@@ -29992,11 +30030,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925442835138, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.91485196
+      value: 0.9489483
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925442835138, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.40378928
+      value: 0.3154317
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925442835138, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalRotation.y
@@ -30008,7 +30046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925442835138, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 47.631
+      value: 36.774
       objectReference: {fileID: 0}
     - target: {fileID: 3576222925442835138, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -30070,6 +30108,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+      propertyPath: damSound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+      propertyPath: rainSound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+      propertyPath: windSound
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3576222925549935335, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_Name
       value: Zone (2)
@@ -30080,6 +30130,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+--- !u!1 &1052387915 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3576222925549935335, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+  m_PrefabInstance: {fileID: 1052387914}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1052387916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052387915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player1
+  Emitters:
+  - Target: {fileID: 1032918378}
+    Params:
+    - Name: wind
+      Value: 1
+    - Name: Rain
+      Value: 1
+    - Name: InsideDam
+      Value: 1
+  TriggerEvent: 3
 --- !u!1001 &1052804322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47260,6 +47338,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+      propertyPath: rainSound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3576222925549935332, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+      propertyPath: windSound
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3576222925549935335, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
       propertyPath: m_Name
       value: Zone (1)
@@ -47270,6 +47356,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+--- !u!1 &1570325216 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3576222925549935335, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
+  m_PrefabInstance: {fileID: 1570325215}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1570325217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570325216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player1
+  Emitters:
+  - Target: {fileID: 1032918378}
+    Params:
+    - Name: wind
+      Value: 1
+    - Name: Rain
+      Value: 0.599
+  TriggerEvent: 3
 --- !u!1 &1570559758
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
+using FMODUnity;
 
 public class CameraTrigger : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class CameraTrigger : MonoBehaviour
         {
             _cameraManager.SetPosition(_cameraPosition, _transitionSpeed, _isFollowingPlayer);
         }
+        
     }
 
     private void OnTriggerExit(Collider other)
