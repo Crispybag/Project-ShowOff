@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5216614212606194561}
   m_Layer: 0
-  m_Name: alex_lowpoly_notFinal
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -396,9 +396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05d9aa7e158a8e43b9e2621bf1d6c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toBePosition: {x: 0, y: 0, z: 0}
-  leftDirection: {x: 0, y: 0, z: 0}
-  rightDirection: {x: 0, y: 0, z: 0}
   canMove: 1
   _moveSpeed: 0.1
   playerPushWeight: 0
@@ -416,6 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bf291b7f33c7743b1dd672e2333f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentID: 0
   _objectIndex: 3
   fileName: 3DPrototype.txt
   playerIndex: 1
