@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "+rDQ91+Qfms24pUrSXjJL3LczskFNJryXIQmhe+m2cQtyJi4W4X9sVTL3fsGyyvxlw9RpTcrVKmall1kDAiXfg==",
+  "dgSpecHash": "m/GWOuVpay+UwoL32ztJwhMd8nbRD51G51cPCrIWTh2vzckwiGA7Chz/T7mXrfm1O70JbGIxvEt7ehEkw5/B6g==",
   "success": true,
-  "projectFilePath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
+  "projectFilePath": "C:\\Users\\ljans\\OneDrive\\Bureaublad\\Final Approach\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Ezra\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512",
-    "C:\\Users\\Ezra\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
-    "C:\\Users\\Ezra\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
-    "C:\\Users\\Ezra\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512"
+    "C:\\Users\\ljans\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\ljans\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\ljans\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512",
+    "C:\\Users\\ljans\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512"
   ],
   "logs": []
 }
