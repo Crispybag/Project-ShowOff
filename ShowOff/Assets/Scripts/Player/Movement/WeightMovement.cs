@@ -42,7 +42,7 @@ public class WeightMovement : Movement
     }
     */
 
-    protected override void Update()
+/*    protected override void Update()
     {
         if (wallCheckCalled)
         {
@@ -50,7 +50,7 @@ public class WeightMovement : Movement
         }
         base.Update();
         wallCheckCalled = false;
-    }
+    }*/
 
 
     //=========================================================================================

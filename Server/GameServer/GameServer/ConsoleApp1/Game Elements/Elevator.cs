@@ -32,7 +32,7 @@ namespace Server
         public void NextPosition(Button.Direction currentDirection)
         {
             ConfElevatorMove elevatorMove = new ConfElevatorMove();
-
+            
             if (currentDirection == Button.Direction.DOWN)
             {
                 oldPos = currentPos;
@@ -47,6 +47,28 @@ namespace Server
                     currentPos--;
                 }
 
+                int oldX = x();
+                int oldY = y();
+                int oldZ = z();
+                MovePosition(points[currentPos].x(), points[currentPos].y(), points[currentPos].z());
+
+                Player playerOnElevator;
+                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 1))
+                {
+                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) is Player)
+                    {
+                        playerOnElevator = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) as Player;
+                        try
+                        {
+                            playerOnElevator.tryPositionChange(points[currentPos].x() - playerOnElevator.x(), points[currentPos].y() + 1 - playerOnElevator.y(), points[currentPos].z() - playerOnElevator.z());
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
+                        }
+                    }
+                }
+
                 elevatorMove.ID = ID;
                 elevatorMove.posX = points[currentPos].x() + room.minX;
                 elevatorMove.posY = points[currentPos].y() + room.minY;
@@ -54,7 +76,6 @@ namespace Server
 
                 //room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
                 //room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);                
-                MovePosition(points[currentPos].x(), points[currentPos].y(), points[currentPos].z());
 
                 room.sendToAll(elevatorMove);
             }
@@ -73,14 +94,35 @@ namespace Server
                 {
                     currentPos++;
                 }
+                int oldX = x();
+                int oldY = y();
+                int oldZ = z();
+
+                MovePosition(points[currentPos].x(), points[currentPos].y(), points[currentPos].z());
+
+
+                Player playerOnElevator;
+                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 1))
+                {
+                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) is Player)
+                    {
+                        playerOnElevator = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) as Player;
+                        try
+                        {
+                            playerOnElevator.tryPositionChange(points[currentPos].x() - playerOnElevator.x(), points[currentPos].y() + 1 - playerOnElevator.y(), points[currentPos].z() - playerOnElevator.z());
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
+                        }
+                    }
+                }
 
                 elevatorMove.ID = ID;
                 elevatorMove.posX = points[currentPos].x();
                 elevatorMove.posY = points[currentPos].y();
                 elevatorMove.posZ = points[currentPos].z();
 
-                room.OnCoordinatesAdd(points[currentPos].x(), points[currentPos].y(), points[currentPos].z(), this);
-                room.OnCoordinatesRemove(points[oldPos].x(), points[oldPos].y(), points[currentPos].z(), 9);
                 room.sendToAll(elevatorMove);
             }
             else

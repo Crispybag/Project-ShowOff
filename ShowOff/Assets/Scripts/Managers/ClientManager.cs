@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using sharedAngy;
 using static ServiceLocator;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ClientManager : MonoBehaviour
 {
@@ -80,8 +81,14 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is BoxInfo) { handleBoxInfo(pInMessage as BoxInfo); }
         if (pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
         if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
+        if (pInMessage is ConfReloadScene) { handleReloadScene(pInMessage as ConfReloadScene); }
     }
 
+    private void handleReloadScene(ConfReloadScene pMessage)
+    {
+        SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
+        sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+    }
     private void handleProgressDialogue(ConfProgressDialogue pMessage)
     {
         serviceLocator.interactableList[pMessage.ID].GetComponent<Dialogue>().ProgressDialogue();
@@ -168,14 +175,14 @@ public class ClientManager : MonoBehaviour
 
         if (pMessage.player == 0)
         {
-            player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
+            player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             //player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
 
             Debug.Log("Moved player 1!");
         }
         else
         {
-            player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ));
+            player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             //player2.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
 
             Debug.Log("Moved player 2!");

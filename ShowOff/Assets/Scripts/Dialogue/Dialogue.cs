@@ -6,14 +6,13 @@ using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
-    public int ID;
-    public bool isAwake = false;
-    public Image nucImagePlace;
-    public Image alexImagePlace;
-    [SerializeField]
-    private AudioSource talkingSound;
+    [HideInInspector]public int ID;
 
     public DialogueText[] dialogue;
+
+
+    private Vector3 nucScale;
+    private Vector3 alexScale;
     private int activeDialogue = 0;
 
     private DialogueManager _dialogueManager;
@@ -22,10 +21,8 @@ public class Dialogue : MonoBehaviour
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
         _dialogueManager = FindObjectOfType<DialogueManager>();
-        if (isAwake)
-        {
-            ProgressDialogue();
-        }
+        nucScale = _dialogueManager.nucImagePlace.transform.localScale;
+        alexScale = _dialogueManager.alexImagePlace.transform.localScale;
     }
 
     public void ProgressDialogue()
@@ -41,10 +38,14 @@ public class Dialogue : MonoBehaviour
                     //Destroy(this.gameObject);
                 }
                 _dialogueManager.StartDialogue(dialogue[activeDialogue]);
-                nucImagePlace.sprite = dialogue[activeDialogue].nucImage.sprite;
-                alexImagePlace.sprite = dialogue[activeDialogue].alexImage.sprite;
-                talkingSound.clip = dialogue[activeDialogue].sound;
-                talkingSound.Play();
+
+                setEmotes();
+                setEmoteSizes();
+
+                playSound();
+                //_dialogueManager.talkingSound.clip = dialogue[activeDialogue].sound;
+
+
                 activeDialogue++;
             }
 
@@ -57,4 +58,88 @@ public class Dialogue : MonoBehaviour
         }
 
     }
+
+    private void playSound()
+    {
+        switch (dialogue[activeDialogue].sound)
+        {
+            case (DialogueManager.TalkingSounds.AlexNeutral):
+                _dialogueManager.talkingSound.clip = _dialogueManager.talkingSounds[0];
+                break;
+            case (DialogueManager.TalkingSounds.AlexHappy):
+                _dialogueManager.talkingSound.clip = _dialogueManager.talkingSounds[1];
+                break;
+            case (DialogueManager.TalkingSounds.AlexThinking):
+                _dialogueManager.talkingSound.clip = _dialogueManager.talkingSounds[2];
+                break;
+            case (DialogueManager.TalkingSounds.NucNeutral):
+                _dialogueManager.talkingSound.clip = _dialogueManager.talkingSounds[3];
+                break;
+            case (DialogueManager.TalkingSounds.NucHappy):
+                _dialogueManager.talkingSound.clip = _dialogueManager.talkingSounds[4];
+                break;
+            case (DialogueManager.TalkingSounds.NucThinking):
+                _dialogueManager.talkingSound.clip = _dialogueManager.talkingSounds[5];
+                break;
+        }
+
+        _dialogueManager.talkingSound.Play();
+    }
+
+    private void setEmoteSizes()
+    {
+        switch (dialogue[activeDialogue].currentTalkingCharacter)
+        {
+            case (DialogueText.TalkingCharacter.Alex):
+                _dialogueManager.alexImagePlace.transform.localScale = alexScale;
+                _dialogueManager.nucImagePlace.transform.localScale = nucScale;
+                _dialogueManager.alexImagePlace.transform.localScale *= 1.25f;
+                break;
+            case (DialogueText.TalkingCharacter.Nuc):
+                _dialogueManager.alexImagePlace.transform.localScale = alexScale;
+                _dialogueManager.nucImagePlace.transform.localScale = nucScale;
+                _dialogueManager.nucImagePlace.transform.localScale *= 1.25f;
+                break;
+        }
+    }
+
+    private void setEmotes()
+    {
+        switch (dialogue[activeDialogue].alexEmote)
+        {
+            case (DialogueManager.AlexEmotes.Neutral):
+                _dialogueManager.alexImagePlace.sprite = _dialogueManager.alexEmotes[0].sprite;
+                break;
+            case (DialogueManager.AlexEmotes.Happy):
+                _dialogueManager.alexImagePlace.sprite = _dialogueManager.alexEmotes[1].sprite;
+                break;
+            case (DialogueManager.AlexEmotes.Confused):
+                _dialogueManager.alexImagePlace.sprite = _dialogueManager.alexEmotes[2].sprite;
+                break;
+            case (DialogueManager.AlexEmotes.Worried):
+                _dialogueManager.alexImagePlace.sprite = _dialogueManager.alexEmotes[3].sprite;
+                break;
+            case (DialogueManager.AlexEmotes.Aye):
+                _dialogueManager.alexImagePlace.sprite = _dialogueManager.alexEmotes[4].sprite;
+                break;
+        }
+
+        switch (dialogue[activeDialogue].nucEmote)
+        {
+            case (DialogueManager.NucEmotes.Neutral):
+                _dialogueManager.nucImagePlace.sprite = _dialogueManager.nucEmotes[0].sprite;
+                break;
+            case (DialogueManager.NucEmotes.Happy):
+                _dialogueManager.nucImagePlace.sprite = _dialogueManager.nucEmotes[1].sprite;
+                break;
+            case (DialogueManager.NucEmotes.Confused):
+                _dialogueManager.nucImagePlace.sprite = _dialogueManager.nucEmotes[2].sprite;
+                break;
+            case (DialogueManager.NucEmotes.Thinking):
+                _dialogueManager.nucImagePlace.sprite = _dialogueManager.nucEmotes[3].sprite;
+                break;
+        }
+    }
+
+
 }
