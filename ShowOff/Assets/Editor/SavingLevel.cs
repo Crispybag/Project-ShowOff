@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 using System.IO;
 using System.Linq;
 
-public class SavingLevel : MonoBehaviour
+public class SavingLevel : EditorWindow
 {
 
     public string fileName = "empty";
@@ -14,6 +14,25 @@ public class SavingLevel : MonoBehaviour
     [HideInInspector] public string filePath = "";
 
     private int currentID = 0;
+
+
+    [MenuItem("Window/SaveLevel")]
+    public static void ShowWindow()
+    {
+        GetWindow<SavingLevel>("Save Level");
+
+    }
+
+    private void OnGUI()
+    {
+        fileName = EditorGUILayout.TextField("FileName", fileName);
+
+        if (GUILayout.Button("Save level"))
+        {
+            SaveLevel();
+        }
+    }
+
 
     public void SaveLevel()
     {
