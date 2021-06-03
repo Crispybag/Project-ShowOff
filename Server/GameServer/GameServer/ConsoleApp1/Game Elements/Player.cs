@@ -442,7 +442,6 @@ namespace Server
             else if (orientation[0] == 0 && orientation[1] == 1) { _confMove.orientation = 180; }
             else { _confMove.orientation = -90; }
 
-
             room.sendToAll(_confMove);
             //room.PrintGrid(room.roomArray);
         }

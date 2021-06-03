@@ -13,11 +13,11 @@ public abstract class Movement : MonoBehaviour
     //=========================================================================================
 
     //------------------------ public ------------------------
-
+/*
     public Vector3 toBePosition;     //position it will be in after lerp
 
     public Vector3 leftDirection;
-    public Vector3 rightDirection;
+    public Vector3 rightDirection;*/
 
     //----------------------- private ------------------------
 
@@ -26,20 +26,27 @@ public abstract class Movement : MonoBehaviour
 
     protected Vector3 _currentPosition;
     private Vector3 _targetPosition;
+    
+    private Vector3 currentRotation;
+    private Vector3 targetRotation;
 
     protected float _travelTime = 0.1f;
     private float timer;
 
     public bool canMove = true;
+    private Animator animator;
+    GameObject model; 
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
     protected virtual void Start()
     {
-        toBePosition = transform.position;
+        //toBePosition = transform.position;
         _currentPosition = transform.position;
         _targetPosition = transform.position;
+        animator = GetComponentInChildren<Animator>();
+        model = transform.Find("Model").gameObject;
     }
 
     protected virtual void Update()
@@ -48,6 +55,7 @@ public abstract class Movement : MonoBehaviour
         timer += Time.deltaTime;
         float ratio = timer / _travelTime;
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
+        model.transform.rotation = Quaternion.Euler(Vector3.Lerp(currentRotation, targetRotation, ratio));
 
         //gravity
         //checkForFalling();
@@ -57,7 +65,7 @@ public abstract class Movement : MonoBehaviour
     }
 
 
-    public void checkForFalling()
+/*    public void checkForFalling()
     {
         if (canMove)
         {
@@ -75,23 +83,44 @@ public abstract class Movement : MonoBehaviour
                 moveToTile(-Vector3.up);
             }
         }
-    }
+    }*/
 
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
-    public void moveToTile(Vector3 pDirection)
+    public void moveToTile(Vector3 pDirection, int orientation)
     {
 
-            //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
-            //pDirection = getNormalizedDirection(pDirection);
-            //if there isnt a wall update our target position to where we want to go.
-            //_targetPosition = pDirection + _currentPosition;
-            _targetPosition = pDirection;
-            _currentPosition = transform.position;
-            //toBePosition = _targetPosition;
-            timer = 0f;
+        //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
+        //pDirection = getNormalizedDirection(pDirection);
+        //if there isnt a wall update our target position to where we want to go.
+        //_targetPosition = pDirection + _currentPosition;
+        _targetPosition = pDirection;
+        _currentPosition = transform.position;
+
+        currentRotation = model.transform.rotation.eulerAngles;
+        Vector3 rot = model.transform.rotation.eulerAngles;
+        if(orientation == 180)
+        {
+            orientation = 0;
+        }
+        else if(orientation == 0)
+        {
+            orientation = 180;
+        }
+        else if (orientation == -90)
+        {
+                orientation = 270;
+        }
+        if (rot.y != orientation)
+        {
+            rot.y = orientation;
+            targetRotation = rot;
+        }
+
+        //toBePosition = _targetPosition;
+        timer = 0f;
             
     }
 
@@ -106,9 +135,11 @@ public abstract class Movement : MonoBehaviour
             //canMove = true;
             transform.position = _targetPosition;
             _currentPosition = transform.position;
+            animator.SetBool("isWalking", false);
         }
         else
         {
+            animator.SetBool("isWalking", true);
             //canMove = false;
         }
     }
@@ -117,7 +148,7 @@ public abstract class Movement : MonoBehaviour
     //=========================================================================================
 
 
-    virtual public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
+/*    virtual public bool wallCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)
     {
         //get the direction and make sure they are either 0 or 1 again.
         Vector3 moveDirection = (pTargetPosition - pCurrentPosition).normalized;
@@ -251,7 +282,7 @@ public abstract class Movement : MonoBehaviour
             left.z += 1;
         }
         return left;
-    }
+    }*/
 
     /*
     public bool WallFarCheck(Vector3 pTargetPosition, Vector3 pCurrentPosition)

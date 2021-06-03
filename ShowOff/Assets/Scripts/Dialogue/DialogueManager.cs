@@ -26,7 +26,6 @@ public class DialogueManager : MonoBehaviour
     {
         panel.SetActive(true);
         runningDialogue = true;
-        NPCnameText.text = dialogue.NPCname;
 
         sentences.Clear();
 

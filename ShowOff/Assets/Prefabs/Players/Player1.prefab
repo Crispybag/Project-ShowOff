@@ -142,9 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05d9aa7e158a8e43b9e2621bf1d6c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toBePosition: {x: 0, y: 0, z: 0}
-  leftDirection: {x: 0, y: 0, z: 0}
-  rightDirection: {x: 0, y: 0, z: 0}
   canMove: 1
   _moveSpeed: 0.1
   playerPushWeight: 0
@@ -162,6 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bf291b7f33c7743b1dd672e2333f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentID: 0
   _objectIndex: 3
   fileName: 3DPrototype.txt
   playerIndex: 0
@@ -242,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b3d205bae69383547a088716f23035af, type: 2}
     - target: {fileID: 919132149155446097, guid: d78ffe5f25e3d284097e6d6f87d5179b, type: 3}
       propertyPath: m_Name
-      value: Male_Mc_NoRig_NoTexture
+      value: Model
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d78ffe5f25e3d284097e6d6f87d5179b, type: 3}

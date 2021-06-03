@@ -6,14 +6,18 @@ using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
-    public int ID;
-    public bool isAwake = false;
+    [HideInInspector]public int ID;
     public Image nucImagePlace;
     public Image alexImagePlace;
+
     [SerializeField]
     private AudioSource talkingSound;
 
     public DialogueText[] dialogue;
+
+
+    private Vector3 nucScale;
+    private Vector3 alexScale;
     private int activeDialogue = 0;
 
     private DialogueManager _dialogueManager;
@@ -22,10 +26,8 @@ public class Dialogue : MonoBehaviour
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
         _dialogueManager = FindObjectOfType<DialogueManager>();
-        if (isAwake)
-        {
-            ProgressDialogue();
-        }
+        nucScale = nucImagePlace.transform.localScale;
+        alexScale = alexImagePlace.transform.localScale;
     }
 
     public void ProgressDialogue()
@@ -43,6 +45,19 @@ public class Dialogue : MonoBehaviour
                 _dialogueManager.StartDialogue(dialogue[activeDialogue]);
                 nucImagePlace.sprite = dialogue[activeDialogue].nucImage.sprite;
                 alexImagePlace.sprite = dialogue[activeDialogue].alexImage.sprite;
+                switch (dialogue[activeDialogue].currentCharacter)
+                {
+                    case (DialogueText.TalkingCharacter.Alex):
+                        alexImagePlace.transform.localScale = alexScale;
+                        nucImagePlace.transform.localScale = nucScale;
+                        alexImagePlace.transform.localScale *= 1.25f;
+                        break;
+                    case (DialogueText.TalkingCharacter.Nuc):
+                        alexImagePlace.transform.localScale = alexScale;
+                        nucImagePlace.transform.localScale = nucScale;
+                        nucImagePlace.transform.localScale *= 1.25f;
+                        break;
+                }
                 talkingSound.clip = dialogue[activeDialogue].sound;
                 talkingSound.Play();
                 activeDialogue++;
@@ -57,4 +72,6 @@ public class Dialogue : MonoBehaviour
         }
 
     }
+
+
 }
