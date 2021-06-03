@@ -685,7 +685,7 @@ namespace Server
             if (walkDirection[0] != 0 || walkDirection[2] != 0)
             {
                 //Logging.LogInfo("trying to walk in a direction");
-                if (timer >= 1)
+                if (timer >= 2)
                 {
                     timer = 0;
                     tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
