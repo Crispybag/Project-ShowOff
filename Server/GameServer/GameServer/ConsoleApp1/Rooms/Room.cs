@@ -157,6 +157,22 @@ namespace Server
                 pMethod(_users[i]);
             }
         }
+
+        protected void sendConfPlayer(TCPMessageChannel pClient)
+        {
+            if (_server.allConnectedUsers[pClient].GetPlayerIndex() == 0)
+            {
+                ConfPlayer newPlayer = new ConfPlayer();
+                newPlayer.playerName = "Player1";
+                pClient.SendMessage(newPlayer);
+            }
+            else
+            {
+                ConfPlayer newPlayer = new ConfPlayer();
+                newPlayer.playerName = "Player2";
+                pClient.SendMessage(newPlayer);
+            }
+        }
         #endregion
     }
 }

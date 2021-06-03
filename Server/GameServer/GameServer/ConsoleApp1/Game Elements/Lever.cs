@@ -36,13 +36,16 @@ namespace Server
             {
                 try
                 {
-                    (room.InteractableGameobjects[door] as Door).CheckDoor();
+                    if(room.InteractableGameobjects[door] is Door)(room.InteractableGameobjects[door] as Door).CheckDoor();
+                    if(room.InteractableGameobjects[door] is AirChannel)(room.InteractableGameobjects[door] as AirChannel).CheckAirChannel();
                 }
                 catch
                 {
                     Logging.LogInfo("Lever.cs Could not handle door, probably not in interactablegameobject list in room!", Logging.debugState.DETAILED);
                 }
             }
+
+
         }
     }
 }

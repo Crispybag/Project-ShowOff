@@ -37,7 +37,7 @@ namespace Server
             }
             joinMessage.acceptStatus = true;
             pSender.SendMessage(joinMessage);
-            _server.AddPlayerInfo(pSender, reqJoinServer.requestedName);
+            _server.AddPlayerInfo(pSender, reqJoinServer.requestedName, _server.allConnectedUsers.Count);
 
         }
 
