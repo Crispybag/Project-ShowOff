@@ -85,9 +85,9 @@ namespace Server
         // Player Info Tools
         //=================================================================
 
-        public void AddPlayerInfo(TCPMessageChannel pClient, string pName)
+        public void AddPlayerInfo(TCPMessageChannel pClient, string pName, int playerIndex)
         {
-            allConnectedUsers.Add(pClient, new PlayerInfo(pName));
+            allConnectedUsers.Add(pClient, new PlayerInfo(pName, playerIndex));
         }
 
         public void RemovePlayerInfo(TCPMessageChannel pClient)

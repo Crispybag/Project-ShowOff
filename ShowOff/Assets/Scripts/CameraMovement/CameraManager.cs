@@ -114,4 +114,9 @@ public class CameraManager : MonoBehaviour
         FOLLOW
     }
 
+    public float GetCameraRotation()
+    {
+        return _cameraGameObject.transform.rotation.eulerAngles.y;
+    }
+
 }

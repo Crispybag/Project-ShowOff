@@ -80,6 +80,10 @@ public class InformationWriter : MonoBehaviour
         informationString += ") ";
     }
 
+    protected void AddToInformation(string pInfo)
+    {
+        informationString += pInfo + " ";
+    }
 
 
     //Main function to be overwritten by child classes if you want to add your own information. Make sure to not forget to add base.WriteAllinformation(). Because that can really mess up things
