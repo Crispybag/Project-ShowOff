@@ -32,7 +32,7 @@ namespace Server
         public void NextPosition(Button.Direction currentDirection)
         {
             ConfElevatorMove elevatorMove = new ConfElevatorMove();
-
+            
             if (currentDirection == Button.Direction.DOWN)
             {
                 oldPos = currentPos;
@@ -45,6 +45,23 @@ namespace Server
                 else
                 {
                     currentPos--;
+                }
+
+                Player playerOnElevator;
+                if (room.OnCoordinatesContain(x(), y() + 1, z(), 1))
+                {
+                    if (room.OnCoordinatesGetGameObject(x(), y(), z(), 1) is Player)
+                    {
+                        playerOnElevator = room.OnCoordinatesGetGameObject(x(), y(), z(), 1) as Player;
+                        try
+                        {
+                            playerOnElevator.tryPositionChange(points[currentPos].x(), points[currentPos].y() + 1, points[currentPos].z());
+                        }
+                        catch
+                        {
+                            Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
+                        }
+                    }
                 }
 
                 elevatorMove.ID = ID;

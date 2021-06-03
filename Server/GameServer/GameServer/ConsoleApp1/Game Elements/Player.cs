@@ -422,7 +422,7 @@ namespace Server
             }
         }
         //Does the check whether the player can change position or not
-        private void tryPositionChange(int pX, int pY, int pZ)
+        public void tryPositionChange(int pX, int pY, int pZ)
         {
             //determine direction and set orientation
             int[] direction = { pX, pY, pZ };
