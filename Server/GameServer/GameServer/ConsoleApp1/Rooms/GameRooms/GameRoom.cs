@@ -15,10 +15,11 @@ namespace Server
         public List<GameObject> gameObjects;
         public List<Player> players;
         public List<SpawnPoint> spawnPoints;
-
         public Dictionary<int, GameObject> InteractableGameobjects = new Dictionary<int, GameObject>();
         public int minX = 0, minY = 0, minZ = 0;
         public int currentDialogue;
+        public bool isReloading = false;
+        public string levelFile;
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -75,11 +76,37 @@ namespace Server
         #region level data loading
 
         /// <summary>
-        /// (Leo) Generates the grid
+        /// (Leo) Loads Level
         /// </summary>
+        /// 
+        public void LoadLevel(string filePath)
+        {
+            GenerateGridFromText(filePath);
+            foreach (TCPMessageChannel pListener in _users)
+            {
+                SpawnPlayer(pListener, _server.allConnectedUsers[pListener].GetPlayerIndex());
+
+                foreach (Player player in players)
+                {
+                    player.SendConfMove();
+                }    
+            }
+        }
+
+        /// <summary>
+        /// Generates Grid
+        /// </summary>
+        /// <param name="filePath"></param>
         public void GenerateGridFromText(string filePath)
         {
+            levelFile = filePath;
             //values to determine grid size
+            //clear all lists
+            gameObjects.Clear();
+            players.Clear();
+            spawnPoints.Clear();
+            InteractableGameobjects.Clear();
+
 
             //get the file path
             List<string> lines = File.ReadAllLines(filePath).ToList();
@@ -249,8 +276,12 @@ namespace Server
                         Slope slope = new Slope(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
                         break;
                     case (13):
-                        AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]) , (int)float.Parse(rawInformation[9]));
+                        importAirChannel(informationLists, rawInformation, minX, minY, minZ);
                         break;
+                    case (14):
+                        LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7]);
+                        break;
+
                     case (15):
                         importDialogue(informationLists, rawInformation, minX, minY, minZ);
                         break;
@@ -384,6 +415,29 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// (Leo) Import Airchannel from text
+        /// </summary>
+        private void importAirChannel(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Logging.LogInfo(rawInformation[9], Logging.debugState.DETAILED);
+            AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]), (int)float.Parse(rawInformation[9]), int.Parse(rawInformation[10]) );
+            InteractableGameobjects.Add(airChannel.ID, airChannel);
+            try
+            {
+                foreach (int index in informationLists[0])
+                {
+                    Logging.LogInfo("GameRoom.cs: Added actuator to airChannel!", Logging.debugState.DETAILED);
+                    airChannel.actuators.Add(index);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
+            }
+
+        }
+
         #endregion
 
         #region network handling
@@ -398,6 +452,7 @@ namespace Server
             if (pMessage is ReqKeyDown){handleReqKeyDown(pMessage as ReqKeyDown, pSender);}
             if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
             if (pMessage is ReqProgressDialogue){ handleReqProgressDialogue(pSender);}
+            if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
         }
 
         private void handleReqProgressDialogue(TCPMessageChannel pSender)
@@ -442,6 +497,23 @@ namespace Server
                 }
             }
         }
+
+        private void handleReqResetLevel(ReqResetLevel pResetLevel, TCPMessageChannel pSender)
+        {
+            foreach (Player player in players)
+            {
+                if (pSender == player.getClient())
+                {
+                    player.SetResetStatus(pResetLevel.wantsReset);
+                }
+            }
+        }
+
+        private void sendLevelReset()
+        {
+            ConfReloadScene reloadScene = new ConfReloadScene();
+            sendToAll(reloadScene);
+        }
         #endregion
 
         #region resetting
@@ -460,7 +532,71 @@ namespace Server
             }
             players.Add(new Player(this, pListener, pX, pY, pZ, pPlayerIndex));
         }
+        /// <summary>
+        /// (Leo) Handles player spawning
+        /// </summary>
+        /// <param name="pListener"></param>
+        protected void SpawnPlayer(TCPMessageChannel pListener, int pClientID)
+        {
+            //checks if player 1 is connected
+            bool player1Connected = false;
 
+            //look for a player with player index 0 (player 1)
+            foreach (Player player in players)
+            {
+                if (player.GetPlayerIndex() == 0) player1Connected = true;
+            }
+
+            //spawn player 1 if player 1 is not yet connected
+            if (pClientID == 0)
+            {
+                try
+                {
+                    setSpawnPoint(pListener, 0);
+                }
+                catch
+                {
+                    Logging.LogInfo("AAAAAAAAAAAAAAAAAAAAAAA something went wrong lol (in gametestroom0 adding member)", Logging.debugState.SIMPLE);
+                }
+            }
+
+            else
+            {
+                try
+                {
+                    setSpawnPoint(pListener, 1);
+                }
+                catch
+                {
+                    Logging.LogInfo("AAAAAAAAAAAAAAAAAAAAAAA something went wrong lol (in gametestroom0 adding member)", Logging.debugState.SIMPLE);
+                }
+
+                //SetPlayerCoord(pListener, 9, 0, 0, 1);
+            }
+        }
+
+        /// <summary>
+        /// (Leo) Determines and sets a player spawnpoint
+        /// </summary>
+        /// <param name="pListener"></param>
+        /// <param name="playerIndex"></param>
+        private void setSpawnPoint(TCPMessageChannel pListener, int playerIndex)
+        {
+            //spawn player at spawn point if there is one
+            List<GameObject> _spawnPoints = OnCoordinatesFindGameObjectOfType(3);
+            SpawnPoint _spawnPoint = null;
+
+            foreach (GameObject obj in _spawnPoints)
+            {
+                SpawnPoint smiley = obj as SpawnPoint;
+
+                //set spawnpoint to smiley if spawnpoint has been found
+                if (smiley.spawnIndex == playerIndex) _spawnPoint = smiley;
+            }
+
+            //set the player coordinates to the spawn point coordinates
+            if (null != _spawnPoint) SetPlayerCoord(pListener, _spawnPoint.x(), _spawnPoint.y(), _spawnPoint.z(), playerIndex);
+        }
 
         /// <summary>
         /// (Leo) Resets room to initial state
@@ -469,10 +605,10 @@ namespace Server
         {
             //for debug purposes print grid
             Logging.LogInfo("Current Grid");
-            PrintGrid(roomArray);
+            //PrintGrid(roomArray);
 
             Logging.LogInfo("\n\nSaved Grid");
-            PrintGrid(roomStatic);
+            //PrintGrid(roomStatic);
 
             //copy static grid to room grid
             CopyGrid(roomArray, roomStatic);
@@ -545,6 +681,25 @@ namespace Server
             foreach(GameObject obj in gameObjects)
             {
                 obj.Update();
+            }
+
+            foreach(Player player in players)
+            {
+                if (!player.wantsReset) break;
+                isReloading = true;
+            }
+
+            if (isReloading)
+            {
+
+                sendLevelReset();
+                foreach (TCPMessageChannel pListener in _users)
+                {
+                    sendConfPlayer(pListener);
+                }
+
+                LoadLevel(levelFile);
+                isReloading = false;
             }
         }
         #endregion

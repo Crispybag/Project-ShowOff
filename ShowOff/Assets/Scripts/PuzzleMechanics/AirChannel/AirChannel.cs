@@ -27,11 +27,11 @@ public class AirChannel : MonoBehaviour
     {
     }
 
-    private void Update()
+/*    private void Update()
     {
         MoveObjects();
     }
-
+*/
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
@@ -60,7 +60,7 @@ public class AirChannel : MonoBehaviour
     //                             > Private Tool Functions <
     //=========================================================================================
 
-    private void MoveObjects()
+/*    private void MoveObjects()
     {
         if (isAirEnabled)
         {
@@ -72,7 +72,7 @@ public class AirChannel : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 
 
 

@@ -7,11 +7,20 @@ using UnityEngine.UI;
 [System.Serializable]
 public class DialogueText
 {
-    public Image nucImage;
-    public Image alexImage;
-    public AudioClip sound;
-    public string NPCname;
+    public DialogueManager.NucEmotes nucEmote;
+    public DialogueManager.AlexEmotes alexEmote;
+    public DialogueManager.TalkingSounds sound;
+    public TalkingCharacter currentTalkingCharacter;
 
     [TextArea(3, 10)]
     public string[] sentences;
+
+    public enum TalkingCharacter
+    {
+        Nuc,
+        Alex
+    }
+
+
+
 }

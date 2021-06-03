@@ -68,7 +68,8 @@ namespace Server
             {
                 try
                 {
-                    (room.InteractableGameobjects[door] as Door).CheckDoor();
+                    if (room.InteractableGameobjects[door] is Door) (room.InteractableGameobjects[door] as Door).CheckDoor();
+                    if (room.InteractableGameobjects[door] is AirChannel) (room.InteractableGameobjects[door] as AirChannel).CheckAirChannel();
                 }
                 catch
                 {
