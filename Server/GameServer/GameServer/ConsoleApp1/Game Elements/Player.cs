@@ -18,7 +18,7 @@ namespace Server
         private int currentBoxID;
 
         public int playerIndex;
-        public GameObject currentBox;
+        public Box currentBox;
         private int[,,] position;
 
         private int callLoopPrevent;
@@ -239,6 +239,7 @@ namespace Server
                 {
                     currentBox.MovePosition(OneInFront());
                     sendBoxPackage(currentBox, OneInFront(), false);
+                    currentBox.CheckGrounded();
                     currentBox = null;
                 }
                 catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
@@ -479,7 +480,7 @@ namespace Server
             }
             catch
             {
-
+                //stop falling when it hits the bottom most coordinate
             }
         }
         //Does the check whether the player can change position or not
@@ -671,7 +672,7 @@ namespace Server
                 //set player to have a box
                 _hasBox = true;*/
 
-                GameObject boxs = room.OnCoordinatesGetGameObject(pPos, 7);
+                Box boxs = room.OnCoordinatesGetGameObject(pPos, 7) as Box;
                 currentBox = boxs;
                 boxs.MovePosition(pPos);
                 sendBoxPackage(currentBox, x(), y(), z() , true);
