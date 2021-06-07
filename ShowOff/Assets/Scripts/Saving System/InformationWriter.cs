@@ -80,6 +80,17 @@ public class InformationWriter : MonoBehaviour
         informationString += ") ";
     }
 
+    protected void AddToInformation(List<Vector3> pInfo)
+    {
+        informationString += "( ";
+        foreach (Vector3 element in pInfo)
+        {
+            informationString += element.x + " " + element.y + " " + element.z + " ";
+        }
+        informationString += ") ";
+    }
+
+
     protected void AddToInformation(string pInfo)
     {
         informationString += pInfo + " ";

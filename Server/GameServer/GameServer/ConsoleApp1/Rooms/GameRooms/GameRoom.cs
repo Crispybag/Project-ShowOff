@@ -113,7 +113,7 @@ namespace Server
             determineGridSize(lines, out minX, out minY, out minZ);
             initializeAllLists();
             addObjectsToGrid(lines, minX, minY, minZ);
-
+            PrintGrid(roomArray);
         }
 
         /// <summary>
@@ -285,8 +285,38 @@ namespace Server
                     case (15):
                         importDialogue(informationLists, rawInformation, minX, minY, minZ);
                         break;
+                    case (16):
+                        importWater(informationLists, rawInformation, minX, minY, minZ);
+                        break;
                 }
 
+            }
+        }
+
+        /// <summary>
+        /// (Ezra) Imports water from txt
+        /// </summary>
+        private void importWater(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            try
+            {
+                Console.WriteLine("water count: " + informationLists[0].Count);
+                for (int i = 0; i < informationLists[0].Count / 3; i++)
+                {
+                    try
+                    {
+                        Water empty = new Water(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                        Console.WriteLine("Added an water on position: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Something went wrong when trying to initialize water");
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Something went wrong with water");
             }
         }
 
@@ -453,6 +483,24 @@ namespace Server
             if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
             if (pMessage is ReqProgressDialogue){ handleReqProgressDialogue(pSender);}
             if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
+            if (pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
+        }
+
+        private void handleRoomRequest(ReqJoinRoom pMessage, TCPMessageChannel pSender)
+        {
+            if ((int)pMessage.room == 0)
+            {
+                Logging.LogInfo("Moving client to login room", Logging.debugState.DETAILED);
+                ConfJoinRoom confirmLoginRoom = new ConfJoinRoom();
+                confirmLoginRoom.room = 0;
+                pSender.SendMessage(confirmLoginRoom);
+                _server.availableRooms["Login"].AddMember(pSender);
+                removeAndCloseMember(pSender);
+            }
+            else
+            {
+                Console.WriteLine("We didnt implement any other rooms switching yet in gameroom");
+            }
         }
 
         private void handleReqProgressDialogue(TCPMessageChannel pSender)

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using sharedAngy;
 using System.Text;
 using static ServiceLocator;
+using UnityEngine.SceneManagement;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -73,8 +74,20 @@ public class PlayerInputHandler : MonoBehaviour
         //receiveText();
 
 
-        //Send Inputs
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+            //Send Inputs
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            foreach(Scene scene in SceneManager.GetAllScenes())
+            {
+                if(scene.name == "Options")
+                {
+                    return;
+                }
+            }
+            SceneManager.LoadScene("Options", LoadSceneMode.Additive);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             sendReqKeyDown(KeyCode.UpArrow, ReqKeyDown.KeyType.UP);
         }
@@ -111,7 +124,8 @@ public class PlayerInputHandler : MonoBehaviour
 
 
 
-        if(Input.GetKeyUp(KeyCode.UpArrow))
+
+        if (Input.GetKeyUp(KeyCode.UpArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.UP;

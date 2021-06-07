@@ -105,7 +105,7 @@ namespace Server
                 }
                 catch
                 {
-                    Logging.LogInfo("Door.cs: Could not handle actuator, probably not in list in room!", Logging.debugState.DETAILED);
+                    Logging.LogInfo("Airchannel.cs: Could not handle actuator, probably not in list in room!", Logging.debugState.DETAILED);
                 }
             }
             return true;
