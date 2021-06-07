@@ -25,7 +25,16 @@ namespace Server
         public bool wantsReset;
         private int cameraRotation;
         //standard stuff, along with quick coordinates
-        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
+        public enum PlayerType
+        {
+            ALEX = 0,
+            NUC = 1
+        }
+
+        public PlayerType playerType;
+
+
+        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0, PlayerType pPlayerType = PlayerType.NUC) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             orientation = new int[2] { 0, 1 };
             walkDirection = new int[3];
@@ -34,6 +43,7 @@ namespace Server
             room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 1;
             playerIndex = pPlayerIndex;
+            playerType = pPlayerType;
         }
 
         #region input
@@ -215,7 +225,7 @@ namespace Server
                     //for box
                     else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
-                        sendPickUpBox(OneInFront());
+                        if (playerType == PlayerType.NUC)sendPickUpBox(OneInFront());
                     }
                 }
                 else
@@ -238,8 +248,8 @@ namespace Server
                 try
                 {
                     currentBox.MovePosition(OneInFront());
-                    sendBoxPackage(currentBox, OneInFront(), false);
                     currentBox.CheckGrounded();
+                    currentBox.SendBoxPackage(currentBox, new int[3] { currentBox.x(), currentBox.y(), currentBox.z() }, false);
                     currentBox = null;
                 }
                 catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
@@ -261,56 +271,15 @@ namespace Server
                 }
                 Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
-                sendBoxPackage(currentBox, OneInFront(), false);
+                currentBox.SendBoxPackage(currentBox, OneInFront(), false);
                 currentBox = null;
             }
 
 
         }
 
-        private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
-        {
-            try
-            {
-                if (pIsPickedUp)
-                {
-                    box.SetState(CollInteractType.PASS);
-                }
-                else
-                {
-                    box.SetState(CollInteractType.SOLID);
-                }
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = position[0] + room.minX;
-                boxInf.posY = position[1] + room.minY;
-                boxInf.posZ = position[2] + room.minZ;
-                room.sendToAll(boxInf);
-            }
-            catch
-            {
-                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
-            }
-        }
-
-        private void sendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
-        {
-            try
-            {
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX; 
-                boxInf.posY = pY + room.minY; 
-                boxInf.posZ = pZ + room.minZ; 
-                room.sendToAll(boxInf);
-            }
-            catch
-            {
-                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
-            }
-        }
+        
+        
 
         #endregion
 
@@ -394,15 +363,21 @@ namespace Server
         {
             if (room.OnCoordinatesGetGameObject(pPosition, 13) is AirChannel)
             {
-               
-                AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
-                if (airChannel.CanPushPlayer(pPosition))
+                if (playerType == PlayerType.ALEX)
                 {
-                    MovePosition(airChannel.PushPlayer(pPosition));
+                    AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
+                    if (airChannel.CanPushPlayer(pPosition))
+                    {
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                    }
+                    else
+                    {
+                        checkSpecialCollision(airChannel.PushPlayer(pPosition));
+                    }
                 }
                 else
                 {
-                    checkSpecialCollision(airChannel.PushPlayer(pPosition));
+                    MoveDirection(orientation[0], 0, orientation[1]);
                 }
             }
         }
@@ -555,7 +530,7 @@ namespace Server
             if(currentBox != null)
             {
                 currentBox.MovePosition(x(), y(), z());
-                sendBoxPackage(currentBox, x(), y(), z(), true);
+                currentBox.SendBoxPackage(currentBox, x(), y(), z(), true);
             }
 
             //set y rotation
@@ -675,7 +650,7 @@ namespace Server
                 Box boxs = room.OnCoordinatesGetGameObject(pPos, 7) as Box;
                 currentBox = boxs;
                 boxs.MovePosition(pPos);
-                sendBoxPackage(currentBox, x(), y(), z() , true);
+                currentBox.SendBoxPackage(currentBox, x(), y(), z() , true);
 
             }
             catch

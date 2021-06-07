@@ -68,7 +68,15 @@ namespace Server
                         }
                     }
                 }
-
+                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 7))
+                {
+                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) is Box)
+                    {
+                        Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
+                        coolBox.MovePosition(x(), y() + 1, z());
+                        coolBox.SendBoxPackage(coolBox, coolBox.x(), coolBox.y(), coolBox.z(), false);
+                    }
+                }
                 elevatorMove.ID = ID;
                 elevatorMove.posX = points[currentPos].x() + room.minX;
                 elevatorMove.posY = points[currentPos].y() + room.minY;
@@ -115,6 +123,15 @@ namespace Server
                         {
                             Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
                         }
+                    }
+                }
+                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 7))
+                {
+                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) is Box)
+                    {
+                        Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
+                        coolBox.MovePosition(x(), y() + 1, z());
+                        coolBox.SendBoxPackage(coolBox, coolBox.x(), coolBox.y(), coolBox.z(), false);
                     }
                 }
 

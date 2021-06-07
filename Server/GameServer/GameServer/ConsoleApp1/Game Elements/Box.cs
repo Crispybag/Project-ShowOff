@@ -59,5 +59,49 @@ namespace Server
             return false;
         }
 
+        public void SendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
+        {
+            try
+            {
+                if (pIsPickedUp)
+                {
+                    box.SetState(CollInteractType.PASS);
+                }
+                else
+                {
+                    box.SetState(CollInteractType.SOLID);
+                }
+                BoxInfo boxInf = new BoxInfo();
+                boxInf.ID = (box as Box).ID;
+                boxInf.isPickedUp = pIsPickedUp;
+                boxInf.posX = position[0] + room.minX;
+                boxInf.posY = position[1] + room.minY;
+                boxInf.posZ = position[2] + room.minZ;
+                room.sendToAll(boxInf);
+            }
+            catch
+            {
+                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
+            }
+        }
+
+        public void SendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
+        {
+            try
+            {
+                BoxInfo boxInf = new BoxInfo();
+                boxInf.ID = (box as Box).ID;
+                boxInf.isPickedUp = pIsPickedUp;
+                boxInf.posX = pX + room.minX;
+                boxInf.posY = pY + room.minY;
+                boxInf.posZ = pZ + room.minZ;
+                room.sendToAll(boxInf);
+            }
+            catch
+            {
+                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
+            }
+        }
+
     }
 }

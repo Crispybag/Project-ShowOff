@@ -29597,22 +29597,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1032918377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: 5453b4a0fd01bc248a2c530b60a87474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  Event: event:/weather/weather system
-  PlayEvent: 1
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params:
-  - Name: InsideDam
-    Value: 0
-  OverrideAttenuation: 0
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 0
+  _eventPath: event:/weather/weather system
+  _eventName: Weather
 --- !u!1001 &1034835892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30130,34 +30119,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
---- !u!1 &1052387915 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3576222925549935335, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
-  m_PrefabInstance: {fileID: 1052387914}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1052387916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1052387915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player1
-  Emitters:
-  - Target: {fileID: 1032918378}
-    Params:
-    - Name: wind
-      Value: 1
-    - Name: Rain
-      Value: 1
-    - Name: InsideDam
-      Value: 1
-  TriggerEvent: 3
 --- !u!1001 &1052804322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47356,32 +47317,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
---- !u!1 &1570325216 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3576222925549935335, guid: 4091ec58ab62fd543bb310638b233cad, type: 3}
-  m_PrefabInstance: {fileID: 1570325215}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1570325217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570325216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player1
-  Emitters:
-  - Target: {fileID: 1032918378}
-    Params:
-    - Name: wind
-      Value: 1
-    - Name: Rain
-      Value: 0.599
-  TriggerEvent: 3
 --- !u!1 &1570559758
 GameObject:
   m_ObjectHideFlags: 0
