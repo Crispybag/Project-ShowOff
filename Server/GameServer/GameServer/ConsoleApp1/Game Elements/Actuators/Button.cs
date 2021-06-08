@@ -62,6 +62,7 @@ namespace Server
             {
                 foreach (int elevator in redstoneOutputs)
                 {
+                    Console.WriteLine( "current check in button : " + elevator + " : "+ room.InteractableGameobjects[elevator]);
                     try
                     {
                         if (room.InteractableGameobjects[elevator] is Elevator)
@@ -75,7 +76,7 @@ namespace Server
                     }
                     catch
                     {
-                        Logging.LogInfo("Player.cs: Could not handle the button acutator!", Logging.debugState.DETAILED);
+                        Logging.LogInfo("Button.cs: Could not handle the button acutator!", Logging.debugState.DETAILED);
                     }
                 }
             }

@@ -9,12 +9,13 @@ namespace Server
         public List<GameObject> waterBlocks = new List<GameObject>();
         public List<GameObject> waterLevelPositions = new List<GameObject>();
         public int currentPos;
+        public int ID;
 
-        public WaterPool(GameRoom pRoom, int pX, int pY, int pZ, CollInteractType pMoveState) : base(pX, pY, pZ, pRoom, pMoveState)
+        public WaterPool(GameRoom pRoom, int pX, int pY, int pZ, int pID, CollInteractType pMoveState) : base(pX, pY, pZ, pRoom, pMoveState)
         {
             room = pRoom;
-            //room.PrintGrid(room.roomArray);
             room.roomArray[x(), y(), z()].Add(this);
+            ID = pID;
         }
 
         public void moveWater(int direction)
