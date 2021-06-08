@@ -14,7 +14,7 @@ namespace Server
         public List<int> doors = new List<int>();
         private bool newActivated;
 
-        public PressurePlate(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated) : base(pRoom, pX, pY, pZ, pID, CollInteractType.PASS ,pActivated)
+        public PressurePlate(GameRoom pRoom, int pX, int pY, int pZ, int pID, bool pActivated, List<int> pRedstones) : base(pRoom, pX, pY, pZ, pID, CollInteractType.PASS, pRedstones, pActivated)
         {
             room = pRoom;
             ID = pID;
@@ -48,36 +48,9 @@ namespace Server
                 //This check makes sure the player doesnt contantly get packages of the pressureplate being updated.
                 if (newActivated != isActivated)
                 {
-                    UpdateClient();
-                }
-            }
-
-
-        }
-
-        private void UpdateClient()
-        {
-            isActivated = newActivated;
-            Console.WriteLine("Pressure plate new active: " + isActivated);
-            ConfActuatorToggle plateToggle = new ConfActuatorToggle();
-            plateToggle.ID = ID;
-            plateToggle.isActived = isActivated;
-            plateToggle.obj = ConfActuatorToggle.Object.PRESSUREPLATE;
-            room.sendToAll(plateToggle);
-            foreach(int door in doors)
-            {
-                try
-                {
-                    if (room.InteractableGameobjects[door] is Door) (room.InteractableGameobjects[door] as Door).CheckDoor();
-                    if (room.InteractableGameobjects[door] is AirChannel) (room.InteractableGameobjects[door] as AirChannel).CheckAirChannel();
-                }
-                catch
-                {
-                    Logging.LogInfo("PressurePlate.cs: Could not handle given information about door, probably because its not in interactable list!", Logging.debugState.DETAILED);
+                    OnInteract(ConfActuatorToggle.Object.PRESSUREPLATE);
                 }
             }
         }
-
-
     }
 }

@@ -10,13 +10,12 @@ namespace Server
     /// </summary>
     class Button : Actuator
     {
-        public List<int> elevators = new List<int>();
         public Direction currentDirection;
         //this timer will decide after how long the button will turn off again, 3 stays on for around 0.5 seconds
         public float timer = 3;
         private float currentTimer;
 
-        public Button(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pRoom, pX, pY, pZ, pID, CollInteractType.SOLID)
+        public Button(GameRoom pRoom, int pX, int pY, int pZ, int pID, List<int> pRedstones) : base(pRoom, pX, pY, pZ, pID, CollInteractType.SOLID, pRedstones)
         {
             ID = pID;
             room = pRoom;
@@ -32,13 +31,9 @@ namespace Server
             {
                 if (currentTimer <= 0)
                 {
-                    //send the new package to the players that it turned off.
-                    isActivated = false;
-                    ConfActuatorToggle newButtonToggle = new ConfActuatorToggle();
-                    newButtonToggle.isActived = isActivated;
-                    newButtonToggle.ID = ID;
-                    newButtonToggle.obj = ConfActuatorToggle.Object.BUTTON;
-                    room.sendToAll(newButtonToggle);
+
+                     base.OnInteract(ConfActuatorToggle.Object.BUTTON);
+                    
                 }
                 else
                 {
@@ -47,32 +42,25 @@ namespace Server
             }
         }
 
-        /// <summary>
-        /// (Ezra) Activates button, and updates all elevators
-        /// </summary>
-        public void SetActive()
+        public override void OnInteract(ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.BUTTON)
         {
             if (!isActivated)
             {
-                //the button just turned on, so create new package to send to players.
-                isActivated = true;
+                base.OnInteract(pType);
                 currentTimer = timer;
-
-                ConfActuatorToggle newButtonToggle = new ConfActuatorToggle();
-                newButtonToggle.isActived = isActivated;
-                newButtonToggle.ID = ID;
-                newButtonToggle.obj = ConfActuatorToggle.Object.BUTTON;
-                room.sendToAll(newButtonToggle);
                 UpdateElevators();
             }
+
         }
+
+
 
         private void UpdateElevators()
         {
-            Console.WriteLine("Elevator count: " + elevators.Count);
-            if (elevators.Count > 0)
+            Console.WriteLine("Elevator count: " + redstoneOutputs.Count);
+            if (redstoneOutputs.Count > 0)
             {
-                foreach (int elevator in elevators)
+                foreach (int elevator in redstoneOutputs)
                 {
                     try
                     {

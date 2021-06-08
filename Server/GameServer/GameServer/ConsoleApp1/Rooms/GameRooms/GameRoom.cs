@@ -113,7 +113,7 @@ namespace Server
             determineGridSize(lines, out minX, out minY, out minZ);
             initializeAllLists();
             addObjectsToGrid(lines, minX, minY, minZ);
-            PrintGrid(roomArray);
+            //PrintGrid(roomArray);
         }
 
         /// <summary>
@@ -350,67 +350,31 @@ namespace Server
         /// </summary>
         private void importPressurePlate(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            PressurePlate pressurePlate = new PressurePlate(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+            PressurePlate pressurePlate = new PressurePlate(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false, informationLists[0]);
             InteractableGameobjects.Add(pressurePlate.ID, pressurePlate);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added door to pressure plate!", Logging.debugState.DETAILED);
-                    pressurePlate.doors.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about pressure plate", Logging.debugState.DETAILED);
-            }
         }
         /// <summary>
         /// (Ezra) Import lever plates from txt
         /// </summary>
         private void importLever(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+            Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false, informationLists[0]);
             InteractableGameobjects.Add(lever.ID, lever);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added door to lever!", Logging.debugState.DETAILED);
-                    lever.doors.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about lever", Logging.debugState.DETAILED);
-            }
         }
         /// <summary>
         /// (Ezra) Import door plates from txt
         /// </summary>
         private void importDoor(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            Door door = new Door(this, int.Parse(rawInformation[1]) - minX, int.Parse(rawInformation[2]) - minY, int.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), true);
+            Door door = new Door(this, int.Parse(rawInformation[1]) - minX, int.Parse(rawInformation[2]) - minY, int.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), true, informationLists[0]);
             InteractableGameobjects.Add(door.ID, door);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added actuator to door!", Logging.debugState.DETAILED);
-                    door.actuators.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
-            }
         }
         /// <summary>
         /// (Ezra) Import button plates from txt
         /// </summary>
         private void importButton(List<List<int>> informationLists ,string[] rawInformation, List<string> informationData, int minX, int minY, int minZ)
         {
-            Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+            Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), informationLists[0]);
             InteractableGameobjects.Add(button.ID, button);
             switch (int.Parse(informationData[8]))
             {
@@ -424,18 +388,7 @@ namespace Server
                     Logging.LogInfo("GameRoom.cs: Cant handle button direction!", Logging.debugState.DETAILED);
                     break;
             }
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added door to button!", Logging.debugState.DETAILED);
-                    button.elevators.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about button", Logging.debugState.DETAILED);
-            }
+
         }
         /// <summary>
         /// (Ezra) Import elevator plates from txt
@@ -466,20 +419,8 @@ namespace Server
         private void importAirChannel(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
             Logging.LogInfo(rawInformation[9], Logging.debugState.DETAILED);
-            AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]), (int)float.Parse(rawInformation[9]), int.Parse(rawInformation[10]) );
+            AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]), (int)float.Parse(rawInformation[9]), int.Parse(rawInformation[10]), informationLists[0] );
             InteractableGameobjects.Add(airChannel.ID, airChannel);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added actuator to airChannel!", Logging.debugState.DETAILED);
-                    airChannel.actuators.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
-            }
 
         }
 

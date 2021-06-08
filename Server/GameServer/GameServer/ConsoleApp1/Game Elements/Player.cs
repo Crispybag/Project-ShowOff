@@ -303,7 +303,7 @@ namespace Server
                     }
                 }
             }
-            room.PrintGrid(room.roomArray);
+            //room.PrintGrid(room.roomArray);
         }
 
         private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
@@ -647,40 +647,45 @@ namespace Server
         {
             try
             {
-                List<GameObject> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
-                foreach (GameObject actuator in actuators)
+                List<GameObject> gameObjects = room.roomArray[pPos[0], pPos[1], pPos[2]];
+                foreach (GameObject gameObject in gameObjects)
                 {
-                    switch (actuator.objectIndex)
+                    Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                    if (gameObject is Actuator)
+                    {
+                    switch (gameObject.objectIndex)
                     {
                         //4 = lever
                         case (4):
-                            Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
-                            GameObject gameObject = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
-                            Lever lever = gameObject as Lever;
-                            if (null != lever) { lever.ToggleLever(); }
+                            GameObject gameObject0 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
+                            Lever lever = gameObject0 as Lever;
+                            if (null != lever) { lever.OnInteract(); }
                             break;
                         //8 = button
                         case (8):
                             Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
                             GameObject gameObject1 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 8);
                             Button button = gameObject1 as Button;
-                            if (null != button) { button.SetActive(); }
+                            if (null != button) { button.OnInteract(); }
                             break;
                         //crack
                         case (12):
                             Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
                             GameObject gameObject2 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 12);
                             Crack crack = gameObject2 as Crack;
-                            if (null != crack) { crack.FixCrack(); }
+                            if (null != crack) { crack.OnInteract(); }
                             break;
-                      
-
-
-
                         default:
                             Logging.LogInfo("Player.cs: Found an actuator but couldnt handle it!", Logging.debugState.DETAILED);
                             break;
                     }
+
+
+                    }
+                    
+                    
+
+                    
                 }
             }
             catch

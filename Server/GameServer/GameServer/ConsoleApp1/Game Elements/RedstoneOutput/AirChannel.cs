@@ -8,16 +8,11 @@ namespace Server
     /// <summary>
     /// (Leo) Implements inwalking tiles
     /// </summary>
-    public class AirChannel : GameObject
+    public class AirChannel : RedstoneOutput
     {
-        public int ID;
-        private bool isOn = true;
-        public List<int> actuators = new List<int>();
         public int[] direction = new int[3];
-        public AirChannel(GameRoom pRoom, int pX, int pY, int pZ, int pDirX, int pDirY, int pDirZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
+        public AirChannel(GameRoom pRoom, int pX, int pY, int pZ, int pDirX, int pDirY, int pDirZ, int pID, List<int> pActuators) : base(pRoom, pX, pY, pZ, pID, CollInteractType.SOLID, pActuators)
         {
-            ID = pID;
-            room = pRoom;
             room.roomArray[x(), y(), z()].Add(this);
             direction[0] = pDirX;
             direction[1] = pDirY;
@@ -54,7 +49,7 @@ namespace Server
             try
             {
                 int[] newPosition = pPosition;
-                if (isOn)
+                if (isActivated)
                 {
                     newPosition[0] += direction[0];
                     newPosition[1] += direction[1];
@@ -75,7 +70,7 @@ namespace Server
         /// </summary>
         public void ToggleAirChannel()
         {
-            if (!isOn)
+            if (!isActivated)
             {
                 SetState(CollInteractType.PASS);
             }
@@ -86,30 +81,10 @@ namespace Server
 
         }
 
-        public void CheckAirChannel()
+        public override void CheckOutput()
         {
-            isOn = checkActuators();
+            base.CheckOutput();
             ToggleAirChannel();
         }
-
-        private bool checkActuators()
-        {
-            foreach (int actuator in actuators)
-            {
-                try
-                {
-                    if (!(room.InteractableGameobjects[actuator] as Actuator).isActivated)
-                    {
-                        return false;
-                    }
-                }
-                catch
-                {
-                    Logging.LogInfo("Airchannel.cs: Could not handle actuator, probably not in list in room!", Logging.debugState.DETAILED);
-                }
-            }
-            return true;
-        }
-
     }
 }
