@@ -13,7 +13,7 @@ public class IWWater : InformationWriter
     {
         base.WriteAllInformation();
         base.AddToInformation(GetComponent<Water>().ID);
-        base.AddToInformation(createList(this.gameObject.GetComponent<Water>().conditions));
+        base.AddToInformation(CreatePointList());
         base.AddToInformation(createWater());
     }
 
@@ -26,6 +26,18 @@ public class IWWater : InformationWriter
         }
         return water;
     }
+    private List<int> CreatePointList()
+    {
+        List<int> points = new List<int>();
+        foreach (GameObject point in this.gameObject.GetComponent<Water>().conditions)
+        {
+            points.Add((int)point.transform.position.x);
+            points.Add((int)point.transform.position.y);
+            points.Add((int)point.transform.position.z);
+        }
+        return points;
+    }
+
 
     private List<int> createList(List<GameObject> gameobjects)
     {

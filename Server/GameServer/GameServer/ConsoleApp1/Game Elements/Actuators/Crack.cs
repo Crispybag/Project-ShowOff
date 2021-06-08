@@ -26,6 +26,7 @@ namespace Server
             }
 
             canActivate = false;
+            room.OnCoordinatesRemove(x(), y(), z(), 12);
         }
 
     }

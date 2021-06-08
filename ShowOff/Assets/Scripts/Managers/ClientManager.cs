@@ -89,6 +89,7 @@ public class ClientManager : MonoBehaviour
         SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
         sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
     }
+
     private void handleProgressDialogue(ConfProgressDialogue pMessage)
     {
         serviceLocator.interactableList[pMessage.ID].GetComponent<Dialogue>().ProgressDialogue();
@@ -205,7 +206,7 @@ public class ClientManager : MonoBehaviour
                 serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Level 0");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Water");
                 break;
             default:
                 Debug.LogError("Given number is not able to be handled in client manager.");

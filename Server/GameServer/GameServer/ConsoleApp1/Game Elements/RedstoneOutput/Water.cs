@@ -7,8 +7,6 @@ namespace Server
 {
     public class Water : GameObject
     {
-        public bool isOn;
-
         public Water(GameRoom pRoom, int pX, int pY, int pZ) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             room = pRoom;
@@ -77,10 +75,8 @@ public int[] PushBox(int[] pPosition)
             try
             {
                 int[] newPosition = pPosition;
-                if (isOn)
-                {
-                    newPosition[1] += 1;
-                }
+                newPosition[1] += 1;
+                
                 return newPosition;
 
             }

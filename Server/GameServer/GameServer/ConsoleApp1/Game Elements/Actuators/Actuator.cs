@@ -42,12 +42,16 @@ namespace Server
             actuatorToggle.obj = type;
             room.sendToAll(actuatorToggle);
         }
+
+
+
         public virtual void OnInteract(ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.UNINDENTIFIED)
         {
             if (pType == ConfActuatorToggle.Object.UNINDENTIFIED)
             {
                 Logging.LogInfo("Caution, an unindentified actuator call has been called, make sure to fix this as it might not respond correctly in the client", Logging.debugState.DETAILED);
             }
+
             isActivated = !isActivated;
             ToggleActuator(pType);
 

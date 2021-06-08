@@ -381,27 +381,27 @@ namespace Server
                     return false;
                 }
             }
-            for (int i = 1; i < 5; i++)
+
+            //checks if player can drop down (no water)
+            for (int i = 1; i < 15; i++)
             {
                 if(position[1] - i < 0)
                 {
                     return false;
                 }
                 List<GameObject> gameObjectsDown = room.OnCoordinatesGetGameObjects(position[0], position[1] - i, position[2]);
+                
                 foreach (GameObject obj in gameObjectsDown)
                 {
                     Console.WriteLine("Object: " + obj.ToString());
-                    if (obj is Box)
+
+                    if (obj.collState == CollInteractType.SOLID)
                     {
-                        return false;
-                    }
-                    if (obj is Wall)
-                    {
-                        return false;
-                    }
-                    if (obj is Water)
-                    {
-                        return true;
+                        if (!(obj is Water))
+                        {
+                            return false;
+                        }
+                        else return true;
                     }
                 }
             }
@@ -487,6 +487,7 @@ namespace Server
                 room.levelFile = levelLoader.fileName;
             }
         }
+
         /// <summary>
         /// (Leo)Contains all special interactions that need to have its own handling
         /// </summary>
@@ -499,6 +500,7 @@ namespace Server
             if (callLoopPrevent >= 20)
             {
                 Logging.LogInfo("potential infinite recursive loop in check special collision, make sure that the code runs properly or increase treshold", Logging.debugState.DETAILED);
+                return;
             }
 
             foreach (GameObject index in objectsOnCoord)
@@ -518,12 +520,6 @@ namespace Server
                         break;
 
                     case (14):
-                        handleLevelLoaderHit(pPosition);
-                        callLoopPrevent = 0;
-                        break;
-
-                        //water
-                    case (16):
                         handleLevelLoaderHit(pPosition);
                         callLoopPrevent = 0;
                         break;

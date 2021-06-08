@@ -301,21 +301,9 @@ namespace Server
         /// </summary>
         private void importCrack(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            Crack crack = new Crack(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
+            Crack crack = new Crack(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), informationLists[0]);
             Logging.LogInfo("GameRoom.cs: Added crack!", Logging.debugState.DETAILED);
             InteractableGameobjects.Add(crack.ID, crack);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added door to crack!", Logging.debugState.DETAILED);
-                    crack.doors.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about crack", Logging.debugState.DETAILED);
-            }
         }
 
         /// <summary>
@@ -326,7 +314,9 @@ namespace Server
             try
             {
                 WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
-                InteractableGameobjects.Add(waterPool.ID ,waterPool);
+                InteractableGameobjects.Add(waterPool.ID, waterPool);
+               
+                
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     try

@@ -69,13 +69,15 @@ namespace Server
                         {
                         (room.InteractableGameobjects[elevator] as Elevator).NextPosition(currentDirection);
                         }
+
                         else if (room.InteractableGameobjects[elevator] is WaterPool)
                         {
                             (room.InteractableGameobjects[elevator] as WaterPool).moveWater((int)currentDirection);
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
+                        Console.WriteLine(e.Message);
                         Logging.LogInfo("Button.cs: Could not handle the button acutator!", Logging.debugState.DETAILED);
                     }
                 }
