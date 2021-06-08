@@ -379,11 +379,7 @@ namespace Server
                 foreach (GameObject obj in gameObjectsDown)
                 {
                     Console.WriteLine("Object: " + obj.ToString());
-                    if (obj is Box)
-                    {
-                        return false;
-                    }
-                    if (obj is Wall)
+                    if (obj.collState == CollInteractType.SOLID && !(obj is Water))
                     {
                         return false;
                     }

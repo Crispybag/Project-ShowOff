@@ -524,6 +524,14 @@ namespace Server
             if (pMessage is ReqProgressDialogue){ handleReqProgressDialogue(pSender);}
             if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
             if (pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
+            if (pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
+        }
+
+        private void handleChatMessage(ChatMessage  pMessage, TCPMessageChannel pSender)
+        {
+            ChatMessage newMessage = new ChatMessage();
+            newMessage.textMessage = "[" + _server.allConnectedUsers[pSender].GetPlayerName() + "] : " + pMessage.textMessage;
+            sendToAll(newMessage);
         }
 
         private void handleRoomRequest(ReqJoinRoom pMessage, TCPMessageChannel pSender)
