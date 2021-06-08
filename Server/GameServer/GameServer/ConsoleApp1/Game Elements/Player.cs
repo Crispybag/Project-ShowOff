@@ -238,6 +238,9 @@ namespace Server
                 try
                 {
                     currentBox.MovePosition(OneInFront());
+
+                    handleWaterInteractionBox();
+
                     sendBoxPackage(currentBox, OneInFront(), false);
                     currentBox = null;
                 }
@@ -260,11 +263,35 @@ namespace Server
                 }
                 Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
+
+                handleWaterInteractionBox();
+
                 sendBoxPackage(currentBox, OneInFront(), false);
                 currentBox = null;
             }
 
 
+        }
+
+        public void handleWaterInteractionBox()
+        {
+            List<GameObject> objects = room.OnCoordinatesGetGameObjects(currentBox.x(), currentBox.y(), currentBox.z());
+            foreach (GameObject obj in objects)
+            {
+                if (obj is Water)
+                {
+                    if ((obj as Water).CanPushBox(obj.x(), obj.y(), obj.z()))
+                    {
+                        currentBox.MovePosition((obj as Water).PushBox(obj.x(), obj.y(), obj.z()));
+                        if ((currentBox as Box).tileContainsWater((currentBox as Box).ID))
+                        {
+                            handleWaterInteractionBox();
+                        }
+                        break;
+                    }
+                }
+            }
+            room.PrintGrid(room.roomArray);
         }
 
         private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
@@ -282,9 +309,9 @@ namespace Server
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = position[0] + room.minX;
-                boxInf.posY = position[1] + room.minY;
-                boxInf.posZ = position[2] + room.minZ;
+                boxInf.posX = currentBox.x() + room.minX;
+                boxInf.posY = currentBox.y() + room.minY;
+                boxInf.posZ = currentBox.z() + room.minZ;
                 room.sendToAll(boxInf);
             }
             catch
@@ -300,9 +327,9 @@ namespace Server
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX; 
-                boxInf.posY = pY + room.minY; 
-                boxInf.posZ = pZ + room.minZ; 
+                boxInf.posX = currentBox.x() + room.minX;
+                boxInf.posY = currentBox.y() + room.minY;
+                boxInf.posZ = currentBox.z() + room.minZ;
                 room.sendToAll(boxInf);
             }
             catch

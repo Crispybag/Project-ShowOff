@@ -301,12 +301,27 @@ namespace Server
             try
             {
                 Console.WriteLine("water count: " + informationLists[0].Count);
+                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, GameObject.CollInteractType.PASS);
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     try
                     {
-                        Water empty = new Water(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
-                        Console.WriteLine("Added an water on position: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
+                        EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                        waterPool.waterLevelPositions.Add(empty);
+                        Console.WriteLine("Added an water level position on position: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Something went wrong when trying to initialize empty");
+                    }
+                }
+                for (int i = 0; i < informationLists[1].Count / 3; i++)
+                {
+                    try
+                    {
+                        Water water = new Water(this, informationLists[1][3 * i] - minX, informationLists[1][3 * i + 1] - minY, informationLists[1][3 * i + 2] - minZ);
+                        waterPool.waterBlocks.Add(water);
+                        Console.WriteLine("Added an water on position: " + (water.x() - minX) + "," + (water.y() - minY) + "," + (water.z() - minZ));
                     }
                     catch
                     {

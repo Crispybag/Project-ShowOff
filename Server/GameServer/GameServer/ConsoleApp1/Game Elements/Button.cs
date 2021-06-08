@@ -76,7 +76,14 @@ namespace Server
                 {
                     try
                     {
+                        if (room.InteractableGameobjects[elevator] is Elevator)
+                        {
                         (room.InteractableGameobjects[elevator] as Elevator).NextPosition(currentDirection);
+                        }
+                        else if (room.InteractableGameobjects[elevator] is WaterPool)
+                        {
+                            (room.InteractableGameobjects[elevator] as WaterPool).moveWater((int)currentDirection);
+                        }
                     }
                     catch
                     {
