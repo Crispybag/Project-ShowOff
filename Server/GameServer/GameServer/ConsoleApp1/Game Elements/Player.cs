@@ -250,6 +250,10 @@ namespace Server
                     currentBox.MovePosition(OneInFront());
                     currentBox.CheckGrounded();
                     currentBox.SendBoxPackage(currentBox, new int[3] { currentBox.x(), currentBox.y(), currentBox.z() }, false);
+
+                    handleWaterInteractionBox();
+
+                    sendBoxPackage(currentBox, OneInFront(), false);
                     currentBox = null;
                 }
                 catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
@@ -262,8 +266,8 @@ namespace Server
                 List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
                 foreach (GameObject item in index)
                 {
-                    //5 is pressure plate
-                    if (item.objectIndex != 5)
+                    //5 is pressure plate, 16 is water
+                    if (item.objectIndex != 5 && item.objectIndex != 16)
                     {
                         //if its anything else, return out of the method
                         return;
@@ -272,14 +276,79 @@ namespace Server
                 Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
                 currentBox.SendBoxPackage(currentBox, OneInFront(), false);
+
+                handleWaterInteractionBox();
+
+                sendBoxPackage(currentBox, OneInFront(), false);
                 currentBox = null;
             }
 
 
         }
+        public void handleWaterInteractionBox()
+        {
+            List<GameObject> objects = room.OnCoordinatesGetGameObjects(currentBox.x(), currentBox.y(), currentBox.z());
+            foreach (GameObject obj in objects)
+            {
+                if (obj is Water)
+                {
+                    if ((obj as Water).CanPushBox(obj.x(), obj.y(), obj.z()))
+                    {
+                        currentBox.MovePosition((obj as Water).PushBox(obj.x(), obj.y(), obj.z()));
+                        if ((currentBox as Box).tileContainsWater((currentBox as Box).ID))
+                        {
+                            handleWaterInteractionBox();
+                        }
+                        break;
+                    }
+                }
+            }
+            room.PrintGrid(room.roomArray);
+        }
 
-        
-        
+        private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
+        {
+            try
+            {
+                if (pIsPickedUp)
+                {
+                    box.SetState(CollInteractType.PASS);
+                }
+                else
+                {
+                    box.SetState(CollInteractType.SOLID);
+                }
+                BoxInfo boxInf = new BoxInfo();
+                boxInf.ID = (box as Box).ID;
+                boxInf.isPickedUp = pIsPickedUp;
+                boxInf.posX = currentBox.x() + room.minX;
+                boxInf.posY = currentBox.y() + room.minY;
+                boxInf.posZ = currentBox.z() + room.minZ;
+                room.sendToAll(boxInf);
+            }
+            catch
+            {
+                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
+            }
+        }
+
+        private void sendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
+        {
+            try
+            {
+                BoxInfo boxInf = new BoxInfo();
+                boxInf.ID = (box as Box).ID;
+                boxInf.isPickedUp = pIsPickedUp;
+                boxInf.posX = currentBox.x() + room.minX;
+                boxInf.posY = currentBox.y() + room.minY;
+                boxInf.posZ = currentBox.z() + room.minZ;
+                room.sendToAll(boxInf);
+            }
+            catch
+            {
+                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
+            }
+        }
 
         #endregion
 
@@ -296,9 +365,9 @@ namespace Server
         private bool isBlockedByObject(int[] position)
         {
             List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
+
             foreach (GameObject gameObject in gameObjects)
             {
-                Console.WriteLine(gameObject.objectIndex);
                 if (gameObject.collState == CollInteractType.SOLID) return true;
                 if(gameObject.objectIndex == 15)
                 {
@@ -306,13 +375,33 @@ namespace Server
                     return false;
                 }
             }
+            for (int i = 1; i < 5; i++)
+            {
+                if(position[1] - i < 0)
+                {
+                    return false;
+                }
+                List<GameObject> gameObjectsDown = room.OnCoordinatesGetGameObjects(position[0], position[1] - i, position[2]);
+                foreach (GameObject obj in gameObjectsDown)
+                {
+                    Console.WriteLine("Object: " + obj.ToString());
+                    if (obj is Box)
+                    {
+                        return false;
+                    }
+                    if (obj is Wall)
+                    {
+                        return false;
+                    }
+                    if (obj is Water)
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
-        private void determineDirection(int pX, int pY, int pZ, int rotation = -5)
-        {
-
-        }
         /// <summary>
         /// (Leo) handle when slope 0 is being hit
         /// </summary>
@@ -416,12 +505,19 @@ namespace Server
                         callLoopPrevent = 0;
                         break;
 
+                        //airchannel
                     case (13):
                         handleAirChannelHit(pPosition);
                         callLoopPrevent = 0;
                         break;
 
                     case (14):
+                        handleLevelLoaderHit(pPosition);
+                        callLoopPrevent = 0;
+                        break;
+
+                        //water
+                    case (16):
                         handleLevelLoaderHit(pPosition);
                         callLoopPrevent = 0;
                         break;

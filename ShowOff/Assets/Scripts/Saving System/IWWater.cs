@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
-public class InformationWriterDoor : InformationWriter
+public class IWWater : InformationWriter
 {
-    // Start is called before the first frame update
     public override void StartSave()
     {
         base.StartSave();
@@ -14,8 +12,19 @@ public class InformationWriterDoor : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        base.AddToInformation(GetComponent<DoorManager>().ID);
-        base.AddToInformation(createList(this.gameObject.GetComponent<DoorManager>().conditions));
+        base.AddToInformation(GetComponent<Water>().ID);
+        //base.AddToInformation(createList(this.gameObject.GetComponent<Water>().conditions));
+        base.AddToInformation(createWater());
+    }
+
+    private List<Vector3> createWater()
+    {
+        List<Vector3> water = new List<Vector3>();
+        for(int i = 0; i < this.transform.childCount; i++)
+        {
+            water.Add(this.transform.GetChild(i).transform.position);
+        }
+        return water;
     }
 
     private List<int> createList(List<GameObject> gameobjects)
@@ -38,6 +47,4 @@ public class InformationWriterDoor : InformationWriter
         }
         return IDs;
     }
-
-
 }

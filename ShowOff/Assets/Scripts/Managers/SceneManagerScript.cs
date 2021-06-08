@@ -54,6 +54,7 @@ public class SceneManagerScript : MonoBehaviour
 
     public void LoadSceneSingle(string sceneName)
     {
+        serviceLocator.interactableList.Clear();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 

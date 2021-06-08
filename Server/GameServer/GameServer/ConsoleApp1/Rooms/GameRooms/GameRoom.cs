@@ -113,7 +113,7 @@ namespace Server
             determineGridSize(lines, out minX, out minY, out minZ);
             initializeAllLists();
             addObjectsToGrid(lines, minX, minY, minZ);
-
+            PrintGrid(roomArray);
         }
 
         /// <summary>
@@ -285,8 +285,53 @@ namespace Server
                     case (15):
                         importDialogue(informationLists, rawInformation, minX, minY, minZ);
                         break;
+                    case (16):
+                        importWater(informationLists, rawInformation, minX, minY, minZ);
+                        break;
                 }
 
+            }
+        }
+
+        /// <summary>
+        /// (Ezra) Imports water from txt
+        /// </summary>
+        private void importWater(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            try
+            {
+                Console.WriteLine("water count: " + informationLists[0].Count);
+                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, GameObject.CollInteractType.PASS);
+                for (int i = 0; i < informationLists[0].Count / 3; i++)
+                {
+                    try
+                    {
+                        EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                        waterPool.waterLevelPositions.Add(empty);
+                        Console.WriteLine("Added an water level position on position: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Something went wrong when trying to initialize empty");
+                    }
+                }
+                for (int i = 0; i < informationLists[1].Count / 3; i++)
+                {
+                    try
+                    {
+                        Water water = new Water(this, informationLists[1][3 * i] - minX, informationLists[1][3 * i + 1] - minY, informationLists[1][3 * i + 2] - minZ);
+                        waterPool.waterBlocks.Add(water);
+                        Console.WriteLine("Added an water on position: " + (water.x() - minX) + "," + (water.y() - minY) + "," + (water.z() - minZ));
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Something went wrong when trying to initialize water");
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Something went wrong with water");
             }
         }
 
@@ -453,6 +498,24 @@ namespace Server
             if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
             if (pMessage is ReqProgressDialogue){ handleReqProgressDialogue(pSender);}
             if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
+            if (pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
+        }
+
+        private void handleRoomRequest(ReqJoinRoom pMessage, TCPMessageChannel pSender)
+        {
+            if ((int)pMessage.room == 0)
+            {
+                Logging.LogInfo("Moving client to login room", Logging.debugState.DETAILED);
+                ConfJoinRoom confirmLoginRoom = new ConfJoinRoom();
+                confirmLoginRoom.room = 0;
+                pSender.SendMessage(confirmLoginRoom);
+                _server.availableRooms["Login"].AddMember(pSender);
+                removeAndCloseMember(pSender);
+            }
+            else
+            {
+                Console.WriteLine("We didnt implement any other rooms switching yet in gameroom");
+            }
         }
 
         private void handleReqProgressDialogue(TCPMessageChannel pSender)

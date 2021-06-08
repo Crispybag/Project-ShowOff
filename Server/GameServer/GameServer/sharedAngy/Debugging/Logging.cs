@@ -14,7 +14,7 @@ namespace sharedAngy
             SPAM = 3
         }
 
-        private static debugState debugger = debugState.USER;
+        private static debugState debugger = debugState.DETAILED;
 
         private static bool debugLevel(debugState pState)
         {
