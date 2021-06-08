@@ -212,6 +212,12 @@ namespace Server
                         sendActuatorToggle(OneInFront());
                     }
 
+                    //for crack
+                    if (room.OnCoordinatesContain(OneInFront(), 12))
+                    {
+                        sendActuatorToggle(OneInFront());
+                    }
+
                     //for box
                     else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
@@ -291,7 +297,7 @@ namespace Server
                     }
                 }
             }
-            room.PrintGrid(room.roomArray);
+            //room.PrintGrid(room.roomArray);
         }
 
         private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
@@ -693,12 +699,6 @@ namespace Server
             _hasBox = true;
 
 
-            //send package
-/*            ConfHandleBox confHandleBox = new ConfHandleBox();
-            confHandleBox.posX = pX;
-            confHandleBox.posY = pY;
-            confHandleBox.posZ = pZ;
-            confHandleBox.isPickingUp = true;*/
         }
 
         /// <summary>
@@ -708,26 +708,9 @@ namespace Server
         {
             try
             {
-/*                GameObject boxies = room.OnCoordinatesGetGameObject(pPos, 7);
-
-                BoxInfo box = new BoxInfo();
-                box.isPickedUp = false;
-                box.ID = (boxies as Box).ID;
-                box.posX = OneInFront()[0];
-                box.posY = OneInFront()[1];
-                box.posZ = OneInFront()[2];
-                room.sendToAll(box);
-
-                currentBoxID = (boxies as Box).ID;
-
-                //remove box at the position
-                room.OnCoordinatesRemove(pPos[0], pPos[1], pPos[2], 7);
-                //set player to have a box
-                _hasBox = true;*/
-
                 GameObject boxs = room.OnCoordinatesGetGameObject(pPos, 7);
-                currentBox = boxs;
                 boxs.MovePosition(pPos);
+                currentBox = boxs;
                 sendBoxPackage(currentBox, x(), y(), z() , true);
 
             }

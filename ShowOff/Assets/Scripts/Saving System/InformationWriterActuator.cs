@@ -35,6 +35,11 @@ public class InformationWriterActuator : InformationWriter
                 Debug.Log("Found a elevator item in a list!");
                 IDs.Add(obj.GetComponentInChildren<Elevator>().ID);
             }
+            else if (obj.GetComponentInChildren<Water>() != null)
+            {
+                Debug.Log("Found a water item in a list!");
+                IDs.Add(obj.GetComponentInChildren<Water>().ID);
+            }
         }
         return IDs;
     }

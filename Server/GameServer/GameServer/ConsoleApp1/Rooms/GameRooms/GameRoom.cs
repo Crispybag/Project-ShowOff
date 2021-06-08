@@ -113,7 +113,7 @@ namespace Server
             determineGridSize(lines, out minX, out minY, out minZ);
             initializeAllLists();
             addObjectsToGrid(lines, minX, minY, minZ);
-            PrintGrid(roomArray);
+            //PrintGrid(roomArray);
         }
 
         /// <summary>
@@ -275,6 +275,9 @@ namespace Server
                     case (10):
                         Slope slope = new Slope(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
                         break;
+                    case (12):
+                        importCrack(informationLists, rawInformation, minX, minY, minZ);
+                        break;
                     case (13):
                         importAirChannel(informationLists, rawInformation, minX, minY, minZ);
                         break;
@@ -294,21 +297,42 @@ namespace Server
         }
 
         /// <summary>
+        /// (Ezra) Imports cracks from txt
+        /// </summary>
+        private void importCrack(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Crack crack = new Crack(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
+            Logging.LogInfo("GameRoom.cs: Added crack!", Logging.debugState.DETAILED);
+            InteractableGameobjects.Add(crack.ID, crack);
+            try
+            {
+                foreach (int index in informationLists[0])
+                {
+                    Logging.LogInfo("GameRoom.cs: Added door to crack!", Logging.debugState.DETAILED);
+                    crack.doors.Add(index);
+                }
+            }
+            catch
+            {
+                Logging.LogInfo("GameRoom.cs: We could not handle given information about crack", Logging.debugState.DETAILED);
+            }
+        }
+
+        /// <summary>
         /// (Ezra) Imports water from txt
         /// </summary>
         private void importWater(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
             try
             {
-                Console.WriteLine("water count: " + informationLists[0].Count);
-                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, GameObject.CollInteractType.PASS);
+                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
+                InteractableGameobjects.Add(waterPool.ID ,waterPool);
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     try
                     {
                         EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
                         waterPool.waterLevelPositions.Add(empty);
-                        Console.WriteLine("Added an water level position on position: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
                     }
                     catch
                     {
@@ -412,6 +436,7 @@ namespace Server
         {
             Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
             InteractableGameobjects.Add(button.ID, button);
+            Logging.LogInfo("GameRoom.cs: Added button!", Logging.debugState.DETAILED);
             switch (int.Parse(informationData[8]))
             {
                 case (0):

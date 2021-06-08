@@ -139,6 +139,10 @@ public class ClientManager : MonoBehaviour
                 Debug.Log("Its a button toggle!");
                 obj.GetComponent<Button>().UpdateActuator(pMessage.isActived);
                 break;
+            case ConfActuatorToggle.Object.CRACK:
+                Debug.Log("Its a crack toggle!");
+                obj.GetComponent<Crack>().FixCrack();
+                break;
             default:
                 Debug.LogError("ClientManager: Cannot handle actuator toggle!");
                 break;
