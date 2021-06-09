@@ -22,7 +22,7 @@ namespace Server
         {
             try
             {
-                if (direction == 1)
+                if (direction == 0)
                 {
                     oldPos = currentPos;
                     currentPos++;
@@ -31,24 +31,32 @@ namespace Server
                         currentPos = waterLevelPositions.Count-1;
                     }
                 }
-                if (direction == 0)
+                if (direction == 1)
                 {
                     oldPos = currentPos;
                     currentPos--;
                     if (currentPos < 0)
                     {
                         currentPos = 0;
-
                     }
                 }
                 foreach (GameObject water in waterBlocks)
                 {
                     water.MoveDirection(waterLevelPositions[currentPos].x() - waterLevelPositions[oldPos].x(), waterLevelPositions[currentPos].y() - waterLevelPositions[oldPos].y(), waterLevelPositions[currentPos].z() - waterLevelPositions[oldPos].z());
                 }
+                ConfWaterPool waterPool = new ConfWaterPool();
+                waterPool.ID = ID;
+                waterPool.x = waterLevelPositions[currentPos].x();
+                waterPool.y = waterLevelPositions[currentPos].y();
+                waterPool.z = waterLevelPositions[currentPos].z();
+
+                room.sendToAll(waterPool);
             }
             catch (Exception e)
             {
-                Logging.LogInfo("I AM CRYING" + waterLevelPositions.Count);
+                Logging.LogInfo("\nI AM CRYING " + waterLevelPositions.Count);
+                Console.WriteLine("currentPos = " + currentPos);
+                Console.WriteLine("oldPos = " + oldPos);
                 Logging.LogInfo(e.Message);
             }
         }

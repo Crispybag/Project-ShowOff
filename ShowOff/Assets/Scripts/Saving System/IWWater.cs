@@ -29,7 +29,7 @@ public class IWWater : InformationWriter
     private List<int> CreatePointList()
     {
         List<int> points = new List<int>();
-        foreach (GameObject point in this.gameObject.GetComponent<Water>().conditions)
+        foreach (GameObject point in this.gameObject.GetComponent<Water>().waterLevelPoints)
         {
             points.Add((int)point.transform.position.x);
             points.Add((int)point.transform.position.y);

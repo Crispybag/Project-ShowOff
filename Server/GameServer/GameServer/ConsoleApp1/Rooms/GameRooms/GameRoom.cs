@@ -323,6 +323,7 @@ namespace Server
                     {
                         EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
                         waterPool.waterLevelPositions.Add(empty);
+                        Console.WriteLine("A new water level position has been added to the water pool!");
                     }
                     catch
                     {

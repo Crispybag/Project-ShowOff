@@ -83,6 +83,14 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
         if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
         if (pInMessage is ConfReloadScene) { handleReloadScene(pInMessage as ConfReloadScene); }
+        if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
+    }
+
+
+    private void handleConfWaterPool(ConfWaterPool pMessage)
+    {
+        GameObject water = serviceLocator.interactableList[pMessage.ID];
+        water.GetComponent<Water>().SetTargetPosition(pMessage.x, pMessage.y, pMessage.z);
     }
 
     private void handleReloadScene(ConfReloadScene pMessage)
