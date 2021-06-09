@@ -9,10 +9,10 @@ namespace Server
     {
         public GameTestRoom0(TCPGameServer pServer, int pWidth, int pHeight, int pLength) : base(pServer, pWidth, pHeight, pLength)
         {
-            GenerateGridFromText("../../../../LevelFiles/Level0Water.txt");
+            GenerateGridFromText("../../../../LevelFiles/AA.txt");
             CopyGrid(roomStatic, roomArray);
             //broekn
-            //PrintGrid(roomArray);
+            PrintGrid(roomArray);
         }
 
         public override void AddMember(TCPMessageChannel pListener)

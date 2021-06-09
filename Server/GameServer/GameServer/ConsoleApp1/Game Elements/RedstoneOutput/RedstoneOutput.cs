@@ -23,14 +23,14 @@ namespace Server
             {
                 foreach (int index in pActuators)
                 {
-                    Logging.LogInfo("GameRoom.cs: Added actuator to airChannel!", Logging.debugState.DETAILED);
+                    Logging.LogInfo("GameRoom.cs: Added actuator to redstone output", Logging.debugState.DETAILED);
                     actuators.Add(index);
                 }
             }
 
             catch
             {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
+                Logging.LogInfo("GameRoom.cs: We could not handle given information about redstone output", Logging.debugState.DETAILED);
             }
 
         }

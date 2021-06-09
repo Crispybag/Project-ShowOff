@@ -35,6 +35,10 @@ public class InformationWriterDoor : InformationWriter
             {
                 IDs.Add(obj.GetComponentInChildren<Elevator>().ID);
             }
+            else if (obj.GetComponentInChildren<LevelLoader>() != null)
+            {
+                IDs.Add(obj.GetComponentInChildren<LevelLoader>().ID);
+            }
         }
         return IDs;
     }

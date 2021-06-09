@@ -45,6 +45,7 @@ namespace Server
                         newActivated = false;
                     }
                 }
+
                 //This check makes sure the player doesnt contantly get packages of the pressureplate being updated.
                 if (newActivated != isActivated)
                 {

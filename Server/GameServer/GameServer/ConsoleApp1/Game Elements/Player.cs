@@ -478,16 +478,6 @@ namespace Server
             }
         }
 
-        private void handleLevelLoaderHit(int[] pPosition)
-        {
-            if (room.OnCoordinatesGetGameObject(pPosition, 14) is LevelLoader)
-            {
-
-                LevelLoader levelLoader = room.OnCoordinatesGetGameObject(pPosition, 14) as LevelLoader;
-                room.isReloading = true;
-                room.levelFile = levelLoader.fileName;
-            }
-        }
 
         /// <summary>
         /// (Leo)Contains all special interactions that need to have its own handling
@@ -517,11 +507,6 @@ namespace Server
                         //airchannel
                     case (13):
                         handleAirChannelHit(pPosition);
-                        callLoopPrevent = 0;
-                        break;
-
-                    case (14):
-                        handleLevelLoaderHit(pPosition);
                         callLoopPrevent = 0;
                         break;
 

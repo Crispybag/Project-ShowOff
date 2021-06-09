@@ -282,7 +282,7 @@ namespace Server
                         importAirChannel(informationLists, rawInformation, minX, minY, minZ);
                         break;
                     case (14):
-                        LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7]);
+                        importLevelLoader(informationLists, rawInformation, minX, minY, minZ);
                         break;
 
                     case (15):
@@ -295,6 +295,14 @@ namespace Server
 
             }
         }
+
+        private void importLevelLoader(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7], int.Parse(rawInformation[8]), informationLists[0]);
+            InteractableGameobjects.Add(levelLoader.ID, levelLoader);
+
+        }
+
 
         /// <summary>
         /// (Ezra) Imports cracks from txt

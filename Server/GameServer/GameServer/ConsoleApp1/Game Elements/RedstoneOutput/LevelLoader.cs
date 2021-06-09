@@ -5,10 +5,10 @@ using sharedAngy;
 
 namespace Server
 {
-    class LevelLoader : GameObject
+    class LevelLoader : RedstoneOutput
     {
         public string fileName;
-        public LevelLoader(GameRoom pRoom, int pX, int pY, int pZ, string pFileName) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
+        public LevelLoader(GameRoom pRoom, int pX, int pY, int pZ, string pFileName, int pID, List<int> pActuators ) : base(pRoom, pX, pY, pZ, pID, CollInteractType.PASS, pActuators, false)
         {
             room = pRoom;
             fileName = "../../../../LevelFiles/" + pFileName;
@@ -17,6 +17,19 @@ namespace Server
 
             objectIndex = 14;
         }
+
+        public override void CheckOutput()
+        {
+            base.CheckOutput();
+            if (isActivated)
+            {
+                room.isReloading = true;
+                room.levelFile = fileName;
+            }
+            
+        }
+
+        
     }
 }
 

@@ -72,6 +72,12 @@ public class SavingLevel : EditorWindow
                 interactable.GetComponent<Water>().ID = currentID;
                 SetDirty(interactable.GetComponent<Water>());
             }
+
+            else if (interactable.GetComponentInChildren<LevelLoader>() != null)
+            {
+                interactable.GetComponent<LevelLoader>().ID = currentID;
+                SetDirty(interactable.GetComponent<LevelLoader>());
+            }
             currentID++;
 
         }
@@ -93,7 +99,7 @@ public class SavingLevel : EditorWindow
                 writer.fileName = filePath;
                 writer.StartSave();
             }
-            catch
+            catch 
             {
                 Debug.LogError("Someting went wrong when trying to write to file : " + writer.gameObject.name);
             }

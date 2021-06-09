@@ -57,6 +57,7 @@ namespace Server
 
             foreach (int output in redstoneOutputs)
             {
+                int removethisWhenyouseeit = redstoneOutputs.Count;
                 try
                 {
                     if (room.InteractableGameobjects[output] is RedstoneOutput) (room.InteractableGameobjects[output] as RedstoneOutput).CheckOutput();
