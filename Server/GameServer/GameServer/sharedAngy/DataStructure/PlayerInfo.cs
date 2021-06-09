@@ -23,5 +23,12 @@ namespace sharedAngy
         {
             return playerIndex;
         }
+
+        public void SetPlayerIndex(int i)
+        {
+            if (i == 0) playerIndex = i;
+            else if (i == 1) i = 1;
+            else Logging.LogInfo("Trying to set a player index to something that is not 1 with SetPlayerIndex");
+        }
     }
 }
