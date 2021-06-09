@@ -787,7 +787,6 @@ namespace Server
 
             if (isReloading)
             {
-
                 sendLevelReset();
                 foreach (TCPMessageChannel pListener in _users)
                 {

@@ -27,7 +27,6 @@ namespace Server
         {
             try
             {
-
                 if (room.OnCoordinatesCanMove(pPosition[0], pPosition[1] +1, pPosition[2])) return true;
                 else return false;
             }
@@ -42,7 +41,6 @@ namespace Server
         {
             try
             {
-
                 if (CanMoveUp(pX, pY + 1, pZ)) return true;
                 else return false;
             }
