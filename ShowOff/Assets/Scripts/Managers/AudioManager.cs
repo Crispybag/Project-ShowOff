@@ -7,6 +7,7 @@ using static ServiceLocator;
 public class AudioManager : MonoBehaviour
 {
     static AudioManager am;
+    Dictionary<string, FMOD.Studio.EventInstance> nonOverlappingSounds = new Dictionary<string, FMOD.Studio.EventInstance>();
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -32,6 +33,37 @@ public class AudioManager : MonoBehaviour
     {
         
     }
+
+    public void AddToList(string indicatorName, string eventPath)
+    {
+        if (!isInList(indicatorName))
+        {
+            FMOD.Studio.EventInstance sound = FMODUnity.RuntimeManager.CreateInstance(eventPath);
+            nonOverlappingSounds.Add(indicatorName, sound);
+        }
+        else
+        {
+            Debug.LogWarning("There is already a sound with key : '" + indicatorName + "' in the non overlapping sounds dictionary");
+        }
+    }
+
+    public void PlayFromList(string indicatorName)
+    {
+        nonOverlappingSounds[indicatorName].start();
+        nonOverlappingSounds[indicatorName].release();
+    }
+
+
+
+
+    private bool isInList(string indicatorName)
+    {
+        if (nonOverlappingSounds.ContainsKey(indicatorName))
+            return true;
+        else return false;
+    }
+
+
 
     public void playSound(string eventPath, GameObject pObject, string parameterName = "NoParameter", int pIndex = -1 )
     {

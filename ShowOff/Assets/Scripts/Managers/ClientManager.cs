@@ -89,6 +89,7 @@ public class ClientManager : MonoBehaviour
         SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
         sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
     }
+
     private void handleProgressDialogue(ConfProgressDialogue pMessage)
     {
         serviceLocator.interactableList[pMessage.ID].GetComponent<Dialogue>().ProgressDialogue();
