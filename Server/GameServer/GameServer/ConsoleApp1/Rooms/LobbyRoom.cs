@@ -15,7 +15,62 @@ namespace Server
         {
             if(pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
             if(pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
+            if(pMessage is ReqPlayerSwitch) { handlePlayerSwitch(pMessage as ReqPlayerSwitch, pSender); }
+            
         }
+
+        private void handlePlayerSwitch(ReqPlayerSwitch pPlayerSwitch, TCPMessageChannel pSender)
+        {
+            int senderIndex = _server.allConnectedUsers[pSender].GetPlayerIndex();
+            
+            //in case player was index 0
+            if (senderIndex == 0)
+            {
+                foreach (KeyValuePair<TCPMessageChannel, PlayerInfo> money in _server.allConnectedUsers)
+                {
+                    //set player with index 1
+                    if (money.Value.GetPlayerIndex() == 1)
+                    {
+                        _server.allConnectedUsers[money.Key].SetPlayerIndex(0);
+                        sendConfPlayer(money.Key);
+                    }
+                }
+
+                //set player with index 0
+                _server.allConnectedUsers[pSender].SetPlayerIndex(1);
+                sendConfPlayer(pSender);
+            }
+
+            //incase player was index 1
+            else if (senderIndex == 1)
+            {
+                foreach (KeyValuePair<TCPMessageChannel, PlayerInfo> money in _server.allConnectedUsers)
+                {
+                    //set player with index 1
+                    if (money.Value.GetPlayerIndex() == 0)
+                    {
+                        _server.allConnectedUsers[money.Key].SetPlayerIndex(1);
+                        sendConfPlayer(money.Key);
+                    }
+                }
+
+                //set player with index 0
+                _server.allConnectedUsers[pSender].SetPlayerIndex(0);
+                sendConfPlayer(pSender);
+
+            }
+        }
+
+        private void sendConfPlayerSwitchPacket(TCPMessageChannel pSender)
+        {
+            ConfPlayerSwitch playerSwitch = new ConfPlayerSwitch();
+            
+            playerSwitch.playerIndex = _server.allConnectedUsers[pSender].GetPlayerIndex();
+            playerSwitch.playerName = _server.allConnectedUsers[pSender].GetPlayerName();
+            sendToAll(playerSwitch);
+        }
+
+
 
         //handles room requests, if they want to leave or go into the game
         private void handleRoomRequest(ReqJoinRoom pRoomRequest, TCPMessageChannel pSender)
