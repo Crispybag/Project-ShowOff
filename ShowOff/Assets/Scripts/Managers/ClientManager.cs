@@ -86,8 +86,9 @@ public class ClientManager : MonoBehaviour
 
     private void handleReloadScene(ConfReloadScene pMessage)
     {
+        serviceLocator.ClearInteractables();
         SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
-        sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+        sceneManager.LoadSceneSingle(pMessage.sceneName);
     }
 
     private void handleProgressDialogue(ConfProgressDialogue pMessage)
@@ -206,7 +207,7 @@ public class ClientManager : MonoBehaviour
                 serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("MultipleMapTest");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Apple");
                 break;
             default:
                 Debug.LogError("Given number is not able to be handled in client manager.");

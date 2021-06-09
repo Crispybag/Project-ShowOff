@@ -20,6 +20,7 @@ namespace Server
         public int currentDialogue;
         public bool isReloading = false;
         public string levelFile;
+        public string sceneName;
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -547,6 +548,7 @@ namespace Server
         private void sendLevelReset()
         {
             ConfReloadScene reloadScene = new ConfReloadScene();
+            reloadScene.sceneName = sceneName;
             sendToAll(reloadScene);
         }
         #endregion

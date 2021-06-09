@@ -26,6 +26,11 @@ public class ServiceLocator : MonoBehaviour
     //                                   > Start/Update <
     //=========================================================================================
 
+    public void ClearInteractables()
+    {
+        interactableList.Clear();
+    }
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);

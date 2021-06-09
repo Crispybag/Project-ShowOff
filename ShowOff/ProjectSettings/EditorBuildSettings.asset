@@ -29,4 +29,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ServerTesting/Water.unity
     guid: bcb6ea5eea61dc54594ae752886d4e93
+  - enabled: 1
+    path: Assets/Scenes/ServerTesting/MultipleScenes/Orange.unity
+    guid: e3fbdf6f3b46e4a40a26b92b5fbcd1ee
+  - enabled: 1
+    path: Assets/Scenes/ServerTesting/MultipleScenes/Banana.unity
+    guid: 4a9dbe51a8d9d614c9f0daa4f93cb997
+  - enabled: 1
+    path: Assets/Scenes/ServerTesting/MultipleScenes/Apple.unity
+    guid: 3b055763be3050244b26b9fa4dff2a66
   m_configObjects: {}
