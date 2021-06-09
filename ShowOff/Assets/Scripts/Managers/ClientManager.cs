@@ -84,8 +84,13 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
         if (pInMessage is ConfReloadScene) { handleReloadScene(pInMessage as ConfReloadScene); }
         if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
+        if (pInMessage is ConfPlayerSwitch) { handleConfPlayerSwitch(pInMessage as ConfPlayerSwitch); }
     }
 
+    private void handleConfPlayerSwitch(ConfPlayerSwitch pMessage)
+    {
+        FindObjectOfType<HandleCharacterSelection>().UpdateCharacters(pMessage.playerIndex);
+    }
 
     private void handleConfWaterPool(ConfWaterPool pMessage)
     {

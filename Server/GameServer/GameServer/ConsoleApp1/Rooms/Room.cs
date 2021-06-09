@@ -158,16 +158,21 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// (Ezra) Call this to confirm the players characters when entering the game
+        /// </summary>
         protected void sendConfPlayer(TCPMessageChannel pClient)
         {
             if (_server.allConnectedUsers[pClient].GetPlayerIndex() == 0)
             {
+                //player 1 is nuc
                 ConfPlayer newPlayer = new ConfPlayer();
                 newPlayer.playerName = "Player1";
                 pClient.SendMessage(newPlayer);
             }
             else
             {
+                //player 2 is alex
                 ConfPlayer newPlayer = new ConfPlayer();
                 newPlayer.playerName = "Player2";
                 pClient.SendMessage(newPlayer);
