@@ -6,14 +6,17 @@ namespace sharedAngy
 {
     public class ConfReloadScene : ASerializable
     {
-        bool isResetting = true;
+        public int playersReset;
+        public bool isResetting = false;
         public override void Serialize(Packet pPacket)
         {
+            pPacket.Write(playersReset);    
             pPacket.Write(isResetting);    
         }
 
         public override void Deserialize(Packet pPacket)
         {
+            playersReset = pPacket.ReadInt();
             isResetting = pPacket.ReadBool();
         }
     }

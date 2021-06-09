@@ -20,6 +20,7 @@ public class ClientManager : MonoBehaviour
 
     public TcpClient client;
     public string ClientName;
+    [HideInInspector] public int playersWantToReset = 0;
 
     //----------------------- private ------------------------
 
@@ -86,8 +87,20 @@ public class ClientManager : MonoBehaviour
 
     private void handleReloadScene(ConfReloadScene pMessage)
     {
-        SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
-        sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+        playersWantToReset = pMessage.playersReset;
+        for(int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            if(SceneManager.GetSceneAt(i).name == "Options")
+            {
+                serviceLocator.GetFromList("Options").GetComponent<Options>().UpdateText();
+            }
+        }
+
+        if (pMessage.isResetting)
+        {
+            SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
+            sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+        }
     }
 
     private void handleProgressDialogue(ConfProgressDialogue pMessage)

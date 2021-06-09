@@ -133,7 +133,7 @@ namespace Server
 
         public void SetResetStatus(bool pReset)
         {
-            wantsReset = !wantsReset;
+            wantsReset = pReset;
         }
 
 

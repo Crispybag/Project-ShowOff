@@ -527,18 +527,54 @@ namespace Server
 
         private void handleReqResetLevel(ReqResetLevel pResetLevel, TCPMessageChannel pSender)
         {
+            //change reset status
             foreach (Player player in players)
             {
                 if (pSender == player.getClient())
                 {
                     player.SetResetStatus(pResetLevel.wantsReset);
+
                 }
+            }
+
+            //check if all players want to reset
+            int i = 0;
+            isReloading = true;
+            foreach (Player player in players)
+            {
+                if (player.wantsReset)
+                {
+                    i++;
+                }
+                else
+                {
+                    isReloading = false;
+                }
+            }
+
+            ConfReloadScene reload = new ConfReloadScene();
+            reload.playersReset = i;
+            reload.isResetting = isReloading;
+            sendToAll(reload);
+
+            //Reload scene if both players want to reset
+            if (isReloading)
+            {
+                sendLevelReset();
+                foreach (TCPMessageChannel pListener in _users)
+                {
+                    sendConfPlayer(pListener);
+                }
+
+                LoadLevel(levelFile);
+                isReloading = false;
             }
         }
 
         private void sendLevelReset()
         {
             ConfReloadScene reloadScene = new ConfReloadScene();
+            reloadScene.isResetting = true;
             sendToAll(reloadScene);
         }
         #endregion
@@ -710,23 +746,6 @@ namespace Server
                 obj.Update();
             }
 
-            foreach(Player player in players)
-            {
-                if (!player.wantsReset) break;
-                isReloading = true;
-            }
-
-            if (isReloading)
-            {
-                sendLevelReset();
-                foreach (TCPMessageChannel pListener in _users)
-                {
-                    sendConfPlayer(pListener);
-                }
-
-                LoadLevel(levelFile);
-                isReloading = false;
-            }
         }
         #endregion
 
