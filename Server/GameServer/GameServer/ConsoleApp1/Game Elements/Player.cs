@@ -396,8 +396,6 @@ namespace Server
                 
                 foreach (GameObject obj in gameObjectsDown)
                 {
-                    Console.WriteLine("Object: " + obj.ToString());
-
                     if (obj.collState == CollInteractType.SOLID)
                     {
                         if (!(obj is Water))
