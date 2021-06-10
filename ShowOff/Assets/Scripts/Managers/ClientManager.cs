@@ -114,7 +114,6 @@ public class ClientManager : MonoBehaviour
 
         if (pMessage.isResetting)
         {
-            SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
             sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
         }
     }

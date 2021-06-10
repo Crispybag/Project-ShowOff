@@ -6,9 +6,9 @@ namespace sharedAngy
 {
     public class ConfReloadScene : ASerializable
     {
-        bool isResetting = true;
+        public bool isResetting = true;
         public string sceneName;
-        public bool isResetting = false;
+        public int playersReset;
 
         public override void Serialize(Packet pPacket)
         {
