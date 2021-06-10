@@ -174,29 +174,6 @@ public class ClientManager : MonoBehaviour
                 Debug.LogError("ClientManager: Cannot handle actuator toggle!");
                 break;
         }
-
-/*        Lever[] levers = FindObjectsOfType<Lever>();
-        foreach(Lever lever in levers)
-        {
-            if(lever.gameObject.transform.position.x == pMessage.posX && lever.gameObject.transform.position.y == pMessage.posY)
-            {
-                switch (pMessage.currentState)
-                {
-                    case ConfActuatorToggle.ActuatorState.TOGGLE:
-                        lever.SetActivatedLever(!lever.isActuated);
-                        break;                    
-                    case ConfActuatorToggle.ActuatorState.TRUE:
-                        lever.SetActivatedLever(true);
-                        break;                    
-                    case ConfActuatorToggle.ActuatorState.FALSE:
-                        lever.SetActivatedLever(false);
-                        break;
-                    default:
-                        Debug.LogError("Trying to handle switching lever but given enum is not handled in client manager!");
-                        break;
-                }
-            }
-        }*/
     }
     private void handleConfMove(ConfMove pMessage)
     {
@@ -230,6 +207,7 @@ public class ClientManager : MonoBehaviour
                 break;
             case 1: //lobby
                 serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
+
                 break;
             case 2: //game
                 serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Water");

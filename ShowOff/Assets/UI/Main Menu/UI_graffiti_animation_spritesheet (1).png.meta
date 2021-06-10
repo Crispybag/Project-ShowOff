@@ -1,0 +1,576 @@
+fileFormatVersion: 2
+guid: c4dc9cac68e67ed4482617a89fe41cb9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2416694849675168668
+    second: UI_graffiti_animation_spritesheet (1)_0
+  - first:
+      213: -2127567249316115339
+    second: UI_graffiti_animation_spritesheet (1)_1
+  - first:
+      213: 2564947711481276084
+    second: UI_graffiti_animation_spritesheet (1)_2
+  - first:
+      213: -3902122378600569961
+    second: UI_graffiti_animation_spritesheet (1)_3
+  - first:
+      213: -4520576010791199071
+    second: UI_graffiti_animation_spritesheet (1)_4
+  - first:
+      213: -5711884044298437358
+    second: UI_graffiti_animation_spritesheet (1)_5
+  - first:
+      213: 4685031338609063230
+    second: UI_graffiti_animation_spritesheet (1)_6
+  - first:
+      213: 5592629560901897717
+    second: UI_graffiti_animation_spritesheet (1)_7
+  - first:
+      213: 2319046149082439392
+    second: UI_graffiti_animation_spritesheet (1)_8
+  - first:
+      213: -1411070775708794978
+    second: UI_graffiti_animation_spritesheet (1)_9
+  - first:
+      213: -1287281596397633416
+    second: UI_graffiti_animation_spritesheet (1)_10
+  - first:
+      213: 285051260426376999
+    second: UI_graffiti_animation_spritesheet (1)_11
+  - first:
+      213: -7635588902610444102
+    second: UI_graffiti_animation_spritesheet (1)_12
+  - first:
+      213: 5586178007811183272
+    second: UI_graffiti_animation_spritesheet (1)_13
+  - first:
+      213: 2989373518844108835
+    second: UI_graffiti_animation_spritesheet (1)_14
+  - first:
+      213: -494018902002892713
+    second: UI_graffiti_animation_spritesheet (1)_15
+  - first:
+      213: 4674309130952647747
+    second: UI_graffiti_animation_spritesheet (1)_16
+  - first:
+      213: -4019607035802222851
+    second: UI_graffiti_animation_spritesheet (1)_17
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: 2
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 570
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4647892a6dc267ed0800000000000000
+      internalID: -2416694849675168668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_1
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 570
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57c02ccebdc5972e0800000000000000
+      internalID: -2127567249316115339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_2
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 570
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b6ea4a9a56889320800000000000000
+      internalID: 2564947711481276084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 456
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7932969fe50e8d9c0800000000000000
+      internalID: -3902122378600569961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_4
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 456
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ae53a8b110b341c0800000000000000
+      internalID: -4520576010791199071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_5
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 456
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21dbe5d79bf4bb0b0800000000000000
+      internalID: -5711884044298437358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 342
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e35bd5b1e23940140800000000000000
+      internalID: 4685031338609063230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_7
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 342
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fd08e164f20d9d40800000000000000
+      internalID: 5592629560901897717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_8
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 342
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0eedbcd8f28ee2020800000000000000
+      internalID: 2319046149082439392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 228
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9f31fc0b9eda6ce0800000000000000
+      internalID: -1411070775708794978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_10
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 228
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87042d85538a22ee0800000000000000
+      internalID: -1287281596397633416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_11
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 228
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 727dd707c94b4f300800000000000000
+      internalID: 285051260426376999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 114
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab06df02950f80690800000000000000
+      internalID: -7635588902610444102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_13
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 114
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a25faf1d47168d40800000000000000
+      internalID: 5586178007811183272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_14
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 114
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 320a9a380636c7920800000000000000
+      internalID: 2989373518844108835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7500ac11d64e429f0800000000000000
+      internalID: -494018902002892713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_16
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 0
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3442cc8936b7ed040800000000000000
+      internalID: 4674309130952647747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_graffiti_animation_spritesheet (1)_17
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 0
+        width: 305
+        height: 114
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfef85e92bc7738c0800000000000000
+      internalID: -4019607035802222851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 62c63547ef608044e857b3629c416554
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

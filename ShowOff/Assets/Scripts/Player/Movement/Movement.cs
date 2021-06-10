@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
@@ -103,7 +103,7 @@ public abstract class Movement : MonoBehaviour
 
         currentRotation = model.transform.rotation.eulerAngles;
         Vector3 rot = model.transform.rotation.eulerAngles;
-        if(orientation == 180)
+/*        if(orientation == 180)
         {
             orientation = 0;
         }
@@ -119,7 +119,20 @@ public abstract class Movement : MonoBehaviour
         {
             rot.y = orientation;
             targetRotation = rot;
+        }*/
+        
+        float angle = ((model.transform.rotation.eulerAngles.y - orientation + 540) % 360) - 180;
+        if(angle > 0)
+        {
+            rot.y = orientation;
         }
+        else
+        {
+            rot.y = orientation - 360;
+        }
+
+
+        targetRotation = rot;
 
         //toBePosition = _targetPosition;
         timer = 0f;
