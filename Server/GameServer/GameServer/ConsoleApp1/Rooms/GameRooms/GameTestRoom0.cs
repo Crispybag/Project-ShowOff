@@ -9,8 +9,9 @@ namespace Server
     {
         public GameTestRoom0(TCPGameServer pServer, int pWidth, int pHeight, int pLength) : base(pServer, pWidth, pHeight, pLength)
         {
-            GenerateGridFromText("../../../../LevelFiles/Apple.txt");
-            //broekn
+
+            GenerateGridFromText("../../../../LevelFiles/Features.txt");
+            CopyGrid(roomStatic, roomArray);
             PrintGrid(roomArray);
         }
 

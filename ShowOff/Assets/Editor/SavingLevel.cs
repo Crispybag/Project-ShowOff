@@ -67,7 +67,7 @@ public class SavingLevel : EditorWindow
                 interactable.GetComponent<Dialogue>().ID = currentID;
                 SetDirty(interactable.GetComponent<Dialogue>());
             }
-            else if (interactable.GetComponentInChildren<Water>() != null)
+            else if (interactable.GetComponent<Water>() != null)
             {
                 interactable.GetComponent<Water>().ID = currentID;
                 SetDirty(interactable.GetComponent<Water>());

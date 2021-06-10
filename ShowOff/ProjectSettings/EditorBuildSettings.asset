@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ServerTesting/ClientTest.unity
     guid: f1d04a0ed1200b04b8f7bed8d1796b78
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ServerTesting/MultipleMapTest.unity
     guid: 0489a79e87c59f34984cae9fcfef3149
   - enabled: 1
@@ -30,12 +30,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ServerTesting/Water.unity
     guid: bcb6ea5eea61dc54594ae752886d4e93
   - enabled: 1
-    path: Assets/Scenes/ServerTesting/MultipleScenes/Orange.unity
-    guid: e3fbdf6f3b46e4a40a26b92b5fbcd1ee
-  - enabled: 1
-    path: Assets/Scenes/ServerTesting/MultipleScenes/Banana.unity
-    guid: 4a9dbe51a8d9d614c9f0daa4f93cb997
-  - enabled: 1
-    path: Assets/Scenes/ServerTesting/MultipleScenes/Apple.unity
-    guid: 3b055763be3050244b26b9fa4dff2a66
+    path: Assets/Scenes/Levels/Features.unity
+    guid: 5a833501f6366d34cadf957331054268
   m_configObjects: {}

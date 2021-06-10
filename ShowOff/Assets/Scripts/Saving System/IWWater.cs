@@ -22,14 +22,17 @@ public class IWWater : InformationWriter
         List<Vector3> water = new List<Vector3>();
         for(int i = 0; i < this.transform.childCount; i++)
         {
-            water.Add(this.transform.GetChild(i).transform.position);
+            if (this.transform.GetChild(i).name != "Plane")
+            {
+                water.Add(this.transform.GetChild(i).transform.position);
+            }
         }
         return water;
     }
     private List<int> CreatePointList()
     {
         List<int> points = new List<int>();
-        foreach (GameObject point in this.gameObject.GetComponent<Water>().conditions)
+        foreach (GameObject point in this.gameObject.GetComponent<Water>().waterLevelPoints)
         {
             points.Add((int)point.transform.position.x);
             points.Add((int)point.transform.position.y);

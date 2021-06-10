@@ -20,6 +20,7 @@ public class ClientManager : MonoBehaviour
 
     public TcpClient client;
     public string ClientName;
+    [HideInInspector] public int playersWantToReset = 0;
 
     //----------------------- private ------------------------
 
@@ -82,6 +83,19 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
         if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
         if (pInMessage is ConfReloadScene) { handleReloadScene(pInMessage as ConfReloadScene); }
+        if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
+        if (pInMessage is ConfPlayerSwitch) { handleConfPlayerSwitch(pInMessage as ConfPlayerSwitch); }
+    }
+
+    private void handleConfPlayerSwitch(ConfPlayerSwitch pMessage)
+    {
+        FindObjectOfType<HandleCharacterSelection>().UpdateCharacters(pMessage.playerIndex);
+    }
+
+    private void handleConfWaterPool(ConfWaterPool pMessage)
+    {
+        GameObject water = serviceLocator.interactableList[pMessage.ID];
+        water.GetComponent<Water>().SetTargetPosition(pMessage.x, pMessage.y, pMessage.z);
     }
 
     private void handleReloadScene(ConfReloadScene pMessage)
@@ -89,6 +103,20 @@ public class ClientManager : MonoBehaviour
         serviceLocator.ClearInteractables();
         SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
         sceneManager.LoadSceneSingle(pMessage.sceneName);
+        playersWantToReset = pMessage.playersReset;
+        for(int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            if(SceneManager.GetSceneAt(i).name == "Options")
+            {
+                serviceLocator.GetFromList("Options").GetComponent<Options>().UpdateText();
+            }
+        }
+
+        if (pMessage.isResetting)
+        {
+            SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
+            sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+        }
     }
 
     private void handleProgressDialogue(ConfProgressDialogue pMessage)
@@ -149,29 +177,6 @@ public class ClientManager : MonoBehaviour
                 Debug.LogError("ClientManager: Cannot handle actuator toggle!");
                 break;
         }
-
-/*        Lever[] levers = FindObjectsOfType<Lever>();
-        foreach(Lever lever in levers)
-        {
-            if(lever.gameObject.transform.position.x == pMessage.posX && lever.gameObject.transform.position.y == pMessage.posY)
-            {
-                switch (pMessage.currentState)
-                {
-                    case ConfActuatorToggle.ActuatorState.TOGGLE:
-                        lever.SetActivatedLever(!lever.isActuated);
-                        break;                    
-                    case ConfActuatorToggle.ActuatorState.TRUE:
-                        lever.SetActivatedLever(true);
-                        break;                    
-                    case ConfActuatorToggle.ActuatorState.FALSE:
-                        lever.SetActivatedLever(false);
-                        break;
-                    default:
-                        Debug.LogError("Trying to handle switching lever but given enum is not handled in client manager!");
-                        break;
-                }
-            }
-        }*/
     }
     private void handleConfMove(ConfMove pMessage)
     {
@@ -205,9 +210,11 @@ public class ClientManager : MonoBehaviour
                 break;
             case 1: //lobby
                 serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
+
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Apple");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Features");
+
                 break;
             default:
                 Debug.LogError("Given number is not able to be handled in client manager.");
