@@ -87,7 +87,7 @@ namespace Server
 
                 //interaction
                 case (ReqKeyDown.KeyType.INTERACTION):
-                    Logging.LogInfo("Received an interaction key request", Logging.debugState.DETAILED);
+                    Logging.LogInfo("Received an interaction key request", Logging.debugState.SPAM);
                     handleInteraction();
                     //do something
                     break;
@@ -638,7 +638,7 @@ namespace Server
                 List<GameObject> gameObjects = room.roomArray[pPos[0], pPos[1], pPos[2]];
                 foreach (GameObject gameObject in gameObjects)
                 {
-                    Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                    Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                     if (gameObject is Actuator)
                     {
                     switch (gameObject.objectIndex)
@@ -651,14 +651,14 @@ namespace Server
                             break;
                         //8 = button
                         case (8):
-                            Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                            Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject1 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 8);
                             Button button = gameObject1 as Button;
                             if (null != button) { button.OnInteract(); }
                             break;
                         //crack
                         case (12):
-                            Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                            Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject2 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 12);
                             Crack crack = gameObject2 as Crack;
                             if (null != crack) { crack.OnInteract(); }

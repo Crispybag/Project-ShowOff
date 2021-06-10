@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 322235918}
   - component: {fileID: 322235917}
   - component: {fileID: 322235922}
+  - component: {fileID: 322235923}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -363,6 +364,24 @@ MonoBehaviour:
   cameraState: 1
   _cameraGameObject: {fileID: 322235916}
   _playerCameraGameObject: {fileID: 0}
+--- !u!114 &322235923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322235916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261d180ba6a21a9478f4ee46eec27781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activationReq: 0
+  collisionTag: none
+  parameters:
+  - eventPath: event:/weather/weather system
+    parameterName: InsideDam
+    value: 0
 --- !u!1001 &393903677
 PrefabInstance:
   m_ObjectHideFlags: 0

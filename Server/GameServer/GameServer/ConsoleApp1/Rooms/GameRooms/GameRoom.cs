@@ -503,7 +503,7 @@ namespace Server
         /// </summary>
         private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)
         {
-            Logging.LogInfo("Received a HandleReqKeyDown Package", Logging.debugState.DETAILED);
+            Logging.LogInfo("Received a HandleReqKeyDown Package", Logging.debugState.SPAM);
             
             //search which player should be influenced by this package send
             foreach (Player player in players)
@@ -521,7 +521,7 @@ namespace Server
         /// </summary>
         private void handleReqKeyUp(ReqKeyUp pKeyUp, TCPMessageChannel pSender)
         {
-            Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.DETAILED);
+            Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.SPAM);
             
             //search which player should be influenced by the package send
             foreach (Player player in players)
@@ -920,7 +920,7 @@ namespace Server
         {
             List<GameObject> thingToRemove = new List<GameObject>();
 
-            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + " with the value of: " + pValue, Logging.debugState.DETAILED);
+            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + " with the value of: " + pValue, Logging.debugState.SPAM);
             try
             {
                 foreach (GameObject obj in roomArray[pPos[0], pPos[1], pPos[2]])
@@ -952,7 +952,7 @@ namespace Server
         {
             List<GameObject> thingToRemove = new List<GameObject>();
 
-            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + "," + pZ + " with the value of: " + pValue, Logging.debugState.DETAILED);
+            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + "," + pZ + " with the value of: " + pValue, Logging.debugState.SPAM);
             try
             {
                 foreach (GameObject value in roomArray[pX, pY, pZ])

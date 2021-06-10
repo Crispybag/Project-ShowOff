@@ -50,10 +50,21 @@ public class AudioManager : MonoBehaviour
     public void PlayFromList(string indicatorName)
     {
         nonOverlappingSounds[indicatorName].start();
-        nonOverlappingSounds[indicatorName].release();
+        //nonOverlappingSounds[indicatorName].release();
     }
 
+    public void StopFromList(string indicatorName, FMOD.Studio.STOP_MODE stopMode = FMOD.Studio.STOP_MODE.IMMEDIATE)
+    {
+        nonOverlappingSounds[indicatorName].stop(stopMode);
+    }
 
+    public void setParamFromList(string indicatorName, string parameterName = "NoParameter", float pIndex = -1)
+    {
+        if (parameterName != "NoParameter")
+        {
+            nonOverlappingSounds[indicatorName].setParameterByName(parameterName, pIndex);
+        }
+    }
 
 
     private bool isInList(string indicatorName)
@@ -82,4 +93,10 @@ public class AudioManager : MonoBehaviour
         sound.release();
 
     }
+
+    public void PlaySound2D(string eventPath)
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(eventPath, gameObject);
+    }
+
 }
