@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{6724cc0d-b758-4ea6-93fc-7c723bc53b17}">
+		<property name="assetPath">
+			<value>wind_2D_environmental.flac</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>75.557666666666663</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{be325d4b-dc05-4f1d-bf86-655ff21206c2}</destination>
+		</relationship>
+	</object>
+</objects>
