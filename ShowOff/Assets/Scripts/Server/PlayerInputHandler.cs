@@ -116,6 +116,12 @@ public class PlayerInputHandler : MonoBehaviour
             _clientManager.SendPackage(keyDown);
         }
 
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            ReqResetLevel resetLevel = new ReqResetLevel();
+            resetLevel.wantsReset = true;
+            _clientManager.SendPackage(resetLevel);
+        }
 
 
 

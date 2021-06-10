@@ -100,9 +100,7 @@ public class ClientManager : MonoBehaviour
 
     private void handleReloadScene(ConfReloadScene pMessage)
     {
-        serviceLocator.ClearInteractables();
         SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
-        sceneManager.LoadSceneSingle(pMessage.sceneName);
         playersWantToReset = pMessage.playersReset;
         for(int i = 0; i < SceneManager.sceneCount; i++)
         {
@@ -114,7 +112,8 @@ public class ClientManager : MonoBehaviour
 
         if (pMessage.isResetting)
         {
-            sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+            serviceLocator.ClearInteractables();
+            sceneManager.LoadSceneSingle(pMessage.sceneName);
         }
     }
 
