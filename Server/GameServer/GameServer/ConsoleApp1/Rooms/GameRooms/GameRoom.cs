@@ -561,16 +561,17 @@ namespace Server
                     isReloading = false;
                 }
             }
-
-            ConfReloadScene reload = new ConfReloadScene();
+            sceneName = pResetLevel.sceneName;
+            ConfLoadScene reload = new ConfLoadScene();
             reload.playersReset = i;
+            reload.sceneName = sceneName;
             reload.isResetting = isReloading;
             sendToAll(reload);
 
             //Reload scene if both players want to reset
             if (isReloading)
             {
-                sendLevelReset();
+                //sendLevelReset();
                 foreach (TCPMessageChannel pListener in _users)
                 {
                     sendConfPlayer(pListener);

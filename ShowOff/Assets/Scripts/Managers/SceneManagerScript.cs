@@ -110,7 +110,10 @@ public class SceneManagerScript : MonoBehaviour
         }
     }
 
-
+    public string getCurrentScene()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
     
 
     //=========================================================================================

@@ -120,6 +120,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
             ReqResetLevel resetLevel = new ReqResetLevel();
             resetLevel.wantsReset = true;
+            resetLevel.sceneName = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().getCurrentScene();
             _clientManager.SendPackage(resetLevel);
         }
 

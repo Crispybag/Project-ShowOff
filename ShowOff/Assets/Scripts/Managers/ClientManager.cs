@@ -82,7 +82,9 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is BoxInfo) { handleBoxInfo(pInMessage as BoxInfo); }
         if (pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
         if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
-        if (pInMessage is ConfReloadScene) { handleReloadScene(pInMessage as ConfReloadScene); }
+        if (pInMessage is ConfReloadScene) {  handleReloadScene(pInMessage as ConfReloadScene);  }
+        if (pInMessage is ConfLoadScene) { handleLoadScene(pInMessage as ConfLoadScene); }
+
         if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
         if (pInMessage is ConfPlayerSwitch) { handleConfPlayerSwitch(pInMessage as ConfPlayerSwitch); }
     }
@@ -97,6 +99,26 @@ public class ClientManager : MonoBehaviour
         GameObject water = serviceLocator.interactableList[pMessage.ID];
         water.GetComponent<Water>().SetTargetPosition(pMessage.x, pMessage.y, pMessage.z);
     }
+
+    private void handleLoadScene(ConfLoadScene pMessage)
+    {
+        SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
+        playersWantToReset = pMessage.playersReset;
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            if (SceneManager.GetSceneAt(i).name == "Options")
+            {
+                serviceLocator.GetFromList("Options").GetComponent<Options>().UpdateText();
+            }
+        }
+
+        if (pMessage.isResetting)
+        {
+            serviceLocator.ClearInteractables();
+            sceneManager.LoadSceneSingle(pMessage.sceneName);
+        }
+    }
+
 
     private void handleReloadScene(ConfReloadScene pMessage)
     {

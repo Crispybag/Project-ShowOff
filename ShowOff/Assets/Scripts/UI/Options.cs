@@ -22,6 +22,7 @@ public class Options : MonoBehaviour
         ReqResetLevel resetLevel = new ReqResetLevel();
         wantToReset = !wantToReset;
         resetLevel.wantsReset = wantToReset;
+        resetLevel.sceneName = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().getCurrentScene();
         serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(resetLevel);
     }
 
