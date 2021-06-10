@@ -58,7 +58,7 @@ public class FootstepSounds : MonoBehaviour
         {
             MaterialCheck();
             PlayFootStep();
-            _stepRandom = Random.Range(0f, 0.5f);
+            //_stepRandom = Random.Range(0f, 0.5f);
             _distanceTravelled = 0f;
             _timeSinceStep = 0f;
         }
