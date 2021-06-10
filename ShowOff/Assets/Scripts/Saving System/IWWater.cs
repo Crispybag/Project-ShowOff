@@ -22,7 +22,10 @@ public class IWWater : InformationWriter
         List<Vector3> water = new List<Vector3>();
         for(int i = 0; i < this.transform.childCount; i++)
         {
-            water.Add(this.transform.GetChild(i).transform.position);
+            if (this.transform.GetChild(i).name != "Plane")
+            {
+                water.Add(this.transform.GetChild(i).transform.position);
+            }
         }
         return water;
     }

@@ -210,7 +210,7 @@ public class ClientManager : MonoBehaviour
 
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Water");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Features");
                 break;
             default:
                 Debug.LogError("Given number is not able to be handled in client manager.");

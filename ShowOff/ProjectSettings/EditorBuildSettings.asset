@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ServerTesting/Water.unity
     guid: bcb6ea5eea61dc54594ae752886d4e93
+  - enabled: 1
+    path: Assets/Scenes/Levels/Features.unity
+    guid: 5a833501f6366d34cadf957331054268
   m_configObjects: {}
