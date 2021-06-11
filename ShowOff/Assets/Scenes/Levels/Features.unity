@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -53046,6 +53046,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7001759408049990368, guid: 1a7799ffebfa74c4f855801e85aaa480, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7001759408049990372, guid: 1a7799ffebfa74c4f855801e85aaa480, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -53120,7 +53124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7001759408049990395, guid: 1a7799ffebfa74c4f855801e85aaa480, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7001759408049990395, guid: 1a7799ffebfa74c4f855801e85aaa480, type: 3}
       propertyPath: m_LocalPosition.z
@@ -63349,7 +63353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2565497933462648950, guid: b6d035810c27de24f9b0312765015cd9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.554
+      value: 2.708
       objectReference: {fileID: 0}
     - target: {fileID: 2565497933462648950, guid: b6d035810c27de24f9b0312765015cd9, type: 3}
       propertyPath: m_LocalPosition.z
