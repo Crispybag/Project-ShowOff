@@ -582,10 +582,12 @@ namespace Server
             }
         }
 
+        
         private void sendLevelReset()
         {
             ConfReloadScene reloadScene = new ConfReloadScene();
             reloadScene.sceneName = sceneName;
+            reloadScene.playersReset = 0;
             reloadScene.isResetting = true;
             sendToAll(reloadScene);
         }
@@ -756,6 +758,20 @@ namespace Server
             foreach(GameObject obj in gameObjects)
             {
                 obj.Update();
+            }
+
+
+            //will figure out a solution later, but dont remove it
+            if (isReloading)
+            {
+                sendLevelReset();
+                foreach (TCPMessageChannel pListener in _users)
+                {
+                    sendConfPlayer(pListener);
+                }
+
+                LoadLevel(levelFile);
+                isReloading = false;
             }
 
         }

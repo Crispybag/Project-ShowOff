@@ -45,8 +45,6 @@ namespace Server
             playerIndex = pPlayerIndex;
             if (playerIndex == 0) { playerType = PlayerType.NUC; }
             else { playerType = PlayerType.ALEX; }
-
-            playerType = pPlayerType;
         }
 
         #region input

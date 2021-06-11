@@ -21,8 +21,8 @@ namespace sharedAngy
         public override void Deserialize(Packet pPacket)
         {
             isResetting = pPacket.ReadBool();
-            playersReset = pPacket.ReadInt();
             sceneName = pPacket.ReadString();
+            playersReset = pPacket.ReadInt();
         }
     }
 }

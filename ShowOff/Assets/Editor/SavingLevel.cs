@@ -75,9 +75,17 @@ public class SavingLevel : EditorWindow
 
             else if (interactable.GetComponentInChildren<LevelLoader>() != null)
             {
-                interactable.GetComponent<LevelLoader>().ID = currentID;
-                SetDirty(interactable.GetComponent<LevelLoader>());
+                interactable.GetComponentInChildren<LevelLoader>().ID = currentID;
+                SetDirty(interactable.GetComponentInChildren<LevelLoader>());
             }
+
+            else if (interactable.GetComponentInChildren<AirChannelManager>() != null)
+            {
+                interactable.GetComponentInChildren<AirChannelManager>().ID = currentID;
+                SetDirty(interactable.GetComponentInChildren<AirChannelManager>());
+            }
+
+
             currentID++;
 
         }

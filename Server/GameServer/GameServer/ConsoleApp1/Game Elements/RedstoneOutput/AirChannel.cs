@@ -28,7 +28,7 @@ namespace Server
         {
             try
             {
-
+                
                 if (room.OnCoordinatesCanMove(pPosition[0] + direction[0], pPosition[1] + direction[1], pPosition[2] + direction[2])) return true;
                 else return false;
             }
@@ -51,6 +51,14 @@ namespace Server
                 int[] newPosition = pPosition;
                 if (isActivated)
                 {
+                    int xTest = newPosition[0];
+                    int yTest = newPosition[1];
+                    int zTest = newPosition[2];
+                    int xDir = direction[0];
+                    int yDir = direction[1];
+                    int zDir = direction[2];
+
+
                     newPosition[0] += direction[0];
                     newPosition[1] += direction[1];
                     newPosition[2] += direction[2];
@@ -70,13 +78,13 @@ namespace Server
         /// </summary>
         public void ToggleAirChannel()
         {
-            if (!isActivated)
+            if (isActivated)
             {
-                SetState(CollInteractType.PASS);
+                SetState(CollInteractType.SOLID);
             }
             else
             {
-                SetState(CollInteractType.SOLID);
+                SetState(CollInteractType.PASS);
             }
 
         }

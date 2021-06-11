@@ -11,8 +11,8 @@ namespace Server
         {
 
             GenerateGridFromText("../../../../LevelFiles/Features.txt");
-            CopyGrid(roomStatic, roomArray);
-            PrintGrid(roomArray);
+            //CopyGrid(roomStatic, roomArray);
+            //PrintGrid(roomArray);
         }
 
         public override void AddMember(TCPMessageChannel pListener)
