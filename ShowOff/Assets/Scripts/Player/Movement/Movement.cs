@@ -103,7 +103,7 @@ public abstract class Movement : MonoBehaviour
 
         currentRotation = model.transform.rotation.eulerAngles;
         Vector3 rot = model.transform.rotation.eulerAngles;
-/*        if(orientation == 180)
+        if(orientation == 180)
         {
             orientation = 0;
         }
@@ -119,9 +119,9 @@ public abstract class Movement : MonoBehaviour
         {
             rot.y = orientation;
             targetRotation = rot;
-        }*/
+        }
         
-        float angle = ((model.transform.rotation.eulerAngles.y - orientation + 540) % 360) - 180;
+/*        float angle = ((model.transform.rotation.eulerAngles.y - orientation + 540) % 360) - 180;
         if(angle > 0)
         {
             rot.y = orientation;
@@ -129,10 +129,10 @@ public abstract class Movement : MonoBehaviour
         else
         {
             rot.y = orientation - 360;
-        }
+        }*/
 
 
-        targetRotation = rot;
+        //targetRotation = rot;
 
         //toBePosition = _targetPosition;
         timer = 0f;
