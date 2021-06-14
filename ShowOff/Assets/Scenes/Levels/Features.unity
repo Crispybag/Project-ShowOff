@@ -3309,6 +3309,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 233
@@ -3357,6 +3361,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (233)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -3368,6 +3376,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 135103843}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &135103845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 135103843}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &135103846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135103845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &135154803
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4093,6 +4119,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 189
@@ -4141,6 +4171,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (189)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -4152,6 +4186,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 161552445}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &161552447 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 161552445}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &161552448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161552447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &162203064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4621,6 +4673,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 254
@@ -4669,6 +4725,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (254)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -4680,6 +4740,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 181745231}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &181745233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 181745231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &181745234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181745233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &185276931
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6015,6 +6093,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6a9bfeb060d1b84d943392ef0dc9fae, type: 3}
+--- !u!1 &239319509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2062102429941973087, guid: f6a9bfeb060d1b84d943392ef0dc9fae, type: 3}
+  m_PrefabInstance: {fileID: 239319508}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &239319510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239319509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2e7049faaeeac4cbed28b763917987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footStepsEventPath: event:/character/footsteps/Footsteps_string
+  materialParameter: Types
+  parameterOcclusion: none
+  stepDistance: 2
+  rayDistance: 1.2
+  startRunningTime: 0
+  defaultMaterial: 0
+  volume: 1
+  occlusionLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1001 &242257195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11695,6 +11801,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 211
@@ -11743,6 +11853,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (211)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -11754,6 +11868,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 440948828}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &440948830 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 440948828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &440948831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 440948830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &443473754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16807,6 +16939,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 232
@@ -16855,6 +16991,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (232)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -16866,6 +17006,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 613200930}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &613200932 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 613200930}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &613200933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613200932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &613524086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20673,6 +20831,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 188
@@ -20721,6 +20883,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (188)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -20732,6 +20898,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 761635289}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &761635291 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 761635289}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &761635292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761635291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &763256632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21774,6 +21958,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 190
@@ -21822,6 +22010,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (190)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -21833,6 +22025,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 794935986}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &794935988 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 794935986}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &794935989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794935988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1 &795656337
 GameObject:
   m_ObjectHideFlags: 0
@@ -26889,6 +27099,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 210
@@ -26937,6 +27151,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (210)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -26948,6 +27166,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 928496774}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &928496776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 928496774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &928496777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928496776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &929614595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30786,6 +31022,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 255
@@ -30834,6 +31074,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (255)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -30845,6 +31089,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 1056949503}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1056949505 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 1056949503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1056949506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056949505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &1057804276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39091,6 +39353,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 256
@@ -39139,6 +39405,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (256)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -39150,6 +39420,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 1356842221}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1356842223 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 1356842221}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1356842224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356842223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &1359131248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43421,6 +43709,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 234
@@ -43469,6 +43761,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (234)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -43480,6 +43776,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 1511199146}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1511199148 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 1511199146}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1511199149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511199148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &1511932816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52841,6 +53155,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18508079902101048ace49596d4c6545, type: 3}
+--- !u!1 &1832752206 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6605004223631112086, guid: 18508079902101048ace49596d4c6545, type: 3}
+  m_PrefabInstance: {fileID: 1832752205}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1832752207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1832752206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2e7049faaeeac4cbed28b763917987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footStepsEventPath: event:/character/footsteps/Footsteps_string
+  materialParameter: Types
+  parameterOcclusion: none
+  stepDistance: 2
+  rayDistance: 1.2
+  startRunningTime: 0
+  defaultMaterial: 0
+  volume: 1
+  occlusionLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1001 &1833930230
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53120,7 +53462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7001759408049990395, guid: 1a7799ffebfa74c4f855801e85aaa480, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7001759408049990395, guid: 1a7799ffebfa74c4f855801e85aaa480, type: 3}
       propertyPath: m_LocalPosition.z
@@ -56058,6 +56400,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1681967054}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6b5113eb923186448d14b4d39d05a02, type: 2}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 212
@@ -56106,6 +56452,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (212)
       objectReference: {fileID: 0}
+    - target: {fileID: 8024156992239182458, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182459, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Features.txt
@@ -56117,6 +56467,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
   m_PrefabInstance: {fileID: 1941696456}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1941696458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8024156992239182456, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+  m_PrefabInstance: {fileID: 1941696456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1941696459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941696458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1309f37e97ea5534da91cc33040cebae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialValue: 1
 --- !u!1001 &1945747075
 PrefabInstance:
   m_ObjectHideFlags: 0

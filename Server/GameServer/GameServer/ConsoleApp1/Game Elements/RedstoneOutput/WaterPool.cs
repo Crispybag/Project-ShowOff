@@ -42,8 +42,22 @@ namespace Server
                 }
                 foreach (GameObject water in waterBlocks)
                 {
+
+                    Box coolBox = null;
+                    if (room.OnCoordinatesGetGameObject(water.x(), water.y() + 1, water.z(), 7) is Box)
+                    {
+                        coolBox = room.OnCoordinatesGetGameObject(water.x(), water.y() + 1, water.z(), 7) as Box;
+                    }
+
                     water.MoveDirection(waterLevelPositions[currentPos].x() - waterLevelPositions[oldPos].x(), waterLevelPositions[currentPos].y() - waterLevelPositions[oldPos].y(), waterLevelPositions[currentPos].z() - waterLevelPositions[oldPos].z());
+                    
+                    if (coolBox != null)
+                    {
+                        coolBox.MovePosition(x(), y() + 1, z());
+                        coolBox.sendBoxPackage(false);
+                    }
                 }
+
                 ConfWaterPool waterPool = new ConfWaterPool();
                 waterPool.ID = ID;
                 waterPool.x = waterLevelPositions[currentPos].x();
