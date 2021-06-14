@@ -256,11 +256,11 @@ namespace Server
                 {
                     currentBox.MovePosition(OneInFront());
                     currentBox.CheckGrounded();
-                    currentBox.SendBoxPackage(currentBox, new int[3] { currentBox.x(), currentBox.y(), currentBox.z() }, false);
+                    currentBox.sendBoxPackage(false);
 
                     handleWaterInteractionBox();
 
-                    sendBoxPackage(currentBox, OneInFront(), false);
+                    sendBoxPackage(currentBox, false);
                     currentBox = null;
                 }
                 catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
@@ -269,7 +269,7 @@ namespace Server
             //if its not empty, there are a few exceptions like the pressure plate
             else
             {
-                Console.WriteLine("Box is checking in front!");
+                //Console.WriteLine("Box is checking in front!");
                 List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
                 foreach (GameObject item in index)
                 {
@@ -280,13 +280,13 @@ namespace Server
                         return;
                     }
                 }
-                Console.WriteLine("In front is empty for box! but with interactable");
+                //Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
-                currentBox.SendBoxPackage(currentBox, OneInFront(), false);
+                currentBox.sendBoxPackage(false);
 
                 handleWaterInteractionBox();
 
-                sendBoxPackage(currentBox, OneInFront(), false);
+                sendBoxPackage(currentBox,  false);
                 currentBox = null;
             }
 
@@ -313,7 +313,7 @@ namespace Server
             //room.PrintGrid(room.roomArray);
         }
 
-        private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
+        private void sendBoxPackage(GameObject box, bool pIsPickedUp)
         {
             try
             {
@@ -325,13 +325,13 @@ namespace Server
                 {
                     box.SetState(CollInteractType.SOLID);
                 }
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = currentBox.x() + room.minX;
-                boxInf.posY = currentBox.y() + room.minY;
-                boxInf.posZ = currentBox.z() + room.minZ;
-                room.sendToAll(boxInf);
+                BoxInfo boxInfo = new BoxInfo();
+                boxInfo.ID = (box as Box).ID;
+                boxInfo.isPickedUp = pIsPickedUp;
+                boxInfo.posX = currentBox.x() + room.minX;
+                boxInfo.posY = currentBox.y() + room.minY;
+                boxInfo.posZ = currentBox.z() + room.minZ;
+                room.sendToAll(boxInfo);
             }
             catch
             {
@@ -612,7 +612,7 @@ namespace Server
             if(currentBox != null)
             {
                 currentBox.MovePosition(x(), y(), z());
-                currentBox.SendBoxPackage(currentBox, x(), y(), z(), true);
+                currentBox.sendBoxPackage(true);
             }
 
             //set y rotation

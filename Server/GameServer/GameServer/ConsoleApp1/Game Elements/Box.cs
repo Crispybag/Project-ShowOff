@@ -10,6 +10,7 @@ namespace Server
     public class Box : GameObject
     {
         private bool containsWater;
+        private bool hasFallen = false;
         public int ID;
 
         public Box(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
@@ -38,6 +39,7 @@ namespace Server
                     else
                     {
                         MoveDirection(0, -1, 0);
+                        hasFallen = true;
                     }
                 }
             }
@@ -52,31 +54,31 @@ namespace Server
             List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
             foreach (GameObject gameObject in gameObjects)
             {
-                Console.WriteLine(gameObject.objectIndex);
+                //Console.WriteLine(gameObject.objectIndex);
                 if (gameObject.collState == CollInteractType.SOLID) return true;
             }
             return false;
         }
 
-        public void SendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
+        public void sendBoxPackage(bool pIsPickedUp)
         {
             try
             {
                 if (pIsPickedUp)
                 {
-                    box.SetState(CollInteractType.PASS);
+                    SetState(CollInteractType.PASS);
                 }
                 else
                 {
-                    box.SetState(CollInteractType.SOLID);
+                    SetState(CollInteractType.SOLID);
                 }
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = position[0] + room.minX;
-                boxInf.posY = position[1] + room.minY;
-                boxInf.posZ = position[2] + room.minZ;
-                room.sendToAll(boxInf);
+                BoxInfo boxInfo = new BoxInfo();
+                boxInfo.ID = ID;
+                boxInfo.isPickedUp = pIsPickedUp;
+                boxInfo.posX = x() + room.minX;
+                boxInfo.posY = y() + room.minY;
+                boxInfo.posZ = z() + room.minZ;
+                room.sendToAll(boxInfo);
             }
             catch
             {
@@ -84,6 +86,7 @@ namespace Server
             }
         }
 
+        /*
         public void SendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
         {
             try
@@ -101,6 +104,7 @@ namespace Server
                 Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
             }
         }
+        */
         public bool tileContainsWater(int pID)
         {
             List<GameObject> objectsOnCoord = room.OnCoordinatesGetGameObjects(x(), y(), z() );
@@ -123,6 +127,14 @@ namespace Server
                 }
             }
             return false;
+        }
+
+
+        public override void Update()
+        {
+            base.Update();
+            CheckGrounded();
+            if (hasFallen) { sendBoxPackage(false); hasFallen = false; }
         }
 
     }
