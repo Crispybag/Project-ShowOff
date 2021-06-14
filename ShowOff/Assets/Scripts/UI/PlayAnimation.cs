@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     // Start is called before the first frame update
 
@@ -14,6 +14,11 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public bool isButtonHovering = false;
     public int timer;
     private float currentTimer;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _image.sprite = spritesheet[0];
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -27,6 +32,7 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     void Start()
     {
+        _image.sprite = spritesheet[0];
     }
 
     // Update is called once per frame
@@ -53,7 +59,7 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             currentSprite = 0;
             currentTimer = 0;
-            _image.sprite = spritesheet[currentSprite];
+            _image.sprite = spritesheet[0];
         }
     }
 }
