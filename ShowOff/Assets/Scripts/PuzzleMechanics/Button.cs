@@ -6,11 +6,6 @@ using static ServiceLocator;
 public class Button : PuzzleFactory
 {
 
-    [Tooltip("0 = down, 1 = up")]public int direction = 0;
-
-    public Material mat1;
-    public Material mat2;
-
 
     private void Start()
     {

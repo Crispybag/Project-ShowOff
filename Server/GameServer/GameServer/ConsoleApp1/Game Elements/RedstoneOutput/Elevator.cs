@@ -15,7 +15,7 @@ namespace Server
         private int oldPos;
         //contains the points the elevator can go in
         public Dictionary<int, EmptyGameObject> points = new Dictionary<int, EmptyGameObject>();
-
+        public bool isGoingUp = true;
 
         public Elevator(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
@@ -29,123 +29,68 @@ namespace Server
         /// <summary>
         /// (Ezra) Changes position based on input
         /// </summary>
-        public void NextPosition(Button.Direction currentDirection)
+        public void NextPosition()
         {
             ConfElevatorMove elevatorMove = new ConfElevatorMove();
             
-            if (currentDirection == Button.Direction.DOWN)
+            oldPos = currentPos;
+
+            //makes sure it doesnt go outside the dictonairy
+
+            if (currentPos >= points.Count - 1)
             {
-                oldPos = currentPos;
-
-                //makes sure it doesnt go outside the dictonairy
-                if (currentPos <= 0)
-                {
-                    currentPos = 0;
-                }
-                else
-                {
-                    currentPos--;
-                }
-
-                int oldX = x();
-                int oldY = y();
-                int oldZ = z();
-                MovePosition(points[currentPos].x(), points[currentPos].y(), points[currentPos].z());
-
-                Player playerOnElevator;
-                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 1))
-                {
-                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) is Player)
-                    {
-                        playerOnElevator = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) as Player;
-                        try
-                        {
-                            playerOnElevator.tryPositionChange(points[currentPos].x() - playerOnElevator.x(), points[currentPos].y() + 1 - playerOnElevator.y(), points[currentPos].z() - playerOnElevator.z());
-                        }
-                        catch
-                        {
-                            Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
-                        }
-                    }
-                }
-                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 7))
-                {
-                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) is Box)
-                    {
-                        Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
-                        coolBox.MovePosition(x(), y() + 1, z());
-                        coolBox.SendBoxPackage(coolBox, coolBox.x(), coolBox.y(), coolBox.z(), false);
-                    }
-                }
-                elevatorMove.ID = ID;
-                elevatorMove.posX = points[currentPos].x() + room.minX;
-                elevatorMove.posY = points[currentPos].y() + room.minY;
-                elevatorMove.posZ = points[currentPos].z() + room.minZ;
-
-                //room.OnCoordinatesAdd(points[currentPos].position[0], points[currentPos].position[1], points[currentPos].position[2], 9);
-                //room.OnCoordinatesRemove(points[oldPos].position[0], points[oldPos].position[1], points[currentPos].position[2], 9);                
-
-                room.sendToAll(elevatorMove);
+                isGoingUp = false;
+            }
+            else if(currentPos <= 0)
+            {
+                isGoingUp = true;
             }
 
-            else if (currentDirection == Button.Direction.UP)
+            if (!isGoingUp)
             {
+                currentPos--;
+            }
+            else if (isGoingUp)
+            {
+                currentPos++;
+            }
 
-                oldPos = currentPos;
+            int oldX = x();
+            int oldY = y();
+            int oldZ = z();
+            MovePosition(points[currentPos].x(), points[currentPos].y(), points[currentPos].z());
 
-                //makes sure it doesnt go outside the dictonairy
-                if (currentPos >= points.Count -1)
+            Player playerOnElevator;
+            if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 1))
+            {
+                if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) is Player)
                 {
-                    currentPos = points.Count -1;
-                }
-                else
-                {
-                    currentPos++;
-                }
-                int oldX = x();
-                int oldY = y();
-                int oldZ = z();
-
-                MovePosition(points[currentPos].x(), points[currentPos].y(), points[currentPos].z());
-
-
-                Player playerOnElevator;
-                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 1))
-                {
-                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) is Player)
+                    playerOnElevator = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) as Player;
+                    try
                     {
-                        playerOnElevator = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 1) as Player;
-                        try
-                        {
-                            playerOnElevator.tryPositionChange(points[currentPos].x() - playerOnElevator.x(), points[currentPos].y() + 1 - playerOnElevator.y(), points[currentPos].z() - playerOnElevator.z());
-                        }
-                        catch
-                        {
-                            Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
-                        }
+                        playerOnElevator.tryPositionChange(points[currentPos].x() - playerOnElevator.x(), points[currentPos].y() + 1 - playerOnElevator.y(), points[currentPos].z() - playerOnElevator.z());
+                    }
+                    catch
+                    {
+                        Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
                     }
                 }
-                if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 7))
-                {
-                    if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) is Box)
-                    {
-                        Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
-                        coolBox.MovePosition(x(), y() + 1, z());
-                        coolBox.SendBoxPackage(coolBox, coolBox.x(), coolBox.y(), coolBox.z(), false);
-                    }
-                }
-
-                elevatorMove.ID = ID;
-                elevatorMove.posX = points[currentPos].x() + room.minX;
-                elevatorMove.posY = points[currentPos].y() + room.minY;
-                elevatorMove.posZ = points[currentPos].z() + room.minZ;
-
-                room.sendToAll(elevatorMove);
             }
-            else
+            if (room.OnCoordinatesContain(oldX, oldY + 1, oldZ, 7))
             {
-                Logging.LogInfo("Button.cs: Cannot handle next position, probably because currentDirection is null", Logging.debugState.DETAILED);
+                if (room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) is Box)
+                {
+                    Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
+                    coolBox.MovePosition(x(), y() + 1, z());
+                    coolBox.SendBoxPackage(coolBox, coolBox.x(), coolBox.y(), coolBox.z(), false);
+                }
             }
+            elevatorMove.ID = ID;
+            elevatorMove.posX = points[currentPos].x() + room.minX;
+            elevatorMove.posY = points[currentPos].y() + room.minY;
+            elevatorMove.posZ = points[currentPos].z() + room.minZ;  
+
+            room.sendToAll(elevatorMove);
         }
 
     }

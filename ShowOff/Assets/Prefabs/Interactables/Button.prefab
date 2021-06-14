@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 221736699863858573}
   m_Layer: 0
-  m_Name: Elevator Down
+  m_Name: Button
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 8
   isActuated: 0
-  interactableIDs: []
+  interactables: []
   direction: 0
   mat1: {fileID: 2100000, guid: bcd4a8e0c32e8a648954aca9cb2c0dc3, type: 2}
   mat2: {fileID: 2100000, guid: 1a7875ae8103fa644be7ad64f1f6cebf, type: 2}
