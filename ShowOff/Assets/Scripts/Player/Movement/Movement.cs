@@ -34,8 +34,8 @@ public abstract class Movement : MonoBehaviour
     private float timer;
 
     public bool canMove = true;
-    private Animator animator;
     GameObject model;
+    private AnimationHandler animation;
 
     private float animatorCooldown;
 
@@ -47,8 +47,8 @@ public abstract class Movement : MonoBehaviour
         //toBePosition = transform.position;
         _currentPosition = transform.position;
         _targetPosition = transform.position;
-        animator = GetComponentInChildren<Animator>();
         model = transform.Find("Model").gameObject;
+        animation = this.transform.GetComponent<AnimationHandler>();
     }
 
     protected virtual void Update()
@@ -152,7 +152,7 @@ public abstract class Movement : MonoBehaviour
             _currentPosition = transform.position;
             if (animatorCooldown >= 0.1f)
             {
-                animator.SetBool("isWalking", false);
+                animation.isWalking = false;
             }
             animatorCooldown += Time.deltaTime;
             
@@ -160,7 +160,7 @@ public abstract class Movement : MonoBehaviour
         else
         {
             animatorCooldown = 0;
-            animator.SetBool("isWalking", true);
+            animation.isWalking = true;
 
             //canMove = false;
         }

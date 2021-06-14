@@ -11,6 +11,7 @@ namespace sharedAngy
         public int dirY;
         public int dirZ;
         public int orientation;
+        public bool isFalling = false;
 
         public override void Serialize(Packet pPacket)
         {
@@ -19,6 +20,7 @@ namespace sharedAngy
             pPacket.Write(dirY);
             pPacket.Write(dirZ);
             pPacket.Write(orientation);
+            pPacket.Write(isFalling);
         }
 
         public override void Deserialize(Packet pPacket)
@@ -28,6 +30,7 @@ namespace sharedAngy
             dirY = pPacket.ReadInt();
             dirZ = pPacket.ReadInt();
             orientation = pPacket.ReadInt();
+            isFalling = pPacket.ReadBool();
         }
     }
 }
