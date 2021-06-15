@@ -82,6 +82,7 @@ public class PlayerInputHandler : MonoBehaviour
             {
                 if(scene.name == "Options")
                 {
+                    SceneManager.UnloadSceneAsync("Options");
                     return;
                 }
             }

@@ -11,34 +11,35 @@ namespace Server
         public int currentPos;
         public int oldPos;
         public int ID;
-
+        public bool isGoingUp = true;
         public WaterPool(GameRoom pRoom, int pX, int pY, int pZ, int pID, CollInteractType pMoveState) : base(pX, pY, pZ, pRoom, pMoveState)
         {
             room.roomArray[x(), y(), z()].Add(this);
             ID = pID;
         }
 
-        public void moveWater(int direction)
+        public void moveWater()
         {
             try
             {
-                if (direction == 0)
+                oldPos = currentPos;
+
+                if (currentPos >= waterLevelPositions.Count - 1)
                 {
-                    oldPos = currentPos;
-                    currentPos++;
-                    if (currentPos > waterLevelPositions.Count-1)
-                    {
-                        currentPos = waterLevelPositions.Count-1;
-                    }
+                    isGoingUp = false;
                 }
-                if (direction == 1)
+                else if (currentPos <= 0)
                 {
-                    oldPos = currentPos;
+                    isGoingUp = true;
+                }
+
+                if (!isGoingUp)
+                {
                     currentPos--;
-                    if (currentPos < 0)
-                    {
-                        currentPos = 0;
-                    }
+                }
+                else if (isGoingUp)
+                {
+                    currentPos++;
                 }
                 foreach (GameObject water in waterBlocks)
                 {
@@ -69,9 +70,6 @@ namespace Server
             catch (Exception e)
             {
                 Logging.LogInfo("\nI AM CRYING " + waterLevelPositions.Count);
-                Console.WriteLine("currentPos = " + currentPos);
-                Console.WriteLine("oldPos = " + oldPos);
-                Logging.LogInfo(e.Message);
             }
         }
     }

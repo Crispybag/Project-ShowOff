@@ -401,18 +401,6 @@ namespace Server
             Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), informationLists[0]);
             InteractableGameobjects.Add(button.ID, button);
             Logging.LogInfo("GameRoom.cs: Added button!", Logging.debugState.DETAILED);
-            switch (int.Parse(informationData[8]))
-            {
-                case (0):
-                    button.currentDirection = Button.Direction.DOWN;
-                    break;
-                case (1):
-                    button.currentDirection = Button.Direction.UP;
-                    break;
-                default:
-                    Logging.LogInfo("GameRoom.cs: Cant handle button direction!", Logging.debugState.DETAILED);
-                    break;
-            }
 
         }
         /// <summary>
@@ -563,7 +551,11 @@ namespace Server
             }
             sceneName = pResetLevel.sceneName;
             ConfLoadScene reload = new ConfLoadScene();
-            reload.playersReset = i;
+            if (!isReloading)
+            {
+                reload.playersReset = i;
+            }
+            else { reload.playersReset = 0; }
             reload.sceneName = sceneName;
             reload.isResetting = isReloading;
             sendToAll(reload);
