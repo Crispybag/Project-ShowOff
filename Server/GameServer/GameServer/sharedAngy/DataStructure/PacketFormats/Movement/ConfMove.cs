@@ -13,6 +13,10 @@ namespace sharedAngy
         public int orientation;
         public bool isFalling = false;
 
+        public int calls;
+        public string directions;
+
+
         public override void Serialize(Packet pPacket)
         {
             pPacket.Write(player);
@@ -21,6 +25,9 @@ namespace sharedAngy
             pPacket.Write(dirZ);
             pPacket.Write(orientation);
             pPacket.Write(isFalling);
+
+            pPacket.Write(calls);
+            pPacket.Write(directions);
         }
 
         public override void Deserialize(Packet pPacket)
@@ -31,6 +38,9 @@ namespace sharedAngy
             dirZ = pPacket.ReadInt();
             orientation = pPacket.ReadInt();
             isFalling = pPacket.ReadBool();
+
+            calls = pPacket.ReadInt();
+            directions = pPacket.ReadString();
         }
     }
 }
