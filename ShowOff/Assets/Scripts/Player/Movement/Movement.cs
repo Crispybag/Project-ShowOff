@@ -102,7 +102,7 @@ public abstract class Movement : MonoBehaviour
     //=========================================================================================
     public void disectMovementCommands(string pMovements)
     {
-        Debug.Log(pMovements);
+        //Debug.Log(pMovements);
         //coords.Clear();
         List<string> movementCalls = pMovements.Split(' ').ToList();
 
@@ -122,7 +122,7 @@ public abstract class Movement : MonoBehaviour
             }
         }
 
-        Debug.Log(coords.Count);
+        //Debug.Log(coords.Count);
 
     }
     public void SetRotation(Vector3 pDirection, int orientation = -1)
