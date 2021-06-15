@@ -18,6 +18,8 @@ namespace Server
             direction[1] = pDirY;
             direction[2] = pDirZ;
             objectIndex = 13;
+
+            ToggleAirChannel();
         }
         /// <summary>
         /// (Leo) checks if player can be pushed on a certain tile

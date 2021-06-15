@@ -275,7 +275,7 @@ namespace Server
                 foreach (GameObject item in index)
                 {
                     //5 is pressure plate, 16 is water
-                    if (item.objectIndex != 5 && item.objectIndex != 16)
+                    if (item.objectIndex != 5 && item.objectIndex != 16 && item.objectIndex != 13)
                     {
                         //if its anything else, return out of the method
                         return;

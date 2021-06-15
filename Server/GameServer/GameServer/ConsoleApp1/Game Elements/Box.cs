@@ -86,25 +86,6 @@ namespace Server
             }
         }
 
-        /*
-        public void SendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
-        {
-            try
-            {
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX;
-                boxInf.posY = pY + room.minY;
-                boxInf.posZ = pZ + room.minZ;
-                room.sendToAll(boxInf);
-            }
-            catch
-            {
-                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
-            }
-        }
-        */
         public bool tileContainsWater(int pID)
         {
             List<GameObject> objectsOnCoord = room.OnCoordinatesGetGameObjects(x(), y(), z() );
@@ -134,8 +115,36 @@ namespace Server
         {
             base.Update();
             CheckGrounded();
+            handleAirChannelHit(new int[3] { x(), y(), z() });
+
             if (hasFallen) { sendBoxPackage(false); hasFallen = false; }
         }
 
+        int infLoopPrevention;
+
+        /// <summary>
+        /// (Leo) Interaction with box and airchannels (mostly copied over from player)
+        /// </summary>
+        /// <param name="pPosition"></param>
+        private void handleAirChannelHit(int[] pPosition)
+        {
+            infLoopPrevention++;
+            if (room.OnCoordinatesGetGameObject(pPosition, 13) is AirChannel && infLoopPrevention < 20)
+            {
+                AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
+
+                if (airChannel.CanPushPlayer(pPosition))
+                {
+                    MovePosition(airChannel.PushPlayer(pPosition));
+                    sendBoxPackage(false);
+                }
+
+                else
+                {
+                    handleAirChannelHit(airChannel.PushPlayer(pPosition));
+                }
+            }
+            infLoopPrevention = 0;
+        }
     }
 }
