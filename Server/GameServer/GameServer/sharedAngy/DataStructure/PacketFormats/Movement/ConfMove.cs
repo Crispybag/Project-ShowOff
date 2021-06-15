@@ -11,6 +11,8 @@ namespace sharedAngy
         public int dirY;
         public int dirZ;
         public int orientation;
+        public int calls;
+        public string directions;
 
         public override void Serialize(Packet pPacket)
         {
@@ -19,6 +21,9 @@ namespace sharedAngy
             pPacket.Write(dirY);
             pPacket.Write(dirZ);
             pPacket.Write(orientation);
+
+            pPacket.Write(calls);
+            pPacket.Write(directions);
         }
 
         public override void Deserialize(Packet pPacket)
@@ -28,6 +33,9 @@ namespace sharedAngy
             dirY = pPacket.ReadInt();
             dirZ = pPacket.ReadInt();
             orientation = pPacket.ReadInt();
+
+            calls = pPacket.ReadInt();
+            directions = pPacket.ReadString();
         }
     }
 }

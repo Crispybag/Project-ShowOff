@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static ServiceLocator;
 
@@ -30,7 +31,7 @@ public abstract class Movement : MonoBehaviour
     private Vector3 currentRotation;
     private Vector3 targetRotation;
 
-    protected float _travelTime = 0.1f;
+    protected float _travelTime = 0.05f;
     private float timer;
 
     public bool canMove = true;
@@ -38,6 +39,9 @@ public abstract class Movement : MonoBehaviour
     GameObject model;
 
     private float animatorCooldown;
+
+    private List<Vector3> coords = new List<Vector3>();
+
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -59,9 +63,14 @@ public abstract class Movement : MonoBehaviour
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
         model.transform.rotation = Quaternion.Euler(Vector3.Lerp(currentRotation, targetRotation, ratio));
 
-        //gravity
-        //checkForFalling();
-        //inputs
+        //set to next position in line
+        if (coords.Count != 0 && ratio > 0.99f)
+        {
+            moveToTile(coords[0]);
+            coords.RemoveAt(0);
+        }
+
+
         checkForMovement();
 
     }
@@ -90,15 +99,41 @@ public abstract class Movement : MonoBehaviour
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
+    public void disectMovementCommands(string pMovements)
+    {
+        Debug.Log(pMovements);
+        //coords.Clear();
+        List<string> movementCalls = pMovements.Split(' ').ToList();
 
-    public void moveToTile(Vector3 pDirection, int orientation)
+        for (int i = 0; i < movementCalls.Count; i += 3)
+        {
+            try
+            {
+                float dirX = float.Parse(movementCalls[i]);
+                float dirY = float.Parse(movementCalls[i + 1]);
+                float dirZ = float.Parse(movementCalls[i + 2]);
+                Vector3 vec = new Vector3(dirX, dirY, dirZ);
+                coords.Add(vec);
+            }
+            catch
+            {
+
+            }
+        }
+
+        Debug.Log(coords.Count);
+
+    }
+
+
+    public void moveToTile(Vector3 pDirection, int orientation = -1)
     {
 
         //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
         //pDirection = getNormalizedDirection(pDirection);
         //if there isnt a wall update our target position to where we want to go.
         //_targetPosition = pDirection + _currentPosition;
-        _targetPosition = pDirection;
+        _targetPosition = pDirection + transform.position;
         _currentPosition = transform.position;
 
         currentRotation = model.transform.rotation.eulerAngles;

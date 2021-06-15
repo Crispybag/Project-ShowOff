@@ -33,6 +33,8 @@ namespace Server
 
         public PlayerType playerType;
 
+        private int calls;
+        private string directionCommands;
 
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0, PlayerType pPlayerType = PlayerType.NUC) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
@@ -128,7 +130,6 @@ namespace Server
 
 
             }
-            //Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
 
         }
 
@@ -417,17 +418,30 @@ namespace Server
             {
                 //get the slope as game object
                 Slope pSlope = room.OnCoordinatesGetGameObject(pPosition, 10) as Slope;
-
+                int[] directionVec;
+                if (calls == 1)directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2]};
+                else { directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2]}; }
                 //check if the player can move on the slope and move on it when the player can move on the slope
-                if (pSlope.CanMoveOnSlope(pPosition, orientation))
+                if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(orientation[0], 0, orientation[1]);
                     MovePosition(pSlope.MoveOnSlope(pPosition));
                 }
-                else
+                else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
 
                 }
+                else
+                {
+                    calls = 0;
+                    directionCommands = "";
+                }
+
             }
 
             //else it could be the s2 position so check that as well here
@@ -436,16 +450,29 @@ namespace Server
                 //if that is true return the slope on that coordinate to the player
                 Slope pSlope = room.OnCoordinatesGetGameObject(pPosition[0] + orientation[0], pPosition[1] - 1, pPosition[2] + orientation[1], 10) as Slope;
 
+                int[] directionVec;
+                if (calls == 1) directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2]};
+                else { directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2] }; }
                 //check with that slope whether the player can move on it
-                if (pSlope.CanMoveOnSlope(pPosition, orientation))
+                if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(orientation[0], 0, orientation[1]);
+
                     MovePosition(pSlope.MoveOnSlope(pPosition));
+                }
+                else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
+                {
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
                 }
                 else
                 {
-                    checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
+                    calls = 0;
+                    directionCommands = "";
                 }
-
             }
         }
 
@@ -459,7 +486,10 @@ namespace Server
             {
                 if (playerType == PlayerType.ALEX)
                 {
+                    if (callLoopPrevent == 1) { addMoveDirection(orientation[0], 0, orientation[1]); }
                     AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
+                    addMoveDirection(airChannel.direction[0], airChannel.direction[1], airChannel.direction[2]);
+
                     if (airChannel.CanPushPlayer(pPosition))
                     {
                         MovePosition(airChannel.PushPlayer(pPosition));
@@ -469,9 +499,12 @@ namespace Server
                         checkSpecialCollision(airChannel.PushPlayer(pPosition));
                     }
                 }
+
+
                 else
                 {
                     MoveDirection(orientation[0], 0, orientation[1]);
+                    addMoveDirection(orientation[0], 0, orientation[1]);
                 }
             }
         }
@@ -486,9 +519,12 @@ namespace Server
 
             //infinite recursive loop prevention
             callLoopPrevent++;
-            if (callLoopPrevent >= 20)
+            calls++;
+            if (callLoopPrevent >= 21)
             {
                 Logging.LogInfo("potential infinite recursive loop in check special collision, make sure that the code runs properly or increase treshold", Logging.debugState.DETAILED);
+                calls = 0;
+                directionCommands = "";
                 return;
             }
 
@@ -509,6 +545,9 @@ namespace Server
                         break;
 
                     default:
+                        //remove all information
+                        calls = 0;
+                        directionCommands = "";
                         break;
                 }
             }
@@ -531,7 +570,9 @@ namespace Server
                     //else fall 1 further down
                     else
                     {
+                        calls++;
                         MoveDirection(0, -1, 0);
+                        addMoveDirection(0, -1, 0);
                     }
                 }
             }
@@ -543,37 +584,42 @@ namespace Server
         //Does the check whether the player can change position or not
         public void tryPositionChange(int pX, int pY, int pZ)
         {
-            //determine direction and set orientation
-            int[] direction = { pX, pY, pZ };
-            orientation[0] = pX;
-            orientation[1] = pZ;
-            Logging.LogInfo("Player's position is now ( " + x() + "," + y() + "," + z() + ")", Logging.debugState.SPAM);
-
-            try
+            if (calls <= 0)
             {
-                bool objectAtLocation = isBlockedByObject(new int[3] { direction[0] + x(), direction[1] + y(), direction[2] + z() });
+                calls = 0;
+                //determine direction and set orientation
+                int[] direction = { pX, pY, pZ };
+                orientation[0] = pX;
+                orientation[1] = pZ;
+                Logging.LogInfo("Player's position is now ( " + x() + "," + y() + "," + z() + ")", Logging.debugState.SPAM);
 
-                //Passes the check and can move
-                if (!objectAtLocation)
+                try
                 {
-                    MoveDirection(direction);
+                    bool objectAtLocation = isBlockedByObject(new int[3] { direction[0] + x(), direction[1] + y(), direction[2] + z() });
+
+                    //Passes the check and can move
+                    if (!objectAtLocation)
+                    {
+                        MoveDirection(direction);
+                        addMoveDirection(direction[0], direction[1], direction[2]);
+                    }
+
+                    //check objects that need to be checked
+                    else
+                    {
+                        checkSpecialCollision(OneInFront());
+                    }
+                    checkGrounded();
+                    //room.PrintGrid(room.roomArray);
+                    //send the package to the clients
+                    SendConfMove();
                 }
 
-                //check objects that need to be checked
-                else
+                catch (Exception e)
                 {
-                    checkSpecialCollision(OneInFront());
+                    Logging.LogInfo("probably trying to move off the grid", Logging.debugState.DETAILED);
+                    Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
                 }
-                checkGrounded();
-                //room.PrintGrid(room.roomArray);
-                //send the package to the clients
-                SendConfMove();
-            }
-
-            catch (Exception e)
-            {
-                Logging.LogInfo("probably trying to move off the grid", Logging.debugState.DETAILED);
-                Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
 
@@ -590,6 +636,11 @@ namespace Server
             room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
         }
 
+        private void addMoveDirection(float pX, float pY, float pZ)
+        {
+            directionCommands += pX + " " + pY + " " + pZ + " ";
+            
+        }
 
         
         #endregion
@@ -608,7 +659,8 @@ namespace Server
             _confMove.dirX = x() + room.minX;
             _confMove.dirY = y() + room.minY;
             _confMove.dirZ = z() + room.minZ;
-
+            _confMove.directions = directionCommands;
+            directionCommands = "";
             if(currentBox != null)
             {
                 currentBox.MovePosition(x(), y(), z());
@@ -623,7 +675,6 @@ namespace Server
 
 
             room.sendToAll(_confMove);
-            //room.PrintGrid(room.roomArray);
         }
 
         /// <summary>
@@ -781,8 +832,10 @@ namespace Server
                 {
                     timer = 0;
                     tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
+                    calls--;
                 }
                 timer++;
+
                 
             }
             else
