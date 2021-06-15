@@ -87,7 +87,49 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfLoadScene) { handleLoadScene(pInMessage as ConfLoadScene); }
         if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
         if (pInMessage is ConfPlayerSwitch) { handleConfPlayerSwitch(pInMessage as ConfPlayerSwitch); }
+        if (pInMessage is ConfAnimation) { handleConfAnimation(pInMessage as ConfAnimation); }
     }
+
+    private void handleConfAnimation(ConfAnimation pMessage)
+    {
+        GameObject player1 = serviceLocator.GetFromList("Player1");
+        GameObject player2 = serviceLocator.GetFromList("Player2");
+
+
+        if (pMessage.player == 0)
+        {
+            if (pMessage.isFalling && !player1.GetComponent<AnimationHandler>().isFalling)
+            {
+                player1.GetComponent<AnimationHandler>().DoTrigger("startFalling");
+                player1.GetComponent<AnimationHandler>().isFalling = true;
+            }
+            if (pMessage.isCrawling)
+            {
+                player1.GetComponent<AnimationHandler>().DoTrigger("startCrawling");
+            }
+            else
+            {
+                player1.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
+            }
+        }
+        else
+        {
+            if (pMessage.isFalling && !player2.GetComponent<AnimationHandler>().isFalling)
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("startFalling");
+                player2.GetComponent<AnimationHandler>().isFalling = true;
+            }
+            if (pMessage.isCrawling)
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("startCrawling");
+            }
+            else
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
+            }
+        }
+    }
+
 
     private void handleConfPlayerSwitch(ConfPlayerSwitch pMessage)
     {
@@ -223,7 +265,6 @@ public class ClientManager : MonoBehaviour
         if (pMessage.player == 0)
         {
             //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
-            player1.GetComponent<AnimationHandler>().isFalling = pMessage.isFalling;
             //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player1.GetComponent<Movement>().disectMovementCommands(pMessage.directions);
             //player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
@@ -233,7 +274,6 @@ public class ClientManager : MonoBehaviour
         else
         {
             //player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
-            player2.GetComponent<AnimationHandler>().isFalling = pMessage.isFalling;
 
             //player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player2.GetComponent<Movement>().disectMovementCommands(pMessage.directions);

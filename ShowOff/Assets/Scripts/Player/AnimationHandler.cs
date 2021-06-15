@@ -14,6 +14,7 @@ public class AnimationHandler : MonoBehaviour
     public float timer;
     public float currentTimer;
 
+    private float fallTimer;
 
     public void Start()
     {
@@ -26,12 +27,10 @@ public class AnimationHandler : MonoBehaviour
         {
             currentTimer = 0;
             animator.SetBool("isWalking", true);
-            animator.SetBool("isFalling", false);
         }
         else if(!isWalking && !isFalling)
         {
             animator.SetBool("isWalking", false);
-            animator.SetBool("isFalling", false);
             if (currentTimer >= timer)
             {
                 currentTimer = 0;
@@ -48,9 +47,18 @@ public class AnimationHandler : MonoBehaviour
         }
         else if (isFalling)
         {
-            animator.SetBool("isFalling", true);
+            
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), 1))
+            {
+                fallTimer += Time.deltaTime;
+                if(fallTimer > 0.25f)
+                {
+                    fallTimer = 0;
+                    DoTrigger("isLanding");
+                    isFalling = false;
+                }
+            }
         }
-
     }
 
     public void DoTrigger(string pTrigger)
@@ -59,13 +67,13 @@ public class AnimationHandler : MonoBehaviour
         {
             switch (pTrigger)
             {
-                case ("startCrawl"):
+                case ("startCrawling"):
                     if (isAbleToCrawl)
                     {
                         animator.SetTrigger(pTrigger);
                     }
                     break;
-                case ("stopCrawl"):
+                case ("stopCrawling"):
                     if (isAbleToCrawl)
                     {
                         animator.SetTrigger(pTrigger);

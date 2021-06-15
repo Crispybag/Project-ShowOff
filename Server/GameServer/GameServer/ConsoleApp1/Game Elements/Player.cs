@@ -574,16 +574,17 @@ namespace Server
                     //if object is 1 below you, stop falling
                     if (isBlockedByObject(pPosition) || y() <= 0)
                     {
-                        Console.WriteLine("My man, we are totally not falling!");
                         isGrounded = true;
-                        isFalling = false;
                     }
 
                     //else fall 1 further down
                     else
                     {
-                        Console.WriteLine("Yooooo we are fallinng wooooo!");
-                        isFalling = true;
+                        ConfAnimation animation = new ConfAnimation();
+                        animation.isFalling = true;
+                        animation.player = GetPlayerIndex();
+                        room.sendToAll(animation);
+                        
                         calls++;
                         MoveDirection(0, -1, 0);
                         addMoveDirection(0, -1, 0);
@@ -683,9 +684,6 @@ namespace Server
             _confMove.dirX = x() + room.minX;
             _confMove.dirY = y() + room.minY;
             _confMove.dirZ = z() + room.minZ;
-            Console.WriteLine("Are we faling?!?!?! " + isFalling);
-            _confMove.isFalling = isFalling;
-            //_confMove.isFalling = true;
 
 
             _confMove.directions = directionCommands;

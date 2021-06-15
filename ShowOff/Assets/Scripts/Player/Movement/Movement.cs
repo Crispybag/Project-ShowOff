@@ -114,8 +114,6 @@ public abstract class Movement : MonoBehaviour
                 float dirY = float.Parse(movementCalls[i + 1], CultureInfo.InvariantCulture);
                 float dirZ = float.Parse(movementCalls[i + 2], CultureInfo.InvariantCulture);
                 Vector3 vec = new Vector3(dirX, dirY, dirZ);
-                Debug.Log("Moving to pos: " + vec);
-                Debug.Log("movement: " + float.Parse(movementCalls[i + 1], CultureInfo.InvariantCulture));
                 coords.Add(vec);
             }
             catch
@@ -136,7 +134,6 @@ public abstract class Movement : MonoBehaviour
         //_targetPosition = pDirection + _currentPosition;
         _targetPosition = pDirection + transform.position;
         _currentPosition = transform.position;
-        Debug.Log("Target position!: " + _targetPosition);
 
         currentRotation = model.transform.rotation.eulerAngles;
         Vector3 rot = model.transform.rotation.eulerAngles;
