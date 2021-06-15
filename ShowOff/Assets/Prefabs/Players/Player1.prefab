@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  _moveSpeed: 0.25
+  _moveSpeed: 0.18
   playerName: Player1
 --- !u!114 &6605004223631112108
 MonoBehaviour:
@@ -161,10 +161,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalking: 0
+  isFalling: 0
   idleAnimations:
   - BeardScratch
   - LookAround
   isAbleToBox: 1
+  isAbleToCrawl: 0
+  isAbleToAir: 0
   timer: 0
   currentTimer: 0
 --- !u!1 &6605004224137747744

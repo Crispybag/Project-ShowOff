@@ -85,7 +85,7 @@ namespace Server
                 {
                     Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
                     coolBox.MovePosition(x(), y() + 1, z());
-                    coolBox.SendBoxPackage(coolBox, coolBox.x(), coolBox.y(), coolBox.z(), false);
+                    coolBox.sendBoxPackage(false);
                 }
             }
             elevatorMove.ID = ID;

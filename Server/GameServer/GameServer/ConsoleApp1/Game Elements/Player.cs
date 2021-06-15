@@ -426,7 +426,7 @@ namespace Server
                 //check if the player can move on the slope and move on it when the player can move on the slope
                 if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     addMoveDirection(orientation[0], 0, orientation[1]);
                     MovePosition(pSlope.MoveOnSlope(pPosition));
                 }
@@ -434,7 +434,7 @@ namespace Server
                 //if the slope is blocked by anything
                 else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
 
                 }
@@ -460,7 +460,7 @@ namespace Server
                 //check with that slope whether the player can move on it
                 if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     addMoveDirection(orientation[0], 0, orientation[1]);
 
                     MovePosition(pSlope.MoveOnSlope(pPosition));
@@ -469,7 +469,7 @@ namespace Server
                 //if other end of slope is blocked
                 else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
                 }
 
@@ -680,6 +680,7 @@ namespace Server
             _confMove.dirZ = z() + room.minZ;
             Console.WriteLine("Are we faling?!?!?! " + isFalling);
             _confMove.isFalling = isFalling;
+            //_confMove.isFalling = true;
 
 
             _confMove.directions = directionCommands;
