@@ -609,8 +609,18 @@ namespace Server
                     //Passes the check and can move
                     if (!objectAtLocation)
                     {
-                        MoveDirection(direction);
-                        addMoveDirection(direction[0], direction[1], direction[2]);
+                        if (!isCrawlSpace(OneInFront()))
+                        {
+                            MoveDirection(direction);
+                            addMoveDirection(direction[0], direction[1], direction[2]);
+
+                        }
+                        else if (playerType == PlayerType.ALEX)
+                        {
+                            //ADD CRAWLING BOOL HERE !!!!!! WWEEEWOOOWEEEWOOO
+                            MoveDirection(direction);
+                            addMoveDirection(direction[0], direction[1], direction[2]);
+                        }
                     }
 
                     //check objects that need to be checked
@@ -631,6 +641,20 @@ namespace Server
                 }
             }
         }
+
+        private bool isCrawlSpace(int[] pPosition)
+        {
+            if (room.OnCoordinatesContain(pPosition[0], pPosition[1] + 1, pPosition[2], 2))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+
+
 
         /// <summary>
         /// (Ezra) Starts new dialogue
