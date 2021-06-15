@@ -558,6 +558,10 @@ namespace Server
                 }
             }
         }
+
+        /// <summary>
+        /// check grounded lol
+        /// </summary>
         private void checkGrounded()
         {
             try
@@ -594,7 +598,8 @@ namespace Server
         //Does the check whether the player can change position or not
         public void tryPositionChange(int pX, int pY, int pZ)
         {
-            if (calls <= 0)
+            //add stun timer here later, for now it is removed due to personal annoyance
+            if (true)
             {
                 calls = 0;
                 //determine direction and set orientation
@@ -652,7 +657,7 @@ namespace Server
         /// <param name="pX"></param>
         /// <param name="pY"></param>
         /// <param name="pZ"></param>
-        /// <param name="calls"></param>
+        /// <param name="calls"> amount of times this needs to be called</param>
         private void addMoveDirection(float pX, float pY, float pZ, float calls = 1)
         {
             for (int i = 0; i < calls; i++)
