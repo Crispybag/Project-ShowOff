@@ -424,18 +424,20 @@ namespace Server
                 //check if the player can move on the slope and move on it when the player can move on the slope
                 if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
                     addMoveDirection(orientation[0], 0, orientation[1]);
                     MovePosition(pSlope.MoveOnSlope(pPosition));
                 }
+                
+                //if the slope is blocked by anything
                 else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
 
                 }
+
+                //if player walks in wrong angle or slope goes off the map
                 else
                 {
                     calls = 0;
@@ -456,18 +458,20 @@ namespace Server
                 //check with that slope whether the player can move on it
                 if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
                     addMoveDirection(orientation[0], 0, orientation[1]);
 
                     MovePosition(pSlope.MoveOnSlope(pPosition));
                 }
+                
+                //if other end of slope is blocked
                 else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
-                    addMoveDirection(directionVec[0] * 0.5f, directionVec[1] * 0.5f, directionVec[2] * 0.5f);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
                 }
+
+                //if player is not in correct rotation
                 else
                 {
                     calls = 0;
@@ -636,10 +640,19 @@ namespace Server
             room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
         }
 
-        private void addMoveDirection(float pX, float pY, float pZ)
+        /// <summary>
+        /// Adds a movement command to the string to determine player movement
+        /// </summary>
+        /// <param name="pX"></param>
+        /// <param name="pY"></param>
+        /// <param name="pZ"></param>
+        /// <param name="calls"></param>
+        private void addMoveDirection(float pX, float pY, float pZ, float calls = 1)
         {
-            directionCommands += pX + " " + pY + " " + pZ + " ";
-            
+            for (int i = 0; i < calls; i++)
+            {
+                directionCommands += pX / calls + " " + pY / calls + " " + pZ / calls + " ";
+            }
         }
 
         

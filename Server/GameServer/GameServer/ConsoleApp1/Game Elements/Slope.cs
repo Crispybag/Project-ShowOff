@@ -87,7 +87,7 @@ namespace Server
         /// </summary>
         /// <param name="pPosition"></param>
         /// <param name="pOrientation"></param>
-        /// <returns></returns>
+        /// <returns>0 if all is ok, 1 if player is blocked, 2 if player is facing wrong direction or slope ends in oblivion</returns>
         public int CanMoveOnSlope(int[] pPosition, int[] pOrientation)
         {
             //if it hits position 2 and has opposing orientation
