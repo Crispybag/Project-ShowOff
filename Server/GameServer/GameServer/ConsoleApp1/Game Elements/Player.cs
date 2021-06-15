@@ -710,9 +710,9 @@ namespace Server
             }
 
             //set y rotation
-            if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 0; }
+            if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 180; }
             else if (orientation[0] == 1 && orientation[1] == 0) { _confMove.orientation = 90; }
-            else if (orientation[0] == 0 && orientation[1] == 1) { _confMove.orientation = 180; }
+            else if (orientation[0] == 0 && orientation[1] == 1) { _confMove.orientation = 0; }
             else { _confMove.orientation = -90; }
 
 

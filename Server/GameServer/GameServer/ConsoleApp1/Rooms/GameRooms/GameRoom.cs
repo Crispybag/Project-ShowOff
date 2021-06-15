@@ -1094,7 +1094,7 @@ namespace Server
             }
 
             else
-                Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
+                //Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
 
             return null;
         }
