@@ -9,6 +9,8 @@ public class AnimationHandler : MonoBehaviour
     public bool isFalling;
     public List<string> idleAnimations;
     public bool isAbleToBox;
+    public bool isAbleToCrawl;
+    public bool isAbleToAir;
     public float timer;
     public float currentTimer;
 
@@ -55,7 +57,37 @@ public class AnimationHandler : MonoBehaviour
     {
         try
         {
-            animator.SetTrigger(pTrigger);
+            switch (pTrigger)
+            {
+                case ("startCrawl"):
+                    if (isAbleToCrawl)
+                    {
+                        animator.SetTrigger(pTrigger);
+                    }
+                    break;
+                case ("stopCrawl"):
+                    if (isAbleToCrawl)
+                    {
+                        animator.SetTrigger(pTrigger);
+                    }
+                    break;
+                case ("startAir"):
+                    if (isAbleToAir)
+                    {
+                        animator.SetTrigger(pTrigger);
+                    }
+                    break;
+                case ("stopAir"):
+                    if (isAbleToAir)
+                    {
+                        animator.SetTrigger(pTrigger);
+                    }
+                    break;
+                default:
+                    animator.SetTrigger(pTrigger);
+                    break;
+            }
+            
         }
         catch
         {

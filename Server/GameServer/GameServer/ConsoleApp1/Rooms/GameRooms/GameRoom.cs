@@ -21,6 +21,8 @@ namespace Server
         public bool isReloading = false;
         public string levelFile;
         public string sceneName;
+
+
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -79,7 +81,6 @@ namespace Server
         /// <summary>
         /// (Leo) Loads Level
         /// </summary>
-        /// 
         public void LoadLevel(string filePath)
         {
             GenerateGridFromText(filePath);
