@@ -17,7 +17,6 @@ public class Water : MonoBehaviour
 
     private void Start()
     {
-
         _currentPosition = waterLevelPoints[0].transform.position;
         _targetPosition = this.transform.position;
         serviceLocator.interactableList.Add(ID, this.gameObject);
