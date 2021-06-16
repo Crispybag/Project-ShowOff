@@ -18,6 +18,7 @@ public class DoorManager : MonoBehaviour
     [FMODUnity.EventRef]
     public string eventPathClosed;
 
+    
     [FMODUnity.EventRef]
     public string eventPathOpen;
 

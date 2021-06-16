@@ -61,6 +61,12 @@ public class AnimationHandler : MonoBehaviour
         }
     }
 
+    public AnimationClip GetAnimatorClipInfos()
+    {
+        AnimatorClipInfo[] pog = animator.GetCurrentAnimatorClipInfo(0);
+        return pog[0].clip;
+
+    }
     public void DoTrigger(string pTrigger)
     {
         try
