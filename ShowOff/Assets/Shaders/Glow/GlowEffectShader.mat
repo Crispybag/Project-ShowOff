@@ -13,12 +13,16 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_1dff92077aae41ffa262003426a9d73a:
+        m_Texture: {fileID: 2800000, guid: 3944b920f4248fa49bd23b63e17a3d7b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -32,9 +36,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_400a974ee1174159a02205cad963a179: 0.75
-    - Vector1_6a699c2602674ef686ff2c28c1b87f90: 0.07
-    - Vector1_99b67b66630a42e49488bea236697d15: 0.12
+    - Vector1_400a974ee1174159a02205cad963a179: 0
+    - Vector1_6a699c2602674ef686ff2c28c1b87f90: 0.15
+    - Vector1_99b67b66630a42e49488bea236697d15: 0.1
     m_Colors:
-    - Color_6274cad2851a44acb486ce7fc1cc2a31: {r: 1, g: 0.17696655, b: 0.051886775, a: 0.7607843}
+    - Color_6274cad2851a44acb486ce7fc1cc2a31: {r: 0, g: 1, b: 0.9898968, a: 1}
+    - Color_902723eda79241ceb2edec5096c4d27c: {r: 0.76862735, g: 0.8381662, b: 2.9960785, a: 1}
   m_BuildTextureStacks: []
