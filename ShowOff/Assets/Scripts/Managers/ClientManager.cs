@@ -21,6 +21,7 @@ public class ClientManager : MonoBehaviour
     public TcpClient client;
     public string ClientName;
     [HideInInspector] public int playersWantToReset = 0;
+    private bool isHoldingBox = false;
 
     //----------------------- private ------------------------
 
@@ -84,10 +85,51 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
         if (pInMessage is ConfReloadScene) {  handleReloadScene(pInMessage as ConfReloadScene);  }
         if (pInMessage is ConfLoadScene) { handleLoadScene(pInMessage as ConfLoadScene); }
-
         if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
         if (pInMessage is ConfPlayerSwitch) { handleConfPlayerSwitch(pInMessage as ConfPlayerSwitch); }
+        if (pInMessage is ConfAnimation) { handleConfAnimation(pInMessage as ConfAnimation); }
     }
+
+    private void handleConfAnimation(ConfAnimation pMessage)
+    {
+        GameObject player1 = serviceLocator.GetFromList("Player1");
+        GameObject player2 = serviceLocator.GetFromList("Player2");
+
+
+        if (pMessage.player == 0)
+        {
+            if (pMessage.isFalling && !player1.GetComponent<AnimationHandler>().isFalling)
+            {
+                player1.GetComponent<AnimationHandler>().DoTrigger("startFalling");
+                player1.GetComponent<AnimationHandler>().isFalling = true;
+            }
+            if (pMessage.isCrawling)
+            {
+                player1.GetComponent<AnimationHandler>().DoTrigger("startCrawling");
+            }
+            else
+            {
+                player1.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
+            }
+        }
+        else
+        {
+            if (pMessage.isFalling && !player2.GetComponent<AnimationHandler>().isFalling)
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("startFalling");
+                player2.GetComponent<AnimationHandler>().isFalling = true;
+            }
+            if (pMessage.isCrawling)
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("startCrawling");
+            }
+            else
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
+            }
+        }
+    }
+
 
     private void handleConfPlayerSwitch(ConfPlayerSwitch pMessage)
     {
@@ -179,7 +221,19 @@ public class ClientManager : MonoBehaviour
         {
             case ConfActuatorToggle.Object.LEVER:
                 Debug.Log("Its a lever toggle!");
-                obj.GetComponent<Lever>().SetActivatedLever(pMessage.isActived);
+                if (obj.GetComponent<Lever>().isActuated != pMessage.isActived)
+                {
+                    obj.GetComponent<Lever>().SetActivatedLever(pMessage.isActived);
+                    //down = on, up = off
+                    if (pMessage.isActived)
+                    {
+                        serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverDown");
+                    }
+                    else
+                    {
+                        serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverUp");
+                    }
+                }
                 break;
             case ConfActuatorToggle.Object.PRESSUREPLATE:
                 Debug.Log("Its a pressure plate toggle!");
@@ -188,6 +242,10 @@ public class ClientManager : MonoBehaviour
             case ConfActuatorToggle.Object.BUTTON:
                 Debug.Log("Its a button toggle!");
                 obj.GetComponent<Button>().UpdateActuator(pMessage.isActived);
+                if (pMessage.isActived)
+                {
+                    serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("isPushingButton");
+                }
                 break;
             case ConfActuatorToggle.Object.CRACK:
                 Debug.Log("Its a crack toggle!");
@@ -206,6 +264,8 @@ public class ClientManager : MonoBehaviour
 
         if (pMessage.player == 0)
         {
+            //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
+            //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player1.GetComponent<Movement>().disectMovementCommands(pMessage.directions);
             if (pMessage.directions.Length < 5)player1.GetComponent<Movement>().SetRotation(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             //player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
@@ -214,6 +274,9 @@ public class ClientManager : MonoBehaviour
         }
         else
         {
+            //player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
+
+            //player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player2.GetComponent<Movement>().disectMovementCommands(pMessage.directions);
             if (pMessage.directions.Length < 5) player2.GetComponent<Movement>().SetRotation(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
 
@@ -274,7 +337,20 @@ public class ClientManager : MonoBehaviour
     {
         try
         {
+            Debug.Log("Got a box with a value of" + pHandleBox.isPickedUp);
             serviceLocator.interactableList[pHandleBox.ID].GetComponent<BoxMovement>().UpdateBox(pHandleBox.isPickedUp, pHandleBox.posX, pHandleBox.posY, pHandleBox.posZ);
+            if (pHandleBox.isPickedUp != isHoldingBox)
+            {
+                isHoldingBox = pHandleBox.isPickedUp;
+                if (isHoldingBox)
+                {
+                    serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PickUp");
+                }
+                else if (!isHoldingBox)
+                {
+                    serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("DropOff");
+                }
+            }
         }
         catch
         {

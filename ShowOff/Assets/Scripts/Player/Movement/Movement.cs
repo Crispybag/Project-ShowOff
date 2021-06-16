@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using static ServiceLocator;
@@ -35,8 +36,8 @@ public abstract class Movement : MonoBehaviour
     private float timer;
 
     public bool canMove = true;
-    private Animator animator;
     GameObject model;
+    private AnimationHandler animation;
 
     private float animatorCooldown;
 
@@ -51,8 +52,8 @@ public abstract class Movement : MonoBehaviour
         //toBePosition = transform.position;
         _currentPosition = transform.position;
         _targetPosition = transform.position;
-        animator = GetComponentInChildren<Animator>();
         model = transform.Find("Model").gameObject;
+        animation = this.transform.GetComponent<AnimationHandler>();
     }
 
     protected virtual void Update()
@@ -110,9 +111,9 @@ public abstract class Movement : MonoBehaviour
         {
             try
             {
-                float dirX = float.Parse(movementCalls[i]);
-                float dirY = float.Parse(movementCalls[i + 1]);
-                float dirZ = float.Parse(movementCalls[i + 2]);
+                float dirX = float.Parse(movementCalls[i], CultureInfo.InvariantCulture);
+                float dirY = float.Parse(movementCalls[i + 1], CultureInfo.InvariantCulture);
+                float dirZ = float.Parse(movementCalls[i + 2], CultureInfo.InvariantCulture);
                 Vector3 vec = new Vector3(dirX, dirY, dirZ);
                 coords.Add(vec);
             }
@@ -122,13 +123,12 @@ public abstract class Movement : MonoBehaviour
             }
         }
 
-        //Debug.Log(coords.Count);
-
     }
     public void SetRotation(Vector3 pDirection, int orientation = -1)
     {
         currentRotation = model.transform.rotation.eulerAngles;
         Vector3 rot = model.transform.rotation.eulerAngles;
+
 
         if (orientation == -1)
         {
@@ -199,7 +199,7 @@ public abstract class Movement : MonoBehaviour
             _currentPosition = transform.position;
             if (animatorCooldown >= 0.1f)
             {
-                animator.SetBool("isWalking", false);
+                animation.isWalking = false;
             }
             animatorCooldown += Time.deltaTime;
             
@@ -207,7 +207,7 @@ public abstract class Movement : MonoBehaviour
         else
         {
             animatorCooldown = 0;
-            animator.SetBool("isWalking", true);
+            animation.isWalking = true;
 
             //canMove = false;
         }

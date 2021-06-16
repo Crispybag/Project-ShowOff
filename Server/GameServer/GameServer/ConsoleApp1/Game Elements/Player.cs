@@ -21,6 +21,8 @@ namespace Server
         public Box currentBox;
         private int[,,] position;
 
+        private bool isFalling = false;
+
         private int callLoopPrevent;
         public bool wantsReset;
         private int cameraRotation;
@@ -427,7 +429,7 @@ namespace Server
                 //check if the player can move on the slope and move on it when the player can move on the slope
                 if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     addMoveDirection(orientation[0], 0, orientation[1]);
                     MovePosition(pSlope.MoveOnSlope(pPosition));
                 }
@@ -435,7 +437,7 @@ namespace Server
                 //if the slope is blocked by anything
                 else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
 
                 }
@@ -461,7 +463,7 @@ namespace Server
                 //check with that slope whether the player can move on it
                 if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     addMoveDirection(orientation[0], 0, orientation[1]);
 
                     MovePosition(pSlope.MoveOnSlope(pPosition));
@@ -470,7 +472,7 @@ namespace Server
                 //if other end of slope is blocked
                 else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
-                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2], 2);
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
                 }
 
@@ -586,6 +588,11 @@ namespace Server
                     //else fall 1 further down
                     else
                     {
+                        ConfAnimation animation = new ConfAnimation();
+                        animation.isFalling = true;
+                        animation.player = GetPlayerIndex();
+                        room.sendToAll(animation);
+                        
                         calls++;
                         MoveDirection(0, -1, 0);
                         addMoveDirection(0, -1, 0);
@@ -710,6 +717,8 @@ namespace Server
             _confMove.dirX = x() + room.minX;
             _confMove.dirY = y() + room.minY;
             _confMove.dirZ = z() + room.minZ;
+
+
             _confMove.directions = directionCommands;
             directionCommands = "";
             if(currentBox != null)
