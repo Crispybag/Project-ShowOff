@@ -24,6 +24,9 @@ namespace Server
         private int callLoopPrevent;
         public bool wantsReset;
         private int cameraRotation;
+        private bool endsInAirChannel;
+        private int refreshSpeed = 2;
+
         //standard stuff, along with quick coordinates
         public enum PlayerType
         {
@@ -33,7 +36,7 @@ namespace Server
 
         public PlayerType playerType;
 
-        private int calls;
+        private float calls;
         private string directionCommands;
 
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0, PlayerType pPlayerType = PlayerType.NUC) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
@@ -523,7 +526,6 @@ namespace Server
 
             //infinite recursive loop prevention
             callLoopPrevent++;
-            calls++;
             if (callLoopPrevent >= 21)
             {
                 Logging.LogInfo("potential infinite recursive loop in check special collision, make sure that the code runs properly or increase treshold", Logging.debugState.DETAILED);
@@ -538,20 +540,26 @@ namespace Server
                 {
                     //slope hit at s0
                     case (10):
+                        endsInAirChannel = false;
                         handleS0Hit(pPosition);
                         callLoopPrevent = 0;
                         break;
 
                         //airchannel
                     case (13):
+                        endsInAirChannel = true;
                         handleAirChannelHit(pPosition);
                         callLoopPrevent = 0;
                         break;
 
                     default:
                         //remove all information
+            
                         calls = 0;
-                        directionCommands = "";
+                        if (!endsInAirChannel)
+                        {
+                            directionCommands = "";
+                        }
                         break;
                 }
             }
@@ -593,7 +601,7 @@ namespace Server
         public void tryPositionChange(int pX, int pY, int pZ)
         {
             //add stun timer here later, for now it is removed due to personal annoyance
-            if (true)
+            if (calls < 1)
             {
                 calls = 0;
                 //determine direction and set orientation
@@ -675,12 +683,13 @@ namespace Server
         /// <param name="pX"></param>
         /// <param name="pY"></param>
         /// <param name="pZ"></param>
-        /// <param name="calls"> amount of times this needs to be called</param>
-        private void addMoveDirection(float pX, float pY, float pZ, float calls = 1)
+        /// <param name="pCalls"> amount of times this needs to be called</param>
+        private void addMoveDirection(float pX, float pY, float pZ, float pCalls = 1)
         {
-            for (int i = 0; i < calls; i++)
+            for (int i = 0; i < pCalls; i++)
             {
-                directionCommands += pX / calls + " " + pY / calls + " " + pZ / calls + " ";
+                directionCommands += pX / pCalls + " " + pY / pCalls + " " + pZ / pCalls + " ";
+                calls++;
             }
         }
 
@@ -865,16 +874,16 @@ namespace Server
         public override void Update()
         {
             base.Update();
+            calls-= 1f/refreshSpeed;
 
             //walk timer
             if (walkDirection[0] != 0 || walkDirection[2] != 0)
             {
                 //Logging.LogInfo("trying to walk in a direction");
-                if (timer >= 2)
+                if (timer >= refreshSpeed)
                 {
                     timer = 0;
                     tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
-                    calls--;
                 }
                 timer++;
 

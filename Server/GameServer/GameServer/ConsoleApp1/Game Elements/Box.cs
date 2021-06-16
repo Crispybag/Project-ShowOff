@@ -129,19 +129,35 @@ namespace Server
         private void handleAirChannelHit(int[] pPosition)
         {
             infLoopPrevention++;
+            int testVal1 = pPosition[2];
             if (room.OnCoordinatesGetGameObject(pPosition, 13) is AirChannel && infLoopPrevention < 20)
             {
                 AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
-
-                if (airChannel.CanPushPlayer(pPosition))
+                if (airChannel.isActivated)
                 {
-                    MovePosition(airChannel.PushPlayer(pPosition));
-                    sendBoxPackage(false);
-                }
+                    //move if the box is shovable
+                    if (airChannel.CanPushPlayer(pPosition))
+                    {
+                        
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                        sendBoxPackage(false);
+                    }
 
-                else
-                {
-                    handleAirChannelHit(airChannel.PushPlayer(pPosition));
+                    //move to position if there is an airchannel
+                    else if (room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 13))
+                    {
+                        int testVal = pPosition[2];
+                        int testVal2 = airChannel.PushPlayer(pPosition)[2];
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                        int testval3 = pPosition[2];
+                        handleAirChannelHit(new int[3] { x(), y(), z() });
+                    }
+
+                    //conclude if neither are true
+                    else
+                    {
+                        sendBoxPackage(false);
+                    }
                 }
             }
             infLoopPrevention = 0;

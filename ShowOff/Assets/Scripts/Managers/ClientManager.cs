@@ -236,7 +236,7 @@ public class ClientManager : MonoBehaviour
 
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Level0Tutorial-Town");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Features");
 
                 break;
             default:
