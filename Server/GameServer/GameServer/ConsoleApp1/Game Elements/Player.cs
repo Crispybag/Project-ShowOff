@@ -505,7 +505,7 @@ namespace Server
                 }
 
 
-                else
+                else if (!room.OnCoordinatesContain(pPosition, 7))
                 {
                     MoveDirection(orientation[0], 0, orientation[1]);
                     addMoveDirection(orientation[0], 0, orientation[1]);
