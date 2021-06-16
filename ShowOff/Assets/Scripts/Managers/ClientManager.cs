@@ -267,9 +267,10 @@ public class ClientManager : MonoBehaviour
             //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player1.GetComponent<Movement>().disectMovementCommands(pMessage.directions);
+            if (pMessage.directions.Length < 5)player1.GetComponent<Movement>().SetRotation(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             //player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
 
-            Debug.Log("Moved player 1!");
+            //Debug.Log("Moved player 1!");
         }
         else
         {
@@ -277,10 +278,11 @@ public class ClientManager : MonoBehaviour
 
             //player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player2.GetComponent<Movement>().disectMovementCommands(pMessage.directions);
+            if (pMessage.directions.Length < 5) player2.GetComponent<Movement>().SetRotation(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
 
             //player2.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
 
-            Debug.Log("Moved player 2!");
+            //Debug.Log("Moved player 2!");
         }
     
     }

@@ -62,12 +62,13 @@ public abstract class Movement : MonoBehaviour
         timer += Time.deltaTime;
         float ratio = timer / _travelTime;
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
-        model.transform.rotation = Quaternion.Euler(Vector3.Lerp(currentRotation, targetRotation, ratio));
+        model.transform.rotation = Quaternion.Euler(new Vector3(model.transform.rotation.x, Mathf.LerpAngle(currentRotation.y, targetRotation.y, ratio), model.transform.rotation.z));
 
         //set to next position in line
         if (coords.Count != 0 && ratio > 0.99f)
         {
             moveToTile(coords[0]);
+            SetRotation(coords[0]);
             coords.RemoveAt(0);
         }
 
@@ -102,7 +103,7 @@ public abstract class Movement : MonoBehaviour
     //=========================================================================================
     public void disectMovementCommands(string pMovements)
     {
-        Debug.Log(pMovements);
+        //Debug.Log(pMovements);
         //coords.Clear();
         List<string> movementCalls = pMovements.Split(' ').ToList();
 
@@ -123,38 +124,49 @@ public abstract class Movement : MonoBehaviour
         }
 
     }
-
-
-    public void moveToTile(Vector3 pDirection, int orientation = -1)
+    public void SetRotation(Vector3 pDirection, int orientation = -1)
     {
-
-        //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
-        //pDirection = getNormalizedDirection(pDirection);
-        //if there isnt a wall update our target position to where we want to go.
-        //_targetPosition = pDirection + _currentPosition;
-        _targetPosition = pDirection + transform.position;
-        _currentPosition = transform.position;
-
         currentRotation = model.transform.rotation.eulerAngles;
         Vector3 rot = model.transform.rotation.eulerAngles;
 
-        if(orientation == 180)
+
+        if (orientation == -1)
         {
-            orientation = 0;
+            //set angle based on movement vector
+            if (pDirection.x < 0)
+            {
+                orientation = 270;      //left
+            }
+            else if (pDirection.x > 0)
+            {
+                orientation = 90;       //right
+            }
+            else if (pDirection.z < 0)
+            {
+                orientation = 180;        //down
+            }
+            else if (pDirection.z > 0)
+            {
+                orientation = 0;      //up
+            }
         }
-        else if(orientation == 0)
-        {
-            orientation = 180;
-        }
-        else if (orientation == -90)
-        {
-                orientation = 270;
-        }
+
         if (rot.y != orientation)
         {
             rot.y = orientation;
             targetRotation = rot;
         }
+    }
+
+
+    public void moveToTile(Vector3 pDirection, int orientation = -1)
+    {
+        //if there isnt a wall update our target position to where we want to go.
+        _targetPosition = pDirection + transform.position;
+        _currentPosition = transform.position;
+
+
+
         
 /*        float angle = ((model.transform.rotation.eulerAngles.y - orientation + 540) % 360) - 180;
         if(angle > 0)
