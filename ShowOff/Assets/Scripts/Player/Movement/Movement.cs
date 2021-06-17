@@ -77,27 +77,6 @@ public abstract class Movement : MonoBehaviour
 
     }
 
-
-/*    public void checkForFalling()
-    {
-        if (canMove)
-        {
-            if (Physics.Raycast(_currentPosition, -Vector3.up, out RaycastHit hit, 1f))
-            {
-                //if we hit something that isnt a airchannel nor a terrain, it will move down.
-                if (hit.collider.gameObject.tag != "AirChannel" && hit.collider.gameObject.layer != terrainLayer)
-                {
-                    moveToTile(-Vector3.up);
-                }
-            }
-            //didnt detect anything, thus we need to fall
-            else
-            {
-                moveToTile(-Vector3.up);
-            }
-        }
-    }*/
-
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
@@ -208,8 +187,6 @@ public abstract class Movement : MonoBehaviour
         {
             animatorCooldown = 0;
             animation.isWalking = true;
-
-            //canMove = false;
         }
     }
     //=========================================================================================

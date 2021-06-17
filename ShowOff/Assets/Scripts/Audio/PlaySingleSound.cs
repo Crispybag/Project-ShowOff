@@ -5,14 +5,17 @@ using static ServiceLocator;
 
 public class PlaySingleSound : MonoBehaviour
 {
-    //poggers
     [FMODUnity.EventRef]
     [SerializeField] private string eventPath;
-
+    AudioManager am;
     private void Start()
     {
-        AudioManager am = serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>();
-        am.PlayFromList(eventPath);
+        am = serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>();
+    }
+
+    public void PlaySoundOnce()
+    {
+        am.playSound(eventPath, gameObject);
     }
 }
 

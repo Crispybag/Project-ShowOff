@@ -210,6 +210,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7520330482225201908}
   - component: {fileID: 5547416232517756918}
+  - component: {fileID: 4352006669146578550}
+  - component: {fileID: 3209523882790242361}
   m_Layer: 0
   m_Name: Model
   m_TagString: Player1
@@ -251,6 +253,40 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4352006669146578550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139969121330075726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2e7049faaeeac4cbed28b763917987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footStepsEventPath: event:/character/footsteps/Footsteps_string
+  materialParameter: Types
+  parameterOcclusion: none
+  rayDistance: 1.2
+  defaultMaterial: 0
+  volume: 0.7
+  occlusionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!114 &3209523882790242361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139969121330075726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventPath: event:/dam/outside water
 --- !u!1 &8859024794792734605
 GameObject:
   m_ObjectHideFlags: 0
