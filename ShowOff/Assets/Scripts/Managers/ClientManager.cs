@@ -193,6 +193,11 @@ public class ClientManager : MonoBehaviour
         try
         {
             serviceLocator.GetFromList("CameraManager").GetComponent<CameraManager>()._playerCameraGameObject = serviceLocator.GetFromList(ClientName).transform.Find("CameraPosition").gameObject;
+            InteractableShaderManager[] shaders = FindObjectsOfType<InteractableShaderManager>();
+            foreach(InteractableShaderManager shader in shaders)
+            {
+                shader.SetupShader(pMessage.playerName);
+            }
         }
         catch
         {
