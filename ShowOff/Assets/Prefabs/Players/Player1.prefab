@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventPath: event:/dam/outside water
+  eventPath: event:/gameplay (actions and props)/box placed
 --- !u!1 &8859024794792734605
 GameObject:
   m_ObjectHideFlags: 0
