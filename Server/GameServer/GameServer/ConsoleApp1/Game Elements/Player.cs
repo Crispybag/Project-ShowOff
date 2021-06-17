@@ -626,6 +626,14 @@ namespace Server
                     {
                         if (!isCrawlSpace(OneInFront()))
                         {
+                            if (isCrawling)
+                            {
+                                ConfAnimation animation = new ConfAnimation();
+                                animation.player = GetPlayerIndex();
+                                animation.isCrawling = false;
+                                isCrawling = false;
+                                room.sendToAll(animation);
+                            }
                             MoveDirection(direction);
                             addMoveDirection(direction[0], direction[1], direction[2]);
 
@@ -633,6 +641,14 @@ namespace Server
                         else if (playerType == PlayerType.ALEX)
                         {
                             //ADD CRAWLING BOOL HERE !!!!!! WWEEEWOOOWEEEWOOO
+                            if (!isCrawling)
+                            {
+                                ConfAnimation animation = new ConfAnimation();
+                                animation.player = GetPlayerIndex();
+                                animation.isCrawling = true;
+                                isCrawling = true;
+                                room.sendToAll(animation);
+                            }
                             MoveDirection(direction);
                             addMoveDirection(direction[0], direction[1], direction[2]);
                         }
@@ -656,6 +672,8 @@ namespace Server
                 }
             }
         }
+
+        private bool isCrawling = false;
 
         private bool isCrawlSpace(int[] pPosition)
         {
