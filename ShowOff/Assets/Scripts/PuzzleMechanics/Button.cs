@@ -14,17 +14,6 @@ public class Button : PuzzleFactory
 
     public void UpdateActuator(bool isActive)
     {
-/*        if (isActive)
-        {
-            GetComponent<MeshRenderer>().material = mat2;
-            isActuated = true;
-            ToggleMechanics();
-        }
-        else
-        {
-            GetComponent<MeshRenderer>().material = mat1;
-            isActuated = false;
-            ToggleMechanics();
-        }*/
+        gameObject.GetComponent<PlaySingleSound>().PlaySoundOnce();
     }
 }
