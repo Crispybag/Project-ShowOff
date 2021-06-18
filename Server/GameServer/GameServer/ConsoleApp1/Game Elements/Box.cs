@@ -144,12 +144,9 @@ namespace Server
                     }
 
                     //move to position if there is an airchannel
-                    else if (room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 13))
-                    {
-                        int testVal = pPosition[2];
-                        int testVal2 = airChannel.PushPlayer(pPosition)[2];
+                    else if (room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 13) && !room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 7) && !room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 1))
+                    {                  
                         MovePosition(airChannel.PushPlayer(pPosition));
-                        int testval3 = pPosition[2];
                         handleAirChannelHit(new int[3] { x(), y(), z() });
                     }
 
