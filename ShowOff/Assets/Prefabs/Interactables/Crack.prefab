@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 7413189510946851171}
   - component: {fileID: 7413189510946851196}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Crack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -317,6 +317,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7413189511033049750}
     m_Modifications:
+    - target: {fileID: 8024156992239182213, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8024156992239182215, guid: 73d248db73331374eb256c8bbabd7b93, type: 3}
       propertyPath: m_RootOrder
       value: 0
