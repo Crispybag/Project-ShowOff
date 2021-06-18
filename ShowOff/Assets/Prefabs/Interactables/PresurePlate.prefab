@@ -63,8 +63,9 @@ MonoBehaviour:
   ID: 1
   isActuated: 0
   interactables: []
-  mat1: {fileID: 2100000, guid: bcd4a8e0c32e8a648954aca9cb2c0dc3, type: 2}
-  mat2: {fileID: 2100000, guid: 1a7875ae8103fa644be7ad64f1f6cebf, type: 2}
+  mesh: {fileID: 7427804420496001576}
+  activatedMat: {fileID: 2100000, guid: 42b2f5dca71269147a13cd874202cf15, type: 2}
+  deactivatedMat: {fileID: 2100000, guid: 17bd6eb2e75b1f44297dd3b35fb54cc9, type: 2}
 --- !u!114 &4632667279895246372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,92 +107,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5599196379655154616}
-  - {fileID: 7398564696469682145}
   - {fileID: 4612480659544118315}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7919346612015623515
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7398564696469682145}
-  - component: {fileID: 5837545762046425156}
-  - component: {fileID: 8568054004738542734}
-  m_Layer: 0
-  m_Name: Pressure_Plate_1x1_UVed
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7398564696469682145
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7919346612015623515}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 0.0108, y: 0.0108, z: 0.0108}
-  m_Children: []
-  m_Father: {fileID: 3841038601149480926}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5837545762046425156
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7919346612015623515}
-  m_Mesh: {fileID: -754667642709018251, guid: c9823a371813e0e44b50af3865be92bf, type: 3}
---- !u!23 &8568054004738542734
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7919346612015623515}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: af6f99a67c7b1354fae6c38d91f684cc, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &1542989952251996134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -205,7 +124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6155048051120976845, guid: da064cc8e00bd574f925100885c6d168, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6155048051120976845, guid: da064cc8e00bd574f925100885c6d168, type: 3}
       propertyPath: m_LocalPosition.x
@@ -252,5 +171,10 @@ PrefabInstance:
 --- !u!4 &4612480659544118315 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6155048051120976845, guid: da064cc8e00bd574f925100885c6d168, type: 3}
+  m_PrefabInstance: {fileID: 1542989952251996134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7427804420496001576 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8249769795898551758, guid: da064cc8e00bd574f925100885c6d168, type: 3}
   m_PrefabInstance: {fileID: 1542989952251996134}
   m_PrefabAsset: {fileID: 0}

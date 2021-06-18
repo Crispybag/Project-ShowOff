@@ -17,9 +17,9 @@ public class PressurePlate : PuzzleFactory
 
     //----------------------- private ------------------------
 
-    private List<GameObject> _currentObjects = new List<GameObject>();
-    [SerializeField] private Material mat1;
-    [SerializeField] private Material mat2;
+    [SerializeField] private GameObject mesh;
+    [SerializeField] private Material activatedMat;
+    [SerializeField] private Material deactivatedMat;
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -27,16 +27,21 @@ public class PressurePlate : PuzzleFactory
     private void Start()
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
+        this.gameObject.GetComponent<MeshRenderer>().material = deactivatedMat;
     }
 
-    private void Update()
-    {
-
-    }
 
     public void UpdateActuator(bool isActive)
     {
         gameObject.GetComponent<PlaySingleSound>().PlaySoundOnce();
-
+        gameObject.transform.parent.GetComponentInChildren<Animator>().SetBool("activated", isActive);
+        if (isActive)
+        {
+            mesh.GetComponent<MeshRenderer>().material = activatedMat;
+        }
+        else
+        {
+            mesh.GetComponent<MeshRenderer>().material = deactivatedMat;
+        }
     }
 }
