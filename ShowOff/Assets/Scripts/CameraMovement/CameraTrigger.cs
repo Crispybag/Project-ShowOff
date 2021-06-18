@@ -29,8 +29,14 @@ public class CameraTrigger : MonoBehaviour
     private void Start()
     {
         _cameraManager = serviceLocator.GetFromList("CameraManager").GetComponent<CameraManager>();
+        GetComponent<Collider>().enabled = false;
     }
 
+    bool firstRun = true;
+    private void Update()
+    {
+        if (firstRun) { GetComponent<Collider>().enabled = true; firstRun = false; }
+    }
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
