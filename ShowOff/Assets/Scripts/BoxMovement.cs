@@ -22,8 +22,6 @@ public class BoxMovement : MonoBehaviour
 
     public void UpdateBox(bool isPickedUp, int posX, int posY, int posZ)
     {
-        //this.gameObject.GetComponent<MeshRenderer>().enabled = !isPickedUp;
-        //this.gameObject.transform.position = new Vector3(posX, posY, posZ);
         _currentPosition = transform.position;
         _targetPosition = new Vector3(posX, posY, posZ);
 

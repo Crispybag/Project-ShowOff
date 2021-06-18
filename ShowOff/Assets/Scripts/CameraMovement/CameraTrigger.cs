@@ -38,13 +38,17 @@ public class CameraTrigger : MonoBehaviour
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
+    public void SetToPosition()
+    {
+            _cameraManager.SetPosition(_cameraPosition, _transitionSpeed, _isFollowingPlayer);
 
+    }
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Got an enter!");
         if (other.tag == serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().ClientName)
         {
-            _cameraManager.SetPosition(_cameraPosition, _transitionSpeed, _isFollowingPlayer);
+            SetToPosition();
         }
         
     }

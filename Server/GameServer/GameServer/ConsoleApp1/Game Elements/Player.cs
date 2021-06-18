@@ -220,24 +220,32 @@ namespace Server
                     //for lever
                     if (room.OnCoordinatesContain(OneInFront(), 4))
                     {
+                        //stun timer
+                        calls += 3;
                         sendActuatorToggle(OneInFront());
                     }
 
                     //for button
                     if (room.OnCoordinatesContain(OneInFront(), 8))
                     {
+                        //stun timer
+                        calls += 3;
                         sendActuatorToggle(OneInFront());
                     }
 
                     //for crack
                     if (room.OnCoordinatesContain(OneInFront(), 12))
                     {
+                        //stun timer
+                        calls += 3;
                         sendActuatorToggle(OneInFront());
                     }
 
                     //for box
                     else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
+                        //stun timer
+                        calls += 3;
                         if (playerType == PlayerType.NUC)sendPickUpBox(OneInFront());
                     }
                 }

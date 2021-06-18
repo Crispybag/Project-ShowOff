@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5599196379655154616}
   - component: {fileID: 5599196379655154596}
   - component: {fileID: 5599196379655154597}
+  - component: {fileID: 4632667279895246372}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -64,6 +65,19 @@ MonoBehaviour:
   interactables: []
   mat1: {fileID: 2100000, guid: bcd4a8e0c32e8a648954aca9cb2c0dc3, type: 2}
   mat2: {fileID: 2100000, guid: 1a7875ae8103fa644be7ad64f1f6cebf, type: 2}
+--- !u!114 &4632667279895246372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5599196379655154598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventPath: event:/gameplay (actions and props)/lever
 --- !u!1 &7866806714402558550
 GameObject:
   m_ObjectHideFlags: 0

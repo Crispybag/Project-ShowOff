@@ -34,53 +34,9 @@ public class PressurePlate : PuzzleFactory
 
     }
 
-    //=========================================================================================
-    //                              > Public Tool Functions <
-    //=========================================================================================
-
-    //=========================================================================================
-    //                             > Private Tool Functions <
-    //=========================================================================================
-
-/*    private void OnTriggerEnter(Collider other)
-    {
-        foreach(string tag in _collisionTags)
-        {
-            if(other.tag == tag)
-            {
-                _currentObjects.Add(other.gameObject);
-                UpdateActuator();
-                break;
-            }
-        }
-    }*/
-
-/*    private void OnTriggerExit(Collider other)
-    {
-        foreach (string tag in _collisionTags)
-        {
-            if (other.tag == tag)
-            {
-                _currentObjects.Remove(other.gameObject);
-                UpdateActuator();
-                break;
-            }
-        }
-    }*/
-
     public void UpdateActuator(bool isActive)
     {
-/*        if(isActive)
-        {
-            GetComponent<MeshRenderer>().material = mat2;
-            isActuated = true;
-            ToggleMechanics();
-        }
-        else 
-        {
-            GetComponent<MeshRenderer>().material = mat1;
-            isActuated = false;
-            ToggleMechanics();
-        }*/
+        gameObject.GetComponent<PlaySingleSound>().PlaySoundOnce();
+
     }
 }
