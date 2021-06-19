@@ -13,7 +13,7 @@ public class Crack : PuzzleFactory
 
     public void FixCrack()
     {
-        Destroy(this.gameObject);
+        this.transform.parent.GetComponentInChildren<CrackAnimation>().fixing = true;
     }
 
 }

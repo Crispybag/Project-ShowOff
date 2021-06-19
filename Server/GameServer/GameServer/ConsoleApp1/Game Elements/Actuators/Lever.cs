@@ -19,9 +19,9 @@ namespace Server
             objectIndex = 4;
         }
 
-        public override void OnInteract(ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.LEVER)
+        public override void OnInteract(int player, ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.LEVER)
         {
-            base.OnInteract(pType);
+            base.OnInteract(player, pType);
         }
     }
 }

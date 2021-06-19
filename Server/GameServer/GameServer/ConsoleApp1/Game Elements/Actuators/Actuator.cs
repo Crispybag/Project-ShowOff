@@ -34,9 +34,10 @@ namespace Server
             }
         }
 
-        protected void ToggleActuator(ConfActuatorToggle.Object type)
+        protected void ToggleActuator(ConfActuatorToggle.Object type, int player)
         {
             ConfActuatorToggle actuatorToggle = new ConfActuatorToggle();
+            actuatorToggle.player = player;
             actuatorToggle.ID = ID;
             actuatorToggle.isActived = isActivated;
             actuatorToggle.obj = type;
@@ -45,7 +46,7 @@ namespace Server
 
 
 
-        public virtual void OnInteract(ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.UNINDENTIFIED)
+        public virtual void OnInteract(int player, ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.UNINDENTIFIED)
         {
             if (pType == ConfActuatorToggle.Object.UNINDENTIFIED)
             {
@@ -53,11 +54,10 @@ namespace Server
             }
 
             isActivated = !isActivated;
-            ToggleActuator(pType);
+            ToggleActuator(pType, player);
 
             foreach (int output in redstoneOutputs)
             {
-                int removethisWhenyouseeit = redstoneOutputs.Count;
                 try
                 {
                     if (room.InteractableGameobjects[output] is RedstoneOutput) (room.InteractableGameobjects[output] as RedstoneOutput).CheckOutput();

@@ -782,21 +782,21 @@ namespace Server
                         case (4):
                             GameObject gameObject0 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
                             Lever lever = gameObject0 as Lever;
-                            if (null != lever) { lever.OnInteract(); }
+                            if (null != lever) { lever.OnInteract(GetPlayerIndex()); }
                             break;
                         //8 = button
                         case (8):
                             Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject1 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 8);
                             Button button = gameObject1 as Button;
-                            if (null != button) { button.OnInteract(); }
+                            if (null != button) { button.OnInteract(GetPlayerIndex()); }
                             break;
                         //crack
                         case (12):
                             Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject2 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 12);
                             Crack crack = gameObject2 as Crack;
-                            if (null != crack) { crack.OnInteract(); }
+                            if (null != crack) { crack.OnInteract(GetPlayerIndex()); }
                             break;
                         default:
                             Logging.LogInfo("Player.cs: Found an actuator but couldnt handle it!", Logging.debugState.DETAILED);

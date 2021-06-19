@@ -103,14 +103,6 @@ public class ClientManager : MonoBehaviour
                 player1.GetComponent<AnimationHandler>().DoTrigger("startFalling");
                 player1.GetComponent<AnimationHandler>().isFalling = true;
             }
-            if (pMessage.isCrawling)
-            {
-                player1.GetComponent<AnimationHandler>().DoTrigger("startCrawling");
-            }
-            else
-            {
-                player1.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
-            }
         }
         else
         {
@@ -232,11 +224,25 @@ public class ClientManager : MonoBehaviour
                     //down = on, up = off
                     if (pMessage.isActived)
                     {
-                        serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverDown");
+                        if (pMessage.player == 0)
+                        {
+                            serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverDown");
+                        }
+                        else
+                        {
+                            serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverDown");
+                        }
                     }
                     else
                     {
-                        serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverUp");
+                        if (pMessage.player == 0)
+                        {
+                            serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverUp");
+                        }
+                        else
+                        {
+                            serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverUp");
+                        }
                     }
                 }
                 break;
@@ -249,12 +255,30 @@ public class ClientManager : MonoBehaviour
                 obj.GetComponent<Button>().UpdateActuator(pMessage.isActived);
                 if (pMessage.isActived)
                 {
-                    serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("isPushingButton");
+                    if (pMessage.player == 0)
+                    {
+                        serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("isPushingButton");
+                    }
+                    else
+                    {
+                        serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("isPushingButton");
+                    }
                 }
                 break;
             case ConfActuatorToggle.Object.CRACK:
                 Debug.Log("Its a crack toggle!");
                 obj.GetComponent<Crack>().FixCrack();
+                if (pMessage.isActived)
+                {
+                    if (pMessage.player == 0)
+                    {
+                        serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("fixCrack");
+                    }
+                    else
+                    {
+                        serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("fixCrack");
+                    }
+                }
                 break;
             default:
                 Debug.LogError("ClientManager: Cannot handle actuator toggle!");
