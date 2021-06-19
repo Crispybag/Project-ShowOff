@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
+
+/// <summary>
+/// (Ezra) Moves a gameobject accordingly, mostly used in main menu
+/// </summary>
+
+
 public class GameObjectMovement : MonoBehaviour
 {
 
