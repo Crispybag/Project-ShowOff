@@ -27,9 +27,9 @@ public class IWDoor : InformationWriter
         List<int> IDs = new List<int>();
         foreach (GameObject obj in gameobjects)
         {
-            if (obj.GetComponentInChildren<PuzzleFactory>() != null)
+            if (obj.GetComponentInChildren<Actuators>() != null)
             {
-                IDs.Add(obj.GetComponentInChildren<PuzzleFactory>().ID);
+                IDs.Add(obj.GetComponentInChildren<Actuators>().ID);
             }
             else if (obj.GetComponentInChildren<DoorManager>() != null)
             {

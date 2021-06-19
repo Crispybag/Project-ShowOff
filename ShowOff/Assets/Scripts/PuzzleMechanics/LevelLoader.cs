@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
+
+
+/// <summary>
+/// (Leo) Contains logic about the level loading mechanic (next scene)
+/// </summary>
+
 public class LevelLoader : MonoBehaviour
 {
-    // Start is called before the first frame update
-    
+
     public int ID;
     public List<GameObject> conditions = new List<GameObject>();
 

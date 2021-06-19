@@ -15,8 +15,8 @@ public class IWActuator : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        AddToInformation(GetComponent<PuzzleFactory>().ID);
-        AddToInformation(createList(this.gameObject.GetComponent<PuzzleFactory>().interactables));
+        AddToInformation(GetComponent<Actuators>().ID);
+        AddToInformation(createList(this.gameObject.GetComponent<Actuators>().interactables));
     }
 
     private List<int> createList(List<GameObject> gameobjects)
@@ -24,10 +24,10 @@ public class IWActuator : InformationWriter
         List<int> IDs = new List<int>();
         foreach(GameObject obj in gameobjects)
         {
-            if (obj.GetComponentInChildren<PuzzleFactory>() != null)
+            if (obj.GetComponentInChildren<Actuators>() != null)
             {
                 Debug.Log("Found a puzzle factory item in a list!");
-                IDs.Add(obj.GetComponentInChildren<PuzzleFactory>().ID);
+                IDs.Add(obj.GetComponentInChildren<Actuators>().ID);
             }
             else if (obj.GetComponentInChildren<DoorManager>() != null)
             {
