@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
+/// <summary>
+/// (Leo) Contains logic about footsteps sounds
+/// </summary>
+
 public class FootstepSounds : MonoBehaviour
 {
     //=======================================================================================

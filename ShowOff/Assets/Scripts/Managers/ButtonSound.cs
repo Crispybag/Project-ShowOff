@@ -5,6 +5,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static ServiceLocator;
 
+
+/// <summary>
+/// (Leo) Contains logic about the button sounds
+/// </summary>
+
 public class ButtonSound : MonoBehaviour, IPointerEnterHandler
 {
     [FMODUnity.EventRef]

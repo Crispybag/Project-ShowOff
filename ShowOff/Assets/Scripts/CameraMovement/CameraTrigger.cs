@@ -9,22 +9,10 @@ public class CameraTrigger : MonoBehaviour
     //AUTHOR: Ezra
     //SHORT DISCRIPTION: Triggers to switch camera to something.
 
-    //=========================================================================================
-    //                                     > Variables <
-    //=========================================================================================
-
-    //------------------------ public ------------------------
-
-    //----------------------- private ------------------------
-
     private CameraManager _cameraManager;
     [SerializeField] private GameObject _cameraPosition;
     [SerializeField] private float _transitionSpeed;
     [SerializeField] private bool _isFollowingPlayer;
-
-    //=========================================================================================
-    //                                   > Start/Update <
-    //=========================================================================================
 
     private void Start()
     {
@@ -37,13 +25,7 @@ public class CameraTrigger : MonoBehaviour
     {
         if (firstRun) { GetComponent<Collider>().enabled = true; firstRun = false; }
     }
-    //=========================================================================================
-    //                              > Public Tool Functions <
-    //=========================================================================================
 
-    //=========================================================================================
-    //                             > Private Tool Functions <
-    //=========================================================================================
     public void SetToPosition()
     {
             _cameraManager.SetPosition(_cameraPosition, _transitionSpeed, _isFollowingPlayer);
@@ -51,7 +33,6 @@ public class CameraTrigger : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Got an enter!");
         if (other.tag == serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().ClientName)
         {
             SetToPosition();
@@ -61,7 +42,6 @@ public class CameraTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Got and exit!");
         if (other.tag == serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().ClientName)
         {
             _cameraManager.SetFollow(_transitionSpeed);

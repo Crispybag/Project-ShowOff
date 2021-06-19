@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
+/// <summary>
+/// (Leo) Plays sound once
+/// </summary>
+
 public class PlaySingleSound : MonoBehaviour
 {
     [FMODUnity.EventRef]

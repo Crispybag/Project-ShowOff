@@ -4,6 +4,10 @@ using UnityEngine;
 using sharedAngy;
 using static ServiceLocator;
 
+/// <summary>
+/// (Leo) Contains logic about the box movement
+/// </summary>
+
 public class BoxMovement : MonoBehaviour
 {
 

@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (Ezra) Contains logic about the animations for characters
+/// </summary>
+
+
 public class AnimationHandler : MonoBehaviour
 {
     private Animator animator;
