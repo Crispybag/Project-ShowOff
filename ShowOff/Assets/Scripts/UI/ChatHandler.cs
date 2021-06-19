@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using sharedAngy;
 
+
+
+/// <summary>
+///  (Ezra) Handles incomming messages.
+/// </summary>
 public class ChatHandler : MonoBehaviour
 {
 
