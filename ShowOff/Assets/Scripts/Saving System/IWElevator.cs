@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InformationWriterElevator : InformationWriter
+
+/// <summary>
+/// (Ezra) Writes necessary information about the elevator mechanic
+/// </summary>
+public class IWElevator : InformationWriter
 {
     // Start is called before the first frame update
     public override void StartSave()

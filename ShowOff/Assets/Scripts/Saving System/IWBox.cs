@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InformationWriterDialogue : InformationWriter
+/// <summary>
+/// (Ezra) Writes necessary information about the box mechanic
+/// </summary>
+
+public class IWBox : InformationWriter
 {
+    // Start is called before the first frame update
     public override void StartSave()
     {
         base.StartSave();
@@ -12,6 +17,6 @@ public class InformationWriterDialogue : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        AddToInformation(GetComponent<Dialogue>().ID);
+        AddToInformation(GetComponent<BoxMovement>().ID);
     }
 }

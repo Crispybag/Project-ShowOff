@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InformationWriterSpawnPoint : InformationWriter
+/// <summary>
+/// (Leo) Writes necessary information about the spawn points
+/// </summary>
+public class IWSpawnPoint : InformationWriter
 {
 
     [SerializeField] private int playerIndex = 0;

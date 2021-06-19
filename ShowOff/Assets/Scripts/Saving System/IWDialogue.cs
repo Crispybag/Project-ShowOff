@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InformationWriterBox : InformationWriter
+/// <summary>
+/// (Ezra) Writes necessary information about the dialogue mechanic
+/// </summary>
+
+public class IWDialogue : InformationWriter
 {
-    // Start is called before the first frame update
     public override void StartSave()
     {
         base.StartSave();
@@ -13,6 +16,6 @@ public class InformationWriterBox : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        AddToInformation(GetComponent<BoxMovement>().ID);
+        AddToInformation(GetComponent<Dialogue>().ID);
     }
 }

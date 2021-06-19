@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (Leo) Writes necessary information about the level loading
+/// </summary>
+
 public class IWLevelLoader : InformationWriter
 {
     // Start is called before the first frame update

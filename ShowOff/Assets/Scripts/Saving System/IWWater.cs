@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// (Ezra) Writes necessary information about the water mechanic
+/// </summary>
+
 public class IWWater : InformationWriter
 {
     public override void StartSave()
