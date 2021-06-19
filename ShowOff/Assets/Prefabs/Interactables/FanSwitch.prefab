@@ -48,8 +48,6 @@ MonoBehaviour:
   isActuated: 0
   interactables: []
   eventPath: event:/gameplay (actions and props)/lever
-  _mat1: {fileID: 2100000, guid: bcd4a8e0c32e8a648954aca9cb2c0dc3, type: 2}
-  _mat2: {fileID: 2100000, guid: 1a7875ae8103fa644be7ad64f1f6cebf, type: 2}
 --- !u!114 &4632946133463887218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +110,7 @@ GameObject:
   - component: {fileID: 4396983500277556856}
   - component: {fileID: 2742339024086198204}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
