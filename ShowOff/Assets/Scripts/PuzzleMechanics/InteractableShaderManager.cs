@@ -18,12 +18,10 @@ public class InteractableShaderManager : MonoBehaviour
         if (playerName == "Player1")
         {
             player = GameObject.FindGameObjectWithTag("Player1").transform.GetChild(0).gameObject;
-            Debug.Log("Linked with player 1");
         }
         else
         {
             player = GameObject.FindGameObjectWithTag("Player2");
-            Debug.Log("Linked with player 2");
         }
     }
 

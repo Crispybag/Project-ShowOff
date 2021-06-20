@@ -82,7 +82,6 @@ public class GameObjectMovement : MonoBehaviour
 
     public void MoveObjectForwardToGoToLobby()
     {
-        Debug.Log("Trying to move to lobby ");
         if (canMove)
         {
             currentScale = objecToMove.transform.localScale;
