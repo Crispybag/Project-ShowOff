@@ -36978,13 +36978,13 @@ Light:
   m_GameObject: {fileID: 1140614661}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 2
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
+  m_Intensity: 72.98
+  m_Range: 23.96
+  m_SpotAngle: 75.368416
+  m_InnerSpotAngle: 50.06524
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -37038,13 +37038,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140614661}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.67, y: 8.016, z: 0}
+  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
+  m_LocalPosition: {x: 7.27, y: 15.8, z: 2.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 45
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &1143773579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62695,7 +62695,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minimumSpinSpeed: 0.1
-  maximumSpinSpeed: 5
+  maximumSpinSpeed: 3
+  minimumTimer: 1
+  maximumTimer: 10
 --- !u!95 &1939886531
 Animator:
   serializedVersion: 3
@@ -62785,8 +62787,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939886529}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.4880857, y: 8, z: 2.230534}
-  m_LocalScale: {x: 1, y: 1, z: 4.0552}
+  m_LocalPosition: {x: 7.4880857, y: 12, z: 2.230534}
+  m_LocalScale: {x: 0.535752, y: 0.164, z: 4.0552}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 46
