@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
         {
             am = this;
             serviceLocator.AddToList("AudioManager", gameObject);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", 1.0f);
             return;
         }
 
