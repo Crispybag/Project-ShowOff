@@ -10,6 +10,7 @@ namespace Server
     public class Box : GameObject
     {
         private bool containsWater;
+        private bool hasFallen = false;
         public int ID;
 
         public Box(GameRoom pRoom, int pX, int pY, int pZ, int pID) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
@@ -38,6 +39,7 @@ namespace Server
                     else
                     {
                         MoveDirection(0, -1, 0);
+                        hasFallen = true;
                     }
                 }
             }
@@ -52,31 +54,31 @@ namespace Server
             List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
             foreach (GameObject gameObject in gameObjects)
             {
-                Console.WriteLine(gameObject.objectIndex);
+                //Console.WriteLine(gameObject.objectIndex);
                 if (gameObject.collState == CollInteractType.SOLID) return true;
             }
             return false;
         }
 
-        public void SendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
+        public void sendBoxPackage(bool pIsPickedUp)
         {
             try
             {
                 if (pIsPickedUp)
                 {
-                    box.SetState(CollInteractType.PASS);
+                    SetState(CollInteractType.PASS);
                 }
                 else
                 {
-                    box.SetState(CollInteractType.SOLID);
+                    SetState(CollInteractType.SOLID);
                 }
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = position[0] + room.minX;
-                boxInf.posY = position[1] + room.minY;
-                boxInf.posZ = position[2] + room.minZ;
-                room.sendToAll(boxInf);
+                BoxInfo boxInfo = new BoxInfo();
+                boxInfo.ID = ID;
+                boxInfo.isPickedUp = pIsPickedUp;
+                boxInfo.posX = x() + room.minX;
+                boxInfo.posY = y() + room.minY;
+                boxInfo.posZ = z() + room.minZ;
+                room.sendToAll(boxInfo);
             }
             catch
             {
@@ -84,23 +86,6 @@ namespace Server
             }
         }
 
-        public void SendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
-        {
-            try
-            {
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX;
-                boxInf.posY = pY + room.minY;
-                boxInf.posZ = pZ + room.minZ;
-                room.sendToAll(boxInf);
-            }
-            catch
-            {
-                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
-            }
-        }
         public bool tileContainsWater(int pID)
         {
             List<GameObject> objectsOnCoord = room.OnCoordinatesGetGameObjects(x(), y(), z() );
@@ -125,5 +110,54 @@ namespace Server
             return false;
         }
 
+
+        public override void Update()
+        {
+            base.Update();
+            CheckGrounded();
+            handleAirChannelHit(new int[3] { x(), y(), z() });
+
+            if (hasFallen) { sendBoxPackage(false); hasFallen = false; }
+        }
+
+        int infLoopPrevention;
+
+        /// <summary>
+        /// (Leo) Interaction with box and airchannels (mostly copied over from player)
+        /// </summary>
+        /// <param name="pPosition"></param>
+        private void handleAirChannelHit(int[] pPosition)
+        {
+            infLoopPrevention++;
+            int testVal1 = pPosition[2];
+            if (room.OnCoordinatesGetGameObject(pPosition, 13) is AirChannel && infLoopPrevention < 20)
+            {
+                AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
+                if (airChannel.isActivated)
+                {
+                    //move if the box is shovable
+                    if (airChannel.CanPushPlayer(pPosition))
+                    {
+                        
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                        sendBoxPackage(false);
+                    }
+
+                    //move to position if there is an airchannel
+                    else if (room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 13) && !room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 7) && !room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 1))
+                    {                  
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                        handleAirChannelHit(new int[3] { x(), y(), z() });
+                    }
+
+                    //conclude if neither are true
+                    else
+                    {
+                        sendBoxPackage(false);
+                    }
+                }
+            }
+            infLoopPrevention = 0;
+        }
     }
 }

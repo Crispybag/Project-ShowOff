@@ -6,6 +6,10 @@ using UnityEngine.EventSystems;
 using static ServiceLocator;
 using sharedAngy;
 
+
+/// <summary>
+/// (Ezra) Handles the character selection visuals, updates the sprites to their respective sprites
+/// </summary>
 public class HoverOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] private Image characterImage;

@@ -21,6 +21,8 @@ namespace Server
         public bool isReloading = false;
         public string levelFile;
         public string sceneName;
+
+
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -79,7 +81,6 @@ namespace Server
         /// <summary>
         /// (Leo) Loads Level
         /// </summary>
-        /// 
         public void LoadLevel(string filePath)
         {
             GenerateGridFromText(filePath);
@@ -322,15 +323,16 @@ namespace Server
         {
             try
             {
-                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
+                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]), (int)float.Parse(rawInformation[2]), (int)float.Parse(rawInformation[3]), int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
                 InteractableGameobjects.Add(waterPool.ID, waterPool);
-               
-                
+                Console.WriteLine("Added a water pool on position : " + waterPool.x() + " : " + waterPool.y() + " : " + waterPool.z());
+
+
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     try
                     {
-                        EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                        EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2] );
                         waterPool.waterLevelPositions.Add(empty);
                         Console.WriteLine("A new water level position has been added to the water pool!");
                     }
@@ -454,8 +456,14 @@ namespace Server
             if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
             if (pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
             if (pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
+            if (pMessage is ReqLevelName) { handleReqLevelName(pMessage as ReqLevelName); }
         }
 
+        private void handleReqLevelName(ReqLevelName pReqLevelName)
+        {
+            string filePath = "../../../../LevelFiles/" + pReqLevelName.levelName + ".txt";
+            LoadLevel(filePath);
+        }
         private void handleChatMessage(ChatMessage  pMessage, TCPMessageChannel pSender)
         {
             ChatMessage newMessage = new ChatMessage();
@@ -1086,7 +1094,7 @@ namespace Server
             }
 
             else
-                Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
+                //Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
 
             return null;
         }

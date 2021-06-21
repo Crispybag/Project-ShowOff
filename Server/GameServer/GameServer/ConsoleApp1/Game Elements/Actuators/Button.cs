@@ -13,6 +13,7 @@ namespace Server
         //this timer will decide after how long the button will turn off again, 3 stays on for around 0.5 seconds
         public float timer = 3;
         private float currentTimer;
+        private int lastPlayer;
 
         public Button(GameRoom pRoom, int pX, int pY, int pZ, int pID, List<int> pRedstones) : base(pRoom, pX, pY, pZ, pID, CollInteractType.SOLID, pRedstones)
         {
@@ -31,7 +32,7 @@ namespace Server
                 if (currentTimer <= 0)
                 {
 
-                     base.OnInteract(ConfActuatorToggle.Object.BUTTON);
+                     base.OnInteract(lastPlayer, ConfActuatorToggle.Object.BUTTON);
                     
                 }
                 else
@@ -41,11 +42,12 @@ namespace Server
             }
         }
 
-        public override void OnInteract(ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.BUTTON)
+        public override void OnInteract(int player, ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.BUTTON)
         {
             if (!isActivated)
             {
-                base.OnInteract(pType);
+                lastPlayer = player;
+                base.OnInteract(player, pType);
                 currentTimer = timer;
                 UpdateElevators();
             }

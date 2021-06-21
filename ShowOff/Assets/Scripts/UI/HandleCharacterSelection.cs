@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// (Ezra) Handles incomming message from server to update the character selection
+/// </summary>
+
 public class HandleCharacterSelection : MonoBehaviour
 {
     [SerializeField] private GameObject NucDeselect;

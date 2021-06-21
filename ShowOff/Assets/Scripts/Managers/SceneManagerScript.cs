@@ -19,7 +19,7 @@ public class SceneManagerScript : MonoBehaviour
 
     //----------------------- private ------------------------
     private static SceneManagerScript _sceneManager;
-
+    
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -27,30 +27,9 @@ public class SceneManagerScript : MonoBehaviour
 
     private void Awake()
     {
-        //DontDestroyOnLoad(gameObject);
-        //if (null == _sceneManager)
-        //{
-         //   _sceneManager = this;
-          //  return;
-        //}
-        //Destroy(this.gameObject);
-
         serviceLocator.AddToList("SceneManager", this.gameObject);
     }
 
-    private void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-
-    }
-
-    //=========================================================================================
-    //                              > Public Tool Functions <
-    //=========================================================================================
 
     public void LoadSceneSingle(string sceneName)
     {
@@ -115,11 +94,6 @@ public class SceneManagerScript : MonoBehaviour
         return SceneManager.GetActiveScene().name;
     }
     
-
-    //=========================================================================================
-    //                             > Private Tool Functions <
-    //=========================================================================================
-
 
 
 }

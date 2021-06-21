@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (Leo) Writes necessary information about the level loading
+/// </summary>
+
 public class IWLevelLoader : InformationWriter
 {
     // Start is called before the first frame update
@@ -36,10 +40,10 @@ public class IWLevelLoader : InformationWriter
         List<int> IDs = new List<int>();
         foreach (GameObject obj in gameobjects)
         {
-            if (obj.GetComponentInChildren<PuzzleFactory>() != null)
+            if (obj.GetComponentInChildren<Actuators>() != null)
             {
                 Debug.Log("Found a puzzle factory item in a list!");
-                IDs.Add(obj.GetComponentInChildren<PuzzleFactory>().ID);
+                IDs.Add(obj.GetComponentInChildren<Actuators>().ID);
             }
             else if (obj.GetComponentInChildren<DoorManager>() != null)
             {

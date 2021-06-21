@@ -36,7 +36,6 @@ namespace Server
             oldPos = currentPos;
 
             //makes sure it doesnt go outside the dictonairy
-
             if (currentPos >= points.Count - 1)
             {
                 isGoingUp = false;
@@ -72,7 +71,9 @@ namespace Server
                     }
                     catch
                     {
-                        Logging.LogInfo("I am really sad, the index falls out of bounds :(", Logging.debugState.DETAILED);
+                        Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
+                        coolBox.MovePosition(x(), y() + 1, z());
+                        coolBox.sendBoxPackage(false);
                     }
                 }
             }
@@ -82,7 +83,7 @@ namespace Server
                 {
                     Box coolBox = room.OnCoordinatesGetGameObject(oldX, oldY + 1, oldZ, 7) as Box;
                     coolBox.MovePosition(x(), y() + 1, z());
-                    coolBox.SendBoxPackage(coolBox, coolBox.x(), coolBox.y(), coolBox.z(), false);
+                    coolBox.sendBoxPackage(false);
                 }
             }
             elevatorMove.ID = ID;

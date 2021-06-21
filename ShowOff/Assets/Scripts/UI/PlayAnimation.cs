@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
+/// <summary>
+/// (Ezra) Plays an animation by spritesheet when being hovered over
+/// </summary>
 public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     // Start is called before the first frame update
@@ -28,6 +32,12 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerExit(PointerEventData eventData)
     {
         isButtonHovering = false;
+    }
+
+    public void OnEnable()
+    {
+        isButtonHovering = false;
+        _image.sprite = spritesheet[0];
     }
 
     void Start()

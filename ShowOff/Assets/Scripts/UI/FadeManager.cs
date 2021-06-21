@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// (Ezra) Manages the fade level for the picture for when hovering over 
+/// </summary>
+
 public class FadeManager : MonoBehaviour
 {
-
     [SerializeField] public Image image;
-
-
     [SerializeField] public bool fadingIn = false;
     [SerializeField] public bool fadingOut = false;
 
@@ -35,7 +37,6 @@ public class FadeManager : MonoBehaviour
         {
             if (image.color.a < 1)
             {
-                Debug.Log("Not equal to 1");
                 Color newColor = image.color;
                 newColor.a += fadeSpeed;
                 if (newColor.a > 1)

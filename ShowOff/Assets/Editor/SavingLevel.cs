@@ -42,10 +42,10 @@ public class SavingLevel : EditorWindow
         GameObject[] interactables = GameObject.FindGameObjectsWithTag("Interactable");
         foreach(GameObject interactable in interactables)
         {
-            if (interactable.GetComponentInChildren<PuzzleFactory>() != null)
+            if (interactable.GetComponentInChildren<Actuators>() != null)
             {
-                interactable.GetComponentInChildren<PuzzleFactory>().ID = currentID;
-                SetDirty(interactable.GetComponentInChildren<PuzzleFactory>());
+                interactable.GetComponentInChildren<Actuators>().ID = currentID;
+                SetDirty(interactable.GetComponentInChildren<Actuators>());
             }
             else if (interactable.GetComponentInChildren<DoorManager>() != null)
             {

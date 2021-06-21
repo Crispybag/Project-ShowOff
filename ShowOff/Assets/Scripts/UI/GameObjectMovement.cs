@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
+
+/// <summary>
+/// (Ezra) Moves a gameobject accordingly, mostly used in main menu
+/// </summary>
+
+
 public class GameObjectMovement : MonoBehaviour
 {
 
@@ -76,7 +82,6 @@ public class GameObjectMovement : MonoBehaviour
 
     public void MoveObjectForwardToGoToLobby()
     {
-        Debug.Log("Trying to move to lobby ");
         if (canMove)
         {
             currentScale = objecToMove.transform.localScale;

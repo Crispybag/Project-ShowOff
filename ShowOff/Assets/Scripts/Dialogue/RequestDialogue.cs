@@ -4,6 +4,10 @@ using UnityEngine;
 using static ServiceLocator;
 using sharedAngy;
 
+/// <summary>
+/// (Ezra) Send package to server to handle dialogue.
+/// </summary>
+
 public class RequestDialogue : MonoBehaviour
 {
     public void progressDialogueRequest()

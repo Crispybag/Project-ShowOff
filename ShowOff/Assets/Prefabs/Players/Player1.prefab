@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6605004223631112104}
   - component: {fileID: 6605004223631112108}
   - component: {fileID: 6605004223631112109}
+  - component: {fileID: 3812197425152885634}
   m_Layer: 0
   m_Name: Player1 animation
   m_TagString: Player1
@@ -98,8 +99,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.25, y: 0.25, z: 0.25}
+  m_Center: {x: 0, y: -0.35, z: 0}
 --- !u!114 &6605004223631112104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  _moveSpeed: 0.25
+  _moveSpeed: 0.18
   playerName: Player1
 --- !u!114 &6605004223631112108
 MonoBehaviour:
@@ -147,6 +148,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &3812197425152885634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6605004223631112086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d541289e8f50f9c40836c76960a43a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isWalking: 0
+  isFalling: 0
+  idleAnimations:
+  - BeardScratch
+  - LookAround
+  isAbleToBox: 1
+  isAbleToCrawl: 0
+  isAbleToAir: 0
+  timer: 0
+  currentTimer: 0
 --- !u!1 &6605004224137747744
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +210,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7520330482225201908}
   - component: {fileID: 5547416232517756918}
+  - component: {fileID: 4352006669146578550}
+  - component: {fileID: 3209523882790242361}
   m_Layer: 0
   m_Name: Model
   m_TagString: Player1
@@ -218,7 +243,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7139969121330075726}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 5972762f29971384c8f180cd42de2288, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
   m_Controller: {fileID: 9100000, guid: 47f2c7f14951f984e8f8faf8c9d4985d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -228,6 +253,40 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4352006669146578550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139969121330075726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2e7049faaeeac4cbed28b763917987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footStepsEventPath: event:/character/footsteps/Footsteps_string
+  materialParameter: Types
+  parameterOcclusion: none
+  rayDistance: 1.2
+  defaultMaterial: 0
+  volume: 0.7
+  occlusionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!114 &3209523882790242361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139969121330075726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventPath: event:/gameplay (actions and props)/box placed
 --- !u!1 &8859024794792734605
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,15 +372,15 @@ PrefabInstance:
     - target: {fileID: -29401019049846419, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 10a39c044a27f574eabaf2a7d99cba7f, type: 2}
+      objectReference: {fileID: 2100000, guid: 6ce01e8867015d54eb791d4ac790022f, type: 2}
     - target: {fileID: -29401019049846419, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 7bc9ea75f9082c847a119257aa086b89, type: 2}
+      objectReference: {fileID: 2100000, guid: fd51d1ed1cac1a54d890072875a170a9, type: 2}
     - target: {fileID: -29401019049846419, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: 901c348a43d14684b9067ad3c4bdb6df, type: 2}
+      objectReference: {fileID: 2100000, guid: c0d5b711d665bdd44b9c9315c69c03ba, type: 2}
     - target: {fileID: -29401019049846419, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 
@@ -349,10 +408,14 @@ PrefabInstance:
     - target: {fileID: -29401019049846419, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
       propertyPath: m_Materials.Array.data[9]
       value: 
-      objectReference: {fileID: 2100000, guid: e44b03fd0b3107c469abffe2e7b7312a, type: 2}
+      objectReference: {fileID: 2100000, guid: 9e27d9f22fa4ab744b9af0426354afca, type: 2}
     - target: {fileID: 919132149155446097, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
       propertyPath: m_Name
       value: Nuc_Base_Rig
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0dd96d2f30df7b44cb4e4140506b5fac, type: 3}

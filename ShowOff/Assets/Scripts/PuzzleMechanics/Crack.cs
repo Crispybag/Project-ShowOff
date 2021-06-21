@@ -3,17 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
-public class Crack : PuzzleFactory
+
+/// <summary>
+/// (Ezra) Contains logic about the crack mechanic
+/// </summary>
+
+public class Crack : Actuators
 {
 
     public void Start()
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
+        ParticleSystem[] particlesystems = this.transform.parent.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem particle in particlesystems)
+        {
+            var emission = particle.emission;
+            emission.enabled = false;
+        }
     }
 
     public void FixCrack()
     {
-        Destroy(this.gameObject);
+        this.transform.parent.GetComponentInChildren<CrackAnimation>().fixing = true;
+        ParticleSystem[] particlesystems = this.transform.parent.GetComponentsInChildren<ParticleSystem>();
+        foreach(ParticleSystem particle in particlesystems)
+        {
+            var emission = particle.emission;
+            emission.enabled = true;
+        }
     }
 
 }

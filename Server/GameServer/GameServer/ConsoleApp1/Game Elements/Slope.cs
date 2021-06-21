@@ -87,8 +87,8 @@ namespace Server
         /// </summary>
         /// <param name="pPosition"></param>
         /// <param name="pOrientation"></param>
-        /// <returns></returns>
-        public bool CanMoveOnSlope(int[] pPosition, int[] pOrientation)
+        /// <returns>0 if all is ok, 1 if player is blocked, 2 if player is facing wrong direction or slope ends in oblivion</returns>
+        public int CanMoveOnSlope(int[] pPosition, int[] pOrientation)
         {
             //if it hits position 2 and has opposing orientation
             if (PositionEquals(pPosition, _s2Position))
@@ -98,14 +98,14 @@ namespace Server
                     try
                     {
                         //make sure that the room the player wants to move to is empty and exists
-                        if (room.OnCoordinatesCanMove(OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] }))) { return true; }
-                        return false;
+                        if (room.OnCoordinatesCanMove(OneInFront(_s0Position, new int[2] { -orientation[0], -orientation[1] }))) { return 0; }
+                        return 1;
 
                     }
                     catch
                     {
                         Logging.LogInfo("Slope tries to send player outside of bounds of array in CanMoveOnSlope", Logging.debugState.DETAILED);
-                        return false;
+                        return 2;
                     }
                 }
             }
@@ -115,17 +115,17 @@ namespace Server
                 try
                 {
                     //make sure that the room the player wants to move to is empty and exists
-                    if (room.OnCoordinatesCanMove(OneInFront(_s2Position, orientation))) { return true; }
-                    return false;
+                    if (room.OnCoordinatesCanMove(OneInFront(_s2Position, orientation))) { return 0; }
+                    return 1;
 
                 }
                 catch
                 {
                     Logging.LogInfo("Slope tries to send player outside of bounds of array in CanMoveOnSlope", Logging.debugState.DETAILED);
-                    return false;
+                    return 2;
                 }
             }
-            return false;
+            return 2;
         }
 
         /// <summary>

@@ -21,9 +21,14 @@ namespace Server
         public Box currentBox;
         private int[,,] position;
 
+        private bool isFalling = false;
+
         private int callLoopPrevent;
         public bool wantsReset;
         private int cameraRotation;
+        private bool endsInAirChannel;
+        private int refreshSpeed = 2;
+
         //standard stuff, along with quick coordinates
         public enum PlayerType
         {
@@ -33,6 +38,8 @@ namespace Server
 
         public PlayerType playerType;
 
+        private float calls;
+        private string directionCommands;
 
         public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0, PlayerType pPlayerType = PlayerType.NUC) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
@@ -128,7 +135,6 @@ namespace Server
 
 
             }
-            //Logging.LogInfo("Player's position is now ( " + walkDirection[0] + ", " + walkDirection[1] + ")", Logging.debugState.DETAILED);
 
         }
 
@@ -214,24 +220,32 @@ namespace Server
                     //for lever
                     if (room.OnCoordinatesContain(OneInFront(), 4))
                     {
+                        //stun timer
+                        calls += 3;
                         sendActuatorToggle(OneInFront());
                     }
 
                     //for button
                     if (room.OnCoordinatesContain(OneInFront(), 8))
                     {
+                        //stun timer
+                        calls += 3;
                         sendActuatorToggle(OneInFront());
                     }
 
                     //for crack
                     if (room.OnCoordinatesContain(OneInFront(), 12))
                     {
+                        //stun timer
+                        calls += 3;
                         sendActuatorToggle(OneInFront());
                     }
 
                     //for box
                     else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
+                        //stun timer
+                        calls += 3;
                         if (playerType == PlayerType.NUC)sendPickUpBox(OneInFront());
                     }
                 }
@@ -256,11 +270,11 @@ namespace Server
                 {
                     currentBox.MovePosition(OneInFront());
                     currentBox.CheckGrounded();
-                    currentBox.SendBoxPackage(currentBox, new int[3] { currentBox.x(), currentBox.y(), currentBox.z() }, false);
+                    currentBox.sendBoxPackage(false);
 
                     handleWaterInteractionBox();
 
-                    sendBoxPackage(currentBox, OneInFront(), false);
+                    sendBoxPackage(currentBox, false);
                     currentBox = null;
                 }
                 catch { Logging.LogInfo("One In Front does not return an array that is 3 in length", Logging.debugState.SIMPLE); }
@@ -269,24 +283,24 @@ namespace Server
             //if its not empty, there are a few exceptions like the pressure plate
             else
             {
-                Console.WriteLine("Box is checking in front!");
+                //Console.WriteLine("Box is checking in front!");
                 List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
                 foreach (GameObject item in index)
                 {
                     //5 is pressure plate, 16 is water
-                    if (item.objectIndex != 5 && item.objectIndex != 16)
+                    if (item.objectIndex != 5 && item.objectIndex != 16 && item.objectIndex != 13)
                     {
                         //if its anything else, return out of the method
                         return;
                     }
                 }
-                Console.WriteLine("In front is empty for box! but with interactable");
+                //Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
-                currentBox.SendBoxPackage(currentBox, OneInFront(), false);
+                currentBox.sendBoxPackage(false);
 
                 handleWaterInteractionBox();
 
-                sendBoxPackage(currentBox, OneInFront(), false);
+                sendBoxPackage(currentBox,  false);
                 currentBox = null;
             }
 
@@ -313,7 +327,7 @@ namespace Server
             //room.PrintGrid(room.roomArray);
         }
 
-        private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
+        private void sendBoxPackage(GameObject box, bool pIsPickedUp)
         {
             try
             {
@@ -325,13 +339,13 @@ namespace Server
                 {
                     box.SetState(CollInteractType.SOLID);
                 }
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = currentBox.x() + room.minX;
-                boxInf.posY = currentBox.y() + room.minY;
-                boxInf.posZ = currentBox.z() + room.minZ;
-                room.sendToAll(boxInf);
+                BoxInfo boxInfo = new BoxInfo();
+                boxInfo.ID = (box as Box).ID;
+                boxInfo.isPickedUp = pIsPickedUp;
+                boxInfo.posX = currentBox.x() + room.minX;
+                boxInfo.posY = currentBox.y() + room.minY;
+                boxInfo.posZ = currentBox.z() + room.minZ;
+                room.sendToAll(boxInfo);
             }
             catch
             {
@@ -417,17 +431,32 @@ namespace Server
             {
                 //get the slope as game object
                 Slope pSlope = room.OnCoordinatesGetGameObject(pPosition, 10) as Slope;
-
+                int[] directionVec;
+                if (calls == 1)directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2]};
+                else { directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2]}; }
                 //check if the player can move on the slope and move on it when the player can move on the slope
-                if (pSlope.CanMoveOnSlope(pPosition, orientation))
+                if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
+                    addMoveDirection(orientation[0], 0, orientation[1]);
                     MovePosition(pSlope.MoveOnSlope(pPosition));
                 }
-                else
+                
+                //if the slope is blocked by anything
+                else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
 
                 }
+
+                //if player walks in wrong angle or slope goes off the map
+                else
+                {
+                    calls = 0;
+                    directionCommands = "";
+                }
+
             }
 
             //else it could be the s2 position so check that as well here
@@ -436,16 +465,31 @@ namespace Server
                 //if that is true return the slope on that coordinate to the player
                 Slope pSlope = room.OnCoordinatesGetGameObject(pPosition[0] + orientation[0], pPosition[1] - 1, pPosition[2] + orientation[1], 10) as Slope;
 
+                int[] directionVec;
+                if (calls == 1) directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2]};
+                else { directionVec = new int[3] { pSlope.MoveOnSlope(pPosition)[0] - pPosition[0], pSlope.MoveOnSlope(pPosition)[1] - pPosition[1], pSlope.MoveOnSlope(pPosition)[2] - pPosition[2] }; }
                 //check with that slope whether the player can move on it
-                if (pSlope.CanMoveOnSlope(pPosition, orientation))
+                if (pSlope.CanMoveOnSlope(pPosition, orientation) == 0)
                 {
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
+                    addMoveDirection(orientation[0], 0, orientation[1]);
+
                     MovePosition(pSlope.MoveOnSlope(pPosition));
                 }
-                else
+                
+                //if other end of slope is blocked
+                else if (pSlope.CanMoveOnSlope(pPosition, orientation) == 1)
                 {
+                    addMoveDirection(directionVec[0], directionVec[1], directionVec[2]);
                     checkSpecialCollision(pSlope.MoveOnSlope(pPosition));
                 }
 
+                //if player is not in correct rotation
+                else
+                {
+                    calls = 0;
+                    directionCommands = "";
+                }
             }
         }
 
@@ -459,7 +503,10 @@ namespace Server
             {
                 if (playerType == PlayerType.ALEX)
                 {
+                    if (callLoopPrevent == 1) { addMoveDirection(orientation[0], 0, orientation[1]); }
                     AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
+                    addMoveDirection(airChannel.direction[0], airChannel.direction[1], airChannel.direction[2]);
+
                     if (airChannel.CanPushPlayer(pPosition))
                     {
                         MovePosition(airChannel.PushPlayer(pPosition));
@@ -469,9 +516,12 @@ namespace Server
                         checkSpecialCollision(airChannel.PushPlayer(pPosition));
                     }
                 }
-                else
+
+
+                else if (!room.OnCoordinatesContain(pPosition, 7))
                 {
                     MoveDirection(orientation[0], 0, orientation[1]);
+                    addMoveDirection(orientation[0], 0, orientation[1]);
                 }
             }
         }
@@ -486,9 +536,11 @@ namespace Server
 
             //infinite recursive loop prevention
             callLoopPrevent++;
-            if (callLoopPrevent >= 20)
+            if (callLoopPrevent >= 21)
             {
                 Logging.LogInfo("potential infinite recursive loop in check special collision, make sure that the code runs properly or increase treshold", Logging.debugState.DETAILED);
+                calls = 0;
+                directionCommands = "";
                 return;
             }
 
@@ -498,21 +550,34 @@ namespace Server
                 {
                     //slope hit at s0
                     case (10):
+                        endsInAirChannel = false;
                         handleS0Hit(pPosition);
                         callLoopPrevent = 0;
                         break;
 
                         //airchannel
                     case (13):
+                        endsInAirChannel = true;
                         handleAirChannelHit(pPosition);
                         callLoopPrevent = 0;
                         break;
 
                     default:
+                        //remove all information
+            
+                        calls = 0;
+                        if (!endsInAirChannel)
+                        {
+                            directionCommands = "";
+                        }
                         break;
                 }
             }
         }
+
+        /// <summary>
+        /// check grounded lol
+        /// </summary>
         private void checkGrounded()
         {
             try
@@ -531,7 +596,14 @@ namespace Server
                     //else fall 1 further down
                     else
                     {
+                        ConfAnimation animation = new ConfAnimation();
+                        animation.isFalling = true;
+                        animation.player = GetPlayerIndex();
+                        room.sendToAll(animation);
+                        
+                        calls++;
                         MoveDirection(0, -1, 0);
+                        addMoveDirection(0, -1, 0);
                     }
                 }
             }
@@ -543,39 +615,87 @@ namespace Server
         //Does the check whether the player can change position or not
         public void tryPositionChange(int pX, int pY, int pZ)
         {
-            //determine direction and set orientation
-            int[] direction = { pX, pY, pZ };
-            orientation[0] = pX;
-            orientation[1] = pZ;
-            Logging.LogInfo("Player's position is now ( " + x() + "," + y() + "," + z() + ")", Logging.debugState.SPAM);
-
-            try
+            //add stun timer here later, for now it is removed due to personal annoyance
+            if (calls < 1)
             {
-                bool objectAtLocation = isBlockedByObject(new int[3] { direction[0] + x(), direction[1] + y(), direction[2] + z() });
+                calls = 0;
+                //determine direction and set orientation
+                int[] direction = { pX, pY, pZ };
+                orientation[0] = pX;
+                orientation[1] = pZ;
+                Logging.LogInfo("Player's position is now ( " + x() + "," + y() + "," + z() + ")", Logging.debugState.SPAM);
 
-                //Passes the check and can move
-                if (!objectAtLocation)
+                try
                 {
-                    MoveDirection(direction);
+                    bool objectAtLocation = isBlockedByObject(new int[3] { direction[0] + x(), direction[1] + y(), direction[2] + z() });
+
+                    //Passes the check and can move
+                    if (!objectAtLocation)
+                    {
+                        if (!isCrawlSpace(OneInFront()))
+                        {
+                            if (isCrawling)
+                            {
+                                ConfAnimation animation = new ConfAnimation();
+                                animation.player = GetPlayerIndex();
+                                animation.isCrawling = false;
+                                isCrawling = false;
+                                room.sendToAll(animation);
+                            }
+                            MoveDirection(direction);
+                            addMoveDirection(direction[0], direction[1], direction[2]);
+
+                        }
+                        else if (playerType == PlayerType.ALEX)
+                        {
+                            //ADD CRAWLING BOOL HERE !!!!!! WWEEEWOOOWEEEWOOO
+                            if (!isCrawling)
+                            {
+                                ConfAnimation animation = new ConfAnimation();
+                                animation.player = GetPlayerIndex();
+                                animation.isCrawling = true;
+                                isCrawling = true;
+                                room.sendToAll(animation);
+                            }
+                            MoveDirection(direction);
+                            addMoveDirection(direction[0], direction[1], direction[2]);
+                        }
+                    }
+
+                    //check objects that need to be checked
+                    else
+                    {
+                        checkSpecialCollision(OneInFront());
+                    }
+                    checkGrounded();
+                    //room.PrintGrid(room.roomArray);
+                    //send the package to the clients
+                    SendConfMove();
                 }
 
-                //check objects that need to be checked
-                else
+                catch (Exception e)
                 {
-                    checkSpecialCollision(OneInFront());
+                    Logging.LogInfo("probably trying to move off the grid", Logging.debugState.DETAILED);
+                    Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
                 }
-                checkGrounded();
-                //room.PrintGrid(room.roomArray);
-                //send the package to the clients
-                SendConfMove();
-            }
-
-            catch (Exception e)
-            {
-                Logging.LogInfo("probably trying to move off the grid", Logging.debugState.DETAILED);
-                Logging.LogInfo(e.Message, Logging.debugState.DETAILED);
             }
         }
+
+        private bool isCrawling = false;
+
+        private bool isCrawlSpace(int[] pPosition)
+        {
+            if (room.OnCoordinatesContain(pPosition[0], pPosition[1] + 1, pPosition[2], 2))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+
+
 
         /// <summary>
         /// (Ezra) Starts new dialogue
@@ -590,6 +710,21 @@ namespace Server
             room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
         }
 
+        /// <summary>
+        /// Adds a movement command to the string to determine player movement
+        /// </summary>
+        /// <param name="pX"></param>
+        /// <param name="pY"></param>
+        /// <param name="pZ"></param>
+        /// <param name="pCalls"> amount of times this needs to be called</param>
+        private void addMoveDirection(float pX, float pY, float pZ, float pCalls = 1)
+        {
+            for (int i = 0; i < pCalls; i++)
+            {
+                directionCommands += pX / pCalls + " " + pY / pCalls + " " + pZ / pCalls + " ";
+                calls++;
+            }
+        }
 
         
         #endregion
@@ -609,21 +744,23 @@ namespace Server
             _confMove.dirY = y() + room.minY;
             _confMove.dirZ = z() + room.minZ;
 
+
+            _confMove.directions = directionCommands;
+            directionCommands = "";
             if(currentBox != null)
             {
                 currentBox.MovePosition(x(), y(), z());
-                currentBox.SendBoxPackage(currentBox, x(), y(), z(), true);
+                currentBox.sendBoxPackage(true);
             }
 
             //set y rotation
-            if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 0; }
+            if (orientation[0] == 0 && orientation[1] == -1) { _confMove.orientation = 180; }
             else if (orientation[0] == 1 && orientation[1] == 0) { _confMove.orientation = 90; }
-            else if (orientation[0] == 0 && orientation[1] == 1) { _confMove.orientation = 180; }
+            else if (orientation[0] == 0 && orientation[1] == 1) { _confMove.orientation = 0; }
             else { _confMove.orientation = -90; }
 
 
             room.sendToAll(_confMove);
-            //room.PrintGrid(room.roomArray);
         }
 
         /// <summary>
@@ -645,21 +782,21 @@ namespace Server
                         case (4):
                             GameObject gameObject0 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
                             Lever lever = gameObject0 as Lever;
-                            if (null != lever) { lever.OnInteract(); }
+                            if (null != lever) { lever.OnInteract(GetPlayerIndex()); }
                             break;
                         //8 = button
                         case (8):
                             Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject1 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 8);
                             Button button = gameObject1 as Button;
-                            if (null != button) { button.OnInteract(); }
+                            if (null != button) { button.OnInteract(GetPlayerIndex()); }
                             break;
                         //crack
                         case (12):
                             Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject2 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 12);
                             Crack crack = gameObject2 as Crack;
-                            if (null != crack) { crack.OnInteract(); }
+                            if (null != crack) { crack.OnInteract(GetPlayerIndex()); }
                             break;
                         default:
                             Logging.LogInfo("Player.cs: Found an actuator but couldnt handle it!", Logging.debugState.DETAILED);
@@ -772,17 +909,19 @@ namespace Server
         public override void Update()
         {
             base.Update();
+            calls-= 1f/refreshSpeed;
 
             //walk timer
             if (walkDirection[0] != 0 || walkDirection[2] != 0)
             {
                 //Logging.LogInfo("trying to walk in a direction");
-                if (timer >= 2)
+                if (timer >= refreshSpeed)
                 {
                     timer = 0;
                     tryPositionChange(walkDirection[0], walkDirection[1], walkDirection[2]);
                 }
                 timer++;
+
                 
             }
             else
