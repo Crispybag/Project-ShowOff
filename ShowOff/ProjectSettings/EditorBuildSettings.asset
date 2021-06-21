@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Functional Levels/Level3.unity
     guid: b003e36bd1c0a13439cb1f6bed445fad
+  - enabled: 1
+    path: Assets/Scenes/ServerTesting/AirChannelTesting.unity
+    guid: 4e37f7cd38339824c8f67aea41c36f1e
   m_configObjects: {}

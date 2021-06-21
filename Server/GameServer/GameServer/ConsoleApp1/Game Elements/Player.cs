@@ -503,7 +503,12 @@ namespace Server
             {
                 if (playerType == PlayerType.ALEX)
                 {
-                    if (callLoopPrevent == 1) { addMoveDirection(orientation[0], 0, orientation[1]); }
+                    if (callLoopPrevent == 1) 
+                    { 
+                        
+                        addMoveDirection(orientation[0], 0, orientation[1]);
+                    
+                    }
                     AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
                     addMoveDirection(airChannel.direction[0], airChannel.direction[1], airChannel.direction[2]);
 
@@ -532,7 +537,7 @@ namespace Server
         /// </summary>
         private void checkSpecialCollision(int[] pPosition)
         {
-            List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(pPosition);
+             List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(pPosition);
 
             //infinite recursive loop prevention
             callLoopPrevent++;
@@ -566,6 +571,7 @@ namespace Server
                         //remove all information
             
                         calls = 0;
+                        callLoopPrevent = 0;
                         if (!endsInAirChannel)
                         {
                             directionCommands = "";
