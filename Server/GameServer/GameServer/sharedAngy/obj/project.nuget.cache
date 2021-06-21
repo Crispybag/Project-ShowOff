@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "2LllGb+PTxpkkBCwLYKhWI782X1Qy2lBgHviAKGTks++AzXqG+/3BrIPwhRrG0jsGiuCu3A/NStKzyQ671R0fw==",
+  "dgSpecHash": "D6kgE3GTyV8UGObppDnA/330zPeoSNTSMVGEqGVL9HA9/BAa1xDHg+xympxSvnyHBkpEgVgk0Stzlhgv5hlIng==",
   "success": true,
-  "projectFilePath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj",
+  "projectFilePath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Lylithrea\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\Lylithrea\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }

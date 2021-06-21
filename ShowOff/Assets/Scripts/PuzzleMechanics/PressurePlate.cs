@@ -21,5 +21,6 @@ public class PressurePlate : Actuators
     public void UpdateActuator(bool isActive)
     {
         gameObject.GetComponent<PlaySingleSound>().PlaySoundOnce();
+        transform.parent.GetComponentInChildren<Animator>().SetBool("isActive", isActive);
     }
 }

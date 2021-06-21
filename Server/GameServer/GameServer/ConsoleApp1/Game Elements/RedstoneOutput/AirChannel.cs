@@ -88,6 +88,10 @@ namespace Server
             {
                 SetState(CollInteractType.PASS);
             }
+            ConfAirChannelToggle airToggle = new ConfAirChannelToggle();
+            airToggle.ID = ID;
+            airToggle.isActive = isActivated;
+            room.sendToAll(airToggle);
 
         }
 

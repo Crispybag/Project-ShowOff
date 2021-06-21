@@ -34,6 +34,12 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         isButtonHovering = false;
     }
 
+    public void OnEnable()
+    {
+        isButtonHovering = false;
+        _image.sprite = spritesheet[0];
+    }
+
     void Start()
     {
         _image.sprite = spritesheet[0];

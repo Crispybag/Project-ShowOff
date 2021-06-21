@@ -15,7 +15,12 @@ public class AirChannelManager : MonoBehaviour
     void Start()
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
-        
+        ParticleSystem[] particlesystems = transform.parent.parent.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem particle in particlesystems)
+        {
+            var emission = particle.emission;
+            emission.enabled = false;
+        }
     }
 
 
