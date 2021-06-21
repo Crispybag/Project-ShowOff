@@ -80,52 +80,52 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -1046600161049964873}
-    m_Position: {x: -100, y: -110, z: 0}
+    m_Position: {x: -60, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1917944816438033342}
     m_Position: {x: 180, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -883076650827104307}
-    m_Position: {x: 70, y: 520, z: 0}
+    m_Position: {x: 190, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6760187428529680340}
-    m_Position: {x: -150, y: 520, z: 0}
+    m_Position: {x: -30, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6375531292480200355}
-    m_Position: {x: 490, y: 90, z: 0}
+    m_Position: {x: 460, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4759557500013504963}
-    m_Position: {x: -280, y: 170, z: 0}
+    m_Position: {x: -200, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7254568274126993203}
-    m_Position: {x: 780, y: 160, z: 0}
+    m_Position: {x: 710, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5244707354589439217}
-    m_Position: {x: 490, y: 230, z: 0}
+    m_Position: {x: 460, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5722987497369765878}
-    m_Position: {x: 490, y: 160, z: 0}
+    m_Position: {x: 460, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6721424209379244872}
-    m_Position: {x: -280, y: 250, z: 0}
+    m_Position: {x: -200, y: 250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6399049367768991789}
-    m_Position: {x: 400, y: -110, z: 0}
+    m_Position: {x: 230, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3738117392297171950}
-    m_Position: {x: 150, y: -110, z: 0}
+    m_Position: {x: 230, y: -40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6834909963098138115}
-    m_Position: {x: 490, y: 460, z: 0}
+    m_Position: {x: 450, y: 410, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6521182713192961560}
-    m_Position: {x: 490, y: 540, z: 0}
+    m_Position: {x: 450, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7135389353034871285}
-    m_Position: {x: -280, y: 80, z: 0}
+    m_Position: {x: -200, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6127986255356047901}
-    m_Position: {x: 236.18777, y: 652.5124, z: 0}
+    m_Position: {x: -200, y: 310, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -1021,67 +1021,67 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: BeardScratch
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: LookAround
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PickUp
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: DropOff
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PullingLeverDown
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: PullingLeverUp
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isLanding
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isPushingButton
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: startFalling
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: fixCrack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
