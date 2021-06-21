@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using sharedAngy;
-
+using static ServiceLocator;
 
 
 /// <summary>
@@ -14,6 +14,14 @@ public class ChatHandler : MonoBehaviour
 
     public Text chatText;
     public InputField inputChat;
+
+    public void Start()
+    {
+        ReqLevelName name = new ReqLevelName();
+        name.levelName = serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().gameSceneName;
+        serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(name);
+    }
+
 
     public void Update()
     {

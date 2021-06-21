@@ -21,6 +21,7 @@ public class ClientManager : MonoBehaviour
     public TcpClient client;
     public string ClientName;
     [HideInInspector] public int playersWantToReset = 0;
+    public string gameSceneName = "Features";
     private bool isHoldingBox = false;
 
     //----------------------- private ------------------------
@@ -315,7 +316,7 @@ public class ClientManager : MonoBehaviour
 
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Features");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle(serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().gameSceneName);
 
                 break;
             default:

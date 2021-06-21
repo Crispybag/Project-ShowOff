@@ -19,7 +19,7 @@ public class SceneManagerScript : MonoBehaviour
 
     //----------------------- private ------------------------
     private static SceneManagerScript _sceneManager;
-
+    
 
     //=========================================================================================
     //                                   > Start/Update <
