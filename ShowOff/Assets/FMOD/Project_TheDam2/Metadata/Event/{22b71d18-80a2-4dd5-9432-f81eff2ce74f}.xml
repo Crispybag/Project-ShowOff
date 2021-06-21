@@ -110,7 +110,7 @@
 			<value>-12</value>
 		</property>
 		<property name="name">
-			<value>playtest</value>
+			<value>close</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{afa38b3b-1a16-447a-bece-3adb9337bd5a}</destination>

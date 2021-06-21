@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{6aae1447-d821-4ba2-b4aa-bc567e74747d}">
 		<property name="name">
-			<value>elevator DOWN</value>
+			<value>elevator</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -117,7 +117,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{536b79aa-0918-440d-9de0-ce4a899ef332}">
 		<property name="name">
-			<value>playtest</value>
+			<value>top</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{f1f8bda2-6f11-4542-9f36-619079fa59ff}</destination>
@@ -148,7 +148,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{f69f662b-4f5e-4b29-9e23-aa02b3353222}">
 		<property name="name">
-			<value>playtest</value>
+			<value>loop</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{ecc28fd3-9a4b-4afb-b58a-36206a588cd6}</destination>

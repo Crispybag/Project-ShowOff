@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{a733d476-fe22-4a4c-ab68-53bdf6d1be24}">
 		<property name="name">
-			<value>fixing cracks_cement</value>
+			<value>fixing cracks</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -70,9 +70,6 @@
 		<relationship name="modules">
 			<destination>{3aa655ac-72ac-4b23-94ab-fcffa32517d7}</destination>
 		</relationship>
-		<relationship name="markers">
-			<destination>{6120b895-8e63-4bcc-9766-87946d40b420}</destination>
-		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{fd646b93-b88d-4934-b60f-842bb821bc6c}">
 		<relationship name="effectChain">
@@ -111,20 +108,6 @@
 		</relationship>
 		<relationship name="output">
 			<destination>{fd646b93-b88d-4934-b60f-842bb821bc6c}</destination>
-		</relationship>
-	</object>
-	<object class="LoopRegion" id="{6120b895-8e63-4bcc-9766-87946d40b420}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="length">
-			<value>3.875</value>
-		</property>
-		<relationship name="timeline">
-			<destination>{b2ddc6c5-7758-4aae-85a6-0b3f4dd5646e}</destination>
-		</relationship>
-		<relationship name="markerTrack">
-			<destination>{824b0687-7f01-43fa-8ec5-37188706062b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{be9c4e4d-bbea-4ab4-924b-de103ee3c33e}">
