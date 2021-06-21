@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{9eb830aa-4481-48fb-9d26-4fdb2e34b6a8}">
 		<property name="name">
-			<value>fixing cracks</value>
+			<value>fixing cracks (un-used)</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -52,7 +52,7 @@
 			<destination>{e6f75683-070b-4e51-8357-56971c95fedd}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{e79ad36f-ca19-4de7-b0e0-3b942bda6928}</destination>
+			<destination>{dc83ab54-deff-4a6d-b318-2f4b419f82e8}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{7d49908f-8677-4eda-acd0-db195933ce92}" />

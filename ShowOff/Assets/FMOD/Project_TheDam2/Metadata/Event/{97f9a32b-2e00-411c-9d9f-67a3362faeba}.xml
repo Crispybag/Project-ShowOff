@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{97f9a32b-2e00-411c-9d9f-67a3362faeba}">
 		<property name="name">
-			<value>metal_female</value>
+			<value>metal_female (loose)</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -50,7 +50,7 @@
 			<destination>{03efc521-2351-433a-8f43-020657c6561c}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{e79ad36f-ca19-4de7-b0e0-3b942bda6928}</destination>
+			<destination>{dc83ab54-deff-4a6d-b318-2f4b419f82e8}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{a9bd6360-e8c6-4015-9a20-86fba6735a7d}" />

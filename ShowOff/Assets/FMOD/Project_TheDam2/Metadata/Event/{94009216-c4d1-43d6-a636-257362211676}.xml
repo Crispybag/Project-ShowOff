@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{94009216-c4d1-43d6-a636-257362211676}">
 		<property name="name">
-			<value>concrete_male</value>
+			<value>concrete_male (loose)</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -50,7 +50,7 @@
 			<destination>{bfe4f725-56d6-40fc-a71f-ffa5775149f2}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{e79ad36f-ca19-4de7-b0e0-3b942bda6928}</destination>
+			<destination>{dc83ab54-deff-4a6d-b318-2f4b419f82e8}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{532f3ff5-06c2-4011-b394-148750d42a94}" />
