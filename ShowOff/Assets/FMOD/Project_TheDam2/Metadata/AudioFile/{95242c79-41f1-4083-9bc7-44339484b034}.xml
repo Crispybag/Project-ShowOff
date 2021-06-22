@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{95242c79-41f1-4083-9bc7-44339484b034}">
+		<property name="assetPath">
+			<value>putty knife.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.866122448979592</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{be325d4b-dc05-4f1d-bf86-655ff21206c2}</destination>
+		</relationship>
+	</object>
+</objects>

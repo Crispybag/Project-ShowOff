@@ -18,6 +18,8 @@ namespace Server
             direction[1] = pDirY;
             direction[2] = pDirZ;
             objectIndex = 13;
+
+            ToggleAirChannel();
         }
         /// <summary>
         /// (Leo) checks if player can be pushed on a certain tile
@@ -48,22 +50,22 @@ namespace Server
         {
             try
             {
-                int[] newPosition = pPosition;
+                int[] newPos = new int[3] { pPosition[0], pPosition[1], pPosition[2] };
                 if (isActivated)
                 {
-                    int xTest = newPosition[0];
-                    int yTest = newPosition[1];
-                    int zTest = newPosition[2];
+                    int xTest = pPosition[0];
+                    int yTest = pPosition[1];
+                    int zTest = pPosition[2];
                     int xDir = direction[0];
                     int yDir = direction[1];
                     int zDir = direction[2];
 
 
-                    newPosition[0] += direction[0];
-                    newPosition[1] += direction[1];
-                    newPosition[2] += direction[2];
+                    newPos[0] += direction[0];
+                    newPos[1] += direction[1];
+                    newPos[2] += direction[2];
                 }
-                return newPosition;
+                return newPos;
 
             }
             catch

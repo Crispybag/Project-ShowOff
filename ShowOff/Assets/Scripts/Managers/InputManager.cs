@@ -9,9 +9,6 @@ public class InputManager : MonoBehaviour
     //AUTHOR: Leo Jansen
     //SHORT DISCRIPTION: Manages the input controls
 
-    //HOW TO USE!
-    // InputManager im = ServiceLocator.sl.GetFromList("InputManager").GetComponent<InputManager>();
-    // im.GetAction();
 
     //=========================================================================================
     //                                     > Variables <

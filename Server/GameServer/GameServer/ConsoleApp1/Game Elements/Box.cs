@@ -86,25 +86,6 @@ namespace Server
             }
         }
 
-        /*
-        public void SendBoxPackage(GameObject box, int pX, int pY, int pZ, bool pIsPickedUp)
-        {
-            try
-            {
-                BoxInfo boxInf = new BoxInfo();
-                boxInf.ID = (box as Box).ID;
-                boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX;
-                boxInf.posY = pY + room.minY;
-                boxInf.posZ = pZ + room.minZ;
-                room.sendToAll(boxInf);
-            }
-            catch
-            {
-                Logging.LogInfo("Something went wrong when trying to adjust the box", Logging.debugState.SIMPLE);
-            }
-        }
-        */
         public bool tileContainsWater(int pID)
         {
             List<GameObject> objectsOnCoord = room.OnCoordinatesGetGameObjects(x(), y(), z() );
@@ -134,8 +115,49 @@ namespace Server
         {
             base.Update();
             CheckGrounded();
+            handleAirChannelHit(new int[3] { x(), y(), z() });
+
             if (hasFallen) { sendBoxPackage(false); hasFallen = false; }
         }
 
+        int infLoopPrevention;
+
+        /// <summary>
+        /// (Leo) Interaction with box and airchannels (mostly copied over from player)
+        /// </summary>
+        /// <param name="pPosition"></param>
+        private void handleAirChannelHit(int[] pPosition)
+        {
+            infLoopPrevention++;
+            int testVal1 = pPosition[2];
+            if (room.OnCoordinatesGetGameObject(pPosition, 13) is AirChannel && infLoopPrevention < 20)
+            {
+                AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
+                if (airChannel.isActivated)
+                {
+                    //move if the box is shovable
+                    if (airChannel.CanPushPlayer(pPosition))
+                    {
+                        
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                        sendBoxPackage(false);
+                    }
+
+                    //move to position if there is an airchannel
+                    else if (room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 13) && !room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 7) && !room.OnCoordinatesContain(airChannel.PushPlayer(pPosition), 1))
+                    {                  
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                        handleAirChannelHit(new int[3] { x(), y(), z() });
+                    }
+
+                    //conclude if neither are true
+                    else
+                    {
+                        sendBoxPackage(false);
+                    }
+                }
+            }
+            infLoopPrevention = 0;
+        }
     }
 }

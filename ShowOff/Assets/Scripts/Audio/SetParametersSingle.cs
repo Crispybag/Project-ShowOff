@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
+
+/// <summary>
+/// (Leo) Sets fmod event paramater from singleton
+/// </summary>
+
 public class SetParametersSingle : MonoBehaviour
 {
     public enum ActivationRequirement

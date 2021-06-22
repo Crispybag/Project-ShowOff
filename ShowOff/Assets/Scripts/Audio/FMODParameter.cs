@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (Leo) Contains fmod paramater
+/// </summary>
 
 [System.Serializable]
 public class FMODParameter

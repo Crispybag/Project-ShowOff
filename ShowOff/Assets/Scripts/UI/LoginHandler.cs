@@ -6,6 +6,11 @@ using System.Net.Sockets;
 using sharedAngy;
 using static ServiceLocator;
 
+/// <summary>
+/// (Ezra) Handles logging in, will make connection with server.
+/// </summary>
+
+
 public class LoginHandler : MonoBehaviour
 {
 
@@ -46,15 +51,11 @@ public class LoginHandler : MonoBehaviour
     {
         if (pJoinConfirm.acceptStatus)
         {
-            Debug.Log("YAY :D, You connected");
-            //serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
-            Debug.Log("Packet: Trying to move to lobby");
             FindObjectOfType<GameObjectMovement>().MoveObjectForwardToGoToLobby();
         }
         else
         {
             _feedbackText.text = pJoinConfirm.message;
-            Debug.Log("Not Accepted, same name probably");
         }
     }
 

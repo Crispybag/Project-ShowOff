@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
+/// <summary>
+/// (Ezra) Handles logic for water
+/// </summary>
+
+
 public class Water : MonoBehaviour
 {
     public int ID;
@@ -17,7 +22,6 @@ public class Water : MonoBehaviour
 
     private void Start()
     {
-
         _currentPosition = waterLevelPoints[0].transform.position;
         _targetPosition = this.transform.position;
         serviceLocator.interactableList.Add(ID, this.gameObject);
@@ -35,7 +39,6 @@ public class Water : MonoBehaviour
 
     public void SetTargetPosition(int pX, int pY, int pZ)
     {
-        Debug.Log("Set the new position of the water level to : " + pX + "," + pY + "!");
         _targetPosition.x = pX;
         _targetPosition.y = pY;
         _targetPosition.z = pZ;

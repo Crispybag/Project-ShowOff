@@ -5,11 +5,15 @@ using static ServiceLocator;
 using sharedAngy;
 using System.Net.Sockets;
 
+/// <summary>
+/// (Leo) Contains logic about the player movement
+/// </summary>
+
 public class PlayerMovement : Movement
 {
     [SerializeField] private float _moveSpeed;
 
-    [Tooltip("This will be the name in the service locator!")]public string playerName = "Player1";
+    [Tooltip("This will be the name in the service locator")]public string playerName = "Player1";
 
     private void Awake()
     {
@@ -20,7 +24,6 @@ public class PlayerMovement : Movement
     {
         base.Start();
     }
-    // Update is called once per frame
 
     protected override void Update()
     {

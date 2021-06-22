@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// (Leo) Contains logic about footsteps sounds
+/// </summary>
+
 public class FootstepSounds : MonoBehaviour
 {
     //=======================================================================================
@@ -13,21 +18,13 @@ public class FootstepSounds : MonoBehaviour
     [FMODUnity.EventRef] public string footStepsEventPath;
     public string materialParameter = "none";
     public string parameterOcclusion = "none";
-    public float stepDistance = 2.0f;
     public float rayDistance = 1.2f;
-    public float startRunningTime = 0.3f;
     //public string[] materialTypes;
     [HideInInspector] public int defaultMaterial;
 
-    // private variables
-    private float _stepRandom;
-    private Vector3 _prevPos;
-    private float _distanceTravelled;
-    private float _timeSinceStep;
     private RaycastHit hit;
     private int _materialValue;
 
-    private bool isRunning;
 
     //Setting up occlusion
     private GameObject _player;
@@ -45,25 +42,9 @@ public class FootstepSounds : MonoBehaviour
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        _stepRandom = Random.Range(0f, 0f);
-        _prevPos = transform.position;
-        _materialValue = defaultMaterial;
     }
 
-    private void Update()
-    {
-        _timeSinceStep += Time.deltaTime;
-        _distanceTravelled += (transform.position - _prevPos).magnitude;
-        Debug.Log((transform.position - _prevPos).magnitude);
-        if (_distanceTravelled >= stepDistance + _stepRandom)
-        {
-            MaterialCheck();
-            PlayFootStep();
-            _distanceTravelled = 0f;
-            _timeSinceStep = 0f;
-        }
-        _prevPos = transform.position;
-    }
+
     //=======================================================================================
     //                              >  Update Functions <
     //=======================================================================================
@@ -86,6 +67,7 @@ public class FootstepSounds : MonoBehaviour
     //Description of function 
     public void PlayFootStep()
     {
+        MaterialCheck();
         FMOD.Studio.EventInstance footstep = FMODUnity.RuntimeManager.CreateInstance(footStepsEventPath);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(footstep, transform, GetComponent<Rigidbody>());
         if (materialParameter != "none") footstep.setParameterByName(materialParameter, _materialValue);

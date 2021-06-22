@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
+/// <summary>
+/// (Ezra) Contains logic about the elevator mechanic
+/// </summary>
+
 public class Elevator : MonoBehaviour
 {
 
@@ -18,7 +22,6 @@ public class Elevator : MonoBehaviour
 
     private void Start()
     {
-
         _currentPosition = elevatorPoints[0].transform.position;
         _targetPosition = this.transform.position;
         serviceLocator.interactableList.Add(ID, this.gameObject);
@@ -36,7 +39,6 @@ public class Elevator : MonoBehaviour
 
     public void SetTargetPosition(int pX, int pY, int pZ)
     {
-        Debug.Log("Set the new position of the elevator to : " + pX + "," + pY + "!");
         _targetPosition.x = pX;
         _targetPosition.y = pY;
         _targetPosition.z = pZ;
@@ -46,11 +48,8 @@ public class Elevator : MonoBehaviour
     }
     protected void checkForMovement()
     {
-        //makes sure we dont move multiple tiles within the same amount of time
-        //because when holding the button id would stack if we wouldnt do this.
         if ((_targetPosition - transform.position).magnitude < 0.01f)
         {
-            //canMove = true;
             transform.position = _targetPosition;
             _currentPosition = transform.position;
         }
