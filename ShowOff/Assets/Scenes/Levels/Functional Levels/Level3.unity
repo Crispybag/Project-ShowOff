@@ -4336,7 +4336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594340971999357164, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: ID
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8106070711016018785, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6513,11 +6513,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6278579725099638426, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
       propertyPath: ID
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6278579725099638426, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
       propertyPath: conditions.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6278579725099638426, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
       propertyPath: conditions.Array.data[0]
@@ -6527,6 +6527,14 @@ PrefabInstance:
       propertyPath: conditions.Array.data[1]
       value: 
       objectReference: {fileID: 1741143669}
+    - target: {fileID: 6278579725099638426, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
+      propertyPath: conditions.Array.data[2]
+      value: 
+      objectReference: {fileID: 1235629646}
+    - target: {fileID: 6278579725099638426, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
+      propertyPath: conditions.Array.data[3]
+      value: 
+      objectReference: {fileID: 576294028}
     - target: {fileID: 6278579725099638429, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
@@ -7322,7 +7330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5347999587652201096, guid: a7e5ce17195a2814cacd22f594cd743d, type: 3}
       propertyPath: ID
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6037826346106445832, guid: a7e5ce17195a2814cacd22f594cd743d, type: 3}
       propertyPath: m_RootOrder
@@ -13162,7 +13170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6484784494443875437, guid: 4d12f834216b0c64685c818fcec57f9d, type: 3}
       propertyPath: ID
-      value: 30
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6484784494443875437, guid: 4d12f834216b0c64685c818fcec57f9d, type: 3}
       propertyPath: conditions.Array.size
@@ -15536,7 +15544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594340971999357164, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: ID
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
@@ -17300,7 +17308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: ID
-      value: 24
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: elevatorPoints.Array.size
@@ -18495,7 +18503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599196379655154597, guid: e0941b0bf6175f6459f8f5e40dc6802c, type: 3}
       propertyPath: ID
-      value: 31
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 5599196379655154597, guid: e0941b0bf6175f6459f8f5e40dc6802c, type: 3}
       propertyPath: interactables.Array.size
@@ -18704,7 +18712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5800910075346837795, guid: dececd6d4460f5a4795f5e1dc61401e1, type: 3}
       propertyPath: ID
-      value: 27
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 5800910075346837795, guid: dececd6d4460f5a4795f5e1dc61401e1, type: 3}
       propertyPath: interactables.Array.size
@@ -22132,6 +22140,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 87168845}
     m_Modifications:
+    - target: {fileID: 701287002432808010, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: fileName
+      value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: ID
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
       propertyPath: interactables.Array.size
       value: 1
@@ -22140,6 +22156,14 @@ PrefabInstance:
       propertyPath: interactables.Array.data[0]
       value: 
       objectReference: {fileID: 184458292}
+    - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: interactables.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413189510232538223, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: fileName
+      value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
+      objectReference: {fileID: 0}
     - target: {fileID: 7413189511033049750, guid: e59eaaae39e124849b031de608f19569, type: 3}
       propertyPath: m_RootOrder
       value: 30
@@ -22193,6 +22217,11 @@ PrefabInstance:
 --- !u!4 &576294027 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7413189511033049750, guid: e59eaaae39e124849b031de608f19569, type: 3}
+  m_PrefabInstance: {fileID: 576294026}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &576294028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7413189511033049751, guid: e59eaaae39e124849b031de608f19569, type: 3}
   m_PrefabInstance: {fileID: 576294026}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &578659374
@@ -24806,7 +24835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594340971999357164, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: ID
-      value: 25
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 8106070711016018785, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -31312,7 +31341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5347999587652201096, guid: a7e5ce17195a2814cacd22f594cd743d, type: 3}
       propertyPath: ID
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6037826346106445832, guid: a7e5ce17195a2814cacd22f594cd743d, type: 3}
       propertyPath: m_RootOrder
@@ -33513,7 +33542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: ID
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: elevatorPoints.Array.size
@@ -37068,7 +37097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6484784494443875437, guid: 4d12f834216b0c64685c818fcec57f9d, type: 3}
       propertyPath: ID
-      value: 32
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 6484784494443875437, guid: 4d12f834216b0c64685c818fcec57f9d, type: 3}
       propertyPath: conditions.Array.size
@@ -41658,7 +41687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 221736699880488608, guid: 1aafd75218516d8468da9b6a71e02900, type: 3}
       propertyPath: ID
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 221736699880488608, guid: 1aafd75218516d8468da9b6a71e02900, type: 3}
       propertyPath: interactables.Array.size
@@ -41867,7 +41896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: ID
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: elevatorPoints.Array.size
@@ -47453,6 +47482,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 87168845}
     m_Modifications:
+    - target: {fileID: 701287002432808010, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: fileName
+      value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: ID
+      value: 36
+      objectReference: {fileID: 0}
     - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
       propertyPath: interactables.Array.size
       value: 1
@@ -47461,6 +47498,14 @@ PrefabInstance:
       propertyPath: interactables.Array.data[0]
       value: 
       objectReference: {fileID: 184458292}
+    - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: interactables.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413189510232538223, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: fileName
+      value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
+      objectReference: {fileID: 0}
     - target: {fileID: 7413189511033049750, guid: e59eaaae39e124849b031de608f19569, type: 3}
       propertyPath: m_RootOrder
       value: 29
@@ -47514,6 +47559,11 @@ PrefabInstance:
 --- !u!4 &1235629645 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7413189511033049750, guid: e59eaaae39e124849b031de608f19569, type: 3}
+  m_PrefabInstance: {fileID: 1235629644}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1235629646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7413189511033049751, guid: e59eaaae39e124849b031de608f19569, type: 3}
   m_PrefabInstance: {fileID: 1235629644}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1236106903
@@ -51895,7 +51945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6278579725099638426, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
       propertyPath: ID
-      value: 29
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6278579725099638426, guid: a92ab4e0f9a9b384092a3b27bc20cf3d, type: 3}
       propertyPath: conditions.Array.size
@@ -54439,7 +54489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599196379655154597, guid: e0941b0bf6175f6459f8f5e40dc6802c, type: 3}
       propertyPath: ID
-      value: 18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5599196379655154597, guid: e0941b0bf6175f6459f8f5e40dc6802c, type: 3}
       propertyPath: interactables.Array.size
@@ -65701,7 +65751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594340971999357164, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: ID
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
@@ -66910,6 +66960,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 87168845}
     m_Modifications:
+    - target: {fileID: 701287002432808010, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: fileName
+      value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: ID
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7413189510232538222, guid: e59eaaae39e124849b031de608f19569, type: 3}
       propertyPath: interactables.Array.size
       value: 1
@@ -66918,6 +66976,10 @@ PrefabInstance:
       propertyPath: interactables.Array.data[0]
       value: 
       objectReference: {fileID: 184458292}
+    - target: {fileID: 7413189510232538223, guid: e59eaaae39e124849b031de608f19569, type: 3}
+      propertyPath: fileName
+      value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
+      objectReference: {fileID: 0}
     - target: {fileID: 7413189511033049750, guid: e59eaaae39e124849b031de608f19569, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -73341,7 +73403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594340971999357164, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
       propertyPath: ID
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ceaee4e78e520c141b39bb9ca0e691fa, type: 3}
@@ -75279,7 +75341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599196379655154597, guid: e0941b0bf6175f6459f8f5e40dc6802c, type: 3}
       propertyPath: ID
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5599196379655154597, guid: e0941b0bf6175f6459f8f5e40dc6802c, type: 3}
       propertyPath: interactables.Array.size
@@ -81560,7 +81622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: ID
-      value: 22
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 544062576413805662, guid: 552e3457e5831b34d917cd9564eb6076, type: 3}
       propertyPath: elevatorPoints.Array.size

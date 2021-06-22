@@ -456,14 +456,8 @@ namespace Server
             if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
             if (pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
             if (pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
-            if (pMessage is ReqLevelName) { handleReqLevelName(pMessage as ReqLevelName); }
         }
 
-        private void handleReqLevelName(ReqLevelName pReqLevelName)
-        {
-            string filePath = "../../../../LevelFiles/" + pReqLevelName.levelName + ".txt";
-            LoadLevel(filePath);
-        }
         private void handleChatMessage(ChatMessage  pMessage, TCPMessageChannel pSender)
         {
             ChatMessage newMessage = new ChatMessage();

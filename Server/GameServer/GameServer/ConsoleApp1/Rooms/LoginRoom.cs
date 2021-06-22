@@ -21,6 +21,7 @@ namespace Server
             {
                 handleReqJoinServer(pMessage as ReqJoinServer, pSender);
             }
+
         }
 
         public void AddMember(TCPMessageChannel pChannel)
