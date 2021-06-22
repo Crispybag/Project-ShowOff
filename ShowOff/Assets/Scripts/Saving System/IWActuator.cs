@@ -37,7 +37,12 @@ public class IWActuator : InformationWriter
             else if (obj.GetComponentInChildren<Elevator>() != null)
             {
                 Debug.Log("Found a elevator item in a list!");
-                IDs.Add(obj.GetComponentInChildren<Elevator>().ID);
+                //IDs.Add(obj.GetComponentInChildren<Elevator>().ID);
+                Elevator[] elevators = obj.GetComponentsInChildren<Elevator>();
+                foreach ( Elevator elevator in elevators)
+                {
+                    IDs.Add(elevator.ID);
+                }
             }
             else if (obj.GetComponentInChildren<Water>() != null)
             {
