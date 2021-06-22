@@ -410,13 +410,13 @@ namespace Server
                 {
                     if (obj.collState == CollInteractType.SOLID)
                     {
-                        if (!(obj is Water))
+                        if ((obj is Water))
                         {
-                            return false;
+                            return true;
                         }
-                        else return true;
                     }
                 }
+                return false;
             }
             return false;
         }
