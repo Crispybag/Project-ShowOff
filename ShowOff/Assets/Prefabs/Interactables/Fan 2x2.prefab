@@ -3610,7 +3610,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     type: 0
     collisionMode: 0
@@ -3728,7 +3728,7 @@ ParticleSystem:
     m_EnergyLossOnCollision:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3778,7 +3778,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    minKillSpeed: 0
+    minKillSpeed: 150
     maxKillSpeed: 10000
     radiusScale: 1
     collidesWith:
@@ -4895,6 +4895,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5026034351006010155, guid: 4971166f27307084a8957a6ced86436b, type: 3}
+      propertyPath: CollisionModule.type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026034351006010155, guid: 4971166f27307084a8957a6ced86436b, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026034351006010155, guid: 4971166f27307084a8957a6ced86436b, type: 3}
+      propertyPath: CollisionModule.minKillSpeed
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026034351006010155, guid: 4971166f27307084a8957a6ced86436b, type: 3}
       propertyPath: TrailModule.dieWithParticles
       value: 1
       objectReference: {fileID: 0}
@@ -4936,6 +4948,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5026034351006010155, guid: 4971166f27307084a8957a6ced86436b, type: 3}
       propertyPath: TrailModule.colorOverLifetime.minMaxState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026034351006010155, guid: 4971166f27307084a8957a6ced86436b, type: 3}
+      propertyPath: CollisionModule.m_EnergyLossOnCollision.scalar
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5026034351006010155, guid: 4971166f27307084a8957a6ced86436b, type: 3}
