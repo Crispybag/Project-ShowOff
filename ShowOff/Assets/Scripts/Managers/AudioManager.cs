@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
 {
     static AudioManager am;
     Dictionary<string, FMOD.Studio.EventInstance> nonOverlappingSounds = new Dictionary<string, FMOD.Studio.EventInstance>();
+    private float volumeParamater = 1.0f;
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -15,7 +16,7 @@ public class AudioManager : MonoBehaviour
         {
             am = this;
             serviceLocator.AddToList("AudioManager", gameObject);
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", 1.0f);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", volumeParamater);
             return;
         }
 
@@ -23,6 +24,11 @@ public class AudioManager : MonoBehaviour
 
     }
 
+    public void SetVolume(float value)
+    {
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", value);
+
+    }
     public void AddToList(string indicatorName, string eventPath)
     {
         if (!isInList(indicatorName))
