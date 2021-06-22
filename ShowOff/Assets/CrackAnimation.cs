@@ -40,7 +40,16 @@ public class CrackAnimation : MonoBehaviour
                 currentSprite = 0;
                 foreach(GameObject obj in objectsToDisable)
                 {
-                    Destroy(obj);
+                    ParticleSystem particlesystem = obj.GetComponent<ParticleSystem>();
+                    if (particlesystem != null)
+                    {
+                        var emmision = particlesystem.emission;
+                        emmision.enabled = false;
+                    }
+                    else
+                    {
+                        Destroy(obj);
+                    }
                 }
                 Destroy(this.gameObject);
             }

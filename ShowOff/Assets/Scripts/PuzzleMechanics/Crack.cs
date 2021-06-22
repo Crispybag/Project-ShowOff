@@ -14,11 +14,23 @@ public class Crack : Actuators
     public void Start()
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
+        ParticleSystem[] particlesystems = this.transform.parent.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem particle in particlesystems)
+        {
+            var emission = particle.emission;
+            emission.enabled = false;
+        }
     }
 
     public void FixCrack()
     {
         this.transform.parent.GetComponentInChildren<CrackAnimation>().fixing = true;
+        ParticleSystem[] particlesystems = this.transform.parent.GetComponentsInChildren<ParticleSystem>();
+        foreach(ParticleSystem particle in particlesystems)
+        {
+            var emission = particle.emission;
+            emission.enabled = true;
+        }
     }
 
 }

@@ -45,6 +45,12 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         _hoverSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
+    public void OnEnable()
+    {
+        isButtonHovering = false;
+        _image.sprite = spritesheet[0];
+    }
+
     void Start()
     {
         _image.sprite = spritesheet[0];

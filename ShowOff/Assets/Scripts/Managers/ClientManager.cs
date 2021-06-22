@@ -89,7 +89,20 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
         if (pInMessage is ConfPlayerSwitch) { handleConfPlayerSwitch(pInMessage as ConfPlayerSwitch); }
         if (pInMessage is ConfAnimation) { handleConfAnimation(pInMessage as ConfAnimation); }
+        if (pInMessage is ConfAirChannelToggle) { handleConfAirChannelToggle(pInMessage as ConfAirChannelToggle); }
     }
+
+    private void handleConfAirChannelToggle(ConfAirChannelToggle pMessage)
+    {
+        ParticleSystem[] particlesystems = serviceLocator.interactableList[pMessage.ID].transform.parent.parent.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem particle in particlesystems)
+        {
+            var emission = particle.emission;
+            emission.enabled = pMessage.isActive;
+            particle.transform.parent.GetComponentInChildren<Animator>().SetBool("isActive", pMessage.isActive);
+        }
+    }
+
 
     private void handleConfAnimation(ConfAnimation pMessage)
     {
