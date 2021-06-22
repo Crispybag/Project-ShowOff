@@ -8171,7 +8171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClientName: 
   playersWantToReset: 0
-  gameSceneName: AirChannelTesting
+  gameSceneName: Level3
 --- !u!4 &2092409358
 Transform:
   m_ObjectHideFlags: 0
