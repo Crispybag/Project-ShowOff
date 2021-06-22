@@ -10,6 +10,7 @@ public class VolumeSettings : MonoBehaviour
     void Start()
     {
         am = serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>();
+        slider.value = am.GetVolume();
     }
 
     // Update is called once per frame
