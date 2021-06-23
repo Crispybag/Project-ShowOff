@@ -67,7 +67,7 @@ public class SavingLevel : EditorWindow
                 interactable.GetComponentInChildren<BoxMovement>().ID = currentID;
                 SetDirty(interactable.GetComponentInChildren<BoxMovement>());
             }
-            else if (interactable.GetComponentInChildren<Dialogue>() != null)
+            else if (interactable.GetComponent<Dialogue>() != null)
             {
                 interactable.GetComponent<Dialogue>().ID = currentID;
                 SetDirty(interactable.GetComponent<Dialogue>());

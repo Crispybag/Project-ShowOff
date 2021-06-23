@@ -708,12 +708,14 @@ namespace Server
         /// </summary>
         private void startDialogue(GameObject diaobj, int[] direction)
         {
-            Dialogue dia = diaobj as Dialogue;
+            DialogueHitBoxes dia = diaobj as DialogueHitBoxes;
+            Dialogue dialogue = dia.parentDialogue;
             ConfProgressDialogue progressDialogue = new ConfProgressDialogue();
-            progressDialogue.ID = dia.ID;
-            room.currentDialogue = dia.ID;
+            progressDialogue.ID = dialogue.ID;
+            room.currentDialogue = dialogue.ID;
             room.sendToAll(progressDialogue);
-            room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
+            dialogue.DestroyDialogue();
+            //room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
         }
 
         /// <summary>

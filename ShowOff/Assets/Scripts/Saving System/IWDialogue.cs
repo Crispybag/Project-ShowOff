@@ -17,5 +17,16 @@ public class IWDialogue : InformationWriter
     {
         base.WriteAllInformation();
         AddToInformation(GetComponent<Dialogue>().ID);
+        AddToInformation(createDialogue());
+    }
+
+    private List<Vector3> createDialogue()
+    {
+        List<Vector3> dialogue = new List<Vector3>();
+        for (int i = 0; i < this.transform.childCount; i++)
+        {
+            dialogue.Add(this.transform.GetChild(i).transform.position);
+        }
+        return dialogue;
     }
 }

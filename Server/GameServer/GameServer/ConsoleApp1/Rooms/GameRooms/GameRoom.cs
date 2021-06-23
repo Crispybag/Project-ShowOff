@@ -325,7 +325,6 @@ namespace Server
             {
                 WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]), (int)float.Parse(rawInformation[2]), (int)float.Parse(rawInformation[3]), int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
                 InteractableGameobjects.Add(waterPool.ID, waterPool);
-                Console.WriteLine("Added a water pool on position : " + waterPool.x() + " : " + waterPool.y() + " : " + waterPool.z());
 
 
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
@@ -334,7 +333,6 @@ namespace Server
                     {
                         EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2] );
                         waterPool.waterLevelPositions.Add(empty);
-                        Console.WriteLine("A new water level position has been added to the water pool!");
                     }
                     catch
                     {
@@ -347,7 +345,6 @@ namespace Server
                     {
                         Water water = new Water(this, informationLists[1][3 * i] - minX, informationLists[1][3 * i + 1] - minY, informationLists[1][3 * i + 2] - minZ);
                         waterPool.waterBlocks.Add(water);
-                        Console.WriteLine("Added an water on position: " + (water.x() - minX) + "," + (water.y() - minY) + "," + (water.z() - minZ));
                     }
                     catch
                     {
@@ -368,6 +365,13 @@ namespace Server
         {
             Dialogue dia = new Dialogue(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
             InteractableGameobjects.Add(dia.ID, dia);
+            for (int i = 0; i < informationLists[0].Count / 3; i++)
+            {
+                DialogueHitBoxes hitBox = new DialogueHitBoxes(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                Console.WriteLine("Added an empty on positions: " + (hitBox.x() - minX) + "," + (hitBox.y() - minY) + "," + (hitBox.z() - minZ));
+                dia.dialogueHitBoxes.Add(hitBox);
+                hitBox.parentDialogue = dia;
+            }
             Logging.LogInfo("GameRoom.cs: Added dialogue to room!", Logging.debugState.DETAILED);
         }
 
