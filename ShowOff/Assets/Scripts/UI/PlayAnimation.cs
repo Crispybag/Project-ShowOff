@@ -22,7 +22,7 @@ public class PlayAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [FMODUnity.EventRef]
     [SerializeField]private string _eventPath = "event:/UI-UX/spray hover";
     [FMODUnity.EventRef]
-    [SerializeField] private string _clickSound;
+    [SerializeField] private string _clickSound = "event:/UI-UX/pressed button";
 
     private AudioManager am;
     private FMOD.Studio.EventInstance _hoverSound;

@@ -221,7 +221,7 @@ namespace Server
                     if (room.OnCoordinatesContain(OneInFront(), 4))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 5;
                         sendActuatorToggle(OneInFront());
                     }
 
@@ -229,7 +229,7 @@ namespace Server
                     if (room.OnCoordinatesContain(OneInFront(), 8))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 5;
                         sendActuatorToggle(OneInFront());
                     }
 
@@ -237,7 +237,7 @@ namespace Server
                     if (room.OnCoordinatesContain(OneInFront(), 12))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 15;
                         sendActuatorToggle(OneInFront());
                     }
 
@@ -245,7 +245,7 @@ namespace Server
                     else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 5;
                         if (playerType == PlayerType.NUC)sendPickUpBox(OneInFront());
                     }
                 }
@@ -268,6 +268,7 @@ namespace Server
                 //place box
                 try
                 {
+                    calls += 5;
                     currentBox.MovePosition(OneInFront());
                     currentBox.CheckGrounded();
                     currentBox.sendBoxPackage(false);
@@ -294,6 +295,7 @@ namespace Server
                         return;
                     }
                 }
+                calls += 5;
                 //Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
                 currentBox.sendBoxPackage(false);
@@ -708,6 +710,7 @@ namespace Server
         /// </summary>
         private void startDialogue(GameObject diaobj, int[] direction)
         {
+            calls += 10;
             Dialogue dia = diaobj as Dialogue;
             ConfProgressDialogue progressDialogue = new ConfProgressDialogue();
             progressDialogue.ID = dia.ID;
