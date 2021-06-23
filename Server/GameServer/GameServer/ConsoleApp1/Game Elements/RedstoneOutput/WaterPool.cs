@@ -54,8 +54,8 @@ namespace Server
                     
                     if (coolBox != null)
                     {
-                        coolBox.MoveDirection(waterLevelPositions[currentPos].x() - waterLevelPositions[oldPos].x(), waterLevelPositions[currentPos].y() - waterLevelPositions[oldPos].y(), waterLevelPositions[currentPos].z() - waterLevelPositions[oldPos].z());
-                        coolBox.sendBoxPackage(false);
+                        //coolBox.MoveDirection(waterLevelPositions[currentPos].x() - waterLevelPositions[oldPos].x(), waterLevelPositions[currentPos].y() - waterLevelPositions[oldPos].y(), waterLevelPositions[currentPos].z() - waterLevelPositions[oldPos].z());
+                        //coolBox.sendBoxPackage(false);
                     }
                 }
 

@@ -402,23 +402,30 @@ namespace Server
             //checks if player can drop down (no water)
             for (int i = 1; i < 15; i++)
             {
-                if(position[1] - i < 0)
+                if(position[1] - i < room.minY)
                 {
                     return false;
                 }
                 List<GameObject> gameObjectsDown = room.OnCoordinatesGetGameObjects(position[0], position[1] - i, position[2]);
-                
+                int solids = 0;
                 foreach (GameObject obj in gameObjectsDown)
                 {
                     if (obj.collState == CollInteractType.SOLID)
                     {
-                        if ((obj is Water))
+                        solids++;
+                        if (obj is Water)
                         {
                             return true;
                         }
                     }
+
+                    
                 }
-                return false;
+                if (solids > 0)
+                {
+                    return false;
+                }
+
             }
             return false;
         }
@@ -737,7 +744,6 @@ namespace Server
 
         
         #endregion
-
 
         #region output
 

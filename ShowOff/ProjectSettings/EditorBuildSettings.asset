@@ -50,4 +50,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/ServerTesting/AirChannelTesting.unity
     guid: 4e37f7cd38339824c8f67aea41c36f1e
+  - enabled: 1
+    path: Assets/Scenes/Levels/LevelWater.unity
+    guid: 1a586be64d47a6847b81e9bf7341cd0d
   m_configObjects: {}
