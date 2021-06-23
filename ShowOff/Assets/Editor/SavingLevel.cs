@@ -55,14 +55,19 @@ public class SavingLevel : EditorWindow
             else if (interactable.GetComponentInChildren<Elevator>() != null)
             {
                 interactable.GetComponentInChildren<Elevator>().ID = currentID;
-                SetDirty(interactable.GetComponentInChildren<Elevator>());
+                foreach(Elevator elevator in interactable.GetComponentsInChildren<Elevator>())
+                {
+                    elevator.ID = currentID;
+                    currentID++;
+                    SetDirty(elevator);
+                }
             }
             else if (interactable.GetComponentInChildren<BoxMovement>() != null)
             {
                 interactable.GetComponentInChildren<BoxMovement>().ID = currentID;
                 SetDirty(interactable.GetComponentInChildren<BoxMovement>());
             }
-            else if (interactable.GetComponentInChildren<Dialogue>() != null)
+            else if (interactable.GetComponent<Dialogue>() != null)
             {
                 interactable.GetComponent<Dialogue>().ID = currentID;
                 SetDirty(interactable.GetComponent<Dialogue>());

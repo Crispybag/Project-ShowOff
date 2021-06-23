@@ -23,6 +23,7 @@ public class Lever : Actuators
     {
         isActuated = isActive;
         serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().playSound(eventPath, this.gameObject);
+        transform.parent.GetComponentInChildren<Animator>().SetBool("isActuated", isActive);
     }
 
 }

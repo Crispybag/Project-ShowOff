@@ -91983,8 +91983,15 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.35
-    functionName: PlaysoundFromlist
+  - time: 0
+    functionName: EnableCrackTool
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 3.5833333
+    functionName: DisableCrackTool
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -26,8 +26,18 @@ public class BoxMovement : MonoBehaviour
 
     public void UpdateBox(bool isPickedUp, int posX, int posY, int posZ)
     {
-        _currentPosition = transform.position;
-        _targetPosition = new Vector3(posX, posY, posZ);
+        //_currentPosition = transform.position;
+        //_targetPosition = new Vector3(posX, posY, posZ);
+        this.transform.position = new Vector3(posX, posY, posZ);
+
+/*        if (isPickedUp)
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().enabled = true;
+        }*/
 
         timer = 0f;
     }
@@ -35,8 +45,8 @@ public class BoxMovement : MonoBehaviour
     protected virtual void Update()
     {
         //lerp position
-        timer += Time.deltaTime;
+/*        timer += Time.deltaTime;
         float ratio = timer / _travelTime;
-        transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
+        transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);*/
     }
 }
