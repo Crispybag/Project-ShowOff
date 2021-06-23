@@ -72,7 +72,7 @@ namespace Server
         }
 
         //Send a pulse to a client to get an update from the connection
-        private void sendPulse()
+        virtual protected void sendPulse()
         {
             Heartbeat pulse = new Heartbeat();
             sendToAll(pulse);

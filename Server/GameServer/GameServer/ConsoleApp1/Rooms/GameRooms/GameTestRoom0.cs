@@ -9,7 +9,7 @@ namespace Server
     {
         public GameTestRoom0(TCPGameServer pServer, int pWidth, int pHeight, int pLength) : base(pServer, pWidth, pHeight, pLength)
         {
-            string file = "../../../../LevelFiles/Features.txt";
+            string file = "../../../../LevelFiles/Level1.txt";
             GenerateGridFromText(file);
             //CopyGrid(roomStatic, roomArray);
             //PrintGrid(roomArray);

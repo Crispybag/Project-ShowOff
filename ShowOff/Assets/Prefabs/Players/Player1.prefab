@@ -287,6 +287,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventPath: event:/gameplay (actions and props)/box placed
+  eventpaths:
+  - event:/gameplay (actions and props)/fixing cracks
+  - event:/character/landing/male
 --- !u!1 &8859024794792734605
 GameObject:
   m_ObjectHideFlags: 0

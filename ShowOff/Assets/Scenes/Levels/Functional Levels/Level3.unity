@@ -10848,6 +10848,10 @@ PrefabInstance:
       propertyPath: fileName
       value: ../Server/GameServer/GameServer/LevelFiles/Level3.txt
       objectReference: {fileID: 0}
+    - target: {fileID: 2180702175540750596, guid: 9cf6679e5d57676468d90a872ab5e859, type: 3}
+      propertyPath: newLevelName
+      value: LevelWater.txt
+      objectReference: {fileID: 0}
     - target: {fileID: 2180702175540750597, guid: 9cf6679e5d57676468d90a872ab5e859, type: 3}
       propertyPath: ID
       value: 0
