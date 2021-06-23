@@ -17,6 +17,9 @@ namespace Server
         public int y() { return position[1]; }
         public int z() { return position[2]; }
 
+        private bool isCurrentlyInAirChannel = false;
+
+
         public int objectIndex = 0;
         //determines how a collision interaction will be handled
         public enum CollInteractType
@@ -50,18 +53,21 @@ namespace Server
         }
 
         #region movement tools
-        public void MoveDirection(int pX, int pY, int pZ)
+        public void MoveDirection(int pX, int pY, int pZ, bool isAirChanneling = false, int playerIndex = 1)
         {
             //change the location of the player and remove the player value from the grid at the place the player was
             room.OnCoordinatesRemove(x(), y(), z(), objectIndex);
             position[0] += pX;
             position[1] += pY;
             position[2] += pZ;
+
+            SendAirChannelAnimation(isAirChanneling, playerIndex);
+
             //add
             room.roomArray[x(), y(), z()].Add(this);
             //Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
         }
-        public void MoveDirection(int[] pDirection)
+        public void MoveDirection(int[] pDirection, bool isAirChanneling = false, int playerIndex = 1)
         {
             try
             {
@@ -71,6 +77,8 @@ namespace Server
                 position[1] += pDirection[1];
                 position[2] += pDirection[2];
                 //add
+                SendAirChannelAnimation(isAirChanneling, playerIndex);
+
                 room.roomArray[x(), y(), z()].Add(this);
                 Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.SPAM);
             }
@@ -79,18 +87,28 @@ namespace Server
                 Logging.LogInfo("index was outside of bounds in move direction in gameobject", Logging.debugState.SIMPLE);
             }
         }
-        public void MovePosition(int pX, int pY, int pZ)
+
+
+
+        public void MovePosition(int pX, int pY, int pZ, bool isAirChanneling = false, int playerIndex = 1)
         {
             //change the location of the player and remove the player value from the grid at the place the player was
             room.OnCoordinatesRemove(x(), y(), z(), objectIndex);
             position[0] = pX;
             position[1] = pY;
             position[2] = pZ;
+
+            SendAirChannelAnimation(isAirChanneling, playerIndex);
+
             //add
             room.roomArray[x(), y(), z()].Add(this);
             Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.SPAM);
         }
-        public void MovePosition(int[] pPosition)
+
+
+
+
+        public void MovePosition(int[] pPosition, bool isAirChanneling = false, int playerIndex = 1)
         {
             try
             {
@@ -99,6 +117,9 @@ namespace Server
                 position[0] = pPosition[0];
                 position[1] = pPosition[1];
                 position[2] = pPosition[2];
+
+                SendAirChannelAnimation(isAirChanneling, playerIndex);
+
                 //add
                 room.roomArray[x(), y(), z()].Add(this);
                 Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.SPAM);
@@ -114,6 +135,20 @@ namespace Server
         public virtual void Update()
         {
 
+        }
+
+        private void SendAirChannelAnimation(bool isAirChanneling, int playerIndex)
+        {
+
+            if (isCurrentlyInAirChannel != isAirChanneling)
+            {
+                ConfAnimation animation = new ConfAnimation();
+                animation.player = playerIndex;
+                animation.isInAirChannel = isAirChanneling;
+                room.sendToAll(animation);
+                isCurrentlyInAirChannel = isAirChanneling;
+                Console.WriteLine("Send package with the value of: " + isAirChanneling);
+            }
         }
 
 

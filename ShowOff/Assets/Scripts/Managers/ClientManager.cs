@@ -150,6 +150,15 @@ public class ClientManager : MonoBehaviour
             {
                 player2.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
             }
+            Debug.Log("is in air channel : " + pMessage.isInAirChannel);
+            if (pMessage.isInAirChannel)
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("startAir");
+            }
+            else
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("stopAir");
+            }
         }
     }
 

@@ -514,7 +514,7 @@ namespace Server
 
                     if (airChannel.CanPushPlayer(pPosition))
                     {
-                        MovePosition(airChannel.PushPlayer(pPosition));
+                        MovePosition(airChannel.PushPlayer(pPosition), true ,GetPlayerIndex());
                     }
                     else
                     {
