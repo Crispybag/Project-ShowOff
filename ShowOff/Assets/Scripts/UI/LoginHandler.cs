@@ -47,7 +47,9 @@ public class LoginHandler : MonoBehaviour
         if (pJoinConfirm.acceptStatus)
         {
             Debug.Log("YAY :D, You connected");
-            serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
+            //serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
+            Debug.Log("Packet: Trying to move to lobby");
+            FindObjectOfType<GameObjectMovement>().MoveObjectForwardToGoToLobby();
         }
         else
         {

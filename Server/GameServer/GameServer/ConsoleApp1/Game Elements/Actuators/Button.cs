@@ -10,7 +10,6 @@ namespace Server
     /// </summary>
     class Button : Actuator
     {
-        public Direction currentDirection;
         //this timer will decide after how long the button will turn off again, 3 stays on for around 0.5 seconds
         public float timer = 3;
         private float currentTimer;
@@ -57,41 +56,30 @@ namespace Server
 
         private void UpdateElevators()
         {
-            Console.WriteLine("Elevator count: " + redstoneOutputs.Count);
             if (redstoneOutputs.Count > 0)
             {
                 foreach (int elevator in redstoneOutputs)
                 {
-                    Console.WriteLine( "current check in button : " + elevator + " : "+ room.InteractableGameobjects[elevator]);
                     try
                     {
                         if (room.InteractableGameobjects[elevator] is Elevator)
                         {
-                        (room.InteractableGameobjects[elevator] as Elevator).NextPosition(currentDirection);
+                        (room.InteractableGameobjects[elevator] as Elevator).NextPosition();
                         }
 
                         else if (room.InteractableGameobjects[elevator] is WaterPool)
                         {
-                            (room.InteractableGameobjects[elevator] as WaterPool).moveWater((int)currentDirection);
+                            (room.InteractableGameobjects[elevator] as WaterPool).moveWater();
                         }
                     }
                     catch(Exception e)
                     {
-                        Console.WriteLine(e.Message);
                         Logging.LogInfo("Button.cs: Could not handle the button acutator!", Logging.debugState.DETAILED);
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// (Ezra) Direction the button should move elevator in, 1 = up, 0 = down
-        /// </summary>
-        public enum Direction
-        {
-            UP,
-            DOWN
-        }
     }
 }
 

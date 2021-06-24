@@ -67,7 +67,7 @@ public class SavingLevel : EditorWindow
                 interactable.GetComponent<Dialogue>().ID = currentID;
                 SetDirty(interactable.GetComponent<Dialogue>());
             }
-            else if (interactable.GetComponentInChildren<Water>() != null)
+            else if (interactable.GetComponent<Water>() != null)
             {
                 interactable.GetComponent<Water>().ID = currentID;
                 SetDirty(interactable.GetComponent<Water>());
@@ -75,9 +75,17 @@ public class SavingLevel : EditorWindow
 
             else if (interactable.GetComponentInChildren<LevelLoader>() != null)
             {
-                interactable.GetComponent<LevelLoader>().ID = currentID;
-                SetDirty(interactable.GetComponent<LevelLoader>());
+                interactable.GetComponentInChildren<LevelLoader>().ID = currentID;
+                SetDirty(interactable.GetComponentInChildren<LevelLoader>());
             }
+
+            else if (interactable.GetComponentInChildren<AirChannelManager>() != null)
+            {
+                interactable.GetComponentInChildren<AirChannelManager>().ID = currentID;
+                SetDirty(interactable.GetComponentInChildren<AirChannelManager>());
+            }
+
+
             currentID++;
 
         }

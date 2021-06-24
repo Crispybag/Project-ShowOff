@@ -84,6 +84,7 @@ public class SceneManagerScript : MonoBehaviour
         
     }
 
+
     public void RequestRoom(int roomNumber)
     {
         switch(roomNumber)
@@ -109,7 +110,10 @@ public class SceneManagerScript : MonoBehaviour
         }
     }
 
-
+    public string getCurrentScene()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
     
 
     //=========================================================================================

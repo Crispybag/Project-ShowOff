@@ -13,7 +13,6 @@ public class InformationWriterButton : InformationWriterActuator
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        AddToInformation(this.gameObject.GetComponent<Button>().direction);
     }
 
 }

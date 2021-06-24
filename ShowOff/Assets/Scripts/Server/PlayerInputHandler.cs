@@ -82,6 +82,7 @@ public class PlayerInputHandler : MonoBehaviour
             {
                 if(scene.name == "Options")
                 {
+                    SceneManager.UnloadSceneAsync("Options");
                     return;
                 }
             }
@@ -116,15 +117,13 @@ public class PlayerInputHandler : MonoBehaviour
             _clientManager.SendPackage(keyDown);
         }
 
-
-
         else if (Input.GetKeyDown(KeyCode.R))
         {
             ReqResetLevel resetLevel = new ReqResetLevel();
             resetLevel.wantsReset = true;
+            resetLevel.sceneName = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().getCurrentScene();
             _clientManager.SendPackage(resetLevel);
         }
-
 
 
 

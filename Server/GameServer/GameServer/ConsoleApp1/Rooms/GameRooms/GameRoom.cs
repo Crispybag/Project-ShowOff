@@ -21,6 +21,8 @@ namespace Server
         public bool isReloading = false;
         public string levelFile;
         public string sceneName;
+
+
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -79,7 +81,6 @@ namespace Server
         /// <summary>
         /// (Leo) Loads Level
         /// </summary>
-        /// 
         public void LoadLevel(string filePath)
         {
             GenerateGridFromText(filePath);
@@ -322,16 +323,18 @@ namespace Server
         {
             try
             {
-                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
+                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]), (int)float.Parse(rawInformation[2]), (int)float.Parse(rawInformation[3]), int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
                 InteractableGameobjects.Add(waterPool.ID, waterPool);
-               
-                
+                Console.WriteLine("Added a water pool on position : " + waterPool.x() + " : " + waterPool.y() + " : " + waterPool.z());
+
+
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     try
                     {
-                        EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                        EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2] );
                         waterPool.waterLevelPositions.Add(empty);
+                        Console.WriteLine("A new water level position has been added to the water pool!");
                     }
                     catch
                     {
@@ -400,18 +403,6 @@ namespace Server
             Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), informationLists[0]);
             InteractableGameobjects.Add(button.ID, button);
             Logging.LogInfo("GameRoom.cs: Added button!", Logging.debugState.DETAILED);
-            switch (int.Parse(informationData[8]))
-            {
-                case (0):
-                    button.currentDirection = Button.Direction.DOWN;
-                    break;
-                case (1):
-                    button.currentDirection = Button.Direction.UP;
-                    break;
-                default:
-                    Logging.LogInfo("GameRoom.cs: Cant handle button direction!", Logging.debugState.DETAILED);
-                    break;
-            }
 
         }
         /// <summary>
@@ -536,19 +527,62 @@ namespace Server
 
         private void handleReqResetLevel(ReqResetLevel pResetLevel, TCPMessageChannel pSender)
         {
+            //change reset status
             foreach (Player player in players)
             {
                 if (pSender == player.getClient())
                 {
                     player.SetResetStatus(pResetLevel.wantsReset);
+
                 }
+            }
+
+            //check if all players want to reset
+            int i = 0;
+            isReloading = true;
+            foreach (Player player in players)
+            {
+                if (player.wantsReset)
+                {
+                    i++;
+                }
+                else
+                {
+                    isReloading = false;
+                }
+            }
+            sceneName = pResetLevel.sceneName;
+            ConfLoadScene reload = new ConfLoadScene();
+            if (!isReloading)
+            {
+                reload.playersReset = i;
+            }
+            else { reload.playersReset = 0; }
+            reload.sceneName = sceneName;
+            reload.isResetting = isReloading;
+            sendToAll(reload);
+
+            //Reload scene if both players want to reset
+            if (isReloading)
+            {
+                //sendLevelReset();
+                foreach (TCPMessageChannel pListener in _users)
+                {
+                    sendConfPlayer(pListener);
+                }
+
+                LoadLevel(levelFile);
+                isReloading = false;
             }
         }
 
+        
         private void sendLevelReset()
         {
             ConfReloadScene reloadScene = new ConfReloadScene();
             reloadScene.sceneName = sceneName;
+            reloadScene.playersReset = 0;
+            reloadScene.isResetting = true;
             sendToAll(reloadScene);
         }
         #endregion
@@ -720,12 +754,8 @@ namespace Server
                 obj.Update();
             }
 
-            foreach(Player player in players)
-            {
-                if (!player.wantsReset) break;
-                isReloading = true;
-            }
 
+            //will figure out a solution later, but dont remove it
             if (isReloading)
             {
                 sendLevelReset();
@@ -737,6 +767,7 @@ namespace Server
                 LoadLevel(levelFile);
                 isReloading = false;
             }
+
         }
         #endregion
 
@@ -1057,7 +1088,7 @@ namespace Server
             }
 
             else
-                Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
+                //Logging.LogInfo("GameRoom.cs: coordinate does not contain the wished for index", Logging.debugState.DETAILED);
 
             return null;
         }

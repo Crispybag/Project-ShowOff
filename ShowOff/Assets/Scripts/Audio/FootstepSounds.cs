@@ -54,11 +54,11 @@ public class FootstepSounds : MonoBehaviour
     {
         _timeSinceStep += Time.deltaTime;
         _distanceTravelled += (transform.position - _prevPos).magnitude;
+
         if (_distanceTravelled >= stepDistance + _stepRandom)
         {
             MaterialCheck();
             PlayFootStep();
-            //_stepRandom = Random.Range(0f, 0.5f);
             _distanceTravelled = 0f;
             _timeSinceStep = 0f;
         }

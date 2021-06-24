@@ -22,52 +22,58 @@ namespace Server
         private void handlePlayerSwitch(ReqPlayerSwitch pPlayerSwitch, TCPMessageChannel pSender)
         {
             int senderIndex = _server.allConnectedUsers[pSender].GetPlayerIndex();
-            
-            //in case player was index 0
-            if (senderIndex == 0)
+            //if the new index is different from the current index
+            if (senderIndex != pPlayerSwitch.i)
             {
-                foreach (KeyValuePair<TCPMessageChannel, PlayerInfo> money in _server.allConnectedUsers)
+                //in case player was index 0
+                if (senderIndex == 0)
                 {
-                    //set player with index 1
-                    if (money.Value.GetPlayerIndex() == 1)
+                    foreach (TCPMessageChannel user in _users)
                     {
-                        _server.allConnectedUsers[money.Key].SetPlayerIndex(0);
-                        sendConfPlayer(money.Key);
+                        //set player with index 1
+                        if (_server.allConnectedUsers[user].GetPlayerIndex() == 1)
+                        {
+                            _server.allConnectedUsers[user].SetPlayerIndex(0);
+                            //sendConfPlayer(user.Key);
+                        }
                     }
+                    //set player with index 0
+                    _server.allConnectedUsers[pSender].SetPlayerIndex(1);
+                    //sendConfPlayer(pSender);
                 }
 
-                //set player with index 0
-                _server.allConnectedUsers[pSender].SetPlayerIndex(1);
-                sendConfPlayer(pSender);
-            }
-
-            //incase player was index 1
-            else if (senderIndex == 1)
-            {
-                foreach (KeyValuePair<TCPMessageChannel, PlayerInfo> money in _server.allConnectedUsers)
+                //incase player was index 1
+                else if (senderIndex == 1)
                 {
-                    //set player with index 1
-                    if (money.Value.GetPlayerIndex() == 0)
+                    foreach (TCPMessageChannel user in _users)
                     {
-                        _server.allConnectedUsers[money.Key].SetPlayerIndex(1);
-                        sendConfPlayer(money.Key);
+                        //set player with index 1
+                        if (_server.allConnectedUsers[user].GetPlayerIndex() == 0)
+                        {
+                            _server.allConnectedUsers[user].SetPlayerIndex(1);
+                            //sendConfPlayer(user.Key);
+                        }
                     }
+
+                    //set player with index 0
+                    _server.allConnectedUsers[pSender].SetPlayerIndex(0);
+                    //sendConfPlayer(pSender);
+
                 }
-
-                //set player with index 0
-                _server.allConnectedUsers[pSender].SetPlayerIndex(0);
-                sendConfPlayer(pSender);
-
+                //send updated values to all users in the lobby
+                foreach (TCPMessageChannel user in _users)
+                {
+                    sendConfPlayerSwitchPacket(user);
+                }
             }
         }
 
         private void sendConfPlayerSwitchPacket(TCPMessageChannel pSender)
         {
             ConfPlayerSwitch playerSwitch = new ConfPlayerSwitch();
-            
             playerSwitch.playerIndex = _server.allConnectedUsers[pSender].GetPlayerIndex();
             playerSwitch.playerName = _server.allConnectedUsers[pSender].GetPlayerName();
-            sendToAll(playerSwitch);
+            pSender.SendMessage(playerSwitch);
         }
 
 
@@ -143,6 +149,11 @@ namespace Server
             ChatMessage newMessage = new ChatMessage();
             newMessage.textMessage = _server.allConnectedUsers[pChannel].GetPlayerName() + " has just joined the lobby!";
             sendToAll(newMessage);
+            //updates all clients that they have the correct character selected
+            foreach (TCPMessageChannel user in _users)
+            {
+                sendConfPlayerSwitchPacket(user);
+            }
         }
 
         public override void RemoveMember(TCPMessageChannel pChannel)

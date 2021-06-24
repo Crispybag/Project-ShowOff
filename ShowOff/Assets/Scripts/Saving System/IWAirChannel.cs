@@ -10,19 +10,19 @@ public class IWAirChannel : InformationWriter
     private float angle;
     public override void Start()
     {
-        instantiateDirectionVectors();
         base.Start();
     }
 
     // Update is called once per frame
     public override void WriteAllInformation()
     {
+        instantiateDirectionVectors();
         base.WriteAllInformation();
         AddToInformation(airDirection.x);
         AddToInformation(airDirection.y);
         AddToInformation(airDirection.z);
         AddToInformation(GetComponent<AirChannelManager>().ID);
-        AddToInformation(GetComponent<AirChannelManager>().conditionsID);
+        AddToInformation(createList(GetComponent<AirChannelManager>().conditions));
     }
 
     private void instantiateDirectionVectors()
@@ -46,5 +46,44 @@ public class IWAirChannel : InformationWriter
             angle = newAngle;
             airDirection = pVec;
         }
+    }
+
+    private List<int> createList(List<GameObject> gameobjects)
+    {
+        List<int> IDs = new List<int>();
+        foreach (GameObject obj in gameobjects)
+        {
+            if (obj.GetComponentInChildren<PuzzleFactory>() != null)
+            {
+                Debug.Log("Found a puzzle factory item in a list!");
+                IDs.Add(obj.GetComponentInChildren<PuzzleFactory>().ID);
+            }
+            else if (obj.GetComponentInChildren<DoorManager>() != null)
+            {
+                Debug.Log("Found a door item in a list!");
+                IDs.Add(obj.GetComponentInChildren<DoorManager>().ID);
+            }
+            else if (obj.GetComponentInChildren<Elevator>() != null)
+            {
+                Debug.Log("Found a elevator item in a list!");
+                IDs.Add(obj.GetComponentInChildren<Elevator>().ID);
+            }
+            else if (obj.GetComponentInChildren<Water>() != null)
+            {
+                Debug.Log("Found a water item in a list!");
+                IDs.Add(obj.GetComponentInChildren<Water>().ID);
+            }
+
+            else if (obj.GetComponentInChildren<LevelLoader>() != null)
+            {
+                IDs.Add(obj.GetComponentInChildren<LevelLoader>().ID);
+            }
+
+            else if (obj.GetComponentInChildren<AirChannelManager>() != null)
+            {
+                IDs.Add(obj.GetComponentInChildren<AirChannelManager>().ID);
+            }
+        }
+        return IDs;
     }
 }

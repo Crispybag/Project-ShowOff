@@ -8,6 +8,13 @@ namespace Server
     class LoginRoom : Room
     {
         public LoginRoom(TCPGameServer pServer) : base(pServer) { }
+
+        private float animationTimer;
+        private bool requestingLobbyRoom = false;
+
+        private string requestedRoom;
+        private TCPMessageChannel client;
+
         protected override void handleNetworkMessage(ASerializable pMessage, TCPMessageChannel pSender)
         {
             if (pMessage is ReqJoinServer)
@@ -68,10 +75,34 @@ namespace Server
             joinMessage.message = "Client accepted with the name" + reqJoinServer.requestedName;
             Logging.LogInfo("Client got accepted with the name:  " + reqJoinServer.requestedName + "\n", Logging.debugState.DETAILED);
             pSender.SendMessage(joinMessage);
-            _server.AddPlayerInfo(pSender, reqJoinServer.requestedName, _server.allConnectedUsers.Count);
-            _server.availableRooms["Lobby"].AddMember(pSender);
-            RemoveMember(pSender);
+            requestingLobbyRoom = true;
+            client = pSender;
+            requestedRoom = reqJoinServer.requestedName;
+            animationTimer = 0;
         }
 
+
+        public override void Update()
+        {
+            base.Update();
+            if (requestingLobbyRoom)
+            {
+                if (animationTimer > 10)
+                {
+                    requestingLobbyRoom = false;
+                    _server.AddPlayerInfo(client, requestedRoom, _server.allConnectedUsers.Count);
+                    _server.availableRooms["Lobby"].AddMember(client);
+                    RemoveMember(client);
+                }
+                else
+                {
+                    animationTimer++;
+                }
+            }
+        }
     }
+
+    
+
+
 }

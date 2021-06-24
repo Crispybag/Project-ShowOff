@@ -1,5 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using UnityEngine;
 using static ServiceLocator;
 
@@ -30,14 +32,17 @@ public abstract class Movement : MonoBehaviour
     private Vector3 currentRotation;
     private Vector3 targetRotation;
 
-    protected float _travelTime = 0.1f;
+    protected float _travelTime = 0.05f;
     private float timer;
 
     public bool canMove = true;
-    private Animator animator;
     GameObject model;
+    private AnimationHandler animation;
 
     private float animatorCooldown;
+
+    private List<Vector3> coords = new List<Vector3>();
+
 
     //=========================================================================================
     //                                   > Start/Update <
@@ -47,8 +52,8 @@ public abstract class Movement : MonoBehaviour
         //toBePosition = transform.position;
         _currentPosition = transform.position;
         _targetPosition = transform.position;
-        animator = GetComponentInChildren<Animator>();
         model = transform.Find("Model").gameObject;
+        animation = this.transform.GetComponent<AnimationHandler>();
     }
 
     protected virtual void Update()
@@ -57,11 +62,17 @@ public abstract class Movement : MonoBehaviour
         timer += Time.deltaTime;
         float ratio = timer / _travelTime;
         transform.position = Vector3.Lerp(_currentPosition, _targetPosition, ratio);
-        model.transform.rotation = Quaternion.Euler(Vector3.Lerp(currentRotation, targetRotation, ratio));
+        model.transform.rotation = Quaternion.Euler(new Vector3(model.transform.rotation.x, Mathf.LerpAngle(currentRotation.y, targetRotation.y, ratio), model.transform.rotation.z));
 
-        //gravity
-        //checkForFalling();
-        //inputs
+        //set to next position in line
+        if (coords.Count != 0 && ratio > 0.99f)
+        {
+            moveToTile(coords[0]);
+            SetRotation(coords[0]);
+            coords.RemoveAt(0);
+        }
+
+
         checkForMovement();
 
     }
@@ -90,36 +101,85 @@ public abstract class Movement : MonoBehaviour
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
-
-    public void moveToTile(Vector3 pDirection, int orientation)
+    public void disectMovementCommands(string pMovements)
     {
+        //Debug.Log(pMovements);
+        //coords.Clear();
+        List<string> movementCalls = pMovements.Split(' ').ToList();
 
-        //get normalized direction just makes sure the direction on the xyz is always either 0 or 1. (sometimes it would be 0.0000001)
-        //pDirection = getNormalizedDirection(pDirection);
-        //if there isnt a wall update our target position to where we want to go.
-        //_targetPosition = pDirection + _currentPosition;
-        _targetPosition = pDirection;
-        _currentPosition = transform.position;
+        for (int i = 0; i < movementCalls.Count; i += 3)
+        {
+            try
+            {
+                float dirX = float.Parse(movementCalls[i], CultureInfo.InvariantCulture);
+                float dirY = float.Parse(movementCalls[i + 1], CultureInfo.InvariantCulture);
+                float dirZ = float.Parse(movementCalls[i + 2], CultureInfo.InvariantCulture);
+                Vector3 vec = new Vector3(dirX, dirY, dirZ);
+                coords.Add(vec);
+            }
+            catch
+            {
 
+            }
+        }
+
+    }
+    public void SetRotation(Vector3 pDirection, int orientation = -1)
+    {
         currentRotation = model.transform.rotation.eulerAngles;
         Vector3 rot = model.transform.rotation.eulerAngles;
-        if(orientation == 180)
+
+
+        if (orientation == -1)
         {
-            orientation = 0;
+            //set angle based on movement vector
+            if (pDirection.x < 0)
+            {
+                orientation = 270;      //left
+            }
+            else if (pDirection.x > 0)
+            {
+                orientation = 90;       //right
+            }
+            else if (pDirection.z < 0)
+            {
+                orientation = 180;        //down
+            }
+            else if (pDirection.z > 0)
+            {
+                orientation = 0;      //up
+            }
         }
-        else if(orientation == 0)
-        {
-            orientation = 180;
-        }
-        else if (orientation == -90)
-        {
-                orientation = 270;
-        }
+
         if (rot.y != orientation)
         {
             rot.y = orientation;
             targetRotation = rot;
         }
+    }
+
+
+    public void moveToTile(Vector3 pDirection, int orientation = -1)
+    {
+        //if there isnt a wall update our target position to where we want to go.
+        _targetPosition = pDirection + transform.position;
+        _currentPosition = transform.position;
+
+
+
+        
+/*        float angle = ((model.transform.rotation.eulerAngles.y - orientation + 540) % 360) - 180;
+        if(angle > 0)
+        {
+            rot.y = orientation;
+        }
+        else
+        {
+            rot.y = orientation - 360;
+        }*/
+
+
+        //targetRotation = rot;
 
         //toBePosition = _targetPosition;
         timer = 0f;
@@ -139,7 +199,7 @@ public abstract class Movement : MonoBehaviour
             _currentPosition = transform.position;
             if (animatorCooldown >= 0.1f)
             {
-                animator.SetBool("isWalking", false);
+                animation.isWalking = false;
             }
             animatorCooldown += Time.deltaTime;
             
@@ -147,7 +207,7 @@ public abstract class Movement : MonoBehaviour
         else
         {
             animatorCooldown = 0;
-            animator.SetBool("isWalking", true);
+            animation.isWalking = true;
 
             //canMove = false;
         }

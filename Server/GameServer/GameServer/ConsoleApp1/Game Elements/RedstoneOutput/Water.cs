@@ -63,11 +63,6 @@ namespace Server
         }
 
 
-/// <summary>
-/// push the player to new location
-/// </summary>
-/// <param name="pPosition"></param>
-/// <returns></returns>
 public int[] PushBox(int[] pPosition)
         {
             try
