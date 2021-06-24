@@ -10,6 +10,7 @@ using static ServiceLocator;
 public class AirChannelManager : MonoBehaviour
 {
     public int ID;
+    public bool isActuated;
     public List<GameObject> conditions = new List<GameObject>();
 
     void Start()

@@ -10,7 +10,7 @@ namespace sharedAngy
         public bool isCrawling;
         public bool isFalling;
         public bool isInAirChannel;
-         
+          
 
         public override void Serialize(Packet pPacket)
         {

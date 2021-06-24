@@ -8,7 +8,8 @@ public class AudioManager : MonoBehaviour
 {
     static AudioManager am;
     Dictionary<string, FMOD.Studio.EventInstance> nonOverlappingSounds = new Dictionary<string, FMOD.Studio.EventInstance>();
-    private float volumeParameter = 1.0f;
+    private float musicvolumeParameter = 0.5f;
+    private float SFXvolumeParameter = 1f;
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -16,7 +17,9 @@ public class AudioManager : MonoBehaviour
         {
             am = this;
             serviceLocator.AddToList("AudioManager", gameObject);
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", volumeParameter);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", SFXvolumeParameter);
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicVolume", musicvolumeParameter);
+
             return;
         }
 
@@ -24,16 +27,25 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    public void SetVolume(float value)
+    public void SetVolume(float value, int volumeType = 0)
     {
-        volumeParameter = value;
-        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", value);
+        if (volumeType == 0)
+        {
+            SFXvolumeParameter = value;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Volume", value);
+        }
+        else
+        {
+            musicvolumeParameter = value;
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("MusicVolume", value);
+        }
 
     }
 
-    public float GetVolume()
+    public float GetVolume(int index = 0)
     {
-        return volumeParameter;
+        if (index == 0) return SFXvolumeParameter;
+        else return musicvolumeParameter;
     }
 
 

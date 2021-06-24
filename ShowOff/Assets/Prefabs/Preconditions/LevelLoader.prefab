@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 5
-  conditions:
-  - {fileID: 0}
-  - {fileID: 0}
+  conditions: []
 --- !u!114 &2180702175540750596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,3 +62,4 @@ MonoBehaviour:
   _objectIndex: 14
   fileName: ../Server/GameServer/GameServer/LevelFiles/AA.txt
   newLevelName: bruh.txt
+  finalLevel: 0

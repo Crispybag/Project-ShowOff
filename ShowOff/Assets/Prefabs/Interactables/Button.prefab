@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 221736699880488610}
   - component: {fileID: 221736699880488608}
   - component: {fileID: 221736699880488609}
+  - component: {fileID: 4360198397438322252}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -95,6 +96,20 @@ MonoBehaviour:
   currentID: 0
   _objectIndex: 8
   fileName: 3DPrototype.txt
+--- !u!114 &4360198397438322252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221736699880488611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventPath: event:/gameplay (actions and props)/lever
+  eventpaths: []
 --- !u!1 &2782876083033622834
 GameObject:
   m_ObjectHideFlags: 0

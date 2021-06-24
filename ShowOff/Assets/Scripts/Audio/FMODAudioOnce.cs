@@ -11,13 +11,13 @@ public class FMODAudioOnce : MonoBehaviour
 {
     [FMODUnity.EventRef]
     public string _eventPath;
-    [SerializeField] private string _eventName;
+   // [SerializeField] private string _eventName;
 
     void Start()
     {
         AudioManager manager = serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>();
-        manager.AddToList(_eventName, _eventPath);
-        manager.PlayFromList(_eventName);
+        manager.AddToList(_eventPath, _eventPath);
+        manager.PlayFromList(_eventPath);
     }
 
 }

@@ -53,4 +53,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Functional Levels/LevelWater.unity
     guid: 1a586be64d47a6847b81e9bf7341cd0d
+  - enabled: 1
+    path: Assets/Scenes/Levels/FinalLevels/Level0F.unity
+    guid: b7d1f12cf252ce84a8fc7ced82ef1d33
+  - enabled: 1
+    path: Assets/Scenes/Levels/FinalLevels/Level1F.unity
+    guid: 8026e084e07e8a247be1ccf2f03e70df
+  - enabled: 1
+    path: Assets/Scenes/Levels/FinalLevels/Level4F.unity
+    guid: 8f15e3481f756dc4cb3e3d18a973a10c
+  - enabled: 1
+    path: Assets/Scenes/Levels/FinalLevels/Level2F.unity
+    guid: 8ef4efd8b7c19fa499cae57110a3e542
+  - enabled: 1
+    path: Assets/Scenes/Levels/FinalLevels/Level3F.unity
+    guid: 4cd2bddac6dac0c47a5c4c7133e2e4b6
   m_configObjects: {}
