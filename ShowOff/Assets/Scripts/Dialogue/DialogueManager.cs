@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// (Ezra) Contains most information and logic for the dialogue. 
+/// </summary>
+
 public class DialogueManager : MonoBehaviour
 {
 

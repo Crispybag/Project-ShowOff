@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 3988802023236628659}
   - component: {fileID: 7415500932188294238}
   m_Layer: 0
-  m_Name: WaterShader
+  m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

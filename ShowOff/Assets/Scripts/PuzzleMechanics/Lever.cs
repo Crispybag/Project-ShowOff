@@ -3,69 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
-public class Lever : PuzzleFactory
+/// <summary>
+/// (Ezra) Contains logic about the lever mechanic
+/// </summary>
+
+public class Lever : Actuators
 {
 
-    //AUTHOR: Ezra
-    //SHORT DISCRIPTION:
-
-
-    //=========================================================================================
-    //                                     > Variables <
-    //=========================================================================================
-
-    //------------------------ public ------------------------
     [FMODUnity.EventRef]
     public string eventPath;
 
-
-    //----------------------- private ------------------------
-
-
-    [SerializeField] private Material _mat1;
-    [SerializeField] private Material _mat2;
-    private InputManager _inputManager;
-
-    //=========================================================================================
-    //                                   > Start/Update <
-    //=========================================================================================
     private void Start()
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
-        this.gameObject.GetComponent<MeshRenderer>().material = _mat1;
     }
 
-    private void Update()
-    {
-    }
-
-    //=========================================================================================
-    //                              > Public Tool Functions <
-    //=========================================================================================
 
     public void SetActivatedLever(bool isActive)
     {
         isActuated = isActive;
-        setMaterial();
         serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().playSound(eventPath, this.gameObject);
     }
-
-    private void setMaterial()
-    {
-        if (isActuated)
-        {
-            this.gameObject.GetComponent<MeshRenderer>().material = _mat2;
-        }
-        else
-        {
-            this.gameObject.GetComponent<MeshRenderer>().material = _mat1;
-        }
-    }
-
-
-
-    //=========================================================================================
-    //                             > Private Tool Functions <
-    //=========================================================================================
 
 }

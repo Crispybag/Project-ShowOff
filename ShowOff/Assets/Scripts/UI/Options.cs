@@ -5,6 +5,11 @@ using UnityEngine.UI;
 using static ServiceLocator;
 using sharedAngy;
 
+
+/// <summary>
+/// (Ezra) Handles the options menu, with specific functions
+/// </summary>
+
 public class Options : MonoBehaviour
 {
     [SerializeField] private Text optionText;

@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ServiceLocator;
 
-public class Crack : PuzzleFactory
+
+/// <summary>
+/// (Ezra) Contains logic about the crack mechanic
+/// </summary>
+
+public class Crack : Actuators
 {
 
     public void Start()
@@ -13,7 +18,7 @@ public class Crack : PuzzleFactory
 
     public void FixCrack()
     {
-        Destroy(this.gameObject);
+        this.transform.parent.GetComponentInChildren<CrackAnimation>().fixing = true;
     }
 
 }

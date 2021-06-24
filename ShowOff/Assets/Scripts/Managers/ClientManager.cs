@@ -103,14 +103,6 @@ public class ClientManager : MonoBehaviour
                 player1.GetComponent<AnimationHandler>().DoTrigger("startFalling");
                 player1.GetComponent<AnimationHandler>().isFalling = true;
             }
-            if (pMessage.isCrawling)
-            {
-                player1.GetComponent<AnimationHandler>().DoTrigger("startCrawling");
-            }
-            else
-            {
-                player1.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
-            }
         }
         else
         {
@@ -193,6 +185,11 @@ public class ClientManager : MonoBehaviour
         try
         {
             serviceLocator.GetFromList("CameraManager").GetComponent<CameraManager>()._playerCameraGameObject = serviceLocator.GetFromList(ClientName).transform.Find("CameraPosition").gameObject;
+            InteractableShaderManager[] shaders = FindObjectsOfType<InteractableShaderManager>();
+            foreach(InteractableShaderManager shader in shaders)
+            {
+                shader.SetupShader(pMessage.playerName);
+            }
         }
         catch
         {
@@ -227,11 +224,25 @@ public class ClientManager : MonoBehaviour
                     //down = on, up = off
                     if (pMessage.isActived)
                     {
-                        serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverDown");
+                        if (pMessage.player == 0)
+                        {
+                            serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverDown");
+                        }
+                        else
+                        {
+                            serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverDown");
+                        }
                     }
                     else
                     {
-                        serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverUp");
+                        if (pMessage.player == 0)
+                        {
+                            serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverUp");
+                        }
+                        else
+                        {
+                            serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("PullingLeverUp");
+                        }
                     }
                 }
                 break;
@@ -244,12 +255,30 @@ public class ClientManager : MonoBehaviour
                 obj.GetComponent<Button>().UpdateActuator(pMessage.isActived);
                 if (pMessage.isActived)
                 {
-                    serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("isPushingButton");
+                    if (pMessage.player == 0)
+                    {
+                        serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("isPushingButton");
+                    }
+                    else
+                    {
+                        serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("isPushingButton");
+                    }
                 }
                 break;
             case ConfActuatorToggle.Object.CRACK:
                 Debug.Log("Its a crack toggle!");
                 obj.GetComponent<Crack>().FixCrack();
+                if (pMessage.isActived)
+                {
+                    if (pMessage.player == 0)
+                    {
+                        serviceLocator.GetFromList("Player1").GetComponentInChildren<AnimationHandler>().DoTrigger("fixCrack");
+                    }
+                    else
+                    {
+                        serviceLocator.GetFromList("Player2").GetComponentInChildren<AnimationHandler>().DoTrigger("fixCrack");
+                    }
+                }
                 break;
             default:
                 Debug.LogError("ClientManager: Cannot handle actuator toggle!");
@@ -258,31 +287,18 @@ public class ClientManager : MonoBehaviour
     }
     private void handleConfMove(ConfMove pMessage)
     {
-        //FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);
         GameObject player1 = serviceLocator.GetFromList("Player1");
         GameObject player2 = serviceLocator.GetFromList("Player2");
 
         if (pMessage.player == 0)
         {
-            //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
-            //player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player1.GetComponent<Movement>().disectMovementCommands(pMessage.directions);
             if (pMessage.directions.Length < 5)player1.GetComponent<Movement>().SetRotation(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
-            //player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
-
-            //Debug.Log("Moved player 1!");
         }
         else
         {
-            //player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
-
-            //player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
             player2.GetComponent<Movement>().disectMovementCommands(pMessage.directions);
             if (pMessage.directions.Length < 5) player2.GetComponent<Movement>().SetRotation(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
-
-            //player2.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
-
-            //Debug.Log("Moved player 2!");
         }
     
     }

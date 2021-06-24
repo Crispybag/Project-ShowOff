@@ -4,6 +4,11 @@ using UnityEngine;
 using static ServiceLocator;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// (Ezra) Contains logic about the dialogue, what to show where
+/// </summary>
+
 public class Dialogue : MonoBehaviour
 {
     [HideInInspector]public int ID;
@@ -42,8 +47,8 @@ public class Dialogue : MonoBehaviour
                 setEmotes();
                 setEmoteSizes();
 
-                playSound();
-                //_dialogueManager.talkingSound.clip = dialogue[activeDialogue].sound;
+                //playSound();
+                _dialogueManager.talkingSound.clip = dialogue[activeDialogue].voiceLine;
 
 
                 activeDialogue++;
@@ -59,7 +64,8 @@ public class Dialogue : MonoBehaviour
 
     }
 
-    private void playSound()
+    //used previously for standard "hmm", "ah", "oh" sounds, now replaced by voicelines
+    /*private void playSound()
     {
         switch (dialogue[activeDialogue].sound)
         {
@@ -84,7 +90,7 @@ public class Dialogue : MonoBehaviour
         }
 
         _dialogueManager.talkingSound.Play();
-    }
+    }*/
 
     private void setEmoteSizes()
     {

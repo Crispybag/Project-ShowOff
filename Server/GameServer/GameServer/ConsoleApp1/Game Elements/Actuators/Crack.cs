@@ -17,12 +17,12 @@ namespace Server
             objectIndex = 12;
         }
 
-        public override void OnInteract(ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.CRACK)
+        public override void OnInteract(int player, ConfActuatorToggle.Object pType = ConfActuatorToggle.Object.CRACK)
         {
             //make sure it can only be activated once
             if (canActivate)
             {
-                base.OnInteract(pType);
+                base.OnInteract(player, pType);
             }
 
             canActivate = false;

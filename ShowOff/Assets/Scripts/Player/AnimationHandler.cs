@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (Ezra) Contains logic about the animations for characters
+/// </summary>
+
+
 public class AnimationHandler : MonoBehaviour
 {
     private Animator animator;
     public bool isWalking;
     public bool isFalling;
+    private bool isCrawling;
     public List<string> idleAnimations;
     public bool isAbleToBox;
     public bool isAbleToCrawl;
@@ -61,6 +67,12 @@ public class AnimationHandler : MonoBehaviour
         }
     }
 
+    public AnimationClip GetAnimatorClipInfos()
+    {
+        AnimatorClipInfo[] pog = animator.GetCurrentAnimatorClipInfo(0);
+        return pog[0].clip;
+
+    }
     public void DoTrigger(string pTrigger)
     {
         try
@@ -68,15 +80,24 @@ public class AnimationHandler : MonoBehaviour
             switch (pTrigger)
             {
                 case ("startCrawling"):
-                    if (isAbleToCrawl)
+                    //isCrawling is fail save, so if it gets bugged out and gets another packet, it wont do the trigger if you are already crawling
+                    if (!isCrawling)
                     {
-                        animator.SetTrigger(pTrigger);
+                        if (isAbleToCrawl)
+                        {
+                            animator.SetTrigger(pTrigger);
+                            isCrawling = true;
+                        }
                     }
                     break;
                 case ("stopCrawling"):
-                    if (isAbleToCrawl)
+                    if (isCrawling)
                     {
-                        animator.SetTrigger(pTrigger);
+                        if (isAbleToCrawl)
+                        {
+                            animator.SetTrigger(pTrigger);
+                            isCrawling = false;
+                        }
                     }
                     break;
                 case ("startAir"):

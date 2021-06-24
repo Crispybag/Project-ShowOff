@@ -7,12 +7,14 @@ namespace sharedAngy
 
     public class ConfActuatorToggle : ASerializable
     {
+        public int player;
         public bool isActived;
         public int ID;
         public Object obj;
 
         public override void Serialize(Packet pPacket)
         {
+            pPacket.Write(player);
             pPacket.Write(isActived);
             pPacket.Write(ID);
             pPacket.Write((int)obj);
@@ -20,6 +22,7 @@ namespace sharedAngy
 
         public override void Deserialize(Packet pPacket)
         {
+            player = pPacket.ReadInt();
             isActived = pPacket.ReadBool();
             ID = pPacket.ReadInt();
             obj = (Object)pPacket.ReadInt();

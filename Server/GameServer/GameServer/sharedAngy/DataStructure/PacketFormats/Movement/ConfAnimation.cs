@@ -9,7 +9,7 @@ namespace sharedAngy
         public int player;
         public bool isCrawling;
         public bool isFalling;
-
+         
 
         public override void Serialize(Packet pPacket)
         {

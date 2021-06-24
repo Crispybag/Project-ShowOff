@@ -35,4 +35,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Secret0.unity
     guid: 5b744b353a463e445a0a5c1bc54c775d
+  - enabled: 1
+    path: Assets/Scenes/Levels/Functional Levels/Level0Tutorial-Town.unity
+    guid: e2930e2b20302384781cfb17af12a06e
+  - enabled: 1
+    path: Assets/Scenes/Levels/Functional Levels/Level1.unity
+    guid: d6a251439d7d77f42b91d621ef709579
+  - enabled: 1
+    path: Assets/Scenes/Levels/Functional Levels/Level2.unity
+    guid: df5c0a8cf40737a49865c357cb59db16
+  - enabled: 1
+    path: Assets/Scenes/Levels/Functional Levels/Level3.unity
+    guid: b003e36bd1c0a13439cb1f6bed445fad
   m_configObjects: {}
