@@ -6,13 +6,15 @@ public class IWLevelLoader : InformationWriter
 {
     // Start is called before the first frame update
     [SerializeField] private string newLevelName;
-
+    
     public override void WriteAllInformation()
     {
         if (isNameValid(newLevelName))
         {
             base.WriteAllInformation();
             AddToInformation(newLevelName);
+            AddToInformation(GetComponent<LevelLoader>().ID);
+            AddToInformation(createList(GetComponent<LevelLoader>().conditions));
         }
     }
 
@@ -27,5 +29,26 @@ public class IWLevelLoader : InformationWriter
             }
         }
         return true;
+    }
+
+    private List<int> createList(List<GameObject> gameobjects)
+    {
+        List<int> IDs = new List<int>();
+        foreach (GameObject obj in gameobjects)
+        {
+            if (obj.GetComponentInChildren<PuzzleFactory>() != null)
+            {
+                IDs.Add(obj.GetComponentInChildren<PuzzleFactory>().ID);
+            }
+            else if (obj.GetComponentInChildren<DoorManager>() != null)
+            {
+                IDs.Add(obj.GetComponentInChildren<DoorManager>().ID);
+            }
+            else if (obj.GetComponentInChildren<Elevator>() != null)
+            {
+                IDs.Add(obj.GetComponentInChildren<Elevator>().ID);
+            }
+        }
+        return IDs;
     }
 }

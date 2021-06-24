@@ -72,7 +72,7 @@ namespace Server
                 position[2] += pDirection[2];
                 //add
                 room.roomArray[x(), y(), z()].Add(this);
-                Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
+                Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.SPAM);
             }
             catch
             {
@@ -88,7 +88,7 @@ namespace Server
             position[2] = pZ;
             //add
             room.roomArray[x(), y(), z()].Add(this);
-            Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
+            Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.SPAM);
         }
         public void MovePosition(int[] pPosition)
         {
@@ -101,7 +101,7 @@ namespace Server
                 position[2] = pPosition[2];
                 //add
                 room.roomArray[x(), y(), z()].Add(this);
-                Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.DETAILED);
+                Logging.LogInfo("Player's position is now ( " + position[0] + ", " + position[1] + ", " + position[2] + ")", Logging.debugState.SPAM);
             }
             catch
             {

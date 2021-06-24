@@ -29,6 +29,7 @@ public class SavingLevel : EditorWindow
 
         if (GUILayout.Button("Save level"))
         {
+            Debug.Log("Saving level...");
             SaveLevel();
         }
     }
@@ -43,38 +44,43 @@ public class SavingLevel : EditorWindow
         {
             if (interactable.GetComponentInChildren<PuzzleFactory>() != null)
             {
-                Debug.Log("Found a puzzle factory, setting a new ID: " + currentID + "!");
                 interactable.GetComponentInChildren<PuzzleFactory>().ID = currentID;
                 SetDirty(interactable.GetComponentInChildren<PuzzleFactory>());
             }
             else if (interactable.GetComponentInChildren<DoorManager>() != null)
             {
-                Debug.Log("Found a door, setting a new ID: " + currentID + "!");
                 interactable.GetComponentInChildren<DoorManager>().ID = currentID;
                 SetDirty(interactable.GetComponentInChildren<DoorManager>());
             }
             else if (interactable.GetComponentInChildren<Elevator>() != null)
             {
-                Debug.Log("Found a elevator, setting a new ID: " + currentID + "!");
                 interactable.GetComponentInChildren<Elevator>().ID = currentID;
                 SetDirty(interactable.GetComponentInChildren<Elevator>());
             }
             else if (interactable.GetComponentInChildren<BoxMovement>() != null)
             {
-                Debug.Log("Found a box, setting a new ID: " + currentID + "!");
                 interactable.GetComponentInChildren<BoxMovement>().ID = currentID;
                 SetDirty(interactable.GetComponentInChildren<BoxMovement>());
             }
             else if (interactable.GetComponentInChildren<Dialogue>() != null)
             {
-                Debug.Log("Found a dialogue, setting a new ID: " + currentID + "!");
                 interactable.GetComponent<Dialogue>().ID = currentID;
                 SetDirty(interactable.GetComponent<Dialogue>());
+            }
+            else if (interactable.GetComponentInChildren<Water>() != null)
+            {
+                interactable.GetComponent<Water>().ID = currentID;
+                SetDirty(interactable.GetComponent<Water>());
+            }
+
+            else if (interactable.GetComponentInChildren<LevelLoader>() != null)
+            {
+                interactable.GetComponent<LevelLoader>().ID = currentID;
+                SetDirty(interactable.GetComponent<LevelLoader>());
             }
             currentID++;
 
         }
-        Debug.Log("Finished setting ID's");
         //create lists for actuators from given id's
 
 
@@ -93,11 +99,12 @@ public class SavingLevel : EditorWindow
                 writer.fileName = filePath;
                 writer.StartSave();
             }
-            catch
+            catch 
             {
                 Debug.LogError("Someting went wrong when trying to write to file : " + writer.gameObject.name);
             }
         }
+        Debug.Log("Saved level!");
     }
 
     public static void SetDirty(Object o)

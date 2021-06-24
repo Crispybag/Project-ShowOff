@@ -86,9 +86,11 @@ public class ClientManager : MonoBehaviour
 
     private void handleReloadScene(ConfReloadScene pMessage)
     {
+        serviceLocator.ClearInteractables();
         SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
-        sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+        sceneManager.LoadSceneSingle(pMessage.sceneName);
     }
+
     private void handleProgressDialogue(ConfProgressDialogue pMessage)
     {
         serviceLocator.interactableList[pMessage.ID].GetComponent<Dialogue>().ProgressDialogue();
@@ -138,6 +140,10 @@ public class ClientManager : MonoBehaviour
             case ConfActuatorToggle.Object.BUTTON:
                 Debug.Log("Its a button toggle!");
                 obj.GetComponent<Button>().UpdateActuator(pMessage.isActived);
+                break;
+            case ConfActuatorToggle.Object.CRACK:
+                Debug.Log("Its a crack toggle!");
+                obj.GetComponent<Crack>().FixCrack();
                 break;
             default:
                 Debug.LogError("ClientManager: Cannot handle actuator toggle!");
@@ -201,7 +207,7 @@ public class ClientManager : MonoBehaviour
                 serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Lobby");
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Level 0");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Apple");
                 break;
             default:
                 Debug.LogError("Given number is not able to be handled in client manager.");

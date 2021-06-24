@@ -18,14 +18,23 @@ namespace Server
         private int currentBoxID;
 
         public int playerIndex;
-        public GameObject currentBox;
+        public Box currentBox;
         private int[,,] position;
 
         private int callLoopPrevent;
         public bool wantsReset;
         private int cameraRotation;
         //standard stuff, along with quick coordinates
-        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
+        public enum PlayerType
+        {
+            ALEX = 0,
+            NUC = 1
+        }
+
+        public PlayerType playerType;
+
+
+        public Player(GameRoom pRoom, TCPMessageChannel pClient, int pX = 0, int pY = 0, int pZ = 0, int pPlayerIndex = 0, PlayerType pPlayerType = PlayerType.NUC) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
             orientation = new int[2] { 0, 1 };
             walkDirection = new int[3];
@@ -34,6 +43,10 @@ namespace Server
             room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 1;
             playerIndex = pPlayerIndex;
+            if (playerIndex == 0) { playerType = PlayerType.NUC; }
+            else { playerType = PlayerType.ALEX; }
+
+            playerType = pPlayerType;
         }
 
         #region input
@@ -74,7 +87,7 @@ namespace Server
 
                 //interaction
                 case (ReqKeyDown.KeyType.INTERACTION):
-                    Logging.LogInfo("Received an interaction key request", Logging.debugState.DETAILED);
+                    Logging.LogInfo("Received an interaction key request", Logging.debugState.SPAM);
                     handleInteraction();
                     //do something
                     break;
@@ -212,10 +225,16 @@ namespace Server
                         sendActuatorToggle(OneInFront());
                     }
 
+                    //for crack
+                    if (room.OnCoordinatesContain(OneInFront(), 12))
+                    {
+                        sendActuatorToggle(OneInFront());
+                    }
+
                     //for box
                     else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
-                        sendPickUpBox(OneInFront());
+                        if (playerType == PlayerType.NUC)sendPickUpBox(OneInFront());
                     }
                 }
                 else
@@ -238,6 +257,11 @@ namespace Server
                 try
                 {
                     currentBox.MovePosition(OneInFront());
+                    currentBox.CheckGrounded();
+                    currentBox.SendBoxPackage(currentBox, new int[3] { currentBox.x(), currentBox.y(), currentBox.z() }, false);
+
+                    handleWaterInteractionBox();
+
                     sendBoxPackage(currentBox, OneInFront(), false);
                     currentBox = null;
                 }
@@ -251,8 +275,8 @@ namespace Server
                 List<GameObject> index = room.OnCoordinatesGetIndexes(OneInFront());
                 foreach (GameObject item in index)
                 {
-                    //5 is pressure plate
-                    if (item.objectIndex != 5)
+                    //5 is pressure plate, 16 is water
+                    if (item.objectIndex != 5 && item.objectIndex != 16)
                     {
                         //if its anything else, return out of the method
                         return;
@@ -260,11 +284,35 @@ namespace Server
                 }
                 Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
+                currentBox.SendBoxPackage(currentBox, OneInFront(), false);
+
+                handleWaterInteractionBox();
+
                 sendBoxPackage(currentBox, OneInFront(), false);
                 currentBox = null;
             }
 
 
+        }
+        public void handleWaterInteractionBox()
+        {
+            List<GameObject> objects = room.OnCoordinatesGetGameObjects(currentBox.x(), currentBox.y(), currentBox.z());
+            foreach (GameObject obj in objects)
+            {
+                if (obj is Water)
+                {
+                    if ((obj as Water).CanPushBox(obj.x(), obj.y(), obj.z()))
+                    {
+                        currentBox.MovePosition((obj as Water).PushBox(obj.x(), obj.y(), obj.z()));
+                        if ((currentBox as Box).tileContainsWater((currentBox as Box).ID))
+                        {
+                            handleWaterInteractionBox();
+                        }
+                        break;
+                    }
+                }
+            }
+            //room.PrintGrid(room.roomArray);
         }
 
         private void sendBoxPackage(GameObject box, int[] position, bool pIsPickedUp)
@@ -282,9 +330,9 @@ namespace Server
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = position[0] + room.minX;
-                boxInf.posY = position[1] + room.minY;
-                boxInf.posZ = position[2] + room.minZ;
+                boxInf.posX = currentBox.x() + room.minX;
+                boxInf.posY = currentBox.y() + room.minY;
+                boxInf.posZ = currentBox.z() + room.minZ;
                 room.sendToAll(boxInf);
             }
             catch
@@ -300,9 +348,9 @@ namespace Server
                 BoxInfo boxInf = new BoxInfo();
                 boxInf.ID = (box as Box).ID;
                 boxInf.isPickedUp = pIsPickedUp;
-                boxInf.posX = pX + room.minX; 
-                boxInf.posY = pY + room.minY; 
-                boxInf.posZ = pZ + room.minZ; 
+                boxInf.posX = currentBox.x() + room.minX;
+                boxInf.posY = currentBox.y() + room.minY;
+                boxInf.posZ = currentBox.z() + room.minZ;
                 room.sendToAll(boxInf);
             }
             catch
@@ -326,9 +374,9 @@ namespace Server
         private bool isBlockedByObject(int[] position)
         {
             List<GameObject> gameObjects = room.OnCoordinatesGetGameObjects(position);
+
             foreach (GameObject gameObject in gameObjects)
             {
-                Console.WriteLine(gameObject.objectIndex);
                 if (gameObject.collState == CollInteractType.SOLID) return true;
                 if(gameObject.objectIndex == 15)
                 {
@@ -336,13 +384,31 @@ namespace Server
                     return false;
                 }
             }
+
+            //checks if player can drop down (no water)
+            for (int i = 1; i < 15; i++)
+            {
+                if(position[1] - i < 0)
+                {
+                    return false;
+                }
+                List<GameObject> gameObjectsDown = room.OnCoordinatesGetGameObjects(position[0], position[1] - i, position[2]);
+                
+                foreach (GameObject obj in gameObjectsDown)
+                {
+                    if (obj.collState == CollInteractType.SOLID)
+                    {
+                        if (!(obj is Water))
+                        {
+                            return false;
+                        }
+                        else return true;
+                    }
+                }
+            }
             return false;
         }
 
-        private void determineDirection(int pX, int pY, int pZ, int rotation = -5)
-        {
-
-        }
         /// <summary>
         /// (Leo) handle when slope 0 is being hit
         /// </summary>
@@ -393,29 +459,26 @@ namespace Server
         {
             if (room.OnCoordinatesGetGameObject(pPosition, 13) is AirChannel)
             {
-               
-                AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
-                if (airChannel.CanPushPlayer(pPosition))
+                if (playerType == PlayerType.ALEX)
                 {
-                    MovePosition(airChannel.PushPlayer(pPosition));
+                    AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
+                    if (airChannel.CanPushPlayer(pPosition))
+                    {
+                        MovePosition(airChannel.PushPlayer(pPosition));
+                    }
+                    else
+                    {
+                        checkSpecialCollision(airChannel.PushPlayer(pPosition));
+                    }
                 }
                 else
                 {
-                    checkSpecialCollision(airChannel.PushPlayer(pPosition));
+                    MoveDirection(orientation[0], 0, orientation[1]);
                 }
             }
         }
 
-        private void handleLevelLoaderHit(int[] pPosition)
-        {
-            if (room.OnCoordinatesGetGameObject(pPosition, 14) is LevelLoader)
-            {
 
-                LevelLoader levelLoader = room.OnCoordinatesGetGameObject(pPosition, 14) as LevelLoader;
-                room.isReloading = true;
-                room.levelFile = levelLoader.fileName;
-            }
-        }
         /// <summary>
         /// (Leo)Contains all special interactions that need to have its own handling
         /// </summary>
@@ -428,6 +491,7 @@ namespace Server
             if (callLoopPrevent >= 20)
             {
                 Logging.LogInfo("potential infinite recursive loop in check special collision, make sure that the code runs properly or increase treshold", Logging.debugState.DETAILED);
+                return;
             }
 
             foreach (GameObject index in objectsOnCoord)
@@ -440,13 +504,9 @@ namespace Server
                         callLoopPrevent = 0;
                         break;
 
+                        //airchannel
                     case (13):
                         handleAirChannelHit(pPosition);
-                        callLoopPrevent = 0;
-                        break;
-
-                    case (14):
-                        handleLevelLoaderHit(pPosition);
                         callLoopPrevent = 0;
                         break;
 
@@ -479,7 +539,7 @@ namespace Server
             }
             catch
             {
-
+                //stop falling when it hits the bottom most coordinate
             }
         }
         //Does the check whether the player can change position or not
@@ -554,7 +614,7 @@ namespace Server
             if(currentBox != null)
             {
                 currentBox.MovePosition(x(), y(), z());
-                sendBoxPackage(currentBox, x(), y(), z(), true);
+                currentBox.SendBoxPackage(currentBox, x(), y(), z(), true);
             }
 
             //set y rotation
@@ -575,40 +635,45 @@ namespace Server
         {
             try
             {
-                List<GameObject> actuators = room.roomArray[pPos[0], pPos[1], pPos[2]];
-                foreach (GameObject actuator in actuators)
+                List<GameObject> gameObjects = room.roomArray[pPos[0], pPos[1], pPos[2]];
+                foreach (GameObject gameObject in gameObjects)
                 {
-                    switch (actuator.objectIndex)
+                    Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
+                    if (gameObject is Actuator)
+                    {
+                    switch (gameObject.objectIndex)
                     {
                         //4 = lever
                         case (4):
-                            Logging.LogInfo("Player.cs: Hit an lever on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
-                            GameObject gameObject = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
-                            Lever lever = gameObject as Lever;
-                            if (null != lever) { lever.ToggleLever(); }
+                            GameObject gameObject0 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 4);
+                            Lever lever = gameObject0 as Lever;
+                            if (null != lever) { lever.OnInteract(); }
                             break;
                         //8 = button
                         case (8):
-                            Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                            Logging.LogInfo("Player.cs: Hit an button on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject1 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 8);
                             Button button = gameObject1 as Button;
-                            if (null != button) { button.SetActive(); }
+                            if (null != button) { button.OnInteract(); }
                             break;
                         //crack
                         case (12):
-                            Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.DETAILED);
+                            Logging.LogInfo("Player.cs: Hit a crack on position : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + "!", Logging.debugState.SPAM);
                             GameObject gameObject2 = room.OnCoordinatesGetGameObject(pPos[0], pPos[1], pPos[2], 12);
                             Crack crack = gameObject2 as Crack;
-                            if (null != crack) { crack.FixCrack(); }
+                            if (null != crack) { crack.OnInteract(); }
                             break;
-                      
-
-
-
                         default:
                             Logging.LogInfo("Player.cs: Found an actuator but couldnt handle it!", Logging.debugState.DETAILED);
                             break;
                     }
+
+
+                    }
+                    
+                    
+
+                    
                 }
             }
             catch
@@ -639,12 +704,6 @@ namespace Server
             _hasBox = true;
 
 
-            //send package
-/*            ConfHandleBox confHandleBox = new ConfHandleBox();
-            confHandleBox.posX = pX;
-            confHandleBox.posY = pY;
-            confHandleBox.posZ = pZ;
-            confHandleBox.isPickingUp = true;*/
         }
 
         /// <summary>
@@ -654,26 +713,10 @@ namespace Server
         {
             try
             {
-/*                GameObject boxies = room.OnCoordinatesGetGameObject(pPos, 7);
-
-                BoxInfo box = new BoxInfo();
-                box.isPickedUp = false;
-                box.ID = (boxies as Box).ID;
-                box.posX = OneInFront()[0];
-                box.posY = OneInFront()[1];
-                box.posZ = OneInFront()[2];
-                room.sendToAll(box);
-
-                currentBoxID = (boxies as Box).ID;
-
-                //remove box at the position
-                room.OnCoordinatesRemove(pPos[0], pPos[1], pPos[2], 7);
-                //set player to have a box
-                _hasBox = true;*/
 
                 GameObject boxs = room.OnCoordinatesGetGameObject(pPos, 7);
-                currentBox = boxs;
                 boxs.MovePosition(pPos);
+                currentBox = boxs as Box;
                 sendBoxPackage(currentBox, x(), y(), z() , true);
 
             }

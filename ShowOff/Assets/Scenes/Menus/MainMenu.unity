@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 88660840}
   - component: {fileID: 88660839}
   - component: {fileID: 88660838}
+  - component: {fileID: 88660841}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -331,6 +332,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88660836}
   m_CullTransparentMesh: 1
+--- !u!114 &88660841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88660836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af44bc4c4d1fd2c4f8541713aac47b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onButtonHover: event:/UI-UX/hover button
+  onButtonClick: event:/UI-UX/pressed button
 --- !u!1 &157447319
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,6 +499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 270232079}
   - component: {fileID: 270232078}
+  - component: {fileID: 270232080}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -515,8 +531,21 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &270232080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270232077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d41de3829a65e4e895f5077091e6d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventPath: event:/weather/weather system
 --- !u!1 &307289331
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,7 +629,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935688888}
+      - m_Target: {fileID: 1356057909}
         m_TargetAssemblyTypeName: SceneManagerScript, Assembly-CSharp
         m_MethodName: DisableGameobject
         m_Mode: 2
@@ -1103,6 +1132,7 @@ GameObject:
   - component: {fileID: 567172292}
   - component: {fileID: 567172291}
   - component: {fileID: 567172294}
+  - component: {fileID: 567172295}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -1245,6 +1275,20 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+--- !u!114 &567172295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567172289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af44bc4c4d1fd2c4f8541713aac47b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onButtonHover: event:/UI-UX/hover button
+  onButtonClick: event:/UI-UX/pressed button
 --- !u!1 &693308428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,6 +1382,7 @@ GameObject:
   - component: {fileID: 707898113}
   - component: {fileID: 707898116}
   - component: {fileID: 707898117}
+  - component: {fileID: 707898118}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1409,16 +1454,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935688888}
+      - m_Target: {fileID: 1356057909}
         m_TargetAssemblyTypeName: SceneManagerScript, Assembly-CSharp
         m_MethodName: EnableGameobject
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2028564779}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: LevelSelect
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 707898118}
+        m_TargetAssemblyTypeName: ButtonSound, Assembly-CSharp
+        m_MethodName: onButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &707898114
@@ -1511,6 +1568,20 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+--- !u!114 &707898118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707898111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af44bc4c4d1fd2c4f8541713aac47b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onButtonHover: event:/UI-UX/hover button
+  onButtonClick: event:/UI-UX/pressed button
 --- !u!1 &718802555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1604,6 +1675,7 @@ GameObject:
   - component: {fileID: 737641759}
   - component: {fileID: 737641758}
   - component: {fileID: 737641757}
+  - component: {fileID: 737641760}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -1675,7 +1747,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935688888}
+      - m_Target: {fileID: 1356057909}
         m_TargetAssemblyTypeName: SceneManagerScript, Assembly-CSharp
         m_MethodName: DisableGameobject
         m_Mode: 2
@@ -1725,6 +1797,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737641755}
   m_CullTransparentMesh: 1
+--- !u!114 &737641760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737641755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af44bc4c4d1fd2c4f8541713aac47b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onButtonHover: event:/UI-UX/hover button
+  onButtonClick: event:/UI-UX/pressed button
 --- !u!1 &795219689
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,7 +1950,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &895835150
 GameObject:
@@ -2379,7 +2465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _port: 42069
-  _hostname: 86.87.48.167
+  _hostname: localhost
   _username: Guest
   _ipAdressInput: {fileID: 1404529049}
   _userNameInput: {fileID: 157447321}
@@ -2396,7 +2482,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1295822584
 GameObject:
@@ -2411,6 +2497,7 @@ GameObject:
   - component: {fileID: 1295822587}
   - component: {fileID: 1295822586}
   - component: {fileID: 1295822589}
+  - component: {fileID: 1295822590}
   m_Layer: 5
   m_Name: Button (3)
   m_TagString: Untagged
@@ -2553,6 +2640,20 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+--- !u!114 &1295822590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295822584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af44bc4c4d1fd2c4f8541713aac47b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onButtonHover: event:/UI-UX/hover button
+  onButtonClick: event:/UI-UX/pressed button
 --- !u!1 &1328191048
 GameObject:
   m_ObjectHideFlags: 0
@@ -2566,6 +2667,7 @@ GameObject:
   - component: {fileID: 1328191051}
   - component: {fileID: 1328191050}
   - component: {fileID: 1328191053}
+  - component: {fileID: 1328191054}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -2708,6 +2810,20 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+--- !u!114 &1328191054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328191048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af44bc4c4d1fd2c4f8541713aac47b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onButtonHover: event:/UI-UX/hover button
+  onButtonClick: event:/UI-UX/pressed button
 --- !u!1 &1349738031
 GameObject:
   m_ObjectHideFlags: 0
@@ -2805,7 +2921,7 @@ RectTransform:
   - {fileID: 2028564780}
   - {fileID: 693308429}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2831,6 +2947,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1356057909 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2754557181445262886, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+  m_PrefabInstance: {fileID: 1547818159}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cdd995581d47684981db470cb5ae294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1404529047
 GameObject:
   m_ObjectHideFlags: 0
@@ -3053,6 +3180,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408645251}
   m_CullTransparentMesh: 1
+--- !u!1001 &1547818159
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.2556353
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.1783695
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.1830034
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262887, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754557181445262889, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
+      propertyPath: m_Name
+      value: SceneManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8c950b9617af84c4bbbac46ba139da21, type: 3}
 --- !u!1 &1553888925
 GameObject:
   m_ObjectHideFlags: 0
@@ -3420,6 +3604,8 @@ GameObject:
   - component: {fileID: 1712294747}
   - component: {fileID: 1712294746}
   - component: {fileID: 1712294745}
+  - component: {fileID: 1712294748}
+  - component: {fileID: 1712294749}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3492,6 +3678,52 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1712294748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712294744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+--- !u!114 &1712294749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712294744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
+  ListenerNumber: -1
 --- !u!1 &1790944515
 GameObject:
   m_ObjectHideFlags: 0
@@ -3726,49 +3958,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897562288}
   m_CullTransparentMesh: 1
---- !u!1 &1935688887
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1935688889}
-  - component: {fileID: 1935688888}
-  m_Layer: 0
-  m_Name: SceneManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1935688888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1935688887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cdd995581d47684981db470cb5ae294, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1935688889
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1935688887}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.2556353, y: 12.1783695, z: -7.1830034}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2028564779
 GameObject:
   m_ObjectHideFlags: 0
@@ -4065,7 +4254,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2124748688
 GameObject:
@@ -4150,7 +4339,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935688888}
+      - m_Target: {fileID: 1356057909}
         m_TargetAssemblyTypeName: SceneManagerScript, Assembly-CSharp
         m_MethodName: EnableGameobject
         m_Mode: 2

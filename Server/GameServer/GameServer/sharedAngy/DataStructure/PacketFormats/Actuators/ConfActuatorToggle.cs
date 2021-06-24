@@ -30,7 +30,8 @@ namespace sharedAngy
             LEVER,
             PRESSUREPLATE,
             BUTTON,
-            CRACK
+            CRACK,
+            UNINDENTIFIED
         }
 
     }

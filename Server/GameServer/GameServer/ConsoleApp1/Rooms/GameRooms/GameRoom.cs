@@ -20,6 +20,7 @@ namespace Server
         public int currentDialogue;
         public bool isReloading = false;
         public string levelFile;
+        public string sceneName;
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -113,7 +114,7 @@ namespace Server
             determineGridSize(lines, out minX, out minY, out minZ);
             initializeAllLists();
             addObjectsToGrid(lines, minX, minY, minZ);
-
+            //PrintGrid(roomArray);
         }
 
         /// <summary>
@@ -275,18 +276,85 @@ namespace Server
                     case (10):
                         Slope slope = new Slope(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]));
                         break;
+                    case (12):
+                        importCrack(informationLists, rawInformation, minX, minY, minZ);
+                        break;
                     case (13):
                         importAirChannel(informationLists, rawInformation, minX, minY, minZ);
                         break;
                     case (14):
-                        LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7]);
+                        importLevelLoader(informationLists, rawInformation, minX, minY, minZ);
                         break;
 
                     case (15):
                         importDialogue(informationLists, rawInformation, minX, minY, minZ);
                         break;
+                    case (16):
+                        importWater(informationLists, rawInformation, minX, minY, minZ);
+                        break;
                 }
 
+            }
+        }
+
+        private void importLevelLoader(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7], int.Parse(rawInformation[8]), informationLists[0]);
+            InteractableGameobjects.Add(levelLoader.ID, levelLoader);
+
+        }
+
+
+        /// <summary>
+        /// (Ezra) Imports cracks from txt
+        /// </summary>
+        private void importCrack(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            Crack crack = new Crack(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), informationLists[0]);
+            Logging.LogInfo("GameRoom.cs: Added crack!", Logging.debugState.DETAILED);
+            InteractableGameobjects.Add(crack.ID, crack);
+        }
+
+        /// <summary>
+        /// (Ezra) Imports water from txt
+        /// </summary>
+        private void importWater(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
+        {
+            try
+            {
+                WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
+                InteractableGameobjects.Add(waterPool.ID, waterPool);
+               
+                
+                for (int i = 0; i < informationLists[0].Count / 3; i++)
+                {
+                    try
+                    {
+                        EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                        waterPool.waterLevelPositions.Add(empty);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Something went wrong when trying to initialize empty");
+                    }
+                }
+                for (int i = 0; i < informationLists[1].Count / 3; i++)
+                {
+                    try
+                    {
+                        Water water = new Water(this, informationLists[1][3 * i] - minX, informationLists[1][3 * i + 1] - minY, informationLists[1][3 * i + 2] - minZ);
+                        waterPool.waterBlocks.Add(water);
+                        Console.WriteLine("Added an water on position: " + (water.x() - minX) + "," + (water.y() - minY) + "," + (water.z() - minZ));
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Something went wrong when trying to initialize water");
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Something went wrong with water");
             }
         }
 
@@ -305,68 +373,33 @@ namespace Server
         /// </summary>
         private void importPressurePlate(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            PressurePlate pressurePlate = new PressurePlate(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+            PressurePlate pressurePlate = new PressurePlate(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false, informationLists[0]);
             InteractableGameobjects.Add(pressurePlate.ID, pressurePlate);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added door to pressure plate!", Logging.debugState.DETAILED);
-                    pressurePlate.doors.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about pressure plate", Logging.debugState.DETAILED);
-            }
         }
         /// <summary>
         /// (Ezra) Import lever plates from txt
         /// </summary>
         private void importLever(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false);
+            Lever lever = new Lever(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), false, informationLists[0]);
             InteractableGameobjects.Add(lever.ID, lever);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added door to lever!", Logging.debugState.DETAILED);
-                    lever.doors.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about lever", Logging.debugState.DETAILED);
-            }
         }
         /// <summary>
         /// (Ezra) Import door plates from txt
         /// </summary>
         private void importDoor(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            Door door = new Door(this, int.Parse(rawInformation[1]) - minX, int.Parse(rawInformation[2]) - minY, int.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), true);
+            Door door = new Door(this, int.Parse(rawInformation[1]) - minX, int.Parse(rawInformation[2]) - minY, int.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), true, informationLists[0]);
             InteractableGameobjects.Add(door.ID, door);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added actuator to door!", Logging.debugState.DETAILED);
-                    door.actuators.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
-            }
         }
         /// <summary>
         /// (Ezra) Import button plates from txt
         /// </summary>
         private void importButton(List<List<int>> informationLists ,string[] rawInformation, List<string> informationData, int minX, int minY, int minZ)
         {
-            Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
+            Button button = new Button(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]), informationLists[0]);
             InteractableGameobjects.Add(button.ID, button);
+            Logging.LogInfo("GameRoom.cs: Added button!", Logging.debugState.DETAILED);
             switch (int.Parse(informationData[8]))
             {
                 case (0):
@@ -379,18 +412,7 @@ namespace Server
                     Logging.LogInfo("GameRoom.cs: Cant handle button direction!", Logging.debugState.DETAILED);
                     break;
             }
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added door to button!", Logging.debugState.DETAILED);
-                    button.elevators.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about button", Logging.debugState.DETAILED);
-            }
+
         }
         /// <summary>
         /// (Ezra) Import elevator plates from txt
@@ -421,20 +443,8 @@ namespace Server
         private void importAirChannel(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
             Logging.LogInfo(rawInformation[9], Logging.debugState.DETAILED);
-            AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]), (int)float.Parse(rawInformation[9]), int.Parse(rawInformation[10]) );
+            AirChannel airChannel = new AirChannel(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, (int)float.Parse(rawInformation[7]), (int)float.Parse(rawInformation[8]), (int)float.Parse(rawInformation[9]), int.Parse(rawInformation[10]), informationLists[0] );
             InteractableGameobjects.Add(airChannel.ID, airChannel);
-            try
-            {
-                foreach (int index in informationLists[0])
-                {
-                    Logging.LogInfo("GameRoom.cs: Added actuator to airChannel!", Logging.debugState.DETAILED);
-                    airChannel.actuators.Add(index);
-                }
-            }
-            catch
-            {
-                Logging.LogInfo("GameRoom.cs: We could not handle given information about door", Logging.debugState.DETAILED);
-            }
 
         }
 
@@ -453,6 +463,32 @@ namespace Server
             if (pMessage is ReqKeyUp){handleReqKeyUp(pMessage as ReqKeyUp, pSender);}
             if (pMessage is ReqProgressDialogue){ handleReqProgressDialogue(pSender);}
             if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
+            if (pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
+            if (pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
+        }
+
+        private void handleChatMessage(ChatMessage  pMessage, TCPMessageChannel pSender)
+        {
+            ChatMessage newMessage = new ChatMessage();
+            newMessage.textMessage = "[" + _server.allConnectedUsers[pSender].GetPlayerName() + "] : " + pMessage.textMessage;
+            sendToAll(newMessage);
+        }
+
+        private void handleRoomRequest(ReqJoinRoom pMessage, TCPMessageChannel pSender)
+        {
+            if ((int)pMessage.room == 0)
+            {
+                Logging.LogInfo("Moving client to login room", Logging.debugState.DETAILED);
+                ConfJoinRoom confirmLoginRoom = new ConfJoinRoom();
+                confirmLoginRoom.room = 0;
+                pSender.SendMessage(confirmLoginRoom);
+                _server.availableRooms["Login"].AddMember(pSender);
+                removeAndCloseMember(pSender);
+            }
+            else
+            {
+                Console.WriteLine("We didnt implement any other rooms switching yet in gameroom");
+            }
         }
 
         private void handleReqProgressDialogue(TCPMessageChannel pSender)
@@ -467,7 +503,7 @@ namespace Server
         /// </summary>
         private void handleReqKeyDown(ReqKeyDown pKeyDown, TCPMessageChannel pSender)
         {
-            Logging.LogInfo("Received a HandleReqKeyDown Package", Logging.debugState.DETAILED);
+            Logging.LogInfo("Received a HandleReqKeyDown Package", Logging.debugState.SPAM);
             
             //search which player should be influenced by this package send
             foreach (Player player in players)
@@ -485,7 +521,7 @@ namespace Server
         /// </summary>
         private void handleReqKeyUp(ReqKeyUp pKeyUp, TCPMessageChannel pSender)
         {
-            Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.DETAILED);
+            Logging.LogInfo("Received a HandleReqKeyUp Package", Logging.debugState.SPAM);
             
             //search which player should be influenced by the package send
             foreach (Player player in players)
@@ -512,6 +548,7 @@ namespace Server
         private void sendLevelReset()
         {
             ConfReloadScene reloadScene = new ConfReloadScene();
+            reloadScene.sceneName = sceneName;
             sendToAll(reloadScene);
         }
         #endregion
@@ -691,7 +728,6 @@ namespace Server
 
             if (isReloading)
             {
-
                 sendLevelReset();
                 foreach (TCPMessageChannel pListener in _users)
                 {
@@ -884,7 +920,7 @@ namespace Server
         {
             List<GameObject> thingToRemove = new List<GameObject>();
 
-            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + " with the value of: " + pValue, Logging.debugState.DETAILED);
+            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pPos[0] + "," + pPos[1] + "," + pPos[2] + " with the value of: " + pValue, Logging.debugState.SPAM);
             try
             {
                 foreach (GameObject obj in roomArray[pPos[0], pPos[1], pPos[2]])
@@ -916,7 +952,7 @@ namespace Server
         {
             List<GameObject> thingToRemove = new List<GameObject>();
 
-            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + "," + pZ + " with the value of: " + pValue, Logging.debugState.DETAILED);
+            Logging.LogInfo("GameRoom.cs: Trying to remove a object at : " + pX + "," + pY + "," + pZ + " with the value of: " + pValue, Logging.debugState.SPAM);
             try
             {
                 foreach (GameObject value in roomArray[pX, pY, pZ])

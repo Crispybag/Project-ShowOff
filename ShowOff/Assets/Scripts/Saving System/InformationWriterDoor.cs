@@ -14,7 +14,6 @@ public class InformationWriterDoor : InformationWriter
     public override void WriteAllInformation()
     {
         base.WriteAllInformation();
-        currentID++;
         base.AddToInformation(GetComponent<DoorManager>().ID);
         base.AddToInformation(createList(this.gameObject.GetComponent<DoorManager>().conditions));
     }
@@ -26,18 +25,19 @@ public class InformationWriterDoor : InformationWriter
         {
             if (obj.GetComponentInChildren<PuzzleFactory>() != null)
             {
-                Debug.Log("Found a puzzle factory item in a list!");
                 IDs.Add(obj.GetComponentInChildren<PuzzleFactory>().ID);
             }
             else if (obj.GetComponentInChildren<DoorManager>() != null)
             {
-                Debug.Log("Found a door item in a list!");
                 IDs.Add(obj.GetComponentInChildren<DoorManager>().ID);
             }
             else if (obj.GetComponentInChildren<Elevator>() != null)
             {
-                Debug.Log("Found a elevator item in a list!");
                 IDs.Add(obj.GetComponentInChildren<Elevator>().ID);
+            }
+            else if (obj.GetComponentInChildren<LevelLoader>() != null)
+            {
+                IDs.Add(obj.GetComponentInChildren<LevelLoader>().ID);
             }
         }
         return IDs;

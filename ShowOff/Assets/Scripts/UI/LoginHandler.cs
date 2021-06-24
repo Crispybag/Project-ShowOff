@@ -19,8 +19,8 @@ public class LoginHandler : MonoBehaviour
     private void Start()
     {
         _feedbackText.text = "";
-        _ipAdressInput.text = "86.87.48.167";
-        _userNameInput.text = "Guest1";
+        _ipAdressInput.text = _hostname;
+        _userNameInput.text = _username;
     }
     public void ConnectToServer()
     {

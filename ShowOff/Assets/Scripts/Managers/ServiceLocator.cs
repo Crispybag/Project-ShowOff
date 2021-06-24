@@ -18,13 +18,18 @@ public class ServiceLocator : MonoBehaviour
 
 
     //----------------------- private ------------------------
-    private Dictionary<string, GameObject> _serviceList = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> _serviceList = new Dictionary<string, GameObject>();
     public Dictionary<int, GameObject> interactableList = new Dictionary<int, GameObject>();
 
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
+
+    public void ClearInteractables()
+    {
+        interactableList.Clear();
+    }
 
     void Awake()
     {

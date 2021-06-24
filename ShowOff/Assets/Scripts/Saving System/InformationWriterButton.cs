@@ -15,4 +15,5 @@ public class InformationWriterButton : InformationWriterActuator
         base.WriteAllInformation();
         AddToInformation(this.gameObject.GetComponent<Button>().direction);
     }
+
 }
