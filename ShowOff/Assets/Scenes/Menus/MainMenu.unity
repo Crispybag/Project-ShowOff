@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 75119228}
   - component: {fileID: 75119230}
   - component: {fileID: 75119229}
+  - component: {fileID: 75119231}
   m_Layer: 5
   m_Name: Audio
   m_TagString: Untagged
@@ -326,6 +327,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75119227}
   m_CullTransparentMesh: 1
+--- !u!114 &75119231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75119227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d5179bab6a030d4093733203a1131ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundSlider: {fileID: 1929689247}
+  volumeSlider: {fileID: 169211298}
 --- !u!1 &88660836
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,6 +785,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &159701168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,6 +1084,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &266006960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,6 +1178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 270232079}
   - component: {fileID: 270232078}
+  - component: {fileID: 270232080}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -1192,6 +1212,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &270232080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270232077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5453b4a0fd01bc248a2c530b60a87474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventPath: event:/MainMenu_Music
 --- !u!1 &306016440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2417,6 +2450,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &456302699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2886,6 +2921,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &549711593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3306,6 +3343,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &608999435
 GameObject:
   m_ObjectHideFlags: 0
@@ -3811,6 +3850,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &708634801
 GameObject:
   m_ObjectHideFlags: 0
@@ -3885,6 +3926,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &708634804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5164,6 +5207,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1023809424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6199,6 +6244,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &1299866373
 GameObject:
   m_ObjectHideFlags: 0
@@ -6288,6 +6335,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1299866377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6538,6 +6587,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &1349738031
 GameObject:
   m_ObjectHideFlags: 0
@@ -7104,6 +7155,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1452315860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7418,6 +7471,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1510027544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8089,6 +8144,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1638111662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9636,6 +9693,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1807195977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10879,6 +10938,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &2031691238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11379,7 +11440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClientName: 
   playersWantToReset: 0
-  gameSceneName: Features
+  gameSceneName: Level0F
 --- !u!4 &2092409358
 Transform:
   m_ObjectHideFlags: 0
@@ -11797,3 +11858,46 @@ RectTransform:
   m_AnchoredPosition: {x: 0.4000007, y: -3.1000001}
   m_SizeDelta: {x: 35.57254, y: 3.47223}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2141459210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2141459212}
+  - component: {fileID: 2141459211}
+  m_Layer: 0
+  m_Name: SoundStopper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2141459211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141459210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8292d07d6e32d4c96f9f43a698d738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2141459212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141459210}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1401.9954, y: 481.29248, z: -429.66885}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -197,6 +197,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &32009295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2574,8 +2576,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
-  _eventPath: event:/UI-UX/spray hover
-  _clickSound: 
+  _eventPath: event:/UI-UX/hover button
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &1767902337
 GameObject:
   m_ObjectHideFlags: 0
