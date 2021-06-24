@@ -235,6 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
+  isActuated: 0
   conditions: []
 --- !u!114 &1381695232829045632
 MonoBehaviour:
@@ -361,7 +362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4505931057414080518
 Transform:
   m_ObjectHideFlags: 0
