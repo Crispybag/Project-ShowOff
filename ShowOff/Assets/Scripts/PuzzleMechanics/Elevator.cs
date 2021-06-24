@@ -39,6 +39,7 @@ public class Elevator : MonoBehaviour
 
     public void SetTargetPosition(int pX, int pY, int pZ)
     {
+
         _targetPosition.x = pX;
         _targetPosition.y = pY;
         _targetPosition.z = pZ;

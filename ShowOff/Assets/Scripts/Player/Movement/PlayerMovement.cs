@@ -12,6 +12,7 @@ using System.Net.Sockets;
 public class PlayerMovement : Movement
 {
     [SerializeField] private float _moveSpeed;
+    
 
     [Tooltip("This will be the name in the service locator")]public string playerName = "Player1";
 
@@ -19,6 +20,8 @@ public class PlayerMovement : Movement
     {
         serviceLocator.AddToList(playerName, gameObject);
         _travelTime = _moveSpeed;
+        //transform.Find("Crate").gameObject.SetActive(false);
+
     }
     protected override void Start()
     {

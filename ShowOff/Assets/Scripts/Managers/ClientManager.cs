@@ -21,7 +21,13 @@ public class ClientManager : MonoBehaviour
     public TcpClient client;
     public string ClientName;
     [HideInInspector] public int playersWantToReset = 0;
+    public string gameSceneName = "Features";
+    
+    
     private bool isHoldingBox = false;
+    private GameObject box;
+    private bool isHandlingBox;
+    private float timer;
 
     //----------------------- private ------------------------
 
@@ -52,6 +58,19 @@ public class ClientManager : MonoBehaviour
     void Update()
     {
         receiveInCommingData();
+        if (isHandlingBox)
+        {
+            if(timer > 0.65f)
+            {
+                timer = 0;
+                box.SetActive(!isHoldingBox);
+                isHandlingBox = false;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
+        }
     }
 
     //=========================================================================================
@@ -88,6 +107,20 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfWaterPool) { handleConfWaterPool(pInMessage as ConfWaterPool); }
         if (pInMessage is ConfPlayerSwitch) { handleConfPlayerSwitch(pInMessage as ConfPlayerSwitch); }
         if (pInMessage is ConfAnimation) { handleConfAnimation(pInMessage as ConfAnimation); }
+        if (pInMessage is ConfAirChannelToggle) { handleConfAirChannelToggle(pInMessage as ConfAirChannelToggle); }
+    }
+
+
+
+    private void handleConfAirChannelToggle(ConfAirChannelToggle pMessage)
+    {
+        ParticleSystem[] particlesystems = serviceLocator.interactableList[pMessage.ID].transform.parent.parent.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem particle in particlesystems)
+        {
+            var emission = particle.emission;
+            emission.enabled = pMessage.isActive;
+            particle.transform.parent.GetComponentInChildren<Animator>().SetBool("isActive", pMessage.isActive);
+        }
     }
 
     private void handleConfAnimation(ConfAnimation pMessage)
@@ -119,9 +152,17 @@ public class ClientManager : MonoBehaviour
             {
                 player2.GetComponent<AnimationHandler>().DoTrigger("stopCrawling");
             }
+            Debug.Log("is in air channel : " + pMessage.isInAirChannel);
+            if (pMessage.isInAirChannel)
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("startAir");
+            }
+            else
+            {
+                player2.GetComponent<AnimationHandler>().DoTrigger("stopAir");
+            }
         }
     }
-
 
     private void handleConfPlayerSwitch(ConfPlayerSwitch pMessage)
     {
@@ -152,7 +193,6 @@ public class ClientManager : MonoBehaviour
             sceneManager.LoadSceneSingle(pMessage.sceneName);
         }
     }
-
 
     private void handleReloadScene(ConfReloadScene pMessage)
     {
@@ -285,6 +325,7 @@ public class ClientManager : MonoBehaviour
                 break;
         }
     }
+   
     private void handleConfMove(ConfMove pMessage)
     {
         GameObject player1 = serviceLocator.GetFromList("Player1");
@@ -315,7 +356,7 @@ public class ClientManager : MonoBehaviour
 
                 break;
             case 2: //game
-                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle("Features");
+                serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>().LoadSceneSingle(serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().gameSceneName);
 
                 break;
             default:
@@ -355,16 +396,24 @@ public class ClientManager : MonoBehaviour
         {
             Debug.Log("Got a box with a value of" + pHandleBox.isPickedUp);
             serviceLocator.interactableList[pHandleBox.ID].GetComponent<BoxMovement>().UpdateBox(pHandleBox.isPickedUp, pHandleBox.posX, pHandleBox.posY, pHandleBox.posZ);
+            //serviceLocator.interactableList[pHandleBox.ID].SetActive(!pHandleBox.isPickedUp);
+            box = serviceLocator.interactableList[pHandleBox.ID];
+            
             if (pHandleBox.isPickedUp != isHoldingBox)
             {
                 isHoldingBox = pHandleBox.isPickedUp;
                 if (isHoldingBox)
                 {
-                    serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("PickUp");
+                    Debug.Log("Pick Animation");
+                    serviceLocator.GetFromList(ClientName).GetComponent<AnimationHandler>().DoTrigger("PickUp");
+                    isHandlingBox = true;
+                    
                 }
                 else if (!isHoldingBox)
                 {
-                    serviceLocator.GetFromList(ClientName).GetComponentInChildren<AnimationHandler>().DoTrigger("DropOff");
+                    Debug.Log("Drop Animation");
+                    serviceLocator.GetFromList(ClientName).GetComponent<AnimationHandler>().DoTrigger("DropOff");
+                    isHandlingBox = true;
                 }
             }
         }
@@ -373,6 +422,8 @@ public class ClientManager : MonoBehaviour
             Debug.LogError("Could not find box movement");
         }
     }
+
+
 
     #region ReadIncommingData
 

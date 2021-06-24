@@ -221,7 +221,7 @@ namespace Server
                     if (room.OnCoordinatesContain(OneInFront(), 4))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 5;
                         sendActuatorToggle(OneInFront());
                     }
 
@@ -229,7 +229,7 @@ namespace Server
                     if (room.OnCoordinatesContain(OneInFront(), 8))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 5;
                         sendActuatorToggle(OneInFront());
                     }
 
@@ -237,7 +237,7 @@ namespace Server
                     if (room.OnCoordinatesContain(OneInFront(), 12))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 15;
                         sendActuatorToggle(OneInFront());
                     }
 
@@ -245,7 +245,7 @@ namespace Server
                     else if (room.OnCoordinatesContain(OneInFront(), 7))
                     {
                         //stun timer
-                        calls += 3;
+                        calls += 5;
                         if (playerType == PlayerType.NUC)sendPickUpBox(OneInFront());
                     }
                 }
@@ -268,6 +268,7 @@ namespace Server
                 //place box
                 try
                 {
+                    calls += 5;
                     currentBox.MovePosition(OneInFront());
                     currentBox.CheckGrounded();
                     currentBox.sendBoxPackage(false);
@@ -294,6 +295,7 @@ namespace Server
                         return;
                     }
                 }
+                calls += 5;
                 //Console.WriteLine("In front is empty for box! but with interactable");
                 currentBox.MovePosition(OneInFront());
                 currentBox.sendBoxPackage(false);
@@ -400,23 +402,30 @@ namespace Server
             //checks if player can drop down (no water)
             for (int i = 1; i < 15; i++)
             {
-                if(position[1] - i < 0)
+                if(position[1] - i < room.minY)
                 {
                     return false;
                 }
                 List<GameObject> gameObjectsDown = room.OnCoordinatesGetGameObjects(position[0], position[1] - i, position[2]);
-                
+                int solids = 0;
                 foreach (GameObject obj in gameObjectsDown)
                 {
                     if (obj.collState == CollInteractType.SOLID)
                     {
-                        if (!(obj is Water))
+                        solids++;
+                        if (obj is Water)
                         {
-                            return false;
+                            return true;
                         }
-                        else return true;
                     }
+
+                    
                 }
+                if (solids > 0)
+                {
+                    return false;
+                }
+
             }
             return false;
         }
@@ -503,13 +512,18 @@ namespace Server
             {
                 if (playerType == PlayerType.ALEX)
                 {
-                    if (callLoopPrevent == 1) { addMoveDirection(orientation[0], 0, orientation[1]); }
+                    if (callLoopPrevent == 1) 
+                    { 
+                        
+                        addMoveDirection(orientation[0], 0, orientation[1]);
+                    
+                    }
                     AirChannel airChannel = room.OnCoordinatesGetGameObject(pPosition, 13) as AirChannel;
                     addMoveDirection(airChannel.direction[0], airChannel.direction[1], airChannel.direction[2]);
 
                     if (airChannel.CanPushPlayer(pPosition))
                     {
-                        MovePosition(airChannel.PushPlayer(pPosition));
+                        MovePosition(airChannel.PushPlayer(pPosition), true ,GetPlayerIndex());
                     }
                     else
                     {
@@ -532,7 +546,7 @@ namespace Server
         /// </summary>
         private void checkSpecialCollision(int[] pPosition)
         {
-            List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(pPosition);
+             List<GameObject> objectsOnCoord = room.OnCoordinatesGetIndexes(pPosition);
 
             //infinite recursive loop prevention
             callLoopPrevent++;
@@ -566,6 +580,7 @@ namespace Server
                         //remove all information
             
                         calls = 0;
+                        callLoopPrevent = 0;
                         if (!endsInAirChannel)
                         {
                             directionCommands = "";
@@ -702,12 +717,15 @@ namespace Server
         /// </summary>
         private void startDialogue(GameObject diaobj, int[] direction)
         {
-            Dialogue dia = diaobj as Dialogue;
+            calls += 10;
+            DialogueHitBoxes dia = diaobj as DialogueHitBoxes;
+            Dialogue dialogue = dia.parentDialogue;
             ConfProgressDialogue progressDialogue = new ConfProgressDialogue();
-            progressDialogue.ID = dia.ID;
-            room.currentDialogue = dia.ID;
+            progressDialogue.ID = dialogue.ID;
+            room.currentDialogue = dialogue.ID;
             room.sendToAll(progressDialogue);
-            room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
+            dialogue.DestroyDialogue();
+            //room.OnCoordinatesRemove(OneInFront(), diaobj.objectIndex);
         }
 
         /// <summary>
@@ -728,7 +746,6 @@ namespace Server
 
         
         #endregion
-
 
         #region output
 

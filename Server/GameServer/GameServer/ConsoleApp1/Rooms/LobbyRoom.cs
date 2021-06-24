@@ -16,7 +16,18 @@ namespace Server
             if(pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
             if(pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
             if(pMessage is ReqPlayerSwitch) { handlePlayerSwitch(pMessage as ReqPlayerSwitch, pSender); }
+            if(pMessage is ReqLevelName) { handleReqLevelName(pMessage as ReqLevelName); }
             
+        }
+
+        private void handleReqLevelName(ReqLevelName pReqLevelName)
+        {
+            if (_server.availableRooms["Test0"] is GameRoom)
+            {
+                string filePath = "LevelFiles/" + pReqLevelName.levelName + ".txt";
+                GameRoom gameRoom = _server.availableRooms["Test0"] as GameRoom;
+                gameRoom.LoadLevel(filePath);
+            }
         }
 
         private void handlePlayerSwitch(ReqPlayerSwitch pPlayerSwitch, TCPMessageChannel pSender)

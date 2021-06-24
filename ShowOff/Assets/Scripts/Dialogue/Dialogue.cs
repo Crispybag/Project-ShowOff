@@ -20,6 +20,9 @@ public class Dialogue : MonoBehaviour
     private Vector3 alexScale;
     private int activeDialogue = 0;
 
+    private Color darkColor;
+    private Color lightColor;
+
     private DialogueManager _dialogueManager;
 
     private void Awake()
@@ -28,6 +31,12 @@ public class Dialogue : MonoBehaviour
         _dialogueManager = FindObjectOfType<DialogueManager>();
         nucScale = _dialogueManager.nucImagePlace.transform.localScale;
         alexScale = _dialogueManager.alexImagePlace.transform.localScale;
+    }
+
+    private void Start()
+    {
+        darkColor = new Color(0.6f, 0.6f, 0.6f);
+        lightColor = new Color(1, 1, 1);
     }
 
     public void ProgressDialogue()
@@ -49,7 +58,7 @@ public class Dialogue : MonoBehaviour
 
                 //playSound();
                 _dialogueManager.talkingSound.clip = dialogue[activeDialogue].voiceLine;
-
+                _dialogueManager.talkingSound.Play();
 
                 activeDialogue++;
             }
@@ -100,11 +109,16 @@ public class Dialogue : MonoBehaviour
                 _dialogueManager.alexImagePlace.transform.localScale = alexScale;
                 _dialogueManager.nucImagePlace.transform.localScale = nucScale;
                 _dialogueManager.alexImagePlace.transform.localScale *= 1.25f;
+
+                _dialogueManager.alexImagePlace.GetComponent<Image>().color = lightColor;
+                _dialogueManager.nucImagePlace.GetComponent<Image>().color = darkColor;
                 break;
             case (DialogueText.TalkingCharacter.Nuc):
                 _dialogueManager.alexImagePlace.transform.localScale = alexScale;
                 _dialogueManager.nucImagePlace.transform.localScale = nucScale;
                 _dialogueManager.nucImagePlace.transform.localScale *= 1.25f;
+                _dialogueManager.alexImagePlace.GetComponent<Image>().color = darkColor;
+                _dialogueManager.nucImagePlace.GetComponent<Image>().color = lightColor;
                 break;
         }
     }

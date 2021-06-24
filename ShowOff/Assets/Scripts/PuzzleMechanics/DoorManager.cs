@@ -29,14 +29,15 @@ public class DoorManager : MonoBehaviour
 
     public void SetDoor(bool isOpen)
     {
+        transform.parent.GetComponentInChildren<Animator>().SetBool("isOpen", isOpen);
         if (isOpen)
         {
-            GetComponent<MeshRenderer>().enabled = false;
+            
             serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().playSound(eventPathClosed, this.gameObject);
         }
         else
         {
-            GetComponent<MeshRenderer>().enabled = true;
+           
             serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().playSound(eventPathOpen, this.gameObject);
         }
     }

@@ -21,7 +21,9 @@ namespace Server
         public bool isReloading = false;
         public string levelFile;
         public string sceneName;
-
+        public bool finalRoom = false;
+        public int score;
+        private int finalScore;
 
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
@@ -37,6 +39,7 @@ namespace Server
             players = new List<Player>();
             spawnPoints = new List<SpawnPoint>();
             gameObjects = new List<GameObject>();
+
 
         }
 
@@ -300,7 +303,7 @@ namespace Server
 
         private void importLevelLoader(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7], int.Parse(rawInformation[8]), informationLists[0]);
+            LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7], int.Parse(rawInformation[8]), informationLists[0], int.Parse(rawInformation[9]));
             InteractableGameobjects.Add(levelLoader.ID, levelLoader);
 
         }
@@ -325,7 +328,6 @@ namespace Server
             {
                 WaterPool waterPool = new WaterPool(this, (int)float.Parse(rawInformation[1]), (int)float.Parse(rawInformation[2]), (int)float.Parse(rawInformation[3]), int.Parse(rawInformation[7]), GameObject.CollInteractType.PASS);
                 InteractableGameobjects.Add(waterPool.ID, waterPool);
-                Console.WriteLine("Added a water pool on position : " + waterPool.x() + " : " + waterPool.y() + " : " + waterPool.z());
 
 
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
@@ -334,7 +336,6 @@ namespace Server
                     {
                         EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2] );
                         waterPool.waterLevelPositions.Add(empty);
-                        Console.WriteLine("A new water level position has been added to the water pool!");
                     }
                     catch
                     {
@@ -347,7 +348,6 @@ namespace Server
                     {
                         Water water = new Water(this, informationLists[1][3 * i] - minX, informationLists[1][3 * i + 1] - minY, informationLists[1][3 * i + 2] - minZ);
                         waterPool.waterBlocks.Add(water);
-                        Console.WriteLine("Added an water on position: " + (water.x() - minX) + "," + (water.y() - minY) + "," + (water.z() - minZ));
                     }
                     catch
                     {
@@ -368,6 +368,13 @@ namespace Server
         {
             Dialogue dia = new Dialogue(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
             InteractableGameobjects.Add(dia.ID, dia);
+            for (int i = 0; i < informationLists[0].Count / 3; i++)
+            {
+                DialogueHitBoxes hitBox = new DialogueHitBoxes(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                //Console.WriteLine("Added an empty on positions: " + (hitBox.x() - minX) + "," + (hitBox.y() - minY) + "," + (hitBox.z() - minZ));
+                dia.dialogueHitBoxes.Add(hitBox);
+                hitBox.parentDialogue = dia;
+            }
             Logging.LogInfo("GameRoom.cs: Added dialogue to room!", Logging.debugState.DETAILED);
         }
 
@@ -412,13 +419,13 @@ namespace Server
         {
             Elevator elevator = new Elevator(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
             InteractableGameobjects.Add(elevator.ID, elevator);
-            Console.WriteLine("Added an elevator on positions: " + elevator.x() + "," + elevator.y() + "," + elevator.z());
+            //Console.WriteLine("Added an elevator on positions: " + elevator.x() + "," + elevator.y() + "," + elevator.z());
             try
             {
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
-                    Console.WriteLine("Added an empty on positions: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
+                    //Console.WriteLine("Added an empty on positions: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
                     elevator.points.Add(i, empty);
                 }
             }
@@ -573,9 +580,74 @@ namespace Server
 
                 LoadLevel(levelFile);
                 isReloading = false;
+            }  
+        }
+
+        private void doHighscoreThing()
+        {
+            try
+            {
+                if (finalRoom && score != 0)
+                {
+                    finalScore = score;
+                    writeScoresAndNames(finalScore, _server.allConnectedUsers[_users[0]].GetPlayerName(), _server.allConnectedUsers[_users[1]].GetPlayerName());
+                    score = 0;
+                }
+            }
+            catch
+            {
+
             }
         }
 
+
+        /// <summary>
+        /// (Ezra) Saves highscores to server
+        /// </summary>
+        /// <param name="score"></param>
+        /// <param name="namePlayer1"></param>
+        /// <param name="namePlayer2"></param>
+        private void writeScoresAndNames(int score, string namePlayer1, string namePlayer2)
+        {
+            string path = "../../../../../../../ShowOff/Assets/Highscores/Highscores.txt";
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+            }
+
+            //create a lines list that reads all lines from a file
+            List<string> lines;
+            lines = File.ReadAllLines(path).ToList();
+
+            //write the constructed string
+            lines.Add(score.ToString() + "{" + namePlayer1 + "{"+ namePlayer2);
+
+            Dictionary<int, string> scores = new Dictionary<int, string>();
+            List<int> numbers = new List<int>();
+
+            foreach(string line in lines)
+            {
+                string[] individual = line.Split('{');
+                scores.Add((int)float.Parse(individual[0]), individual[1] + "{" + individual[2]);
+                numbers.Add((int)float.Parse(individual[0]));
+            }
+
+            numbers.Sort();
+
+            List<string> newHighscores = new List<string>();
+            int i = 0;
+            foreach (int number in numbers)
+            {
+                if (i < 10)
+                {
+                    newHighscores.Add(number.ToString() + "{" + scores[number]);
+                    i++;
+                }
+            }
+
+            //write all lines to the file
+            File.WriteAllLines(path, newHighscores);
+        }
         
         private void sendLevelReset()
         {
@@ -584,6 +656,14 @@ namespace Server
             reloadScene.playersReset = 0;
             reloadScene.isResetting = true;
             sendToAll(reloadScene);
+        }
+
+
+        protected override void sendPulse()
+        {
+            base.sendPulse();
+            if (!finalRoom) score++;
+
         }
         #endregion
 
@@ -758,6 +838,7 @@ namespace Server
             //will figure out a solution later, but dont remove it
             if (isReloading)
             {
+                doHighscoreThing();
                 sendLevelReset();
                 foreach (TCPMessageChannel pListener in _users)
                 {
@@ -1235,5 +1316,7 @@ namespace Server
 
 
         #endregion
+
+
     }
 }

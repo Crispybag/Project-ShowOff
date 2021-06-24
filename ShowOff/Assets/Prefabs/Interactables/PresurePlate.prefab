@@ -172,8 +172,9 @@ MonoBehaviour:
   ID: 1
   isActuated: 0
   interactables: []
-  mat1: {fileID: 2100000, guid: bcd4a8e0c32e8a648954aca9cb2c0dc3, type: 2}
-  mat2: {fileID: 2100000, guid: 1a7875ae8103fa644be7ad64f1f6cebf, type: 2}
+  pressureplateModel: {fileID: 7427804420496001576}
+  activedMaterial: {fileID: 2100000, guid: 42b2f5dca71269147a13cd874202cf15, type: 2}
+  deactivedMaterial: {fileID: 2100000, guid: 17bd6eb2e75b1f44297dd3b35fb54cc9, type: 2}
 --- !u!114 &4632667279895246372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventPath: event:/gameplay (actions and props)/lever
+  eventPath: event:/gameplay (actions and props)/Pressure plate
+  eventpaths: []
 --- !u!1 &7866806714402558550
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,10 +281,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8249769795898551758, guid: da064cc8e00bd574f925100885c6d168, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da064cc8e00bd574f925100885c6d168, type: 3}
 --- !u!4 &4612480659544118315 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6155048051120976845, guid: da064cc8e00bd574f925100885c6d168, type: 3}
+  m_PrefabInstance: {fileID: 1542989952251996134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7427804420496001576 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8249769795898551758, guid: da064cc8e00bd574f925100885c6d168, type: 3}
   m_PrefabInstance: {fileID: 1542989952251996134}
   m_PrefabAsset: {fileID: 0}

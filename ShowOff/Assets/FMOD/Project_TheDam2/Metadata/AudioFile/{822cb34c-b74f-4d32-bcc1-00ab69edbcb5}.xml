@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{822cb34c-b74f-4d32-bcc1-00ab69edbcb5}">
+		<property name="assetPath">
+			<value>landing2.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.2204081632653061</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{be325d4b-dc05-4f1d-bf86-655ff21206c2}</destination>
+		</relationship>
+	</object>
+</objects>

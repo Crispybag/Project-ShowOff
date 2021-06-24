@@ -9,9 +9,9 @@ using static ServiceLocator;
 
 public class PressurePlate : Actuators
 {
-    private List<GameObject> _currentObjects = new List<GameObject>();
-    [SerializeField] private Material mat1;
-    [SerializeField] private Material mat2;
+    [SerializeField] private GameObject pressureplateModel;
+    [SerializeField] private Material activedMaterial;
+    [SerializeField] private Material deactivedMaterial;
 
     private void Start()
     {
@@ -21,5 +21,14 @@ public class PressurePlate : Actuators
     public void UpdateActuator(bool isActive)
     {
         gameObject.GetComponent<PlaySingleSound>().PlaySoundOnce();
+        transform.parent.GetComponentInChildren<Animator>().SetBool("isActive", isActive);
+        if (isActive)
+        {
+            pressureplateModel.GetComponent<MeshRenderer>().material = activedMaterial;
+        }
+        else
+        {
+            pressureplateModel.GetComponent<MeshRenderer>().material = deactivedMaterial;
+        }
     }
 }
