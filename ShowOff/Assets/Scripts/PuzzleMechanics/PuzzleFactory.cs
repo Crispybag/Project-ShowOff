@@ -13,7 +13,9 @@ public abstract class PuzzleFactory : MonoBehaviour
 
     //------------------------ public ------------------------
 
+    [HideInInspector]public int ID;
     public bool isActuated;
+    public List<GameObject> interactables = new List<GameObject>();
 
     //----------------------- private ------------------------
 
@@ -27,8 +29,6 @@ public abstract class PuzzleFactory : MonoBehaviour
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
-
-    abstract public void FinishMechanic();
 
     //will toggle all things that are linked with the actuator.
     public void ToggleMechanics()

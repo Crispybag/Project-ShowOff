@@ -21,8 +21,7 @@ public class CameraManager : MonoBehaviour
     public CameraState cameraState = CameraState.FOLLOW;
     [SerializeField]
     private GameObject _cameraGameObject;    
-    [SerializeField]
-    private GameObject _playerCameraGameObject;
+    public GameObject _playerCameraGameObject;
 
 
     private GameObject _startCameraData;
@@ -72,6 +71,7 @@ public class CameraManager : MonoBehaviour
 
     public void SetPosition(GameObject pCameraData, float pSpeed, bool pisFollowingPlayer)
     {
+        Debug.Log("Set new position!");
         _speed = pSpeed;
         startTime = Time.time;
         _newCameraPosition = pCameraData;
@@ -82,6 +82,7 @@ public class CameraManager : MonoBehaviour
 
     public void SetFollow(float pSpeed)
     {
+        Debug.Log("Set follow!");
         _speed = pSpeed;
         startTime = Time.time;
         cameraState = CameraState.FOLLOW;
@@ -111,6 +112,11 @@ public class CameraManager : MonoBehaviour
     {
         LOCKED,
         FOLLOW
+    }
+
+    public float GetCameraRotation()
+    {
+        return _cameraGameObject.transform.rotation.eulerAngles.y;
     }
 
 }

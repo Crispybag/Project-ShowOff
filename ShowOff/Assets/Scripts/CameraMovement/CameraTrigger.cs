@@ -33,14 +33,15 @@ public class CameraTrigger : MonoBehaviour
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
-
+    //wow
     //=========================================================================================
     //                             > Private Tool Functions <
     //=========================================================================================
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        Debug.Log("Got an enter!");
+        if (other.tag == serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().ClientName)
         {
             _cameraManager.SetPosition(_cameraPosition, _transitionSpeed, _isFollowingPlayer);
         }
@@ -48,7 +49,8 @@ public class CameraTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        Debug.Log("Got and exit!");
+        if (other.tag == serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().ClientName)
         {
             _cameraManager.SetFollow(_transitionSpeed);
         }

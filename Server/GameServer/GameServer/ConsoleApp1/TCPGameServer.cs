@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Server
 {
-    class TCPGameServer
+    public class TCPGameServer
     {
         public Dictionary<TCPMessageChannel, PlayerInfo> allConnectedUsers;
         public Dictionary<string, Room> availableRooms;
@@ -25,7 +25,7 @@ namespace Server
             
             availableRooms.Add("Lobby", _lobbyRoom);
             availableRooms.Add("Login", _loginRoom);
-            _gameTestRoom0 = new GameTestRoom0(this, 10, 10);
+            _gameTestRoom0 = new GameTestRoom0(this, 10, 1, 10);
             availableRooms.Add("Test0", _gameTestRoom0);
 
         }
@@ -85,9 +85,9 @@ namespace Server
         // Player Info Tools
         //=================================================================
 
-        public void AddPlayerInfo(TCPMessageChannel pClient, string pName)
+        public void AddPlayerInfo(TCPMessageChannel pClient, string pName, int playerIndex)
         {
-            allConnectedUsers.Add(pClient, new PlayerInfo(pName));
+            allConnectedUsers.Add(pClient, new PlayerInfo(pName, playerIndex));
         }
 
         public void RemovePlayerInfo(TCPMessageChannel pClient)

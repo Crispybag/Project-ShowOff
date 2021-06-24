@@ -4,15 +4,20 @@ using System.Text;
 using sharedAngy;
 namespace Server
 {
-    class Wall : GameObject
+
+    /// <summary>
+    /// (Leo) Implements inwalking tiles
+    /// </summary>
+    public class Wall : GameObject
     {
-        GameRoom _room;
-        public Wall(GameRoom pRoom, int pX, int pY) : base(CollInteractType.SOLID)
+        public Wall(GameRoom pRoom, int pX, int pY, int pZ) : base(pX, pY, pZ, pRoom, CollInteractType.SOLID)
         {
-            _room = pRoom;
-            position[0] = pX;
-            position[1] = pY;
-            _room.roomArray[position[0], position[1]] = 2;
+            room = pRoom;
+            Logging.LogInfo(x() + " " + y() + " " + z());
+            //room.PrintGrid(room.roomArray);
+            room.roomArray[x(), y(), z()].Add(this);
+
+            objectIndex = 2;
         }
     }
 }

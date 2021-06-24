@@ -15,24 +15,20 @@ public class DoorManager : MonoBehaviour
 
     //------------------------ public ------------------------
 
+    public int ID;
 
     //----------------------- private ------------------------
 
-    [SerializeField] private List<PuzzleFactory> conditions = new List<PuzzleFactory>();
+    public List<GameObject> conditions = new List<GameObject>();
 
     //=========================================================================================
     //                                   > Start/Update <
     //=========================================================================================
     private void Start()
     {
-
+        serviceLocator.interactableList.Add(ID, this.gameObject);
     }
 
-    private void Update()
-    {
-        //checks whether all the conditions return true
-        CheckConditions();
-    }
 
     //=========================================================================================
     //                              > Public Tool Functions <
@@ -43,27 +39,16 @@ public class DoorManager : MonoBehaviour
     //=========================================================================================
 
 
-    private void CheckConditions()
+    public void SetDoor(bool isOpen)
     {
-        int i = 0;
-        foreach (PuzzleFactory obj in conditions)
+        if (isOpen)
         {
-            i++;
-            //if all conditions return true it destroys the door (later animation). If a single one is false, it breaks out.
-            if (!obj.isActuated)
-            {
-                break;
-            }
-            else if (i == conditions.Count)
-            {
-                i = 0;
-                ConfDoorToggle doorToggle = new ConfDoorToggle();
-                doorToggle.posX = (int)this.gameObject.transform.position.x;
-                doorToggle.posY = (int)this.gameObject.transform.position.y;
-                serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(doorToggle);
-                Destroy(this.gameObject);
-            }
+            GetComponent<MeshRenderer>().enabled = false;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().enabled = true;
         }
     }
 
-}
+    }

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using sharedAngy;
 using static ServiceLocator;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ClientManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class ClientManager : MonoBehaviour
     //------------------------ public ------------------------
 
     public TcpClient client;
+    public string ClientName;
 
     //----------------------- private ------------------------
 
@@ -74,23 +76,118 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfJoinRoom) { handleConfJoinRoom(pInMessage as ConfJoinRoom); }
         if (pInMessage is ConfMove) { handleConfMove(pInMessage as ConfMove); }
         if (pInMessage is ConfActuatorToggle) { handleConfActuatorToggle(pInMessage as ConfActuatorToggle); }
+        if (pInMessage is ConfDoorToggle) { handleConfDoorToggle(pInMessage as ConfDoorToggle); }
+        if (pInMessage is ConfElevatorMove) { handleConfElevatorMove(pInMessage as ConfElevatorMove); }
+        if (pInMessage is BoxInfo) { handleBoxInfo(pInMessage as BoxInfo); }
+        if (pInMessage is ConfPlayer) { handlePlayerInfo(pInMessage as ConfPlayer); }
+        if (pInMessage is ConfProgressDialogue) { handleProgressDialogue(pInMessage as ConfProgressDialogue); }
+        if (pInMessage is ConfReloadScene) { handleReloadScene(pInMessage as ConfReloadScene); }
     }
 
+    private void handleReloadScene(ConfReloadScene pMessage)
+    {
+        SceneManagerScript sceneManager = serviceLocator.GetFromList("SceneManager").GetComponent<SceneManagerScript>();
+        sceneManager.LoadSceneSingle(SceneManager.GetActiveScene().name);
+    }
+    private void handleProgressDialogue(ConfProgressDialogue pMessage)
+    {
+        serviceLocator.interactableList[pMessage.ID].GetComponent<Dialogue>().ProgressDialogue();
+    }
+
+    private void handlePlayerInfo(ConfPlayer pMessage)
+    {
+        ClientName = pMessage.playerName;
+        Debug.Log("Joined game as " + ClientName);
+        try
+        {
+            serviceLocator.GetFromList("CameraManager").GetComponent<CameraManager>()._playerCameraGameObject = serviceLocator.GetFromList(ClientName).transform.Find("CameraPosition").gameObject;
+        }
+        catch
+        {
+            Debug.LogError("Could not find gameobjects for camera movement!");
+        }
+    }
+
+    private void handleConfElevatorMove(ConfElevatorMove pMessage)
+    {
+        Debug.Log("Got a elevator move with ID: " + pMessage.ID + "!");
+        GameObject obj = serviceLocator.interactableList[pMessage.ID];
+        obj.GetComponent<Elevator>().SetTargetPosition(pMessage.posX, pMessage.posY, pMessage.posZ);
+    }
+
+    private void handleConfDoorToggle(ConfDoorToggle pMessage)
+    {
+        GameObject obj = serviceLocator.interactableList[pMessage.ID];
+        obj.GetComponent<DoorManager>().SetDoor(pMessage.isActivated);
+    }
 
     private void handleConfActuatorToggle(ConfActuatorToggle pMessage)
     {
-        Lever[] levers = FindObjectsOfType<Lever>();
+        Debug.Log("Got a actuator toggle with ID: " + pMessage.ID + "!");
+        GameObject obj = serviceLocator.interactableList[pMessage.ID];
+        switch (pMessage.obj)
+        {
+            case ConfActuatorToggle.Object.LEVER:
+                Debug.Log("Its a lever toggle!");
+                obj.GetComponent<Lever>().SetActivatedLever(pMessage.isActived);
+                break;
+            case ConfActuatorToggle.Object.PRESSUREPLATE:
+                Debug.Log("Its a pressure plate toggle!");
+                obj.GetComponent<PressurePlate>().UpdateActuator(pMessage.isActived);
+                break;
+            case ConfActuatorToggle.Object.BUTTON:
+                Debug.Log("Its a button toggle!");
+                obj.GetComponent<Button>().UpdateActuator(pMessage.isActived);
+                break;
+            default:
+                Debug.LogError("ClientManager: Cannot handle actuator toggle!");
+                break;
+        }
+
+/*        Lever[] levers = FindObjectsOfType<Lever>();
         foreach(Lever lever in levers)
         {
             if(lever.gameObject.transform.position.x == pMessage.posX && lever.gameObject.transform.position.y == pMessage.posY)
             {
-                lever.SetActivatedLever();
+                switch (pMessage.currentState)
+                {
+                    case ConfActuatorToggle.ActuatorState.TOGGLE:
+                        lever.SetActivatedLever(!lever.isActuated);
+                        break;                    
+                    case ConfActuatorToggle.ActuatorState.TRUE:
+                        lever.SetActivatedLever(true);
+                        break;                    
+                    case ConfActuatorToggle.ActuatorState.FALSE:
+                        lever.SetActivatedLever(false);
+                        break;
+                    default:
+                        Debug.LogError("Trying to handle switching lever but given enum is not handled in client manager!");
+                        break;
+                }
             }
-        }
+        }*/
     }
     private void handleConfMove(ConfMove pMessage)
     {
-        FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);
+        //FindObjectOfType<BasicTCPClient>().handleConfMove(pMessage);
+        GameObject player1 = serviceLocator.GetFromList("Player1");
+        GameObject player2 = serviceLocator.GetFromList("Player2");
+
+        if (pMessage.player == 0)
+        {
+            player1.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
+            //player1.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
+
+            Debug.Log("Moved player 1!");
+        }
+        else
+        {
+            player2.GetComponent<Movement>().moveToTile(new Vector3(pMessage.dirX, pMessage.dirY, pMessage.dirZ), pMessage.orientation);
+            //player2.transform.rotation = Quaternion.Euler(0, 0, pMessage.orientation);
+
+            Debug.Log("Moved player 2!");
+        }
+    
     }
 
     private void handleConfJoinRoom(ConfJoinRoom pMessage)
@@ -137,7 +234,17 @@ public class ClientManager : MonoBehaviour
         }
     }
 
-
+    private void handleBoxInfo(BoxInfo pHandleBox)
+    {
+        try
+        {
+            serviceLocator.interactableList[pHandleBox.ID].GetComponent<BoxMovement>().UpdateBox(pHandleBox.isPickedUp, pHandleBox.posX, pHandleBox.posY, pHandleBox.posZ);
+        }
+        catch
+        {
+            Debug.LogError("Could not find box movement");
+        }
+    }
 
     #region ReadIncommingData
 

@@ -5,6 +5,9 @@ using sharedAngy;
 
 namespace Server
 {
+    /// <summary>
+    /// (Ezra) Room where players join before the game starts, where they can chat with eachother
+    /// </summary>
     class LobbyRoom : Room
     {
         public LobbyRoom(TCPGameServer pServer) : base(pServer) { }
@@ -14,11 +17,13 @@ namespace Server
             if(pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
         }
 
+        //handles room requests, if they want to leave or go into the game
         private void handleRoomRequest(ReqJoinRoom pRoomRequest, TCPMessageChannel pSender)
         {
             Logging.LogInfo("\nGot a room request with number : " + (int)pRoomRequest.room, Logging.debugState.DETAILED);
             try
             {
+                //go back into login room
                 if ((int)pRoomRequest.room == 0)
                 {
                     Logging.LogInfo("Moving client to login room", Logging.debugState.DETAILED);
@@ -29,8 +34,10 @@ namespace Server
                     removeAndCloseMember(pSender);
                     Console.WriteLine("count: " + _users.Count);
                 }
+                //go into game room
                 else if ((int)pRoomRequest.room == 2)
                 {
+                    //needs at least 2 players
                     if (_users.Count >= 1)
                     {
                         Logging.LogInfo("Trying to move to game room", Logging.debugState.DETAILED);
@@ -47,6 +54,7 @@ namespace Server
                         {
                             client.SendMessage(confirmGameRoom);
                             _server.availableRooms["Test0"].AddMember(client);
+                            sendConfPlayer(client);
                             RemoveMember(client);
                         }
                     }
@@ -91,5 +99,11 @@ namespace Server
             sendToAll(newMessage);
         }
 
+
+
+        
+
     }
+
+    
 }

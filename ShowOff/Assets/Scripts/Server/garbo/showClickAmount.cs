@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class showClickAmount : MonoBehaviour
 {
     [SerializeField] Text text;
-    [SerializeField] BasicTCPClient fuck;
+    [SerializeField] PlayerInputHandler fuck;
     void Start()
     {
         

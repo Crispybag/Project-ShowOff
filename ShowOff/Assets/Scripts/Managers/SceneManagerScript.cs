@@ -18,7 +18,7 @@ public class SceneManagerScript : MonoBehaviour
 
 
     //----------------------- private ------------------------
-
+    //private static SceneManagerScript _sceneManager;
 
 
     //=========================================================================================
@@ -27,6 +27,14 @@ public class SceneManagerScript : MonoBehaviour
 
     private void Awake()
     {
+        //DontDestroyOnLoad(gameObject);
+        //if (null == _sceneManager)
+        //{
+        //    _sceneManager = this;
+        //    return;
+        //}
+        //Destroy(this.gameObject);
+
         serviceLocator.AddToList("SceneManager", this.gameObject);
     }
 

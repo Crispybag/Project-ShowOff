@@ -12,8 +12,13 @@ public class PlayerMovement : Movement
     public int playerPushWeight;
 
     [Tooltip("This will be the name in the service locator!")]public string playerName = "Player1";
-    [SerializeField] private BasicTCPClient basicClient;
+    [SerializeField] private PlayerInputHandler basicClient;
 
+    private void Awake()
+    {
+        serviceLocator.AddToList(playerName, gameObject);
+        _travelTime = _moveSpeed;
+    }
     protected override void Start()
     {
         base.Start();
@@ -25,6 +30,7 @@ public class PlayerMovement : Movement
         base.Update();
     }
 
+    /*
     private Vector3 _direction;
     private bool wallCheckCalled;
 
@@ -39,6 +45,7 @@ public class PlayerMovement : Movement
         return isWall;
     }
 
+    
     private void sendPackage(ASerializable pSerializable)
     {
         //create the packet
@@ -47,4 +54,5 @@ public class PlayerMovement : Movement
         //send package to the stream
         StreamUtil.Write(basicClient._client.GetStream(), _outPacket.GetBytes());
     }
+    */
 }

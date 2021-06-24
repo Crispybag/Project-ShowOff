@@ -4,17 +4,21 @@ using System.Text;
 
 namespace Server
 {
-    class SpawnPoint : GameObject
+
+    /// <summary>
+    /// (Leo) Implements a spawnpoint where players spawn. 
+    /// </summary>
+    public class SpawnPoint : GameObject
     {
-        GameRoom _room;
         public int spawnIndex;
-        public SpawnPoint(GameRoom pRoom, int pPlayer, int pX, int pY) : base(CollInteractType.PASS)
+        public SpawnPoint(GameRoom pRoom, int pX, int pY, int pZ, int pPlayer) : base(pX, pY, pZ, pRoom, CollInteractType.PASS)
         {
             spawnIndex = pPlayer;
-            _room = pRoom;
-            position[0] = pX;
-            position[1] = pY;
-            _room.roomArray[position[0], position[1]] = 3;
+            room = pRoom;
+            room.roomArray[x(), y(), z()].Add(this);
+            room.spawnPoints.Add(this);
+
+            objectIndex = 3;
         }
     }
 }

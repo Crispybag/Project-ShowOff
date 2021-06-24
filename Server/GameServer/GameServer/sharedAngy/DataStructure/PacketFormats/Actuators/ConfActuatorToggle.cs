@@ -4,29 +4,34 @@ using System.Text;
 
 namespace sharedAngy
 {
+
     public class ConfActuatorToggle : ASerializable
     {
-        public bool isActivated;
-        public int posX;
-        public int posY;
-        public int posZ;
+        public bool isActived;
+        public int ID;
+        public Object obj;
 
         public override void Serialize(Packet pPacket)
         {
-            pPacket.Write(isActivated);
-            pPacket.Write(posX);
-            pPacket.Write(posY);
-            pPacket.Write(posZ);
+            pPacket.Write(isActived);
+            pPacket.Write(ID);
+            pPacket.Write((int)obj);
         }
 
         public override void Deserialize(Packet pPacket)
         {
-            isActivated = pPacket.ReadBool();
-            posX = pPacket.ReadInt();
-            posY = pPacket.ReadInt();
-            posZ = pPacket.ReadInt();
+            isActived = pPacket.ReadBool();
+            ID = pPacket.ReadInt();
+            obj = (Object)pPacket.ReadInt();
         }
 
+        public enum Object
+        {
+            LEVER,
+            PRESSUREPLATE,
+            BUTTON,
+            CRACK
+        }
 
     }
 }

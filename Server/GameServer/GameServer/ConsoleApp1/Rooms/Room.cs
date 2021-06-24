@@ -7,7 +7,7 @@ using sharedAngy;
 
 namespace Server
 {
-    abstract class Room
+    public abstract class Room
     {
         //get access to the server
         protected TCPGameServer _server;
@@ -24,6 +24,9 @@ namespace Server
             _server = pServer;
             _users = new List<TCPMessageChannel>();
         }
+
+       
+
 
         #region adding and removing members
         //=================================================================
@@ -152,6 +155,22 @@ namespace Server
                 if (i >= _users.Count) continue;
                 //call the method on any still existing member
                 pMethod(_users[i]);
+            }
+        }
+
+        protected void sendConfPlayer(TCPMessageChannel pClient)
+        {
+            if (_server.allConnectedUsers[pClient].GetPlayerIndex() == 0)
+            {
+                ConfPlayer newPlayer = new ConfPlayer();
+                newPlayer.playerName = "Player1";
+                pClient.SendMessage(newPlayer);
+            }
+            else
+            {
+                ConfPlayer newPlayer = new ConfPlayer();
+                newPlayer.playerName = "Player2";
+                pClient.SendMessage(newPlayer);
             }
         }
         #endregion

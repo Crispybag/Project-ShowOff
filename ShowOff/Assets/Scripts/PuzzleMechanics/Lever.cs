@@ -16,11 +16,11 @@ public class Lever : PuzzleFactory
     //------------------------ public ------------------------
 
 
+
     //----------------------- private ------------------------
 
     [SerializeField] private Material _mat1;
     [SerializeField] private Material _mat2;
-    [SerializeField] private float radius;
     private InputManager _inputManager;
 
     //=========================================================================================
@@ -28,41 +28,21 @@ public class Lever : PuzzleFactory
     //=========================================================================================
     private void Start()
     {
+        serviceLocator.interactableList.Add(ID, this.gameObject);
         this.gameObject.GetComponent<MeshRenderer>().material = _mat1;
-        _inputManager = serviceLocator.GetFromList("InputManager").GetComponent<InputManager>();
     }
 
     private void Update()
     {
-        if (Vector3.Distance(this.gameObject.transform.position, serviceLocator.GetFromList("Player1").transform.position) < radius)
-        {
-            if (_inputManager.GetActionDown(InputManager.Action.ACT1))
-            {
-                if(this.GetComponentInChildren<InteractableTutorial>() != null)
-                {
-                    this.GetComponentInChildren<InteractableTutorial>().SetForcedDisabled();
-                }
-                ToggleMechanics();
-                isActuated = !isActuated;
-                if (isActuated)
-                {
-                    this.gameObject.GetComponent<MeshRenderer>().material = _mat2;
-                }
-                else
-                {
-                    this.gameObject.GetComponent<MeshRenderer>().material = _mat1;
-                }
-            }
-        }
     }
 
     //=========================================================================================
     //                              > Public Tool Functions <
     //=========================================================================================
 
-    public void SetActivatedLever()
+    public void SetActivatedLever(bool isActive)
     {
-        isActuated = !isActuated;
+        isActuated = isActive;
         setMaterial();
     }
 
@@ -78,10 +58,6 @@ public class Lever : PuzzleFactory
         }
     }
 
-    public override void FinishMechanic()
-    {
-        throw new System.NotImplementedException();
-    }
 
 
     //=========================================================================================
