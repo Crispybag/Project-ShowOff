@@ -371,7 +371,7 @@ namespace Server
             for (int i = 0; i < informationLists[0].Count / 3; i++)
             {
                 DialogueHitBoxes hitBox = new DialogueHitBoxes(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
-                Console.WriteLine("Added an empty on positions: " + (hitBox.x() - minX) + "," + (hitBox.y() - minY) + "," + (hitBox.z() - minZ));
+                //Console.WriteLine("Added an empty on positions: " + (hitBox.x() - minX) + "," + (hitBox.y() - minY) + "," + (hitBox.z() - minZ));
                 dia.dialogueHitBoxes.Add(hitBox);
                 hitBox.parentDialogue = dia;
             }
@@ -419,13 +419,13 @@ namespace Server
         {
             Elevator elevator = new Elevator(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, int.Parse(rawInformation[7]));
             InteractableGameobjects.Add(elevator.ID, elevator);
-            Console.WriteLine("Added an elevator on positions: " + elevator.x() + "," + elevator.y() + "," + elevator.z());
+            //Console.WriteLine("Added an elevator on positions: " + elevator.x() + "," + elevator.y() + "," + elevator.z());
             try
             {
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
                     EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
-                    Console.WriteLine("Added an empty on positions: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
+                    //Console.WriteLine("Added an empty on positions: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
                     elevator.points.Add(i, empty);
                 }
             }

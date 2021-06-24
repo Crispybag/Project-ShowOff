@@ -24,7 +24,7 @@ namespace Server
         {
             if (_server.availableRooms["Test0"] is GameRoom)
             {
-                string filePath = "../../../../LevelFiles/" + pReqLevelName.levelName + ".txt";
+                string filePath = "LevelFiles/" + pReqLevelName.levelName + ".txt";
                 GameRoom gameRoom = _server.availableRooms["Test0"] as GameRoom;
                 gameRoom.LoadLevel(filePath);
             }

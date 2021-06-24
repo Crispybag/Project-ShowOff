@@ -15,7 +15,7 @@ namespace Server
             room = pRoom;
             string[] sceneNames = pFileName.Split(".txt");
             sceneName = sceneNames[0];
-            fileName = "../../../../LevelFiles/" + pFileName;
+            fileName = "LevelFiles/" + pFileName;
             //room.PrintGrid(room.roomArray);
             room.roomArray[x(), y(), z()].Add(this);
             objectIndex = 14;
