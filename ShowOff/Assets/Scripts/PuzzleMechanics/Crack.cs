@@ -11,11 +11,12 @@ using static ServiceLocator;
 public class Crack : Actuators
 {
 
+    [SerializeField] private ParticleSystem[] particlesTurnOffStart;
+
     public void Start()
     {
         serviceLocator.interactableList.Add(ID, this.gameObject);
-        ParticleSystem[] particlesystems = this.transform.parent.GetComponentsInChildren<ParticleSystem>();
-        foreach (ParticleSystem particle in particlesystems)
+        foreach (ParticleSystem particle in particlesTurnOffStart)
         {
             var emission = particle.emission;
             emission.enabled = false;
@@ -25,8 +26,7 @@ public class Crack : Actuators
     public void FixCrack()
     {
         this.transform.parent.GetComponentInChildren<CrackAnimation>().fixing = true;
-        ParticleSystem[] particlesystems = this.transform.parent.GetComponentsInChildren<ParticleSystem>();
-        foreach(ParticleSystem particle in particlesystems)
+        foreach(ParticleSystem particle in particlesTurnOffStart)
         {
             var emission = particle.emission;
             emission.enabled = true;

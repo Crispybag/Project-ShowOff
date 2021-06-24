@@ -14572,6 +14572,9 @@ MonoBehaviour:
   ID: 40
   isActuated: 0
   interactables: []
+  particlesTurnOffStart:
+  - {fileID: 1681996929904049732}
+  - {fileID: 5780900310026447285}
 --- !u!114 &7413189510232538223
 MonoBehaviour:
   m_ObjectHideFlags: 0
