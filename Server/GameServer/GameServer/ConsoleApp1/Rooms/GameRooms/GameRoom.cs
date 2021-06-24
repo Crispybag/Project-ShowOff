@@ -599,6 +599,14 @@ namespace Server
 
             }
         }
+
+
+        /// <summary>
+        /// (Ezra) Saves highscores to server
+        /// </summary>
+        /// <param name="score"></param>
+        /// <param name="namePlayer1"></param>
+        /// <param name="namePlayer2"></param>
         private void writeScoresAndNames(int score, string namePlayer1, string namePlayer2)
         {
             string path = "../../../../../../../ShowOff/Assets/Highscores/Highscores.txt";
@@ -610,10 +618,6 @@ namespace Server
             //create a lines list that reads all lines from a file
             List<string> lines;
             lines = File.ReadAllLines(path).ToList();
-
-
-
-
 
             //write the constructed string
             lines.Add(score.ToString() + "{" + namePlayer1 + "{"+ namePlayer2);
@@ -631,20 +635,15 @@ namespace Server
             numbers.Sort();
 
             List<string> newHighscores = new List<string>();
-
+            int i = 0;
             foreach (int number in numbers)
             {
-                newHighscores.Add(number.ToString() + "{" + scores[number]);
+                if (i < 10)
+                {
+                    newHighscores.Add(number.ToString() + "{" + scores[number]);
+                    i++;
+                }
             }
-
-
-
-            //dissect lines to values
-
-            //sort lines, remove any thing over 10 lines
-
-
-
 
             //write all lines to the file
             File.WriteAllLines(path, newHighscores);
