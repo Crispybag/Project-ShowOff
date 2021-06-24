@@ -100,6 +100,10 @@ public class SceneManagerScript : MonoBehaviour
         return SceneManager.GetActiveScene().name;
     }
     
+    public void CloseApplication()
+    {
+        Application.Quit();
+    }
 
 
 }

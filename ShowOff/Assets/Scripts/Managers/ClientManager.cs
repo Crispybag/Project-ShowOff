@@ -110,6 +110,8 @@ public class ClientManager : MonoBehaviour
         if (pInMessage is ConfAirChannelToggle) { handleConfAirChannelToggle(pInMessage as ConfAirChannelToggle); }
     }
 
+
+
     private void handleConfAirChannelToggle(ConfAirChannelToggle pMessage)
     {
         ParticleSystem[] particlesystems = serviceLocator.interactableList[pMessage.ID].transform.parent.parent.GetComponentsInChildren<ParticleSystem>();

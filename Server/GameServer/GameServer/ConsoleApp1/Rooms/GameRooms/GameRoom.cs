@@ -24,6 +24,7 @@ namespace Server
         public bool finalRoom = false;
         public int score;
         private int finalScore;
+
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -38,6 +39,7 @@ namespace Server
             players = new List<Player>();
             spawnPoints = new List<SpawnPoint>();
             gameObjects = new List<GameObject>();
+
 
         }
 
@@ -599,19 +601,53 @@ namespace Server
         }
         private void writeScoresAndNames(int score, string namePlayer1, string namePlayer2)
         {
-            if (!File.Exists("../../../../LevelFiles/Highscores.txt"))
+            string path = "../../../../../../../ShowOff/Assets/Highscores/Highscores.txt";
+            if (!File.Exists(path))
             {
-                File.Create("../../../../LevelFiles/Highscores.txt");
+                File.Create(path);
             }
 
             //create a lines list that reads all lines from a file
             List<string> lines;
-            lines = File.ReadAllLines("../../../../LevelFiles/Highscores.txt").ToList();
+            lines = File.ReadAllLines(path).ToList();
+
+
+
+
 
             //write the constructed string
             lines.Add(score.ToString() + "{" + namePlayer1 + "{"+ namePlayer2);
+
+            Dictionary<int, string> scores = new Dictionary<int, string>();
+            List<int> numbers = new List<int>();
+
+            foreach(string line in lines)
+            {
+                string[] individual = line.Split('{');
+                scores.Add((int)float.Parse(individual[0]), individual[1] + "{" + individual[2]);
+                numbers.Add((int)float.Parse(individual[0]));
+            }
+
+            numbers.Sort();
+
+            List<string> newHighscores = new List<string>();
+
+            foreach (int number in numbers)
+            {
+                newHighscores.Add(number.ToString() + "{" + scores[number]);
+            }
+
+
+
+            //dissect lines to values
+
+            //sort lines, remove any thing over 10 lines
+
+
+
+
             //write all lines to the file
-            File.WriteAllLines("../../../../LevelFiles/Highscores.txt", lines);
+            File.WriteAllLines(path, newHighscores);
         }
         
         private void sendLevelReset()
@@ -1281,5 +1317,7 @@ namespace Server
 
 
         #endregion
+
+
     }
 }

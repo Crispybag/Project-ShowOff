@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17277187, g: 0.2158961, b: 0.29783073, a: 1}
+  m_IndirectSpecularColor: {r: 0.17277208, g: 0.21589649, b: 0.29783145, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -27634,7 +27634,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &949310471
 PrefabInstance:
@@ -45206,7 +45206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2180702175540750596, guid: 9cf6679e5d57676468d90a872ab5e859, type: 3}
       propertyPath: finalLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2180702175540750596, guid: 9cf6679e5d57676468d90a872ab5e859, type: 3}
       propertyPath: newLevelName
@@ -51409,6 +51409,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2163521534293760606, guid: 8dc5055675230b24db25dd585223e221, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163521534293760606, guid: 8dc5055675230b24db25dd585223e221, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5183741879027707950, guid: 8dc5055675230b24db25dd585223e221, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0006905886
+      objectReference: {fileID: 0}
     - target: {fileID: 6634985251394628206, guid: 8dc5055675230b24db25dd585223e221, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -51427,7 +51439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6634985251629142548, guid: 8dc5055675230b24db25dd585223e221, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6634985251629142548, guid: 8dc5055675230b24db25dd585223e221, type: 3}
       propertyPath: m_AnchorMax.x
@@ -51499,6 +51511,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6634985251629142548, guid: 8dc5055675230b24db25dd585223e221, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010420822331572312, guid: 8dc5055675230b24db25dd585223e221, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010420822331572312, guid: 8dc5055675230b24db25dd585223e221, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
