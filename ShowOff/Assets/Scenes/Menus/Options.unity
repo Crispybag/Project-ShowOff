@@ -805,7 +805,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d5179bab6a030d4093733203a1131ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 1217055698}
+  soundSlider: {fileID: 0}
+  volumeSlider: {fileID: 0}
 --- !u!1 &483448979
 GameObject:
   m_ObjectHideFlags: 0

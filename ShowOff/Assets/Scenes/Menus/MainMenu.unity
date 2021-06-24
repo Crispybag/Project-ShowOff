@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -687,6 +687,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &159701168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,6 +986,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &266006960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2278,6 +2282,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &456302699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2372,6 +2378,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456302696}
   m_CullTransparentMesh: 1
+--- !u!1 &468339277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 468339279}
+  - component: {fileID: 468339278}
+  m_Layer: 0
+  m_Name: SoundStopper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &468339278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468339277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8292d07d6e32d4c96f9f43a698d738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &468339279
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468339277}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.755388, y: 5.57601, z: 4.4497805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &493890778
 GameObject:
   m_ObjectHideFlags: 0
@@ -2747,6 +2796,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &549711593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3167,6 +3218,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &645249987
 GameObject:
   m_ObjectHideFlags: 0
@@ -3592,6 +3645,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &708634801
 GameObject:
   m_ObjectHideFlags: 0
@@ -3666,6 +3721,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &708634804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4865,6 +4922,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1023809424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5900,6 +5959,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &1299866373
 GameObject:
   m_ObjectHideFlags: 0
@@ -5989,6 +6050,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1299866377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6239,6 +6302,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!1 &1349738031
 GameObject:
   m_ObjectHideFlags: 0
@@ -6805,6 +6870,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1452315860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7119,6 +7186,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 3
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1510027544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7790,6 +7859,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1638111662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9356,6 +9427,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &1807195977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9447,6 +9520,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1817099467}
+  - component: {fileID: 1817099468}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -9480,6 +9554,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1817099468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817099466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d5179bab6a030d4093733203a1131ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundSlider: {fileID: 1929689247}
+  volumeSlider: {fileID: 169211298}
 --- !u!1 &1895090309
 GameObject:
   m_ObjectHideFlags: 0
@@ -10445,6 +10533,8 @@ MonoBehaviour:
   currentSprite: 0
   isButtonHovering: 0
   timer: 2
+  _eventPath: event:/UI-UX/spray hover
+  _clickSound: event:/UI-UX/pressed button
 --- !u!114 &2031691238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10945,7 +11035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClientName: 
   playersWantToReset: 0
-  gameSceneName: Features
+  gameSceneName: Level0F
 --- !u!4 &2092409358
 Transform:
   m_ObjectHideFlags: 0
