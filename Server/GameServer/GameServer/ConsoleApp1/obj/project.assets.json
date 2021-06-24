@@ -27,26 +27,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ezra\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Lylithrea\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
+      "projectUniqueName": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
-      "packagesPath": "C:\\Users\\Ezra\\.nuget\\packages\\",
-      "outputPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\obj\\",
+      "projectPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\Server.csproj",
+      "packagesPath": "C:\\Users\\Lylithrea\\.nuget\\packages\\",
+      "outputPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Ezra\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Lylithrea\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,8 +53,8 @@
         "netcoreapp3.0": {
           "targetAlias": "netcoreapp3.0",
           "projectReferences": {
-            "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj": {
-              "projectPath": "F:\\Git Repos\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj"
+            "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj": {
+              "projectPath": "D:\\Lejo\\School\\Y2 Q4\\Project Showoff\\Project-ShowOff\\Server\\GameServer\\GameServer\\sharedAngy\\sharedAngy.csproj"
             }
           }
         }
@@ -108,7 +101,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -29,10 +29,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/ServerTesting/Water.unity
     guid: bcb6ea5eea61dc54594ae752886d4e93
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Levels/Features.unity
     guid: 5a833501f6366d34cadf957331054268
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Levels/Secret0.unity
     guid: 5b744b353a463e445a0a5c1bc54c775d
   - enabled: 0
@@ -50,7 +50,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/ServerTesting/AirChannelTesting.unity
     guid: 4e37f7cd38339824c8f67aea41c36f1e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Levels/Functional Levels/LevelWater.unity
     guid: 1a586be64d47a6847b81e9bf7341cd0d
   - enabled: 1
