@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     Dictionary<string, FMOD.Studio.EventInstance> nonOverlappingSounds = new Dictionary<string, FMOD.Studio.EventInstance>();
     private float musicvolumeParameter = 0.5f;
     private float SFXvolumeParameter = 1f;
+    public List<FMOD.Studio.EventInstance> continuousSounds = new List<FMOD.Studio.EventInstance>();
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -41,6 +42,15 @@ public class AudioManager : MonoBehaviour
         }
 
     }
+
+    public void cancelAllContinuousSounds()
+    {
+        foreach(FMOD.Studio.EventInstance instance in continuousSounds)
+        {
+            instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+    }
+
 
     public float GetVolume(int index = 0)
     {

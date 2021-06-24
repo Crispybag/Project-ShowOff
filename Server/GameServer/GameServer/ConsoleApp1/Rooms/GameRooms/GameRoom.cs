@@ -609,7 +609,7 @@ namespace Server
             lines = File.ReadAllLines("../../../../LevelFiles/Highscores.txt").ToList();
 
             //write the constructed string
-            lines.Add(score.ToString() + " " + namePlayer1 + " "+ namePlayer2);
+            lines.Add(score.ToString() + "{" + namePlayer1 + "{"+ namePlayer2);
             //write all lines to the file
             File.WriteAllLines("../../../../LevelFiles/Highscores.txt", lines);
         }

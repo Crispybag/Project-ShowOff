@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static ServiceLocator;
 public class SoundOnAndOff : MonoBehaviour
 {
     [FMODUnity.EventRef]
@@ -11,6 +11,7 @@ public class SoundOnAndOff : MonoBehaviour
     void Start()
     {
         sound = FMODUnity.RuntimeManager.CreateInstance(eventPath);
+        serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().continuousSounds.Add(sound);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(sound, gameObject.transform, gameObject.GetComponent<Rigidbody>());
     }
 
