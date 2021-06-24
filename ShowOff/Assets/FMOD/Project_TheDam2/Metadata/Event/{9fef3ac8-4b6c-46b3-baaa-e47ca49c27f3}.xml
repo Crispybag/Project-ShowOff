@@ -53,7 +53,7 @@
 			<destination>{84e403a5-1ec6-448f-9c65-52ae2d070438}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{e79ad36f-ca19-4de7-b0e0-3b942bda6928}</destination>
+			<destination>{dc83ab54-deff-4a6d-b318-2f4b419f82e8}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{a61b3b5c-dbcb-4093-9e55-d75beac424c5}" />
@@ -120,7 +120,7 @@
 			<value>4</value>
 		</property>
 		<property name="name">
-			<value>playtest</value>
+			<value>flicked</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{cb344e87-60af-4112-b442-25bd857c9b79}</destination>

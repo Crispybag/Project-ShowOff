@@ -10,7 +10,7 @@ public class IWLevelLoader : InformationWriter
 {
     // Start is called before the first frame update
     [SerializeField] private string newLevelName;
-    
+    [SerializeField]private int finalLevel = 0;
     public override void WriteAllInformation()
     {
         if (isNameValid(newLevelName))
@@ -18,6 +18,7 @@ public class IWLevelLoader : InformationWriter
             base.WriteAllInformation();
             AddToInformation(newLevelName);
             AddToInformation(GetComponent<LevelLoader>().ID);
+            AddToInformation(finalLevel);
             AddToInformation(createList(GetComponent<LevelLoader>().conditions));
         }
     }

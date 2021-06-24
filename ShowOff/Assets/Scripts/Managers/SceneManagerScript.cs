@@ -79,6 +79,12 @@ public class SceneManagerScript : MonoBehaviour
                 serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(newLobbyRequest);
                 break;
             case 2: //game
+                ReqLevelName name = new ReqLevelName();
+                name.levelName = serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().gameSceneName;
+                serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(name);
+
+
+
                 ReqJoinRoom newGameRequest = new ReqJoinRoom();
                 newGameRequest.room = ReqJoinRoom.Rooms.GAME;
                 serviceLocator.GetFromList("ClientManager").GetComponent<ClientManager>().SendPackage(newGameRequest);

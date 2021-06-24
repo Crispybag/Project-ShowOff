@@ -17,7 +17,7 @@ public class InteractableShaderManager : MonoBehaviour
     {
         if (playerName == "Player1")
         {
-            player = GameObject.FindGameObjectWithTag("Player1").transform.GetChild(0).gameObject;
+            player = GameObject.FindGameObjectWithTag("Player1")/*.transform.GetChild(0).gameObject*/;
         }
         else
         {

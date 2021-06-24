@@ -187,7 +187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventPath: event:/gameplay (actions and props)/lever
+  eventPath: event:/gameplay (actions and props)/Pressure plate
+  eventpaths: []
 --- !u!1 &7866806714402558550
 GameObject:
   m_ObjectHideFlags: 0

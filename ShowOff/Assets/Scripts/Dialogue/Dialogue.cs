@@ -58,7 +58,7 @@ public class Dialogue : MonoBehaviour
 
                 //playSound();
                 _dialogueManager.talkingSound.clip = dialogue[activeDialogue].voiceLine;
-
+                _dialogueManager.talkingSound.Play();
 
                 activeDialogue++;
             }

@@ -852,7 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  _moveSpeed: 0.25
+  _moveSpeed: 0.19
   playerName: Player2
 --- !u!114 &2062102429941973086
 MonoBehaviour:
@@ -2692,6 +2692,8 @@ GameObject:
   - component: {fileID: 8788504313737737173}
   - component: {fileID: 3393223487269022127}
   - component: {fileID: 8032712039988805710}
+  - component: {fileID: 2536027453106777157}
+  - component: {fileID: 1138960012873364198}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -2749,6 +2751,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crate: {fileID: 836801219431756112}
   crackTool: {fileID: 5887977238245214543}
+--- !u!114 &2536027453106777157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267723467640744303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2e7049faaeeac4cbed28b763917987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footStepsEventPath: event:/character/footsteps/Footsteps_string
+  materialParameter: Types
+  parameterOcclusion: none
+  rayDistance: 1.2
+  defaultMaterial: 0
+  volume: 0.7
+  occlusionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!114 &1138960012873364198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267723467640744303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5e874fd7c22bb4eb06a2789b90691e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventPath: event:/character/landing/female
+  eventpaths:
+  - event:/gameplay (actions and props)/fixing cracks
 --- !u!1 &8415137270312025978
 GameObject:
   m_ObjectHideFlags: 0
@@ -2934,13 +2972,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cda7afeb591959946948c991f1f5b0f3, type: 3}
---- !u!4 &6556568940863116277 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cda7afeb591959946948c991f1f5b0f3, type: 3}
-  m_PrefabInstance: {fileID: 6734893325175501854}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5887977238245214543 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cda7afeb591959946948c991f1f5b0f3, type: 3}
+  m_PrefabInstance: {fileID: 6734893325175501854}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6556568940863116277 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cda7afeb591959946948c991f1f5b0f3, type: 3}
   m_PrefabInstance: {fileID: 6734893325175501854}
   m_PrefabAsset: {fileID: 0}

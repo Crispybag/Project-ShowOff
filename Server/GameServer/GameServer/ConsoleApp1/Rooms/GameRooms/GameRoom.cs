@@ -21,8 +21,9 @@ namespace Server
         public bool isReloading = false;
         public string levelFile;
         public string sceneName;
-
-
+        public bool finalRoom = false;
+        public int score;
+        private int finalScore;
         #region initialization
         public GameRoom(TCPGameServer pServer, int roomWidth, int roomHeight, int roomLength) : base(pServer)
         {
@@ -300,7 +301,7 @@ namespace Server
 
         private void importLevelLoader(List<List<int>> informationLists, string[] rawInformation, int minX, int minY, int minZ)
         {
-            LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7], int.Parse(rawInformation[8]), informationLists[0]);
+            LevelLoader levelLoader = new LevelLoader(this, (int)float.Parse(rawInformation[1]) - minX, (int)float.Parse(rawInformation[2]) - minY, (int)float.Parse(rawInformation[3]) - minZ, rawInformation[7], int.Parse(rawInformation[8]), informationLists[0], int.Parse(rawInformation[9]));
             InteractableGameobjects.Add(levelLoader.ID, levelLoader);
 
         }
@@ -460,14 +461,8 @@ namespace Server
             if (pMessage is ReqResetLevel) { handleReqResetLevel(pMessage as ReqResetLevel, pSender); }
             if (pMessage is ReqJoinRoom) { handleRoomRequest(pMessage as ReqJoinRoom, pSender); }
             if (pMessage is ChatMessage) { handleChatMessage(pMessage as ChatMessage, pSender); }
-            if (pMessage is ReqLevelName) { handleReqLevelName(pMessage as ReqLevelName); }
         }
 
-        private void handleReqLevelName(ReqLevelName pReqLevelName)
-        {
-            string filePath = "../../../../LevelFiles/" + pReqLevelName.levelName + ".txt";
-            LoadLevel(filePath);
-        }
         private void handleChatMessage(ChatMessage  pMessage, TCPMessageChannel pSender)
         {
             ChatMessage newMessage = new ChatMessage();
@@ -583,9 +578,41 @@ namespace Server
 
                 LoadLevel(levelFile);
                 isReloading = false;
-            }
+            }  
         }
 
+        private void doHighscoreThing()
+        {
+            try
+            {
+                if (finalRoom && score != 0)
+                {
+                    finalScore = score;
+                    writeScoresAndNames(finalScore, _server.allConnectedUsers[_users[0]].GetPlayerName(), _server.allConnectedUsers[_users[1]].GetPlayerName());
+                    score = 0;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        private void writeScoresAndNames(int score, string namePlayer1, string namePlayer2)
+        {
+            if (!File.Exists("../../../../LevelFiles/Highscores.txt"))
+            {
+                File.Create("../../../../LevelFiles/Highscores.txt");
+            }
+
+            //create a lines list that reads all lines from a file
+            List<string> lines;
+            lines = File.ReadAllLines("../../../../LevelFiles/Highscores.txt").ToList();
+
+            //write the constructed string
+            lines.Add(score.ToString() + "{" + namePlayer1 + "{"+ namePlayer2);
+            //write all lines to the file
+            File.WriteAllLines("../../../../LevelFiles/Highscores.txt", lines);
+        }
         
         private void sendLevelReset()
         {
@@ -594,6 +621,14 @@ namespace Server
             reloadScene.playersReset = 0;
             reloadScene.isResetting = true;
             sendToAll(reloadScene);
+        }
+
+
+        protected override void sendPulse()
+        {
+            base.sendPulse();
+            if (!finalRoom) score++;
+
         }
         #endregion
 
@@ -768,6 +803,7 @@ namespace Server
             //will figure out a solution later, but dont remove it
             if (isReloading)
             {
+                doHighscoreThing();
                 sendLevelReset();
                 foreach (TCPMessageChannel pListener in _users)
                 {
