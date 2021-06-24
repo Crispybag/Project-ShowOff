@@ -119,9 +119,9 @@ namespace Server
                 }
 
                 elevatorMove.ID = ID;
-                elevatorMove.posX = points[currentPos].x();
-                elevatorMove.posY = points[currentPos].y();
-                elevatorMove.posZ = points[currentPos].z();
+                elevatorMove.posX = points[currentPos].x() + room.minX;
+                elevatorMove.posY = points[currentPos].y() + room.minY;
+                elevatorMove.posZ = points[currentPos].z() + room.minZ;
 
                 room.sendToAll(elevatorMove);
             }

@@ -404,8 +404,8 @@ namespace Server
             {
                 for (int i = 0; i < informationLists[0].Count / 3; i++)
                 {
-                    EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i], informationLists[0][3 * i + 1], informationLists[0][3 * i + 2]);
-                    Console.WriteLine("Added an empty on positions: " + empty.x() + "," + empty.y() + "," + empty.z());
+                    EmptyGameObject empty = new EmptyGameObject(this, informationLists[0][3 * i] - minX, informationLists[0][3 * i + 1] - minY, informationLists[0][3 * i + 2] - minZ);
+                    Console.WriteLine("Added an empty on positions: " + (empty.x() - minX) + "," + (empty.y() - minY) + "," + (empty.z() - minZ));
                     elevator.points.Add(i, empty);
                 }
             }
@@ -475,7 +475,7 @@ namespace Server
                 if (pSender == player.getClient())
                 {
                     //goes to player for further processing of the package
-                    player.addInput(pKeyDown.keyInput);
+                    player.addInput(pKeyDown.keyInput, pKeyDown.rotation);
                 }
             }
         }

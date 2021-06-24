@@ -12,7 +12,6 @@ namespace Server
         {
             room = pRoom;
             fileName = "../../../../LevelFiles/" + pFileName;
-            Logging.LogInfo(x() + " " + y() + " " + z());
             //room.PrintGrid(room.roomArray);
             room.roomArray[x(), y(), z()].Add(this);
 

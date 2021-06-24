@@ -14,6 +14,12 @@ public class DoorManager : MonoBehaviour
     //=========================================================================================
 
     //------------------------ public ------------------------
+    
+    [FMODUnity.EventRef]
+    public string eventPathClosed;
+
+    [FMODUnity.EventRef]
+    public string eventPathOpen;
 
     public int ID;
 
@@ -44,10 +50,12 @@ public class DoorManager : MonoBehaviour
         if (isOpen)
         {
             GetComponent<MeshRenderer>().enabled = false;
+            serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().playSound(eventPathClosed, this.gameObject);
         }
         else
         {
             GetComponent<MeshRenderer>().enabled = true;
+            serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().playSound(eventPathOpen, this.gameObject);
         }
     }
 

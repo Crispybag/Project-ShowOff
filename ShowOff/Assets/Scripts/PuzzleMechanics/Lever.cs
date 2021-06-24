@@ -9,15 +9,18 @@ public class Lever : PuzzleFactory
     //AUTHOR: Ezra
     //SHORT DISCRIPTION:
 
+
     //=========================================================================================
     //                                     > Variables <
     //=========================================================================================
 
     //------------------------ public ------------------------
-
+    [FMODUnity.EventRef]
+    public string eventPath;
 
 
     //----------------------- private ------------------------
+
 
     [SerializeField] private Material _mat1;
     [SerializeField] private Material _mat2;
@@ -44,6 +47,7 @@ public class Lever : PuzzleFactory
     {
         isActuated = isActive;
         setMaterial();
+        serviceLocator.GetFromList("AudioManager").GetComponent<AudioManager>().playSound(eventPath, this.gameObject);
     }
 
     private void setMaterial()

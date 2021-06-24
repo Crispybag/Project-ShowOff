@@ -20,7 +20,7 @@ public class PlayerInputHandler : MonoBehaviour
 
 
     //dedtermines what direction the player should move based on camera position
-    ReqKeyDown.KeyType determineKeyInput(KeyCode pKeyCode)
+    int determineKeyInput(KeyCode pKeyCode)
     {
         float keyAngle = 0;//key angle based on key input
         switch(pKeyCode)
@@ -45,59 +45,24 @@ public class PlayerInputHandler : MonoBehaviour
                 Debug.Log("Lol bad code, need to flexible it");
                 break;
         }
-        keyAngle += _cameraManager.GetCameraRotation(); //add camera y-rotation
+        keyAngle = _cameraManager.GetCameraRotation(); //add camera y-rotation
         keyAngle += 360; //remove negative numbers
         float finalAngle = keyAngle % 360; // make sure all numbers are between 0 and 360
 
         //determine final direction
-        if (finalAngle <= 135 && finalAngle > 45) { return ReqKeyDown.KeyType.RIGHT; }
-        else if (finalAngle <= 225 && finalAngle > 135) { return ReqKeyDown.KeyType.DOWN; }
-        else if (finalAngle <= 315 && finalAngle > 225) { return ReqKeyDown.KeyType.LEFT; }
-        else { return ReqKeyDown.KeyType.UP; }
+        if (finalAngle <= 135 && finalAngle > 45) { return 90; }
+        else if (finalAngle <= 225 && finalAngle > 135) { return 180; }
+        else if (finalAngle <= 315 && finalAngle > 225) { return 270; }
+        else { return 0; }
 
     }
 
-    ReqKeyUp.KeyType determineKeyInputUp(KeyCode pKeyCode)
-    {
-        float keyAngle = 0;//key angle based on key input
-        switch (pKeyCode)
-        {
-            case (KeyCode.UpArrow):
-                keyAngle = 0;
-                break;
 
-            case (KeyCode.DownArrow):
-                keyAngle = 180;
-                break;
-
-            case (KeyCode.LeftArrow):
-                keyAngle = 270;
-                break;
-
-            case (KeyCode.RightArrow):
-                keyAngle = 90;
-                break;
-            default:
-                keyAngle = 0;
-                Debug.Log("Lol bad code, need to flexible it");
-                break;
-        }
-        keyAngle += _cameraManager.GetCameraRotation(); //add camera y-rotation
-        keyAngle += 360; //remove negative numbers
-        float finalAngle = keyAngle % 360; // make sure all numbers are between 0 and 360
-
-        //determine final direction
-        if (finalAngle <= 135 && finalAngle > 45) { return ReqKeyUp.KeyType.RIGHT; }
-        else if (finalAngle <= 225 && finalAngle > 135) { return ReqKeyUp.KeyType.DOWN; }
-        else if (finalAngle <= 315 && finalAngle > 225) { return ReqKeyUp.KeyType.LEFT; }
-        else { return ReqKeyUp.KeyType.UP; }
-
-    }
-
-    void sendReqKeyDown(KeyCode pKeyCode)
+    void sendReqKeyDown(KeyCode pKeyCode, ReqKeyDown.KeyType type)
     {
         ReqKeyDown keyDown = new ReqKeyDown();
-        keyDown.keyInput = determineKeyInput(pKeyCode);
+        keyDown.keyInput = type;
+        keyDown.rotation = determineKeyInput(pKeyCode);
         _clientManager.SendPackage(keyDown);
     }
 
@@ -111,22 +76,22 @@ public class PlayerInputHandler : MonoBehaviour
         //Send Inputs
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            sendReqKeyDown(KeyCode.UpArrow);
+            sendReqKeyDown(KeyCode.UpArrow, ReqKeyDown.KeyType.UP);
         }
 
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            sendReqKeyDown(KeyCode.DownArrow);
+            sendReqKeyDown(KeyCode.DownArrow, ReqKeyDown.KeyType.DOWN);
 
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            sendReqKeyDown(KeyCode.LeftArrow);
+            sendReqKeyDown(KeyCode.LeftArrow, ReqKeyDown.KeyType.LEFT);
 
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            sendReqKeyDown(KeyCode.RightArrow);
+            sendReqKeyDown(KeyCode.RightArrow, ReqKeyDown.KeyType.RIGHT);
 
         }
         else if (Input.GetKeyDown(KeyCode.Space))
@@ -149,28 +114,28 @@ public class PlayerInputHandler : MonoBehaviour
         if(Input.GetKeyUp(KeyCode.UpArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
-            keyUp.keyInput = determineKeyInputUp(KeyCode.UpArrow);
+            keyUp.keyInput = ReqKeyUp.KeyType.UP;
             _clientManager.SendPackage(keyUp);
 
         }
         else if (Input.GetKeyUp(KeyCode.DownArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
-            keyUp.keyInput = determineKeyInputUp(KeyCode.DownArrow);
+            keyUp.keyInput = ReqKeyUp.KeyType.DOWN;
             _clientManager.SendPackage(keyUp);
 
         }
         else if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
-            keyUp.keyInput = determineKeyInputUp(KeyCode.LeftArrow);
+            keyUp.keyInput = ReqKeyUp.KeyType.LEFT;
             _clientManager.SendPackage(keyUp);
 
         }
         else if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
-            keyUp.keyInput = determineKeyInputUp(KeyCode.RightArrow);
+            keyUp.keyInput = ReqKeyUp.KeyType.RIGHT;
             _clientManager.SendPackage(keyUp);
         }
     }

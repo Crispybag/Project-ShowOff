@@ -61,13 +61,13 @@ public class InformationWriter : MonoBehaviour
     //tools for children to append their own information
     protected void AddToInformation(float pInfo)
     {
-        informationString += (int)pInfo + " ";
+        informationString += (int)Mathf.Round(pInfo) + " ";
     }
     protected void AddToInformation(Vector3 pInfo)
     {
-        informationString += (int)pInfo.x + " ";
-        informationString += (int)pInfo.y + " ";
-        informationString += (int)pInfo.z + " ";
+        informationString += (int)Mathf.Round(pInfo.x) + " ";
+        informationString += (int)Mathf.Round(pInfo.y) + " ";
+        informationString += (int)Mathf.Round(pInfo.z) + " ";
     }
 
     protected void AddToInformation(List<int> pInfo)

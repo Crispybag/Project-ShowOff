@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{568a0032-7293-48cd-a735-1125f50ac5c3}">
+		<property name="assetPath">
+			<value>ZOOM_BoxLoud.WAV</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>13.934666666666667</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{be325d4b-dc05-4f1d-bf86-655ff21206c2}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -7,7 +7,7 @@ using static ServiceLocator;
 public class BoxMovement : MonoBehaviour
 {
 
-    public int ID;
+    [HideInInspector] public int ID;
 
     private void Start()
     {
