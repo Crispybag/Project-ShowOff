@@ -88,22 +88,22 @@ public class PlayerInputHandler : MonoBehaviour
             }
             SceneManager.LoadScene("Options", LoadSceneMode.Additive);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             sendReqKeyDown(KeyCode.UpArrow, ReqKeyDown.KeyType.UP);
         }
 
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             sendReqKeyDown(KeyCode.DownArrow, ReqKeyDown.KeyType.DOWN);
 
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             sendReqKeyDown(KeyCode.LeftArrow, ReqKeyDown.KeyType.LEFT);
 
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             sendReqKeyDown(KeyCode.RightArrow, ReqKeyDown.KeyType.RIGHT);
 
@@ -127,28 +127,28 @@ public class PlayerInputHandler : MonoBehaviour
 
 
 
-        if (Input.GetKeyUp(KeyCode.UpArrow))
+        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.UP;
             _clientManager.SendPackage(keyUp);
 
         }
-        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        else if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.DOWN;
             _clientManager.SendPackage(keyUp);
 
         }
-        else if (Input.GetKeyUp(KeyCode.LeftArrow))
+        else if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.LEFT;
             _clientManager.SendPackage(keyUp);
 
         }
-        else if (Input.GetKeyUp(KeyCode.RightArrow))
+        else if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
         {
             ReqKeyUp keyUp = new ReqKeyUp();
             keyUp.keyInput = ReqKeyUp.KeyType.RIGHT;
